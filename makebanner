@@ -1,0 +1,1 @@
+bannertool makebanner -ci icon/iconmodel.cgfx -a icon/banner.wav -o banner.bin

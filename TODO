@@ -1,0 +1,73 @@
+figure out why only sometimes a crash happens when in lava (most likely due to renderer trying to figure out what is visible and it shits itself when you're inside of a block)
+
+make fall damage use a actual formula instead of just checking for velocity
+
+add gui stuff for gamerules
+
+difficulty (speedrunning hardcore would be fun on this)
+
+multiplayer (fuck this, i've spent 2 fucking days trying to get a socket working on it and nothing)
+
+mobs
+
+sound and music (it softlocks completely for some reason when the file finishes playing, guessing the thread needs to be closed or something)
+
+fire
+
+sort textures into a more minecraft way (resource and data packs?)
+
+lighting
+
+make doors actually work
+
+gates and fences
+
+food
+
+hud stuff for hp
+
+day night cycle
+
+weather
+
+stats like how many kills, time survived and player deaths
+
+tnt
+
+dimensions
+
+crafting (probs using json for crafting stuff)
+
+furnace
+
+ores
+
+potions
+
+projectiles
+
+liquids (half done, now need to make them spread)
+
+block hardness and explosion resistance
+
+redstone
+
+items
+
+weapons
+
+armour
+
+menu when you die (maybe cause of death as well)
+
+add beds (bed bombs?)
+
+add thing to enable cheats/commands in a world
+
+inventory
+
+animated textures
+
+transparent textures
+
+any help would be appreciated here

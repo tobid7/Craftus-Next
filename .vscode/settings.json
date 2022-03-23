@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "world.h": "c",
+        "workqueue.h": "c",
+        "3ds.h": "c",
+        "treegen.h": "c"
+    }
+}

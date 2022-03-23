@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"crash.h": "c",
+			"renderer.h": "c",
+			"superchunk.h": "c",
+			"__node_handle": "c",
+			"player.h": "c"
+		}
+	}
+}
