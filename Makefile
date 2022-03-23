@@ -37,7 +37,7 @@ APP_AUTHOR	:= Silentstorm, TobiD7
 APP_TITLE	:= Craftus-Next
 APP_DESCRIPTION := Minecraft clone
 BANNER_AUDIO := romfs/theme.wav
-ICON		:=	icon/craftus.png
+ICON		:=	icon/logo.png
 
 DEBUG		?=	0
 ifeq ($(DEBUG), 0)

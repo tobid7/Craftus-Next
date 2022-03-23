@@ -25,9 +25,9 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			Chunk_SetBlock(item.chunk, x, height, z, Block_Grass);
 			for (int i = 2; i < 3; i++)
 			{
-				int treex = 7;
-				int treez = 3;
-				TreeGen_GenTree(queue, item, treex, treez, 5);
+				int treex = random();
+				int treez = random();
+				TreeGen_GenTree(queue, item, treex, height + 1, treez, 7);
 			}
 			
 		}
