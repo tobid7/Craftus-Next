@@ -68,7 +68,7 @@ int main() {
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&SuperFlatGen_Generate, &flatGen, true});
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&FlatBedrockGen_Generate, &bdgen, true});
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&SmeaGen_Generate, &smeaGen, true});
-		ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&DefaultGen_Generate, &dgen, true});
+		//ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&DefaultGen_Generate, &dgen, true});
 	sino_init();
 
 	World* world = (World*)malloc(sizeof(World));
@@ -82,7 +82,7 @@ int main() {
 
 	SuperFlatGen_Init(&flatGen, world);
 	FlatBedrockGen_Init(&bdgen, world);
-	DefaultGen_Init(&dgen, world);
+	//DefaultGen_Init(&dgen, world);
 	SmeaGen_Init(&smeaGen, world);
 
 	Renderer_Init(world, &player, &chunkWorker.queue, &gamestate);
@@ -196,8 +196,8 @@ int main() {
 							     world->genSettings.type == WorldGen_Smea);
 				ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, &bdgen,
 							     world->genSettings.type == WorldGen_FlatBedrock);
-				ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, &dgen,
-							     world->genSettings.type == WorldGen_Default);
+				//ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, &dgen,
+				//			     world->genSettings.type == WorldGen_Default);
 
 				world->cacheTranslationX = WorldToChunkCoord(FastFloor(player.position.x));
 				world->cacheTranslationZ = WorldToChunkCoord(FastFloor(player.position.z));
