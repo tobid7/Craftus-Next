@@ -59,7 +59,7 @@ jobs:
           path: ~/artifacts/*
           name: build
 
-publish_build:
+  publish_build:
     runs-on: ubuntu-latest
     name: Publish build to NPI-D7/nightlys
     if: ${{ success() && !startsWith(github.ref, 'refs/pull') }}
