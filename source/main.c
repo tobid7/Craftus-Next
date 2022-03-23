@@ -114,8 +114,8 @@ int main() {
 			playopus(&BackgroundSound);
 		}
 		
-		DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%% Lin: %d", fps, C3D_GetProcessingTime() * 6.f,
-		C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree());
+		//DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%% Lin: %d", fps, C3D_GetProcessingTime() * 6.f,
+		//C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree());
 		DebugUI_Text("X: %f, Y: %f, Z: %f", f3_unpack(player.position));
 		//DebugUI_Text("HP: %i",player.hp);
 		//DebugUI_Text("velocity: %f rndy: %f",player.velocity.y,player.rndy);
