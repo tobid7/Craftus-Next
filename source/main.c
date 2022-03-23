@@ -128,7 +128,7 @@ int main() {
 		Renderer_Render();
 
 		uint64_t currentTime = svcGetSystemTick();
-		dt = ((float)(currentTime / (float)1000) - (float)(lastTime / (float)1000)) / 1000.f;
+		dt = ((float)(currentTime / (float)TICKS_PER_MSEC) - (float)(lastTime / (float)TICKS_PER_MSEC)) / 1000.f;
 		lastTime = currentTime;
 		timeAccum += dt;
 
