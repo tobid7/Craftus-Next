@@ -25,7 +25,7 @@ void SuperFlatGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				block = Block_Air;
 				break;
 		}
-                for (int i = rand(); i < 3; i++)
+                for (int i = 1; i < 3; i++)
 		{
 			int treex = random();
 			int treez = random();
