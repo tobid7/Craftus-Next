@@ -59,7 +59,7 @@ CFLAGS	:=	-g -Wall -mword-relocations \
 			 -ffunction-sections $(CFLAGS_ADD)\
 			$(ARCH) -save-temps
 
-CFLAGS	+=	$(INCLUDE) -D__3DS__ `$(PREFIX)pkg-config opusfile --cflags`
+CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS `$(PREFIX)pkg-config opusfile --cflags`
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
