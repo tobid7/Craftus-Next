@@ -43,7 +43,6 @@ jobs:
         id: build
         run: |
           make
-          make make_cia
           mkdir -p ~/artifacts
           cp Craftus-Next.3dsx ~/artifacts
           echo ::set-output name=commit_tag::$(git describe --abbrev=0 --tags)
