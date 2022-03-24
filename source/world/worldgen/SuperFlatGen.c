@@ -6,6 +6,7 @@
 void SuperFlatGen_Init(SuperFlatGen* gen, World* world) {}
 
 void SuperFlatGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
+	srand(time(NULL));
 	for (int y = 0; y < 20; y++) {
 		Block block = Block_Air;
 		switch (y) {  // TODO: Mit einem Lookup Table ersetzen, Superflach Gen konfigurierbar machen
@@ -25,12 +26,13 @@ void SuperFlatGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				block = Block_Air;
 				break;
 		}
-                for (int i = 2; i < 3; i++)
-			{
-				int treex = 5;
-				int treez = 10;
-				TreeGen_GenTree(queue, item, treex, 17, treez, 6);
-			}
+        for (int i = rand() % 10; i < 3; i++)
+		{
+			int treex = 2*i;
+			int treez = 3*i;
+			TreeGen_GenTree(queue, item, treex, height + 1, treez, 3);
+			
+		}
 		for (int x = 0; x < CHUNK_SIZE; x++)
 			for (int z = 0; z < CHUNK_SIZE; z++) Chunk_SetBlock(item.chunk, x, y, z, block);
 	}
