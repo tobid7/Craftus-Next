@@ -11,10 +11,10 @@ void FlatBedrockGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			case 0:
 				block = Block_Bedrock;
 				break;
-			case 1 ... 3:
+			case 1 ... 2:
 				block = Block_Dirt;
 				break;
-			case 4:
+			case 3:
 				block = Block_Grass;
 				break;
 			default:
