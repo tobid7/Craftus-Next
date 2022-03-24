@@ -26,14 +26,15 @@ void SuperFlatGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				block = Block_Air;
 				break;
 		}
-        for (int i = rand() % 80; i < 3; i++)
-		{
-			int treex = 2*i;
-			int treez = 5*i;
-			TreeGen_GenTree(queue, item, treex, 17, treez, 6);
-			
-		}
+        
 		for (int x = 0; x < CHUNK_SIZE; x++)
-			for (int z = 0; z < CHUNK_SIZE; z++) Chunk_SetBlock(item.chunk, x, y, z, block);
+			for (int z = 0; z < CHUNK_SIZE; z++) 
+                        {Chunk_SetBlock(item.chunk, x, y, z, block);
+                         for (int i = rand() % 80; i < 2; i++)
+		         {
+			       TreeGen_GenTree(queue, item, x, 17, z, 6);
+			
+		         }
+                 }
 	}
 }
