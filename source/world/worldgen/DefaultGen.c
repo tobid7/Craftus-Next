@@ -36,8 +36,14 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			    	Chunk_SetBlock(item.chunk, x, height + 1, z, Block_Pumpkin);
 				}
 			
-			if (x == rand() % 17 && z == rand() % 17)
-			{	TreeGen_GenTree(queue, item, x, height + 1, z, 7);	}
+			if (x == rand() % 30 && z == rand() % 35)
+			{	
+				int hxx = 0;
+				hxx = 6 + rand() % 2;
+				
+				TreeGen_GenTree(queue, item, x, height + 1, z, hxx);
+				
+			}
 		}
 	}
 }
