@@ -30,7 +30,7 @@ void SuperFlatGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 		for (int x = 0; x < CHUNK_SIZE; x++)
 			for (int z = 0; z < CHUNK_SIZE; z++) 
                         {Chunk_SetBlock(item.chunk, x, y, z, block);
-                         int jh = rand() % 30;
+                         int jh = rand() % 200;
                          if (jh == 1)
 		         {
 			       TreeGen_GenTree(queue, item, x, 17, z, 6);
