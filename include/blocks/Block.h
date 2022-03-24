@@ -50,6 +50,8 @@ enum { Block_Air,
 	Block_Pumpkin,
 	Block_PumpkinFace,
 	Block_PumpkinFaceLamp,
+	Block_BirchPlanks,
+	Block_BirchLog,
 	Blocks_Count
 };
 
