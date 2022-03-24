@@ -39,6 +39,10 @@ void TreeGen_GenTree(WorkQueue* queue, WorkerItem item,int x, int y, int z, int 
                     for (int lx = x - 0;  lx < x + 1; lx ++)
                     {
                         Chunk_SetBlock(item.chunk, lx, y + height - 1, l, Block_Leaves);
+                        Chunk_SetBlock(item.chunk, lx-1, y + height - 1, l, Block_Leaves);
+                        Chunk_SetBlock(item.chunk, lx+1, y + height - 1, l, Block_Leaves);
+                        Chunk_SetBlock(item.chunk, lx, y + height - 1, l+1, Block_Leaves);
+                        Chunk_SetBlock(item.chunk, lx, y + height - 1, l-1, Block_Leaves);
                     }
                 }
                 break;
