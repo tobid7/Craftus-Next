@@ -48,6 +48,8 @@ enum { Block_Air,
 	Block_Furnace,
 	Block_Mycel,
 	Block_Pumpkin,
+	Block_PumpkinFace,
+	Block_PumpkinFaceLamp,
 	Blocks_Count
 };
 

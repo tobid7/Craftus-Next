@@ -23,7 +23,8 @@ static Texture_Map textureMap;
 	A(gold_ore,"gold_ore.png"),A(gold_block,"gold_block.png"),A(coal_ore,"coal_ore.png"),A(coal_block,"coal_block.png"),			\
 	A(emerald_ore,"emerald_ore.png"),A(emerald_block,"emerald_block.png"),A(furnace_side,"furnace_side.png"),						\
 	A(furnace_front,"furnace_front.png"),A(furnace_top,"furnace_top.png"), A(mycelium_top, "mycelium_top.png"), 					\
-	A(mycelium_side, "mycelium_side.png"), A(pumpkin_side, "pumpkin_side.png"), A(pumpkin_top, "pumpkin_top.png")
+	A(mycelium_side, "mycelium_side.png"), A(pumpkin_side, "pumpkin_side.png"), A(pumpkin_top, "pumpkin_top.png")					\
+	A(pumpkin_face_off, "pumpkin_face_off"), A(pumpkin_face_off, "pumpkin_face_on")
 
 #define A(i, n) PPRX n
 const char* block_texture_files[] = {TEXTURE_FILES};
@@ -80,6 +81,8 @@ static struct {
 	Texture_MapIcon mycelium_side;
 	Texture_MapIcon pumpkin_top;
 	Texture_MapIcon pumpkin_side;
+	Texture_MapIcon pumpkin_face_off;
+	Texture_MapIcon pumpkin_face_on;
 } icon;
 
 void Block_Init() {
@@ -136,6 +139,32 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 					break;
 				case Direction_Bottom:
 					i = icon.pumpkin_top;
+					break;
+				default:
+					i = icon.pumpkin_side;
+					break;
+			}
+			break;
+		case Block_PumpkinFace:
+			switch (direction) {
+				case Direction_South:
+					i = icon.pumpkin_face_off;
+					break;
+				case Direction_Top:
+					i=icon.pumpkin_top;
+					break;
+				default:
+					i = icon.pumpkin_side;
+					break;
+			}
+			break;
+		case Block_PumpkinFaceLamp:
+			switch (direction) {
+				case Direction_South:
+					i = icon.pumpkin_face_on;
+					break;
+				case Direction_Top:
+					i=icon.pumpkin_top;
 					break;
 				default:
 					i = icon.pumpkin_side;
@@ -343,5 +372,5 @@ const char* BlockNames[Blocks_Count] = {
 	"Air","Stone","Dirt","Grass","Cobblestone","Sand","Log","Leaves","Glass","Stone Bricks","Bricks","Planks","Wool","Bedrock","Gravel",
 	"Water","Coarse","Door_Top","Door_Bottom","Snow_Grass","Snow","Obsidian","Netherrack","Sandstone","Smooth_Stone","Crafting_Table",
 	"Grass_Path","Water","Lava","Iron_Ore","Iron_Block","Coal_Ore","Coal_Block","Diamond_Ore","Diamond_Block","Gold_Ore","Gold_Block",
-	"Emerald_Ore","Emerald_Block","Furnace", "Mycel", "Pumpkin"
+	"Emerald_Ore","Emerald_Block","Furnace", "Mycel", "Pumpkin", "CutPumpkin", "PumpkinLamp"
 };
