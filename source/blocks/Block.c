@@ -24,7 +24,7 @@ static Texture_Map textureMap;
 	A(emerald_ore,"emerald_ore.png"),A(emerald_block,"emerald_block.png"),A(furnace_side,"furnace_side.png"),						\
 	A(furnace_front,"furnace_front.png"),A(furnace_top,"furnace_top.png"), A(mycelium_top, "mycelium_top.png"), 					\
 	A(mycelium_side, "mycelium_side.png"), A(pumpkin_side, "pumpkin_side.png"), A(pumpkin_top, "pumpkin_top.png"),					\
-	A(pumpkin_face_off, "pumpkin_face_off")//, A(pumpkin_face_off, "pumpkin_face_on")
+	A(pumpkin_face_off, "pumpkin_face_off.png"), A(pumpkin_face_on, "pumpkin_face_on.png")
 
 #define A(i, n) PPRX n
 const char* block_texture_files[] = {TEXTURE_FILES};
@@ -158,7 +158,7 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 					break;
 			}
 			break;
-		/*case Block_PumpkinFaceLamp:
+		case Block_PumpkinFaceLamp:
 			switch (direction) {
 				case Direction_South:
 					i = icon.pumpkin_face_on;
@@ -170,7 +170,7 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 					i = icon.pumpkin_side;
 					break;
 			}
-			break;*/
+			break;
 		case Block_Cobblestone:
 			i = icon.cobblestone;
 			break;
