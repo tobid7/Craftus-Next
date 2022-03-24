@@ -34,10 +34,11 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			}
 			for (int l = rand() % 100; l < 8; l++)
 			{
+                                if (l == 1){
                                 for (int kk = 0; kk < 16; kk++)
                                 {
-				     Chunk_SetBlock(item.chunk, kk, height + 1, kk, Block_Pumpkin);
-                                }
+				     Chunk_SetBlock(item.chunk, rand() % 17, height + 1, rand() % 17, Block_Pumpkin);
+                                }}
 			}
 			
 		}
