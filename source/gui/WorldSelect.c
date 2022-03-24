@@ -195,7 +195,7 @@ void WorldSelect_Render() {
 		}
 		Gui_EndRow();
 
-		/*Gui_Offset(0, 32);
+		Gui_Offset(0, 32);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
 		Gui_Label(0.45f, true, INT16_MAX, false, "Gamemode:");
 		Gui_Space(0.1f);
@@ -203,7 +203,7 @@ void WorldSelect_Render() {
 			gamemode1++;
 			if (gamemode1 ==Gamemode_Count) gamemode1 = 0;
 		}
-		Gui_EndRow();*/
+		Gui_EndRow();
 
 		Gui_VerticalSpace(Gui_RelativeHeight(0.4f));
 
