@@ -20,18 +20,25 @@ void Plains_Gen(WorkQueue* queue, WorkerItem item, void* this)
 				Chunk_SetBlock(item.chunk, x, y, z, Block_Dirt);
 			}
 			Chunk_SetBlock(item.chunk, x, height, z, Block_Grass);
-			for (int i = rand() % 10; i < 3; i++)
-			{
-				int treex = 2*i;
-				int treez = 3*i;
-				TreeGen_GenTree(queue, item, treex, height + 1, treez, 3);
+			
+			
+				
+			
+                        for (int bd = 0; bd < 1 + rand() % 3; bd++)
+                        {Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);}
+			int l = rand() % 800;
+                        if (l == 1){
+			    	Chunk_SetBlock(item.chunk, x, height + 1, z, Block_Pumpkin);
+				}
+			
+			if (x == rand() % 30 && z == rand() % 35)
+			{	
+				int hxx = 0;
+				hxx = 6 + rand() % 2;
+				
+				TreeGen_GenTree(queue, item, x, height + 1, z, hxx);
 				
 			}
-			int l = rand() % 30;
-            if (l == 1){
-                for (int kk = 0; kk < 16; kk++)
-                {
-			    	Chunk_SetBlock(item.chunk, rand() % 17, height + 1, rand() % 17, Block_Pumpkin);
-				}
-			}
+		}
+	}
 }
