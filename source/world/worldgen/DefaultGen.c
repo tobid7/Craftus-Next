@@ -27,7 +27,7 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			{
 				int treex = 5;
 				int treez = 10;
-				TreeGen_GenTree(queue, item, treex, height + 1, treez, 7);
+				TreeGen_GenTree(queue, item, treex, height + 1, treez, 3);
 			}
 			
 		}
