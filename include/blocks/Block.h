@@ -47,6 +47,7 @@ enum { Block_Air,
 	Block_Emerald_Block,
 	Block_Furnace,
 	Block_Mycel,
+	Block_Pumpkin,
 	Blocks_Count
 };
 

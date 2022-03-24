@@ -1,11 +1,13 @@
 #include <world/worldgen/DefaultGen.h>
 #include "world/worldgen/structures/TreeGen.h"
 #include <sino/sino.h>
-
+#include <stdio.h>
+#include <time.h>
 void DefaultGen_Init(DefaultGen* gen, World* world) { gen->world = world; }
 
 // based off https://github.com/smealum/3dscraft/blob/master/source/generation.c
 void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
+	srand(time(NULL));
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			float px = (float)(x + item.chunk->x * CHUNK_SIZE);
@@ -25,9 +27,13 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			Chunk_SetBlock(item.chunk, x, height, z, Block_Grass);
 			for (int i = 2; i < 3; i++)
 			{
-				int treex = 5;
-				int treez = 10;
+				if (i < 4)
+				{
+					int treex = rand() % 17;
+				int treez = rand() % 17;
 				TreeGen_GenTree(queue, item, treex, height + 1, treez, 3);
+				}
+				
 			}
 			
 		}
