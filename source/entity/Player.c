@@ -79,8 +79,8 @@ void Player_Init(Player* player, World* world) {
 		player->inventory[l++] = (ItemStack){Block_Furnace, 0, 1};
 		player->inventory[l++] = (ItemStack){Block_Mycel, 0, 1};
 		player->inventory[l++] = (ItemStack){Block_Pumpkin, 0, 1};
-		player->inventory[l++] = (ItemStack){Block_PumpkinFace, 0, 1};
-		player->inventory[l++] = (ItemStack){Block_PumpkinFaceLamp, 0, 1};
+		//player->inventory[l++] = (ItemStack){Block_PumpkinFace, 0, 1};
+		//player->inventory[l++] = (ItemStack){Block_PumpkinFaceLamp, 0, 1};
 
 		for (int i = 0; i < INVENTORY_QUICKSELECT_MAXSLOTS; i++) player->quickSelectBar[i] = (ItemStack){Block_Air, 0, 0};
 	}
