@@ -32,9 +32,11 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				TreeGen_GenTree(queue, item, treex, height + 1, treez, 3);
 				
 			}*/
-			int l = rand() % 8000;
-            if (l == 1){
-			    	Chunk_SetBlock(item.chunk, rand() % 17, height + 1, rand() % 17, Block_Pumpkin);
+                        for (int bd = 0; bd < 1 + rand() % 3; bd++)
+                        {Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);}
+			int l = rand() % 800;
+                        if (l == 1){
+			    	Chunk_SetBlock(item.chunk, x, height + 1, y, Block_Pumpkin);
 				}
 			
 			
