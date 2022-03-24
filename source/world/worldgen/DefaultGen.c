@@ -31,7 +31,7 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				int treez = 3*i;
 				TreeGen_GenTree(queue, item, treex, height + 1, treez, 3);
 				
-			}/*
+			}*/
 			int l = rand() % 800;
             if (l == 1){
                 for (int kk = 0; kk < 16; kk++)
