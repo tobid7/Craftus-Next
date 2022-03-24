@@ -36,7 +36,7 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
                         {Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);}
 			int l = rand() % 800;
                         if (l == 1){
-			    	Chunk_SetBlock(item.chunk, x, height + 1, y, Block_Pumpkin);
+			    	Chunk_SetBlock(item.chunk, x, height + 1, z, Block_Pumpkin);
 				}
 			
 			
