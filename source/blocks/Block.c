@@ -23,7 +23,7 @@ static Texture_Map textureMap;
 	A(gold_ore,"gold_ore.png"),A(gold_block,"gold_block.png"),A(coal_ore,"coal_ore.png"),A(coal_block,"coal_block.png"),			\
 	A(emerald_ore,"emerald_ore.png"),A(emerald_block,"emerald_block.png"),A(furnace_side,"furnace_side.png"),						\
 	A(furnace_front,"furnace_front.png"),A(furnace_top,"furnace_top.png"), A(mycelium_top, "mycelium_top.png"), 					\
-	A(mycelium_side, "mycelium_side.png"), A(pumpkin_side, "pumpkin_side.png"), A(pumpkin_top, "pumpkin_top.png")					\
+	A(mycelium_side, "mycelium_side.png"), A(pumpkin_side, "pumpkin_side.png"), A(pumpkin_top, "pumpkin_top.png"),					\
 	A(pumpkin_face_off, "pumpkin_face_off"), A(pumpkin_face_off, "pumpkin_face_on")
 
 #define A(i, n) PPRX n
