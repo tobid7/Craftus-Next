@@ -184,8 +184,8 @@ void Player_Update(Player* player, Sound* sound, Damage* dmg) {
 			Player_Respawn(player, dmg);
 		}
 	//}
-        DebugUI_Text("Gamemode: %i", player->gamemode);
-        DebugUI_Text("Position: %f, %f, %f", f3_unpack(player->position));
+        //DebugUI_Text("Gamemode: %i", player->gamemode);
+        //DebugUI_Text("Position: %f, %f, %f", f3_unpack(player->position));
 }
 
 bool Player_CanMove(Player* player, float3 new) {
