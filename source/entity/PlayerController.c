@@ -283,6 +283,7 @@ void PlayerController_Update(PlayerController* ctrl, Sound* sound, InputData inp
 	if (jump > 0.f) Player_Jump(player, movement);
 
 	bool releasedJump = WasKeyReleased(ctrl->controlScheme.jump, &agnosticInput);
+        if (player->gamemode == 1 || player->gamemode == 3){
 	if (ctrl->flyTimer >= 0.f) {
 		if (jump > 0.f) player->flying ^= true;
 		ctrl->flyTimer += dt;
@@ -290,7 +291,7 @@ void PlayerController_Update(PlayerController* ctrl, Sound* sound, InputData inp
 	} else if (releasedJump) {
 		ctrl->flyTimer = 0.f;
 	}
-
+        }
 	bool releasedCrouch = WasKeyReleased(ctrl->controlScheme.crouch, &agnosticInput);
 	player->crouching ^= !player->flying && releasedCrouch;
 
