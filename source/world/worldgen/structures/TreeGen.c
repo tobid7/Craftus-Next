@@ -44,7 +44,7 @@ void TreeGen_GenTree(WorkQueue* queue, WorkerItem item,int x, int y, int z, int 
                 break;
             default: break;
         }
-        
+    }
     
     for (int i = y; i < y + height-1; i++)
     {
