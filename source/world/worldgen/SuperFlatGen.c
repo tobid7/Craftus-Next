@@ -26,10 +26,10 @@ void SuperFlatGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				block = Block_Air;
 				break;
 		}
-        for (int i = rand() % 10; i < 3; i++)
+        for (int i = rand() % 80; i < 3; i++)
 		{
 			int treex = 2*i;
-			int treez = 3*i;
+			int treez = 5*i;
 			TreeGen_GenTree(queue, item, treex, 17, treez, 6);
 			
 		}
