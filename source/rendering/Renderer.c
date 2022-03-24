@@ -175,7 +175,7 @@ void Renderer_Render() {
 
 		C3D_BindProgram(&gui_shader);
 		C3D_SetAttrInfo(&gui_vertexAttribs);
-                if (showDebugInfo) DebugUI_Draw();
+                
 		SpriteBatch_Render(GFX_TOP);
 
 		if (iod <= 0.f) break;
@@ -197,7 +197,7 @@ void Renderer_Render() {
 					  120 - INVENTORY_QUICKSELECT_HEIGHT, player->quickSelectBar, player->quickSelectBarSlots,
 					  &player->quickSelectBarSlot);
 		player->inventorySite = Inventory_Draw(16, 0, 160, player->inventory, sizeof(player->inventory) / sizeof(ItemStack),player->inventorySite);
-
+		if (showDebugInfo) DebugUI_Draw();
 		
 	}
 
