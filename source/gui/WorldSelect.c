@@ -120,7 +120,7 @@ static char* worldGenTypesStr[] = {"Smea", "Superflat", "FlatBedrock", "Default"
 
 static char* diffstr[]={"Peaceful", "Easy", "Normal", "Hard"};
 
-static difficultyz diffz = Diffyulty_Easy;
+static difficultyz diffz = Difficulty_Easy;
 
 static MenuState menustate = MenuState_SelectWorld;
 
@@ -215,7 +215,7 @@ void WorldSelect_Render() {
 		Gui_Space(0.1f);
 		if (Gui_Button(0.45f, "%s", diffstr[diffz])) {
 			diffz++;
-			if (diffz == Diffyulty_Count) diffz = 0;
+			if (diffz == Difficulty_Count) diffz = 0;
 		}
 		Gui_EndRow();
 
@@ -228,7 +228,7 @@ void WorldSelect_Render() {
 	}
 }
 
-bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* worldType, bool* newWorld) {
+bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* worldType, bool* newWorld, Player player) {
 	if (clicked_new_world) {
 		clicked_new_world = false;
 		menustate = MenuState_WorldOptions;

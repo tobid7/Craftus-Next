@@ -184,7 +184,7 @@ int main() {
 			char name[WORLD_NAME_SIZE] = {'\0'};
 			WorldGenType worldType;
 			bool newWorld = false;
-			if (WorldSelect_Update(path, name, &worldType, &newWorld)) {
+			if (WorldSelect_Update(path, name, &worldType, &newWorld, player)) {
 				strcpy(world->name, name);
 				world->genSettings.type = worldType;
 
