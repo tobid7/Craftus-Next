@@ -29,14 +29,14 @@ static vec_t(WorldInfo) worlds;
 void WorldSelect_ScanWorlds() {
 	vec_clear(&worlds);
 
-	DIR* directory = opendir("sdmc:/craftus_redesigned/saves");
+	DIR* directory = opendir("sdmc:/Craftus-Next/saves");
 
 	char buffer[512];
 
 	struct dirent* entry;
 
 	while ((entry = readdir(directory))) {
-		sprintf(buffer, "sdmc:/craftus_redesigned/saves/%s/level.mp", entry->d_name);
+		sprintf(buffer, "sdmc:/Craftus-Next/saves/%s/level.mp", entry->d_name);
 		if (access(buffer, F_OK) != -1) {
 			mpack_tree_t tree;
 			mpack_tree_init_file(&tree, buffer, 0);
@@ -288,7 +288,7 @@ bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* world
 	if (confirmed_deletion) {
 		confirmed_deletion = false;
 		char buffer[512];
-		sprintf(buffer, "sdmc:/craftus_redesigned/saves/%s", worlds.data[selectedWorld].path);
+		sprintf(buffer, "sdmc:/Craftus-Next/saves/%s", worlds.data[selectedWorld].path);
 		delete_folder(buffer);
 
 		WorldSelect_ScanWorlds();
