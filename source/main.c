@@ -232,12 +232,13 @@ int main() {
 				lastTime = svcGetSystemTick();  // fix timing
 			}
 		}
+		else if (gamestate == GameState_Options)
+		{
+		
+		}
 		Gui_InputData(inputData);
 	}
-	else if (gamestate == GameState_Options)
-	{
-		
-	}
+	
 	
 	if (gamestate == GameState_Playing)
 	{
