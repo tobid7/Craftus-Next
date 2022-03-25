@@ -1,6 +1,7 @@
 #include <world/worldgen/DefaultGen.h>
 #include "world/worldgen/structures/TreeGen.h"
 #include "world/worldgen/biomes/Plains.h"
+#include "world/worldgen/structures/Pumpkins.h"
 #include <sino/sino.h>
 #include <stdio.h>
 #include <time.h>
@@ -39,16 +40,12 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				Chunk_SetBlock(item.chunk, x, y, z, Block_Dirt);
 			}
 			Chunk_SetBlock(item.chunk, x, height, z, Block_Grass);
-			
-			
-				
-			
-                        for (int bd = 0; bd < 1 + rand() % 3; bd++)
-                        {Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);}
+			for (int bd = 0; bd < 1 + rand() % 3; bd++)
+            {Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);}
 			int l = rand() % 800;
-                        if (l == 1){
-			    	Chunk_SetBlock(item.chunk, x, height + 1, z, Block_Pumpkin);
-				}
+            if (l == 1){
+				Pumpkins_Gen(queue, item);
+			}
 			
 			if (x == rand() % 17 && z == rand() % 17)
 			{	
