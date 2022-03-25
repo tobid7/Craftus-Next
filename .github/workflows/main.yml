@@ -2,7 +2,7 @@ name: Build Craftus-Next
 
 on:
   push:
-    branches-ignore: [translation]
+    branches-ignore: [translation, cpp]
   pull_request:
     branches: ["*"]
   release:
