@@ -154,7 +154,7 @@ void Renderer_Render() {
 			SpriteBatch_SetScale(2);
 			for (int h = 0; h < 10; h++)
 			{
-				if (iod == 0.f) SpriteBatch_PushQuad(h*8 + 1, 110 , 0, 8, 8, 16, 0, 8, 8);
+				if (iod == 0.f) SpriteBatch_PushQuad(h*8 + 1, 110 , 0, 9, 9, 16, 0, 9, 9);
 				
 			}
 			/*for (int lv = 0; lv < player->hp; lv ++)

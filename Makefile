@@ -157,6 +157,10 @@ run:
 	@echo running...
 	@3dslink $(TARGET).3dsx
 
+make_cia:
+	@makerom -f cia -o $(TARGET).cia -rsf $(TARGET).rsf -target t -exefslogo -elf $(TARGET).elf -icon $(TARGET).smdh -banner banner.bin
+	@echo built ... $(TARGET).cia
+
 #---------------------------------------------------------------------------------
 else
 
