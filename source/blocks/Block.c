@@ -27,7 +27,7 @@ static Texture_Map textureMap;
 	A(pumpkin_face_off, "pumpkin_face_off.png"), A(pumpkin_face_on, "pumpkin_face_on.png"), A(birch_planks, "planks_birch.png"),	\
 	A(birch_log_side, "log_birch.png"), A(birch_log_top, "log_birch_top.png"), A(birch_leaves, "birch_leaves.png"),					\
 	A(bee_nest_top, "bee_nest_top.png"), A(bee_nest_side, "bee_nest_side.png"), A(bee_nest_front, "bee_nest_front.png"),			\
-	A(bee_nest_front_honey, "bee_nest_front_honey")
+	A(bee_nest_front_honey, "bee_nest_front_honey.png")
 
 #define A(i, n) PPRX n
 const char* block_texture_files[] = {TEXTURE_FILES};
