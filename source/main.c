@@ -234,6 +234,10 @@ int main() {
 		}
 		Gui_InputData(inputData);
 	}
+	else if (gamestate == GameState_Options)
+	{
+		
+	}
 	
 	if (gamestate == GameState_Playing)
 	{

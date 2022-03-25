@@ -42,10 +42,10 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			Chunk_SetBlock(item.chunk, x, height, z, Block_Grass);
 			for (int bd = 0; bd < 1 + rand() % 3; bd++)
             {Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);}
-			int l = rand() % 800;
+			/*int l = rand() % 800;
             if (l == 1){
 				Pumpkins_Gen(queue, item);
-			}
+			}*/
 			
 			if (x == rand() % 17 && z == rand() % 17)
 			{	
