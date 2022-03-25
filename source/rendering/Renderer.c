@@ -157,7 +157,7 @@ void Renderer_Render() {
 				if (iod == 0.f) SpriteBatch_PushQuad(h*8 + 1, 110 , 0, 9, 9, 16, 0, 9, 9);
 				
 			}
-				if (iod == 0.f) SpriteBatch_PushQuad(0+1/2, 110 , 0, 8, 8, 40, 0, 8, 8);
+				if (iod == 0.f) SpriteBatch_PushQuad(0+1/2, 110 , 0, 8, 8, 53, 0, 8, 8);
 			/*for (int lv = 0; lv < player->hp; lv ++)
 			{
 				switch(lv)
