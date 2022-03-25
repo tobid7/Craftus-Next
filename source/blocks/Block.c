@@ -25,7 +25,7 @@ static Texture_Map textureMap;
 	A(furnace_front,"furnace_front.png"),A(furnace_top,"furnace_top.png"), A(mycelium_top, "mycelium_top.png"), 					\
 	A(mycelium_side, "mycelium_side.png"), A(pumpkin_side, "pumpkin_side.png"), A(pumpkin_top, "pumpkin_top.png"),					\
 	A(pumpkin_face_off, "pumpkin_face_off.png"), A(pumpkin_face_on, "pumpkin_face_on.png"), A(birch_planks, "planks_birch.png"),	\
-	A(birch_log_side, "log_birch.png"), A(birch_log_top, "log_birch_top.png")
+	A(birch_log_side, "log_birch.png"), A(birch_log_top, "log_birch_top.png"), A(birch_leaves, "birch_leaves.png")
 
 #define A(i, n) PPRX n
 const char* block_texture_files[] = {TEXTURE_FILES};
@@ -87,6 +87,7 @@ static struct {
 	Texture_MapIcon birch_log_side;
 	Texture_MapIcon birch_log_top;
 	Texture_MapIcon birch_planks;
+	Texture_MapIcon birch_leaves;
 } icon;
 
 void Block_Init() {
@@ -174,6 +175,9 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 					i = icon.pumpkin_side;
 					break;
 			}
+			break;
+		case Block_BirchLeaves:
+			i = icon.birch_leaves;
 			break;
 		case Block_Cobblestone:
 			i = icon.cobblestone;

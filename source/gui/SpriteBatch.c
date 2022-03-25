@@ -28,6 +28,7 @@ static C3D_Tex whiteTex;
 static C3D_Tex widgetsTex;
 static C3D_Tex iconsTex;
 static C3D_Tex menuBackgroundTex;
+static C3D_Tex tbgTex;
 
 static C3D_Mtx iconModelMtx;
 
@@ -53,6 +54,7 @@ void SpriteBatch_Init(int projUniform_) {
 
 	Texture_Load(&menuBackgroundTex, "romfs:/assets/textures/gui/options_background.png");
         Texture_Load(&iconsTex, "romfs:/assets/textures/gui/icons.png");
+	Texture_Load(&tbgTex, "romfs:/assets/textures/gui/bg.png");
 
 
 	Mtx_Identity(&iconModelMtx);
@@ -89,6 +91,9 @@ void SpriteBatch_BindGuiTexture(GuiTexture texture) {
 			break;
 		case GuiTexture_MenuBackground:
 			currentTexture = &menuBackgroundTex;
+			break;
+		case GuiTexture_TBG:
+			currentTexture = &tbgTex;
 			break;
 		default:
 			break;

@@ -38,6 +38,7 @@ static C3D_AttrInfo world_vertexAttribs, gui_vertexAttribs;
 
 static C3D_Tex logoTex;
 
+
 static World* world;
 static Player* player;
 static WorkQueue* workqueue;
@@ -165,12 +166,16 @@ void Renderer_Render() {
 
 			Clouds_Render(world_shader_uLocProjection, &vp, world, 0.f, 0.f);
 
+			SpriteBatch_BindGuiTexture(GuiTexture_TBG);
+			SpriteBatch_PushQuad(0, 0, 0, 400, 240, 0, 0, 400, 240);
+			SpriteBatch_SetScale(1);
+
 			SpriteBatch_BindTexture(&logoTex);
 
+			SpriteBatch_SetScale(1);
+			SpriteBatch_PushQuad(128/2, -10, 0, 256, 64, 0, 0, 128, 32);
 			SpriteBatch_SetScale(2);
-			SpriteBatch_PushQuad(100 / 2 - 76 / 2, 120 / 2, 0, 256, 64, 0, 0, 128, 32);
-
-			SpriteBatch_PushText(0, 0, 0, INT16_MAX, true, INT_MAX, NULL, "v" CRAFTUS_VERSION_STR);
+			SpriteBatch_PushText(0, 110, 0, INT16_MAX, true, INT_MAX, NULL, "v" CRAFTUS_VERSION_STR);
 		}
 
 		C3D_BindProgram(&gui_shader);

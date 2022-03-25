@@ -83,6 +83,7 @@ void Player_Init(Player* player, World* world) {
 		player->inventory[l++] = (ItemStack){Block_PumpkinFaceLamp, 0, 1};
 		player->inventory[l++] = (ItemStack){Block_BirchLog, 0, 1};
 		player->inventory[l++] = (ItemStack){Block_BirchPlanks, 0, 1};
+		player->inventory[l++] = (ItemStack){Block_BirchLeaves, 0, 1};
 
 		for (int i = 0; i < INVENTORY_QUICKSELECT_MAXSLOTS; i++) player->quickSelectBar[i] = (ItemStack){Block_Air, 0, 0};
 	}
@@ -187,7 +188,7 @@ void Player_Update(Player* player, Sound* sound, Damage* dmg) {
 		}
 	//}
         //DebugUI_Text("Gamemode: %i", player->gamemode);
-        //DebugUI_Text("Position: %f, %f, %f", f3_unpack(player->position));
+        DebugUI_Text("Position: %d, %d, %d", f3_unpack(player->position));
 }
 
 bool Player_CanMove(Player* player, float3 new) {
