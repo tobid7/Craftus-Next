@@ -40,10 +40,12 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			{	
 				int hxx = 0;
 				hxx = 6 + rand() % 2;
+                                if (x >= 4 && x <= 12){
+                                if (z >= 4 && z <= 12){
 				
-				TreeGen_GenTree(queue, item, x, height + 1, z, hxx);
+				      TreeGen_GenTree(queue, item, x, height + 1, z, hxx);
 				
-			}
+			}}}
 		}
 	}
 }
