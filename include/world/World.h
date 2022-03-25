@@ -16,6 +16,7 @@
 
 typedef enum { WorldGen_Smea, WorldGen_SuperFlat, WorldGen_FlatBedrock, WorldGen_Default, WorldGenTypes_Count } WorldGenType;
 typedef enum { Gamemode_Survival, Gamemode_Creative,Gamemode_Adventure,Gamemode_Spectator,Gamemode_Count } gamemode;
+typedef enum { Diffyculty_Peaceful, Diffyculty_Easy, Diffyculty_Normal, Diffyculty_Hard, Diffyculty_Count } diffycultyz;
 typedef struct {
 	uint64_t seed;
 	WorldGenType type;

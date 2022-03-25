@@ -2,9 +2,6 @@
 
 void Plains_Gen(WorkQueue* queue, WorkerItem item, int xpos, int zpos)
 {
-	for (int xpos2 = 0; xpos2 < CHUNK_SIZE; xpos2++) {
-		for (int zpos2 = 0; zpos2 < CHUNK_SIZE; zpos2++) {
-
    	srand(time(NULL));
 	
 	float px = (float)(xpos2 + item.chunk->x * CHUNK_SIZE);
@@ -43,5 +40,4 @@ void Plains_Gen(WorkQueue* queue, WorkerItem item, int xpos, int zpos)
 		      TreeGen_GenTree(queue, item, xpos2, height + 1, zpos2, hxx);
 	//
 	}}}
-		}}
 }

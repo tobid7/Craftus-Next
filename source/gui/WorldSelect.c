@@ -118,6 +118,10 @@ static char* gamemodestr[]={"Survival","Creative","Adventure","Spectator"};
 
 static char* worldGenTypesStr[] = {"Smea", "Superflat", "FlatBedrock", "Default"};
 
+static char* diffstr[]={"Peaceful", "Easy", "Normal", "Hard"};
+
+static difficultyz diffz = Diffyulty_Easy;
+
 static MenuState menustate = MenuState_SelectWorld;
 
 static float max_velocity = 20.f;
@@ -205,6 +209,16 @@ void WorldSelect_Render() {
 		}
 		Gui_EndRow();
 
+		Gui_Offset(0, 60);
+		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
+		Gui_Label(0.45f, true, INT16_MAX, false, "Difficulty:");
+		Gui_Space(0.1f);
+		if (Gui_Button(0.45f, "%s", diffstr[diffz])) {
+			diffz++;
+			if (diffz == Diffyulty_Count) diffz = 0;
+		}
+		Gui_EndRow();
+
 		Gui_VerticalSpace(Gui_RelativeHeight(0.4f));
 
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
@@ -222,6 +236,8 @@ bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* world
 	if (confirmed_world_options) {
 		confirmed_world_options = false;
 		*worldType = worldGenType;
+		player->gamemode = gamemode1;
+		player->difficulty = diffz;
 		//player->gamemode=gamemode3;
 
 		static SwkbdState swkbd;
