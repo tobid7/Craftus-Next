@@ -209,15 +209,15 @@ void WorldSelect_Render() {
 		}
 		Gui_EndRow();
 
-		Gui_Offset(0, 60);
+		/*Gui_Offset(0, 60);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
-		Gui_Label(0.45f, true, INT16_MAX, false, "Difficulty:");
+		/*Gui_Label(0.45f, true, INT16_MAX, false, "Difficulty:");
 		Gui_Space(0.1f);
 		if (Gui_Button(0.45f, "%s", diffstr[diffz])) {
 			diffz++;
 			if (diffz == Difficulty_Count) diffz = 0;
 		}
-		Gui_EndRow();
+		Gui_EndRow();*/
 
 		Gui_VerticalSpace(Gui_RelativeHeight(0.4f));
 
