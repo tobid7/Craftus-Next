@@ -53,7 +53,7 @@ void OakTree_Gen(WorkQueue* queue, WorkerItem item,int x, int y, int z, int heig
     dd = rand() % 100;
     if (dd == 5)
     {
-        Chunk_SetBlock(item.chunk, x-1, i, z, Block_BeeNest);
+        Chunk_SetBlock(item.chunk, x-1, y + height - 5, z, Block_BeeNest);
     }
     for (int i = y; i < y + height-1; i++)
     {
