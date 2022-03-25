@@ -158,76 +158,264 @@ void Renderer_Render() {
 				
 			}
 				//if (iod == 0.f) SpriteBatch_PushQuad(2, 110 , 0, 8, 8, 53, 0, 8, 8);
-			for (int lv = 0; lv < player->hp; lv ++)
+			switch(player->hp)
 			{
-				switch(lv)
-				{
-					case 0:
-						break;
-					case 1:
-						if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 2:
-						if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 3:
-						if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 4:
-						if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 5:
-						if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 6:
-						if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 7:
-						if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 8:
-						if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 9:
-						if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 10:
-						if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 11:
-						if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 12:
-						if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 13:
-						if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 14:
-						if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 15:
-						if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 16:
-						if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 17:
-						if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 18:
-						if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					case 19:
-						if (iod == 0.f) SpriteBatch_PushQuad(72+2, 110 , 0, 8, 8, 62, 0, 8, 8);
-						break;
-					case 20:
-						if (iod == 0.f) SpriteBatch_PushQuad(72+2, 110 , 0, 8, 8, 53, 0, 8, 8);
-						break;
-					default:
+				case 0:
 					break;
-				}
+				case 1:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 2:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 3:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 4:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 5:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 6:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 7:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 8:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 9:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 10:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 11:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 12:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 13:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 14:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 15:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 16:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 17:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 18:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				case 19:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(72+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					break;
+				case 20:
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(0+2 + 1, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2 + 1, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(8+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(16+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(24+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(32+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(40+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(48+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(56+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(64+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(72+2, 110 , 0, 8, 8, 62, 0, 8, 8);
+					if (iod == 0.f) SpriteBatch_PushQuad(72+2, 110 , 0, 8, 8, 53, 0, 8, 8);
+					break;
+				default:
+				break;
 			}
+			
 			
 		} else {
 			C3D_Mtx projection;
