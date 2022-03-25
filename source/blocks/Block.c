@@ -25,7 +25,9 @@ static Texture_Map textureMap;
 	A(furnace_front,"furnace_front.png"),A(furnace_top,"furnace_top.png"), A(mycelium_top, "mycelium_top.png"), 					\
 	A(mycelium_side, "mycelium_side.png"), A(pumpkin_side, "pumpkin_side.png"), A(pumpkin_top, "pumpkin_top.png"),					\
 	A(pumpkin_face_off, "pumpkin_face_off.png"), A(pumpkin_face_on, "pumpkin_face_on.png"), A(birch_planks, "planks_birch.png"),	\
-	A(birch_log_side, "log_birch.png"), A(birch_log_top, "log_birch_top.png"), A(birch_leaves, "birch_leaves.png")
+	A(birch_log_side, "log_birch.png"), A(birch_log_top, "log_birch_top.png"), A(birch_leaves, "birch_leaves.png"),					\
+	A(bee_nest_top, "bee_nest_top.png"), A(bee_nest_side, "bee_nest_side.png"), A(bee_nest_front, "bee_nest_front.png"),			\
+	A(bee_nest_front_honey, "bee_nest_front_honey")
 
 #define A(i, n) PPRX n
 const char* block_texture_files[] = {TEXTURE_FILES};
@@ -88,6 +90,10 @@ static struct {
 	Texture_MapIcon birch_log_top;
 	Texture_MapIcon birch_planks;
 	Texture_MapIcon birch_leaves;
+	Texture_MapIcon bee_nest_top;
+	Texture_MapIcon bee_nest_front;
+	Texture_MapIcon bee_nest_front_honey;
+	Texture_MapIcon bee_nest_side;
 } icon;
 
 void Block_Init() {
@@ -356,6 +362,32 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 					break;
 			}
 			break;
+		case Block_BeeNest:
+			switch(direction){
+				case Direction_South:
+					i = icon.bee_nest_front;
+					break;
+				case Direction_Top:
+					i=icon.bee_nest_top;
+					break;
+				default:
+					i = icon.bee_nest_side;
+					break;
+			}
+			break;
+		case Block_BeeNestHoney:
+			switch(direction){
+				case Direction_South:
+					i = icon.bee_nest_front_honey;
+					break;
+				case Direction_Top:
+					i=icon.bee_nest_top;
+					break;
+				default:
+					i = icon.bee_nest_side;
+					break;
+			}
+			break;
 		default: break;
 	}
 	out_uv[0] = i.u;
@@ -394,5 +426,5 @@ const char* BlockNames[Blocks_Count] = {
 	"Air","Stone","Dirt","Grass","Cobblestone","Sand","Log","Leaves","Glass","Stone Bricks","Bricks","Planks","Wool","Bedrock","Gravel",
 	"Water","Coarse","Door_Top","Door_Bottom","Snow_Grass","Snow","Obsidian","Netherrack","Sandstone","Smooth_Stone","Crafting_Table",
 	"Grass_Path","Water","Lava","Iron_Ore","Iron_Block","Coal_Ore","Coal_Block","Diamond_Ore","Diamond_Block","Gold_Ore","Gold_Block",
-	"Emerald_Ore","Emerald_Block","Furnace", "Mycel", "Pumpkin", "CutPumpkin", "PumpkinLamp", "BirchLog", "BirchPlanks"
+	"Emerald_Ore","Emerald_Block","Furnace", "Mycel", "Pumpkin", "CutPumpkin", "PumpkinLamp", "BirchLog", "BirchPlanks", "BeeNest", "BeeNestHoney"
 };

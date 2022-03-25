@@ -53,6 +53,8 @@ enum { Block_Air,
 	Block_BirchPlanks,
 	Block_BirchLog,
 	Block_BirchLeaves,
+	Block_BeeNest,
+	Block_BeeNestHoney,
 	Blocks_Count
 };
 

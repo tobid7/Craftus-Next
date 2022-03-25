@@ -48,7 +48,13 @@ void OakTree_Gen(WorkQueue* queue, WorkerItem item,int x, int y, int z, int heig
             default: break;
         }
     }
-    
+    srand(time(NULL));
+    int dd = 0;
+    dd = rand() % 100;
+    if (dd == 5)
+    {
+        Chunk_SetBlock(item.chunk, x-1, i, z, Block_BeeNest);
+    }
     for (int i = y; i < y + height-1; i++)
     {
         Chunk_SetBlock(item.chunk, x, i, z, Block_Log);
