@@ -244,9 +244,9 @@ void Renderer_Render() {
 
 			Clouds_Render(world_shader_uLocProjection, &vp, world, 0.f, 0.f);
 
-			SpriteBatch_BindGuiTexture(GuiTexture_TBG);
+			/*SpriteBatch_BindGuiTexture(GuiTexture_TBG);
 			SpriteBatch_SetScale(1);
-			SpriteBatch_PushQuad(0, 0, 0, 400, 240, 0, 0, 400, 240);
+			SpriteBatch_PushQuad(0, 0, 0, 400, 240, 0, 0, 400, 240);*/
 			
 
 			SpriteBatch_BindTexture(&logoTex);
