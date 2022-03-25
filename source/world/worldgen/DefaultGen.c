@@ -57,7 +57,7 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
                 if (z >= 4 && z <= 12){
 				int al = 0;
 				al = rand () % 20;
-				if (al > 2)
+				if (al > 7)
 				{
 					TreeGen_GenTree(queue, item, x, height + 1, z, Oak);
 				}
