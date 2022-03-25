@@ -1,4 +1,0 @@
-[submodule "deps/Npi"]
-	path = deps/Npi
-	url = https://github.com/NPI-D7/Npi.git
-	branch = main
