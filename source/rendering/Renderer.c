@@ -151,12 +151,83 @@ void Renderer_Render() {
 			SpriteBatch_BindGuiTexture(GuiTexture_Widgets);
 			if (iod == 0.f) SpriteBatch_PushQuad(200 / 2 - 16 / 2, 120 / 2 - 16 / 2, 0, 16, 16, 240, 0, 16, 16);
 			SpriteBatch_BindGuiTexture(GuiTexture_Icons);
+			SpriteBatch_SetScale(1);
 			for (int h = 0; h < 10; h++)
 			{
 				if (iod == 0.f) SpriteBatch_PushQuad(h*8 + 1, 200 , 0, 8, 8, 16, 0, 8, 8);
 				
 			}
-			if (iod == 0.f) SpriteBatch_PushQuad(0, 200 , 0, 8, 8, 40, 0, 8, 8);
+			for (int lv = 0; lv < player->hp; lv ++)
+			{
+				switch(lv)
+				{
+					case 0:
+						break;
+					case 1:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 2:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 3:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 4:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 5:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 6:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 7:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 8:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 9:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 10:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 11:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 12:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 13:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 14:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 15:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 16:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 17:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 18:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 19:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					case 20:
+						if (iod == 0.f) SpriteBatch_PushQuad(lv*8 + 1, 200 , 0, 8, 8, 40, 0, 8, 8);
+						break;
+					default:
+					break;
+				}
+			}
+			
 		} else {
 			C3D_Mtx projection;
 			Mtx_PerspStereoTilt(&projection, C3D_AngleFromDegrees(90.f), ((400.f) / (240.f)), 0.22f, 4.f * CHUNK_SIZE,
@@ -174,8 +245,9 @@ void Renderer_Render() {
 			Clouds_Render(world_shader_uLocProjection, &vp, world, 0.f, 0.f);
 
 			SpriteBatch_BindGuiTexture(GuiTexture_TBG);
-			SpriteBatch_PushQuad(0, 0, 0, 400, 240, 0, 0, 400, 240);
 			SpriteBatch_SetScale(1);
+			SpriteBatch_PushQuad(0, 0, 0, 400, 240, 0, 0, 400, 240);
+			
 
 			SpriteBatch_BindTexture(&logoTex);
 
