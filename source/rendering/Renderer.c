@@ -150,6 +150,13 @@ void Renderer_Render() {
 
 			SpriteBatch_BindGuiTexture(GuiTexture_Widgets);
 			if (iod == 0.f) SpriteBatch_PushQuad(200 / 2 - 16 / 2, 120 / 2 - 16 / 2, 0, 16, 16, 240, 0, 16, 16);
+			SpriteBatch_BindGuiTexture(GuiTexture_Icons);
+			for (int h = 0; h < 10; h++)
+			{
+				if (iod == 0.f) SpriteBatch_PushQuad(h*8 + 1, 200 , 0, 8, 8, 16, 0, 8, 8);
+				
+			}
+			if (iod == 0.f) SpriteBatch_PushQuad(0, 200 , 0, 8, 8, 40, 0, 8, 8);
 		} else {
 			C3D_Mtx projection;
 			Mtx_PerspStereoTilt(&projection, C3D_AngleFromDegrees(90.f), ((400.f) / (240.f)), 0.22f, 4.f * CHUNK_SIZE,
