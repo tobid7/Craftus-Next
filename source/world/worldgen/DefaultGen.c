@@ -36,7 +36,7 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			    	Chunk_SetBlock(item.chunk, x, height + 1, z, Block_Pumpkin);
 				}
 			
-			if (x == rand() % 30 && z == rand() % 35)
+			if (x == rand() % 25 && z == rand() % 30)
 			{	
 				int hxx = 0;
 				hxx = 6 + rand() % 2;
