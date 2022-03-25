@@ -50,6 +50,7 @@ You can also change the settings in `sd:/craftus_redesigned/options.ini`.
 
 # Credits
 * ag_0815 for fixing audio
+* Onixiya for his more updated version of craftus redesigned
 * People in the nintendo homebrew discord server willing to answer stupid questions
 * KosmicDev for better y spawning code
 * GamesSanti who made Craftus Redesigned
