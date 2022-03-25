@@ -236,8 +236,8 @@ bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* world
 	if (confirmed_world_options) {
 		confirmed_world_options = false;
 		*worldType = worldGenType;
-		player->gamemode = gamemode1;
-		player->difficulty = diffz;
+		player.gamemode = gamemode1;
+		player.difficulty = diffz;
 		//player->gamemode=gamemode3;
 
 		static SwkbdState swkbd;
