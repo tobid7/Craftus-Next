@@ -157,7 +157,7 @@ void Renderer_Render() {
 				if (iod == 0.f) SpriteBatch_PushQuad(h*8 + 1, 110 , 0, 8, 8, 16, 0, 8, 8);
 				
 			}
-			for (int lv = 0; lv < player->hp; lv ++)
+			/*for (int lv = 0; lv < player->hp; lv ++)
 			{
 				switch(lv)
 				{
@@ -226,7 +226,7 @@ void Renderer_Render() {
 					default:
 					break;
 				}
-			}
+			}*/
 			
 		} else {
 			C3D_Mtx projection;
