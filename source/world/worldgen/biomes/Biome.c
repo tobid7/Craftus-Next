@@ -126,7 +126,7 @@ Block Biome_GetBlock(enum Level_ lvl, enum Biomes biome)
     }
     return block;
 }
-int Biome_GetLevelInt(enum Level_ lvl, enum Biome biome, int height)
+int Biome_GetLevelInt(enum Level_ lvl, enum Biomes biome, int height)
 {
     int hh = 0;
     switch(biome)
