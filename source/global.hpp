@@ -9,6 +9,8 @@
 #include <string.h>
 #include <vector>
 
+#include "NextGenSystems.hpp"
+
 //Renderer
 #include "color.hpp"
 #include "earcut.hpp"

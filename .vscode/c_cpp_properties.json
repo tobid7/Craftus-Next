@@ -4,7 +4,7 @@
             "name": "3ds",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include/**",
+                "${workspaceFolder}/deps/Npi/**",
                 "/opt/devkitpro/libctru/include/**",
 
                 "/opt/devkitpro/portlibs/3ds/include/**"
