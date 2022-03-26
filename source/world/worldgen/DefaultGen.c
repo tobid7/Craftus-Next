@@ -25,7 +25,7 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			/*for (int y = 0; y < height - 3; y++) {
 				Chunk_SetBlock(item.chunk, x, y, z, Block_Stone);
 			}*/
-			for (int y = 0; < Biome_GetLevelInt(A, biome, height); <++)
+			for (int y = 0; y < Biome_GetLevelInt(A, biome, height); y++)
 			{
 				Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(A, biome));
 			}
