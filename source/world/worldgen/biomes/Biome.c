@@ -25,7 +25,7 @@ enum Biomes Biome_GetRandom()
     }
     return biomex;
 }
-Block Biome_GetBlock(enum Level_ lvl, enum enum Biomes biome)
+Block Biome_GetBlock(enum Level_ lvl, enum Biomes biome)
 {
     Block block;
     switch(biome)
