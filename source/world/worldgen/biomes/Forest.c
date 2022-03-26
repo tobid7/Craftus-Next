@@ -25,23 +25,23 @@ Block Forest_GetBlockE()
 {
     return Block_Grass;
 }
-int Forest_GetLevelA()
+int Forest_GetLevelA(int height)
 {
     return 0;
 }
-int Forest_GetLevelB()
+int Forest_GetLevelB(int height)
 {
-    return 0;
+    return height -3;
 }
-int Forest_GetLevelC()
+int Forest_GetLevelC(int height)
 {
-    return 0;
+    return height -4;
 }
-int Forest_GetLevelD()
+int Forest_GetLevelD(int height)
 {
-    return 4;
+    return height - 1;
 }
-int Forest_GetLevelE()
+int Forest_GetLevelE(int height)
 {
-    return 1;
+    return height;
 }

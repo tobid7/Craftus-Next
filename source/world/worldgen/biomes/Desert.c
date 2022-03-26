@@ -2,23 +2,47 @@
 
 void Desert_Gen(WorkQueue* queue, WorkerItem item, int xpos, int zpos)
 {
-    srand(time(NULL));
-	float px = (float)(xpos + item.chunk->x * CHUNK_SIZE);
-	float pz = (float)(zpos + item.chunk->z * CHUNK_SIZE);
+   
+}
 
-	const int smeasClusterSize = 8;
-	const int smeasChunkHeight = 16;
-	int height = (int)(sino_2d((px) / (smeasClusterSize * 4), (pz) / (smeasClusterSize * 4)) * smeasClusterSize) +
-		     (smeasChunkHeight * smeasClusterSize / 2);
-    for (int y = 0; y < height - 40; y++) {
-		Chunk_SetBlock(item.chunk, xpos, y, zpos, Block_Stone);
-	}
-	for (int y = height - 40; y < height - 20; y++) {
-		Chunk_SetBlock(item.chunk, xpos, y, zpos, Block_Sandstone);
-	}
-	for (int y = height - 20; y < height; y++) {
-		Chunk_SetBlock(item.chunk, xpos, y, zpos, Block_Sand);
-	}
-	for (int bd = 0; bd < 1 + rand() % 3; bd++)
-    	{Chunk_SetBlock(item.chunk, xpos, bd, zpos, Block_Bedrock);}
+
+Block Desert_GetBlockA()
+{
+    return Block_Stone;
+}
+Block Desert_GetBlockB()
+{
+    return Block_Stone;
+}
+Block Desert_GetBlockC()
+{
+    return Block_Stone;
+}
+Block Desert_GetBlockD()
+{
+    return Block_Sandstone;
+}
+Block Desert_GetBlockE()
+{
+    return Block_Sand;
+}
+int Desert_GetLevelA(int height)
+{
+    return 0;
+}
+int Desert_GetLevelB(int height)
+{
+    return 0;
+}
+int Desert_GetLevelC(int height)
+{
+    return 0;
+}
+int Desert_GetLevelD(int height)
+{
+    return height - 24;
+}
+int Desert_GetLevelE(int height)
+{
+    return height - 4;
 }
