@@ -10,7 +10,7 @@ void DefaultGen_Init(DefaultGen* gen, World* world) { gen->world = world; }
 // based off https://github.com/smealum/3dscraft/blob/master/source/generation.c
 void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 	srand(time(NULL));
-	Biomes biome = Biome_GetRandom();
+	enum Biomes biome = Biome_GetRandom();
 
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {

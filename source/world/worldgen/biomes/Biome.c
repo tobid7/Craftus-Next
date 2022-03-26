@@ -1,13 +1,13 @@
-#include "world/worldgen/biomes/Biome.h"
-#include "world/worldgen/biomes/Forest.h"
-#include "world/worldgen/biomes/Desert.h"
+#include "world/worldgen/enum biomes/Biome.h"
+#include "world/worldgen/enum biomes/Forest.h"
+#include "world/worldgen/enum biomes/Desert.h"
 #include "world/worldgen/biomes/Plains.h"
 
-Biomes Biome_GetRandom()
+enum Biomes Biome_GetRandom()
 {
     int b = 0;
     b = rand() % 50;
-    Biomes biomex = Biome_Plains;
+    enum Biomes biomex = Biome_Plains;
     switch (b)
     {
         case 0 ... 30:
@@ -25,7 +25,7 @@ Biomes Biome_GetRandom()
     }
     return biomex;
 }
-Block Biome_GetBlock(enum Level_ lvl, enum Biomes biome)
+Block Biome_GetBlock(enum Level_ lvl, enum enum Biomes biome)
 {
     Block block;
     switch(biome)
