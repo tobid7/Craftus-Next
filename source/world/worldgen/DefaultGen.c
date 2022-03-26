@@ -1,6 +1,6 @@
 #include <world/worldgen/DefaultGen.h>
 #include "world/worldgen/structures/TreeGen.h"
-#include "world/worldgen/biomes/Plains.h"
+#include "world/worldgen/biomes/Biomes.h"
 #include "world/worldgen/structures/Pumpkins.h"
 #include <sino/sino.h>
 #include <stdio.h>
