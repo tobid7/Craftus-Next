@@ -191,7 +191,7 @@ void Player_Update(Player* player, Sound* sound, Damage* dmg) {
 		}
 	//}
         //DebugUI_Text("Gamemode: %i", player->gamemode);
-        DebugUI_Text("Position: %d, %d, %d", f3_unpack(player->position));
+        //DebugUI_Text("Position: %d, %d, %d", f3_unpack(player->position));
 		DebugUI_Text("Usage: CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%% Lin: %d", C3D_GetProcessingTime() * 6.f,
 		C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree());
 }
