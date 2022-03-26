@@ -1,6 +1,6 @@
-#include "world/worldgen/enum biomes/Biome.h"
-#include "world/worldgen/enum biomes/Forest.h"
-#include "world/worldgen/enum biomes/Desert.h"
+#include "world/worldgen/biomes/Biome.h"
+#include "world/worldgen/biomes/Forest.h"
+#include "world/worldgen/biomes/Desert.h"
 #include "world/worldgen/biomes/Plains.h"
 
 enum Biomes Biome_GetRandom()
