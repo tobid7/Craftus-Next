@@ -155,6 +155,10 @@ void Renderer_Render() {
 			for (int h = 0; h < 10; h++)
 			{
 				if (iod == 0.f) SpriteBatch_PushQuad(h*8 + 1, 110 , 0, 9, 9, 16, 0, 9, 9);
+				if (h*2 >= player->hp)
+				{
+					SpriteBatch_PushQuad(h*8 + 1, 110 , 0, 9, 9, 16, 0, 9, 9);
+				}
 				
 			}
 			if (iod == 0.f) SpriteBatch_PushQuad(2, 110 , 0, 8, 8, 53, 0, 8, 8);
