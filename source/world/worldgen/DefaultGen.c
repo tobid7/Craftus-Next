@@ -22,13 +22,33 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			int height = (int)(sino_2d((px) / (smeasClusterSize * 4), (pz) / (smeasClusterSize * 4)) * smeasClusterSize) +
 				     (smeasChunkHeight * smeasClusterSize / 2);
 
-			for (int y = 0; y < height - 3; y++) {
+			/*for (int y = 0; y < height - 3; y++) {
 				Chunk_SetBlock(item.chunk, x, y, z, Block_Stone);
+			}*/
+			for (int y = 0; < Biome_GetLevelInt(A, biome, height); <++)
+			{
+				Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(A, biome));
 			}
-			for (int y = height - 3; y < height; y++) {
+			for (int y = Biome_GetLevelInt(A, biome, height); < Biome_GetLevelInt(B, biome, height); <++)
+			{
+				Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(B, biome));
+			}
+			for (int y = Biome_GetLevelInt(B, biome, height); < Biome_GetLevelInt(C, biome, height); <++)
+			{
+				Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(C, biome));
+			}
+			for (int y = Biome_GetLevelInt(C, biome, height); < Biome_GetLevelInt(D, biome, height); <++)
+			{
+				Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(D, biome));
+			}
+			for (int y = Biome_GetLevelInt(D, biome, height); < Biome_GetLevelInt(E, biome, height); <++)
+			{
+				Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(E, biome));
+			}
+			/*for (int y = height - 3; y < height; y++) {
 				Chunk_SetBlock(item.chunk, x, y, z, Block_Dirt);
-			}
-			Chunk_SetBlock(item.chunk, x, height, z, Block_Grass);
+			}*/
+			//Chunk_SetBlock(item.chunk, x, height, z, Block_Grass);
 			for (int bd = 0; bd < 1 + rand() % 3; bd++)
             {Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);}
 			/*int l = rand() % 800;
