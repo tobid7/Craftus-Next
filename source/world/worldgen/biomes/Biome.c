@@ -227,3 +227,24 @@ int Biome_GetLevelInt(enum Level_ lvl, enum Biomes biome, int height)
     }
     return hh;
 }
+
+bool Biome_HasTrees(enum Biomes biome)
+{
+    bool has = false;
+    switch(biome)
+    {
+        case Biome_Desert:
+        return false;
+        break;
+        case Biome_Plains:
+        return true;
+        break;
+        case Biome_Forest:
+        return true;
+        break;
+        default:
+        return false;
+        break;
+    }
+    return has;
+}

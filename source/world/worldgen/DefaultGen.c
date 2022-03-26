@@ -55,7 +55,7 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
             if (l == 1){
 				Pumpkins_Gen(queue, item);
 			}*/
-			
+			if (Biome_HasTrees(biome)){
 			if (x == rand() % 17 && z == rand() % 17)
 			{	
 			
@@ -72,7 +72,7 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				}
 				
 				
-			}}}
+			}}}}
 		}
 	}
 }
