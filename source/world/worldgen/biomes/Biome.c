@@ -126,7 +126,7 @@ Block Biome_GetBlock(enum Level_ lvl, enum Biomes biome)
     }
     return block;
 }
-int Biome_GetLevelInt(enum Level_ lvl, enum Biome biome)
+int Biome_GetLevelInt(enum Level_ lvl, enum Biome biome, int height)
 {
     int hh = 0;
     switch(biome)
@@ -135,19 +135,19 @@ int Biome_GetLevelInt(enum Level_ lvl, enum Biome biome)
         switch(lvl)
         {
             case A:
-            hh = Forest_GetLevelA();
+            hh = Forest_GetLevelA(height);
             break;
             case B:
-            hh = Forest_GetLevelB();
+            hh = Forest_GetLevelB(height);
             break;
             case C:
-            hh = Forest_GetLevelC();
+            hh = Forest_GetLevelC(height);
             break;
             case D:
-            hh = Forest_GetLevelD();
+            hh = Forest_GetLevelD(height);
             break;
             case E:
-            hh = Forest_GetLevelE();
+            hh = Forest_GetLevelE(height);
             break;
             default:
             hh = 0;
@@ -158,19 +158,19 @@ int Biome_GetLevelInt(enum Level_ lvl, enum Biome biome)
         switch(lvl)
         {
             case A:
-            hh = Plains_GetLevelA();
+            hh = Plains_GetLevelA(height);
             break;
             case B:
-            hh = Plains_GetLevelB();
+            hh = Plains_GetLevelB(height);
             break;
             case C:
-            hh = Plains_GetLevelC();
+            hh = Plains_GetLevelC(height);
             break;
             case D:
-            hh = Plains_GetLevelD();
+            hh = Plains_GetLevelD(height);
             break;
             case E:
-            hh = Plains_GetLevelE();
+            hh = Plains_GetLevelE(height);
             break;
             default:
             hh = 0;
@@ -181,19 +181,19 @@ int Biome_GetLevelInt(enum Level_ lvl, enum Biome biome)
         switch(lvl)
         {
             case A:
-            hh = Desert_GetLevelA();
+            hh = Desert_GetLevelA(height);
             break;
             case B:
-            hh = Desert_GetLevelB();
+            hh = Desert_GetLevelB(height);
             break;
             case C:
-            hh = Desert_GetLevelC();
+            hh = Desert_GetLevelC(height);
             break;
             case D:
-            hh = Desert_GetLevelD();
+            hh = Desert_GetLevelD(height);
             break;
             case E:
-            hh = Desert_GetLevelE();
+            hh = Desert_GetLevelE(height);
             break;
             default:
             hh = 0;
@@ -205,19 +205,19 @@ int Biome_GetLevelInt(enum Level_ lvl, enum Biome biome)
         switch(lvl)
         {
             case A:
-            hh = Plains_GetLevelA();
+            hh = Plains_GetLevelA(height);
             break;
             case B:
-            hh = Plains_GetLevelB();
+            hh = Plains_GetLevelB(height);
             break;
             case C:
-            hh = Plains_GetLevelC();
+            hh = Plains_GetLevelC(height);
             break;
             case D:
-            hh = Plains_GetLevelD();
+            hh = Plains_GetLevelD(height);
             break;
             case E:
-            hh = Plains_GetLevelE();
+            hh = Plains_GetLevelE(height);
             break;
             default:
             hh = 0;

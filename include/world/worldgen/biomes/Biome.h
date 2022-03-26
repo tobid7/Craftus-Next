@@ -7,4 +7,4 @@ enum Level_ { A, B, C, D, E };
 
 enum Biomes Biome_GetRandom();
 Block Biome_GetBlock(enum Level_ lvl, enum Biomes biome);
-int Biome_GetLevelInt(enum Level_ lvl, enum Biomes biome);
+int Biome_GetLevelInt(enum Level_ lvl, enum Biomes biome, int height);
