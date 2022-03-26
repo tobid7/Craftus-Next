@@ -65,10 +65,10 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				al = rand () % 20;
 				if (al > 7)
 				{
-					TreeGen_GenTree(queue, item, x, height + 1, z, Oak);
+					TreeGen_GenTree(queue, item, x, height, z, Oak);
 				}
 				else {
-					TreeGen_GenTree(queue, item, x, height + 1, z, Birch);
+					TreeGen_GenTree(queue, item, x, height, z, Birch);
 				}
 				
 				
