@@ -261,7 +261,7 @@ enum Trees GetTreeType(enum Biomes biome)
         tree = 0;
         break;
         case Biome_Plains:
-        al = rand () % 20;
+        int al = rand () % 20;
 				if (al > 7)
 				{
 					tree = Oak;
@@ -271,7 +271,7 @@ enum Trees GetTreeType(enum Biomes biome)
 				}
         break;
         case Biome_Forest:
-        al = rand () % 20;
+        int al = rand () % 20;
 				if (al > 7)
 				{
 					tree = Oak;
