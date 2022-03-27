@@ -28,7 +28,7 @@ include $(DEVKITARM)/3ds_rules
 #     - <libctru folder>/default_icon.png
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
-SOURCES		:=	source source/misc source/world/worldgen source/world/worldgen/biomes source/world/worldgen/structures source/blocks source/rendering source/gui source/world source/world/savegame source/entity source/savegame dependencies/mpack dependencies/vec dependencies/sino dependencies/lodepng dependencies/miniz dependencies/ini
+SOURCES		:=	source source/misc source/world/worldgen source/world/worldgen/biomes source/world/worldgen/structures source/blocks source/rendering source/gui source/world source/world/savegame source/entity source/savegame dependencies/mpack dependencies/vec dependencies/sino dependencies/lodepng dependencies/miniz dependencies/ini dependencies/playback
 DATA		:=	data
 INCLUDES	:=	dependencies include
 ROMFS		:=	romfs
@@ -43,11 +43,11 @@ DEBUG		?=	0
 ifeq ($(DEBUG), 0)
 BUILD		:=	build
 CFLAGS_ADD	:=	-fomit-frame-pointer -O2
-LIBS	:= -lcitro3d -lctru -lm `$(PREFIX)pkg-config opusfile --libs` 
+LIBS	:= -lcitro3d -lctru -lm `$(PREFIX)pkg-config opusfile --libs`  -lmpg123 -lvorbisidec -logg
 else
 BUILD		:=	debug_build
 CFLAGS_ADD	:=	-Og -D_DEBUG
-LIBS	:= -lcitro3dd -lctrud -lm `$(PREFIX)pkg-config opusfile --libs` 
+LIBS	:= -lcitro3dd -lctrud -lm `$(PREFIX)pkg-config opusfile --libs` -lmpg123 -lvorbisidec -logg
 endif
 
 #---------------------------------------------------------------------------------
