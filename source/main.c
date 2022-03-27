@@ -48,7 +48,7 @@ int main() {
 
 	// Enable N3DS 804MHz operation, where available
 	osSetSpeedupEnable(true);
-	playbackInfo_t soundg;
+	struct playbackInfo_t soundg;
 	//consoleInit(GFX_TOP, NULL);
 	gfxSet3D(true);
 	//printf("romfsinit\n");
