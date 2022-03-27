@@ -1,5 +1,7 @@
 # Craftus-Next <a href="https://github.com/Tobi-D7/Craftus-Next/actions?query=workflow%3A%22Build+Craftus-Next%22">
-   <img src="https://img.shields.io/github/workflow/status/Tobi-D7/Craftus-Next/Build%20Craftus-Next.svg?logo=github&style=for-the-badge" height="22" alt="Build status on GitHub Actions"></a>&nbsp;
+   <img src="https://img.shields.io/github/workflow/status/Tobi-D7/Craftus-Next/Build%20Craftus-Next.svg?logo=github&style=for-the-badge" height="22" alt="Build status on GitHub Actions"></a>&nbsp; <a href="https://github.com/NPI-D7/BCSTM-Player/blob/main/LICENSE"> <img height="22" src="https://img.shields.io/badge/License-GPLv3-informational.svg?style=for-the-badge" alt="License: GPLv3"></a> <img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/m/Tobi-D7/Craftus-Next?style=for-the-badge" height="22"> 
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Tobi-D7/Craftus-Next?style=for-the-badge" height="22">
+<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/Tobi-D7/Craftus-Next?style=for-the-badge" height="22">
 ### There are Dev builds available at (https://github.com/NPI-D7/nightlys/releases/) but they are unstable. They can crash or something so downloading at youre own risk.
 A more updated version of the Craftus Minecraft Clone
 # Step 1
