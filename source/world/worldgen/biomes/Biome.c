@@ -255,13 +255,14 @@ bool Biome_HasTrees(enum Biomes biome)
 enum Trees GetTreeType(enum Biomes biome)
 {
     enum Trees tree = 0;
+     int al = 0;
     switch(biome)
     {
         case Biome_Desert:
         tree = 0;
         break;
         case Biome_Plains:
-        int al = rand () % 20;
+        al = rand () % 20;
 				if (al > 7)
 				{
 					tree = Oak;
@@ -271,7 +272,7 @@ enum Trees GetTreeType(enum Biomes biome)
 				}
         break;
         case Biome_Forest:
-        int al = rand () % 20;
+        al = rand () % 20;
 				if (al > 7)
 				{
 					tree = Oak;
