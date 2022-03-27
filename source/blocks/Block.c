@@ -133,10 +133,8 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 			break;
 		case Block_LogAcacia:
 			switch (direction) {
-				case Direction_Top:
-					i = icon.log_acacia_top;
-					break;
 				case Direction_Bottom:
+				case Direction_Top:
 					i = icon.log_acacia_top;
 					break;
 				default:
