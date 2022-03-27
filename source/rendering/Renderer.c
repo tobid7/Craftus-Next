@@ -150,7 +150,7 @@ void Renderer_Render() {
 
 			SpriteBatch_BindGuiTexture(GuiTexture_Widgets);
 			if (iod == 0.f) SpriteBatch_PushQuad(200 / 2 - 16 / 2, 120 / 2 - 16 / 2, 0, 16, 16, 240, 0, 16, 16);
-			SpriteBatch_BindGuiTexture(GuiTexture_Icons);
+			/*SpriteBatch_BindGuiTexture(GuiTexture_Icons);
 			SpriteBatch_SetScale(2);
 			for (int h = 0; h < 10; h++)
 			{
@@ -162,7 +162,7 @@ void Renderer_Render() {
 			}
 			//if (iod == 0.f) SpriteBatch_PushQuad(2, 110 , 0, 8, 8, 53, 0, 8, 8);
 			
-			
+			*/
 			
 		} else {
 			C3D_Mtx projection;
