@@ -36,7 +36,7 @@ int Desert_GetLevelB(int height)
 }
 int Desert_GetLevelC(int height)
 {
-    return -24;
+    return height -24;
 }
 int Desert_GetLevelD(int height)
 {
