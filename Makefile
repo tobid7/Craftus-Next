@@ -43,11 +43,11 @@ DEBUG		?=	0
 ifeq ($(DEBUG), 0)
 BUILD		:=	build
 CFLAGS_ADD	:=	-fomit-frame-pointer -O2
-LIBS	:= -lcitro3d -lctru -lm `$(PREFIX)pkg-config opusfile --libs`  -lmpg123 -lvorbisidec -logg
+LIBS	:= -lcurl -lmbedtls -lmbedx509 -lmbedcrypto -larchive -lbz2 -llzma -lm -lz -lcitro2d -lcitro3d -lmpg123 -lvorbisidec -logg -lmikmod -lmad -lctru -lstdc++
 else
 BUILD		:=	debug_build
 CFLAGS_ADD	:=	-Og -D_DEBUG
-LIBS	:= -lcitro3dd -lctrud -lm `$(PREFIX)pkg-config opusfile --libs` -lmpg123 -lvorbisidec -logg
+LIBS	:= -lcurl -lmbedtls -lmbedx509 -lmbedcrypto -larchive -lbz2 -llzma -lm -lz -lcitro2d -lcitro3d -lmpg123 -lvorbisidec -logg -lmikmod -lmad -lctru -lstdc++
 endif
 
 #---------------------------------------------------------------------------------
