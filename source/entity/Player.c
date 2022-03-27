@@ -87,6 +87,9 @@ void Player_Init(Player* player, World* world) {
 		player->inventory[l++] = (ItemStack){Block_BeeNest, 0, 1};
 		player->inventory[l++] = (ItemStack){Block_BeeNestHoney, 0, 1};
 		player->inventory[l++] = (ItemStack){Block_Melon, 0, 1};
+		player->inventory[l++] = (ItemStack){Block_LogAcacia, 0, 1};
+		player->inventory[l++] = (ItemStack){Block_PlanksAcacia, 0, 1};
+		player->inventory[l++] = (ItemStack){Block_LeavesAcacia, 0, 1};
 
 		for (int i = 0; i < INVENTORY_QUICKSELECT_MAXSLOTS; i++) player->quickSelectBar[i] = (ItemStack){Block_Air, 0, 0};
 	}

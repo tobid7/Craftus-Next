@@ -234,17 +234,44 @@ bool Biome_HasTrees(enum Biomes biome)
     switch(biome)
     {
         case Biome_Desert:
-        return false;
+        has = false;
         break;
         case Biome_Plains:
-        return true;
+        has = true;
         break;
         case Biome_Forest:
-        return true;
+        has = true;
+        break;
+        case Biome_Savanna:
+        has = true;
         break;
         default:
-        return false;
+        has = false;
         break;
     }
     return has;
+}
+
+enum Trees GetTreeType(enum Biomes biome)
+{
+    enum Trees tree = 0;
+    switch(biome)
+    {
+        case Biome_Desert:
+        tree = 0;
+        break;
+        case Biome_Plains:
+        tree = Oak;
+        break;
+        case Biome_Forest:
+        tree = Oak;
+        break;
+        case Biome_Savanna:
+        tree = Acacia;
+        break;
+        default:
+        tree = 0;
+        break;
+    }
+    return tree;
 }

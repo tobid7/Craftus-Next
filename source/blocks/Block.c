@@ -27,7 +27,9 @@ static Texture_Map textureMap;
 	A(pumpkin_face_off, "pumpkin_face_off.png"), A(pumpkin_face_on, "pumpkin_face_on.png"), A(birch_planks, "planks_birch.png"),	\
 	A(birch_log_side, "log_birch.png"), A(birch_log_top, "log_birch_top.png"), A(birch_leaves, "birch_leaves.png"),					\
 	A(bee_nest_top, "bee_nest_top.png"), A(bee_nest_side, "bee_nest_side.png"), A(bee_nest_front, "bee_nest_front.png"),			\
-	A(bee_nest_front_honey, "bee_nest_front_honey.png"), A(melon_side, "melon_side.png"), A(melon_top, "melon_top.png")
+	A(bee_nest_front_honey, "bee_nest_front_honey.png"), A(melon_side, "melon_side.png"), A(melon_top, "melon_top.png")				\
+	A(leaves_acacia_opaque, "leaves_acacia_opaque.png"), A(log_acacia_side, "log_acacia.png"), 										\
+	A(log_acacia_top, "log_acacia_top.png"), A(planks_acacia, "planks_acacia.png")
 
 #define A(i, n) PPRX n
 const char* block_texture_files[] = {TEXTURE_FILES};
@@ -96,6 +98,11 @@ static struct {
 	Texture_MapIcon bee_nest_side;
 	Texture_MapIcon melon_side;
 	Texture_MapIcon melon_top;
+	Texture_MapIcon leaves_acacia_opaque;
+	Texture_MapIcon log_acacia_side;
+	Texture_MapIcon log_acacia_top;
+	Texture_MapIcon planks_acacia;
+
 } icon;
 
 void Block_Init() {
@@ -118,6 +125,25 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 			break;
 		case Block_Stone:
 			i = icon.stone;
+			break;
+		case Block_LeavesAcacia:
+			i = icon.leaves_acacia_opaque;
+			break;
+		case Block_PlanksAcacia:
+			i = icon.planks_acacia;
+			break;
+		case Block_LogAcacia:
+			switch (direction) {
+				case Direction_Top:
+					i = icon.log_acacia_top;
+					break;
+				case Direction_Bottom:
+					i = icon.log_acacia_top;
+					break;
+				default:
+					i = icon.log_acacia_side;
+					break;
+			}
 			break;
 		case Block_Grass:
 			switch (direction) {
