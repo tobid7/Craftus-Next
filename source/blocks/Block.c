@@ -102,7 +102,6 @@ static struct {
 	Texture_MapIcon log_acacia_side;
 	Texture_MapIcon log_acacia_top;
 	Texture_MapIcon planks_acacia;
-
 } icon;
 
 void Block_Init() {
