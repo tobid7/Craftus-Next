@@ -174,7 +174,7 @@ int main() {
 				timeAccum -= 1.f / 20.f;
 			}
 
-			PlayerController_Update(&playerCtrl, &PlayerSound, inputData, dt);
+			PlayerController_Update(&playerCtrl, soundg, inputData, dt);
 
 			World_UpdateChunkCache(world, WorldToChunkCoord(FastFloor(player.position.x)),
 					       WorldToChunkCoord(FastFloor(player.position.z)));
