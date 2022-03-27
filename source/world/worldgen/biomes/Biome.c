@@ -2,11 +2,12 @@
 #include "world/worldgen/biomes/Forest.h"
 #include "world/worldgen/biomes/Desert.h"
 #include "world/worldgen/biomes/Plains.h"
+#include "world/worldgen/biomes/Savanna.h"
 
 enum Biomes Biome_GetRandom()
 {
     int b = 0;
-    b = rand() % 50;
+    b = rand() % 60;
     enum Biomes biomex = Biome_Plains;
     switch (b)
     {
@@ -17,6 +18,9 @@ enum Biomes Biome_GetRandom()
         biomex = Biome_Desert;
         break;
         case 41 ... 50:
+        biomex = Biome_Forest;
+        break;
+        case 51 ... 60:
         biomex = Biome_Forest;
         break;
         default:
@@ -99,6 +103,28 @@ Block Biome_GetBlock(enum Level_ lvl, enum Biomes biome)
             break;   
         }
         break;
+        case Biome_Savanna:
+        switch(lvl)
+        {
+            case A:
+            block = Savanna_GetBlockA();
+            break;
+            case B:
+            block = Savanna_GetBlockB();
+            break;
+            case C:
+            block = Savanna_GetBlockC();
+            break;
+            case D:
+            block = Savanna_GetBlockD();
+            break;
+            case E:
+            block = Savanna_GetBlockE();
+            break;
+            default:
+            block = Block_Air;
+            break;   
+        }
 
         default:
         switch(lvl)
@@ -194,6 +220,29 @@ int Biome_GetLevelInt(enum Level_ lvl, enum Biomes biome, int height)
             break;
             case E:
             hh = Desert_GetLevelE(height);
+            break;
+            default:
+            hh = 0;
+            break;   
+        }
+        break;
+        case Biome_Savanna:
+        switch(lvl)
+        {
+            case A:
+            hh = Savanna_GetLevelA(height);
+            break;
+            case B:
+            hh = Savanna_GetLevelB(height);
+            break;
+            case C:
+            hh = Savanna_GetLevelC(height);
+            break;
+            case D:
+            hh = Savanna_GetLevelD(height);
+            break;
+            case E:
+            hh = Savanna_GetLevelE(height);
             break;
             default:
             hh = 0;
