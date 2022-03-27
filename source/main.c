@@ -110,7 +110,7 @@ int main() {
 			BackgroundSound.path[0] = '\0';
 			strncat(BackgroundSound.path, soundfile, sizeof(BackgroundSound.path) - 1);
 			playopus(&BackgroundSound);*/
-			changeFile("romfs:/assets/sound/music/Minecraft.ogg", soundg);
+			changeFile("romfs:/assets/sound/music/Minecraft.ogg", &soundg);
 		}
 		
 		//DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%% Lin: %d", fps, C3D_GetProcessingTime() * 6.f,
