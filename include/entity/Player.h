@@ -63,11 +63,11 @@ typedef struct {
 
 void Player_Init(Player* player, World* world);
 
-void Player_Update(Player* player,playbackInfo_t sound, Damage* dmg);
+void Player_Update(Player* player, Damage* dmg);
 
 void Player_Move(Player* player, float dt, float3 accl);
 
-void Player_PlaceBlock(Player* player, playbackInfo_t sound);
+void Player_PlaceBlock(Player* player);
 void Player_BreakBlock(Player* player);
 
 void Player_Jump(Player* player, float3 accl);

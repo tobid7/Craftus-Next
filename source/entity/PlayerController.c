@@ -234,7 +234,7 @@ void PlayerController_Init(PlayerController* ctrl, Player* player) {
 	ctrl->flyTimer = -1.f;
 }
 
-void PlayerController_Update(PlayerController* ctrl, Sound* sound, InputData input, float dt) {
+void PlayerController_Update(PlayerController* ctrl, InputData input, float dt) {
 	Player* player = ctrl->player;
 	Damage* dmg;
 	PlatformAgnosticInput agnosticInput;
@@ -277,13 +277,13 @@ void PlayerController_Update(PlayerController* ctrl, Sound* sound, InputData inp
 
 	float placeBlock = IsKeyDown(ctrl->controlScheme.placeBlock, &agnosticInput);
 	float breakBlock = IsKeyDown(ctrl->controlScheme.breakBlock, &agnosticInput);
-	if (placeBlock > 0.f) Player_PlaceBlock(player, sound);
+	if (placeBlock > 0.f) Player_PlaceBlock(player);
 	if (breakBlock > 0.f) Player_BreakBlock(player);
 
 	if (jump > 0.f) Player_Jump(player, movement);
 
 	bool releasedJump = WasKeyReleased(ctrl->controlScheme.jump, &agnosticInput);
-        if (player->gamemode == 1 || player->gamemode == 3){
+        //if (player->gamemode == 1 || player->gamemode == 3){
 	if (ctrl->flyTimer >= 0.f) {
 		if (jump > 0.f) player->flying ^= true;
 		ctrl->flyTimer += dt;
@@ -291,7 +291,7 @@ void PlayerController_Update(PlayerController* ctrl, Sound* sound, InputData inp
 	} else if (releasedJump) {
 		ctrl->flyTimer = 0.f;
 	}
-        }
+       // }
 	bool releasedCrouch = WasKeyReleased(ctrl->controlScheme.crouch, &agnosticInput);
 	player->crouching ^= !player->flying && releasedCrouch;
 
@@ -312,5 +312,5 @@ void PlayerController_Update(PlayerController* ctrl, Sound* sound, InputData inp
 	}
 
 	Player_Move(player, dt, movement);
-	Player_Update(player, sound, dmg);
+	Player_Update(player, dmg);
 }

@@ -32,4 +32,4 @@ typedef struct {
 } PlayerController;
 
 void PlayerController_Init(PlayerController* ctrl, Player* player);
-void PlayerController_Update(PlayerController* ctrl, Sound* sound, InputData input, float dt);
+void PlayerController_Update(PlayerController* ctrl, InputData input, float dt);

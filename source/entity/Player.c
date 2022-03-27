@@ -147,7 +147,7 @@ void Player_Respawn(Player* player, Damage* dmg)
 			}
 }
 
-void Player_Update(Player* player, playbackInfo_t sound, Damage* dmg) {
+void Player_Update(Player* player, Damage* dmg) {
 	player->view = f3_new(-sinf(player->yaw) * cosf(player->pitch), sinf(player->pitch), -cosf(player->yaw) * cosf(player->pitch));
 	player->blockInSight =Raycast_Cast(player->world, f3_new(player->position.x, player->position.y + PLAYER_EYEHEIGHT, player->position.z), player->view,&player->viewRayCast);
 	player->blockInActionRange = player->blockInSight && player->viewRayCast.distSqr < 3.5f * 3.5f * 3.5f;
@@ -338,7 +338,7 @@ void Player_Move(Player* player, float dt, float3 accl) {
 	}
 }
 
-void Player_PlaceBlock(Player* player, playbackInfo_t sound) {
+void Player_PlaceBlock(Player* player) {
 	if (player->world && player->blockInActionRange && player->breakPlaceTimeout < 0.f) {
 		const int* offset = DirectionToOffset[player->viewRayCast.direction];
 		if (AABB_Overlap(player->position.x - PLAYER_COLLISIONBOX_SIZE / 2.f, player->position.y,
