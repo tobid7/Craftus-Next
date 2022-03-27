@@ -104,7 +104,7 @@ int main() {
 	bool initBackgroundSound = true;
 	while (aptMainLoop()) 
 	{
-		if (initBackgroundSound)
+		/*if (initBackgroundSound)
 		{
 			initBackgroundSound = false;
 			BackgroundSound.background = true;
@@ -112,7 +112,7 @@ int main() {
 			BackgroundSound.path[0] = '\0';
 			strncat(BackgroundSound.path, soundfile, sizeof(BackgroundSound.path) - 1);
 			playopus(&BackgroundSound);
-		}
+		}*/
 		
 		//DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%% Lin: %d", fps, C3D_GetProcessingTime() * 6.f,
 		//C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree());
