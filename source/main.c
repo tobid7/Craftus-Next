@@ -48,7 +48,7 @@ int main() {
 
 	// Enable N3DS 804MHz operation, where available
 	osSetSpeedupEnable(true);
-
+	playbackInfo_t soundg;
 	//consoleInit(GFX_TOP, NULL);
 	gfxSet3D(true);
 	//printf("romfsinit\n");
@@ -73,8 +73,6 @@ int main() {
 
 	World* world = (World*)malloc(sizeof(World));
 
-	Sound BackgroundSound;
-	Sound PlayerSound;
 	Player player;
 	PlayerController playerCtrl;
 	Player_Init(&player, world);
@@ -104,15 +102,16 @@ int main() {
 	bool initBackgroundSound = true;
 	while (aptMainLoop()) 
 	{
-		/*if (initBackgroundSound)
+		if (initBackgroundSound)
 		{
-			initBackgroundSound = false;
+			/*initBackgroundSound = false;
 			BackgroundSound.background = true;
 			char *soundfile = "romfs:/assets/sound/music/1.opus";
 			BackgroundSound.path[0] = '\0';
 			strncat(BackgroundSound.path, soundfile, sizeof(BackgroundSound.path) - 1);
-			playopus(&BackgroundSound);
-		}*/
+			playopus(&BackgroundSound);*/
+			changeFile("romfs:/assets/sound/music/Minecraft.ogg", soundg);
+		}
 		
 		//DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%% Lin: %d", fps, C3D_GetProcessingTime() * 6.f,
 		//C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree());
@@ -251,7 +250,7 @@ int main() {
 
 	free(world);
 
-	if (BackgroundSound.threaid != NULL)
+	/*if (BackgroundSound.threaid != NULL)
 	{
 		DoQuit(0);
 		threadJoin(BackgroundSound.threaid, 50000);
@@ -273,7 +272,7 @@ int main() {
 			op_free(PlayerSound.opusFile);
 		}
 		audioExit(1);
-	}
+	}*/
 
 	ndspExit();
 	sino_exit();
