@@ -61,15 +61,9 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			
                 if (x >= 4 && x <= 12){
                 if (z >= 4 && z <= 12){
-				int al = 0;
-				al = rand () % 20;
-				if (al > 7)
-				{
-					TreeGen_GenTree(queue, item, x, height, z, Oak);
-				}
-				else {
-					TreeGen_GenTree(queue, item, x, height, z, Birch);
-				}
+				
+					TreeGen_GenTree(queue, item, x, height, z, GetTreeType(biome));
+				
 				
 				
 			}}}}

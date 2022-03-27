@@ -261,10 +261,24 @@ enum Trees GetTreeType(enum Biomes biome)
         tree = 0;
         break;
         case Biome_Plains:
-        tree = Oak;
+        al = rand () % 20;
+				if (al > 7)
+				{
+					tree = Oak;
+				}
+				else {
+					tree = Birch;
+				}
         break;
         case Biome_Forest:
-        tree = Oak;
+        al = rand () % 20;
+				if (al > 7)
+				{
+					tree = Oak;
+				}
+				else {
+					tree = Birch;
+				}
         break;
         case Biome_Savanna:
         tree = Acacia;
