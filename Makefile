@@ -10,6 +10,7 @@ all: craftus
 	@mkdir -p bin
 	@find . -name "*.3dsx" ! -path "./bin/*" -exec cp -fv {} bin \;
 	@find . -name "*.cia" ! -path "./bin/*" -exec cp -fv {} bin \;
+	@find . -name "*.nro" ! -path "./bin/*" -exec cp -fv {} bin \;
 
 #---------------------------------------------------------------------------------
 craftus:

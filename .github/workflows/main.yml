@@ -45,8 +45,7 @@ jobs:
         run: |
           make
           mkdir -p ~/artifacts
-          cp bin/Craftus-Next.cia ~/artifacts
-          cp bin/Craftus-Next.3dsx ~/artifacts
+          cp bin/* ~/artifacts
           echo ::set-output name=commit_tag::$(git describe --abbrev=0 --tags)
           echo ::set-output name=commit_hash::$(git log --format=%h -1)
           # Webhook info
