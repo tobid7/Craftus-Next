@@ -201,10 +201,10 @@ void World_UpdateChunkCache(World* world, int orginX, int orginZ) {
 }
 
 void World_Tick(World* world) {
-	world->time++;
-	if (world->time > 23999)
+	world->wtime++;
+	if (world->wtime > 23999)
 	{
-		world->time = 0;
+		world->wtime = 0;
 	}
 	for (int x = 0; x < CHUNKCACHE_SIZE; x++)
 		for (int z = 0; z < CHUNKCACHE_SIZE; z++) {

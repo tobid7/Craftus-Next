@@ -37,7 +37,7 @@ typedef struct {
 	GeneratorSettings genSettings;
 
 	int cacheTranslationX, cacheTranslationZ;
-	int time = 0;
+	int wtime;
 
 	Chunk chunkPool[CHUNKPOOL_SIZE];
 	Chunk* chunkCache[CHUNKCACHE_SIZE][CHUNKCACHE_SIZE];

@@ -5,7 +5,9 @@
 ### There are Dev builds available at (https://github.com/NPI-D7/nightlys/releases/) but they are unstable. They can crash or something so downloading at youre own risk.
 A more updated version of the Craftus Minecraft Clone
 # Step 1
+Create PC and Switch Port because we need to learn OpenGL :)
 Port the ge to c++ using Npi for 2D and 3D graphics.
+
 
 # Original Redme
 Custom version of craftus that intends to clone minecraft 1.16.5

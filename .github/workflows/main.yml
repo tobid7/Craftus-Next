@@ -44,10 +44,9 @@ jobs:
         id: build
         run: |
           make
-          make make_cia
           mkdir -p ~/artifacts
-          cp Craftus-Next.cia ~/artifacts
-          cp Craftus-Next.3dsx ~/artifacts
+          cp bin/Craftus-Next.cia ~/artifacts
+          cp bin/Craftus-Next.3dsx ~/artifacts
           echo ::set-output name=commit_tag::$(git describe --abbrev=0 --tags)
           echo ::set-output name=commit_hash::$(git log --format=%h -1)
           # Webhook info
