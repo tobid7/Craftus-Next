@@ -27,7 +27,7 @@ include $(DEVKITARM)/3ds_rules
 #     - icon.png
 #     - <libctru folder>/default_icon.png
 #---------------------------------------------------------------------------------
-TARGET		:=	$(notdir $(CURDIR))
+TARGET		:=	Craftus-Next
 SOURCES		:=	source source/misc source/world/worldgen source/world/worldgen/biomes source/world/worldgen/structures source/blocks source/rendering source/gui source/world source/world/savegame source/entity source/savegame dependencies/mpack dependencies/vec dependencies/sino dependencies/lodepng dependencies/miniz dependencies/ini dependencies/playback
 DATA		:=	data
 INCLUDES	:=	dependencies include
