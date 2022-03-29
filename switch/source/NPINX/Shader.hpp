@@ -5,11 +5,13 @@ namespace Npi
     class Shader
     {
         public:
-        Shader();
+        Shader(GLenum type, const char* source);
         ~Shader();
 
         private:
         GLuint vsh;
         GLuint fsh;
+        static GLuint s_program;
+
     };
 }
