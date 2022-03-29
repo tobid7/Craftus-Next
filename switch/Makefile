@@ -38,11 +38,12 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   NACP building is skipped as well.
 #---------------------------------------------------------------------------------
 TARGET		:=	Craftus-Next
+ICON		:= 	icon.jpg
 BUILD		:=	build
 SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
-#ROMFS	:=	romfs
+ROMFS		:=	romfs
 
 #---------------------------------------------------------------------------------
 # options for code generation
