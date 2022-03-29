@@ -36,7 +36,7 @@ jobs:
           cd switch
           make
           mkdir -p ~/artifacts
-          cp bin/Craftus-Next.nro ~/artifacts
+          cp Craftus-Next.nro ~/artifacts
           echo ::set-output name=commit_tag::$(git describe --abbrev=0 --tags)
           echo ::set-output name=commit_hash::$(git log --format=%h -1)
           # Webhook info
