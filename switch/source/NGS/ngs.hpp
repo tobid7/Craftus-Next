@@ -17,6 +17,7 @@ namespace NGS
         Game(std::string name = "Game");
         ~Game();
         bool IsRunning();
+        void Exit(){ m_running = false; }
         std::string m_name = "Game";
         private:
         bool m_running = false;

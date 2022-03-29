@@ -5,7 +5,6 @@ NGS::Game game("Craftus-Next");
 int main()
 {
 
-
     while (game.IsRunning())
     {
 
