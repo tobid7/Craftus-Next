@@ -7,7 +7,7 @@ namespace Npi
         public:
         Shader(GLenum type, const char* source);
         ~Shader();
-        
+        GLuint GetProgram(){ return s_program; }
         private:
         GLuint vsh;
         GLuint fsh;
