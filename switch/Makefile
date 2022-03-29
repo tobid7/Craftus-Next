@@ -40,9 +40,9 @@ include $(DEVKITPRO)/libnx/switch_rules
 TARGET		:=	Craftus-Next
 ICON		:= 	icon.jpg
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source source/NGS
 DATA		:=	data
-INCLUDES	:=	include
+INCLUDES	:=	$(SOURCES)
 ROMFS		:=	romfs
 
 #---------------------------------------------------------------------------------
