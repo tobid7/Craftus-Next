@@ -17,14 +17,8 @@ namespace NGS
         Game(std::string name = "Game");
         ~Game();
         bool IsRunning();
-        #ifdef __SWITCH__
-        PadState GetPad(){ return this->pad; }
-        #endif
         std::string m_name = "Game";
         private:
-        #ifdef __SWITCH__
-        PadState pad;
-        #endif
         bool m_running = false;
     };
 }

@@ -6,8 +6,7 @@ namespace NGS
     {
         m_name = name;
         #ifdef __SWITCH__
-        padConfigureInput(1, HidNpadStyleSet_NpadStandard);
-        padInitializeDefault(&pad);
+        //nothing???
         #endif
         #ifdef __3DS__
         aptInit();
@@ -49,7 +48,6 @@ namespace NGS
     {
         #ifdef __SWITCH__
         if (!appletMainLoop()) return false;
-        padUpdate(&pad);
         #endif
         #ifdef __3DS__
         if (!aptMainLoop()) return false;
