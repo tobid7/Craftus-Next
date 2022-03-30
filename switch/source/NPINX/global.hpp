@@ -6,10 +6,10 @@
 #include <cstdint>
 //Switch
 #include <switch.h>
-//OpenGL 4.3
+//OpenGL 4.6
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
-#include <glad/glad.h>
+#include "glad.h"
 
 //Npi
     //Graphics
