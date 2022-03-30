@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <cstdint>
 //Switch
 #include <switch.h>
 //OpenGL 4.3
@@ -15,3 +16,6 @@
 #include "Display.hpp"
 #include "RObject.hpp"
 #include "Shader.hpp"
+#include "color.hpp"
+#include "earcut.hpp"
+#include "Vertex.hpp"
