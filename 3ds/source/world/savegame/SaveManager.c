@@ -41,8 +41,9 @@ void SaveManager_Load(SaveManager* mgr, char* path) {
 		mpack_tree_t levelTree;
 		mpack_tree_init_file(&levelTree, "level.mp", 0);
 		mpack_node_t root = mpack_tree_root(&levelTree);
-world->name, sizeof
-		mpack_node_copy_utf8_cstr(mpack_node_map_cstr(root, "name"), mgr->(mgr->world->name));
+
+		mpack_node_copy_utf8_cstr(mpack_node_map_cstr(root, "name"), mgr->world->name, sizeof(mgr->world->name));
+
 		
 		/*mpack_node_t timex = mpack_node_map_int_optional(root, "time");
 		mgr->world->wtime = mpack_node_int(timex);*/
