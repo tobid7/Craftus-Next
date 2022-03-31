@@ -18,6 +18,8 @@
 
 int sky_time = 0;
 
+u32 skycol = 0x90d9ffff;
+
 static Player* player;
 static World* world;
 
@@ -91,7 +93,30 @@ void WorldRenderer_Deinit() {
 static void renderWorld() {
 
 	C3D_FogColor(0xffd990);
-
+	if (world->time < 1500)
+	{
+		skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + ((world->time/1500)*255);
+	}
+	if (world->time > 1500 && world->time < 10500)
+	{
+		skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + (1*255);
+	}
+	if (world->time > 10500 && world->time < 12000)
+	{
+		skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + ((world->time/12000)*255);
+	}
+	if (world->time > 12000 && world->time < 13500)
+	{
+		skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + ((world->time/13500)*255);
+	}
+	if (world->time > 13500 && world->time < 22500)
+	{
+		skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + (1*255);
+	}
+	if (world->time > 22500 && world->time < 24000)
+	{
+		skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + ((world->time/24000)*255);
+	}
 	memset(chunkRendered, 0, sizeof(chunkRendered));
 
 	int polysTotal = 0, clustersDrawn = 0, steps = 0;

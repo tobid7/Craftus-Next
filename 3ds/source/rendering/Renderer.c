@@ -24,6 +24,7 @@
 GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO))
 
 #define CLEAR_COLOR_SKY 0x90d9ffff
+extern u32 skycol;
 //#define CLEAR_COLOR_SKY 0x06070cff
 #define CLEAR_COLOR_BLACK 0x000000ff
 
@@ -130,7 +131,7 @@ void Renderer_Render() {
 	if (*gamestate == GameState_Playing) PolyGen_Harvest();
 
 	for (int i = 0; i < 2; i++) {
-		C3D_RenderTargetClear(renderTargets[i], C3D_CLEAR_ALL, CLEAR_COLOR_SKY, 0);
+		C3D_RenderTargetClear(renderTargets[i], C3D_CLEAR_ALL, skycol, 0);
 		C3D_FrameDrawOn(renderTargets[i]);
 
 		SpriteBatch_StartFrame(400, 240);
