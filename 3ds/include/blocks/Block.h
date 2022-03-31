@@ -59,6 +59,7 @@ enum { Block_Air,
 	Block_LeavesAcacia,
 	Block_LogAcacia,
 	Block_PlanksAcacia,
+	Block_GrassAcacia,
 	Blocks_Count
 };
 
