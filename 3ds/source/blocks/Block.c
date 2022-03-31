@@ -131,17 +131,6 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 		case Block_PlanksAcacia:
 			i = icon.planks_acacia;
 			break;
-		case Block_LogAcacia:
-			switch (direction) {
-				case Direction_Bottom:
-				case Direction_Top:
-					i = icon.log_acacia_top;
-					break;
-				default:
-					i = icon.log_acacia_side;
-					break;
-			}
-			break;
 		case Block_Grass:
 			switch (direction) {
 				case Direction_Top:
@@ -245,6 +234,17 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 					break;
 				default:
 					i = icon.birch_log_side;
+					break;
+			}
+			break;
+		case Block_LogAcacia:
+			switch (direction) {
+				case Direction_Bottom:
+				case Direction_Top:
+					i = icon.log_acacia_top;
+					break;
+				default:
+					i = icon.log_acacia_side;
 					break;
 			}
 			break;
