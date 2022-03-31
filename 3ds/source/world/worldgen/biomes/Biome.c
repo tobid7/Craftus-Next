@@ -21,7 +21,7 @@ enum Biomes Biome_GetRandom()
         biomex = Biome_Forest;
         break;
         case 51 ... 60:
-        biomex = Biome_Forest;
+        biomex = Biome_Savanna;
         break;
         default:
         biomex = Biome_Plains;
