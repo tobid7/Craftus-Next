@@ -66,7 +66,21 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 				
 				
 				
-			}}}}
+			}}}
+			if (biome == Biome_Forest)
+			{
+			if (x == 4 + rand() % 8 && z == 4 + rand() % 8)
+			{	
+			
+                if (x >= 4 && x <= 12){
+                if (z >= 4 && z <= 12){
+				
+					TreeGen_GenTree(queue, item, x, height, z, GetTreeType(biome));
+				
+				
+				
+			}}}
+			}}
 		}
 	}
 }
