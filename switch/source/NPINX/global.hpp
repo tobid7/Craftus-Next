@@ -31,3 +31,4 @@
 #include "earcut.hpp"
 #include "Vertex.hpp"
 #include "texture.hpp"
+#include "Sprite.hpp"
