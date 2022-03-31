@@ -32,6 +32,26 @@ namespace Npi
         glDeleteShader(vsh);
         glDeleteShader(fsh);
     }
+    Shader(const char* verts, const char* frags)
+    {
+        this->vsh = this->CompileVertexShader(GL_VERTEX_SHADER, verts);
+        this->fsh = this->CompileFragmentShader(GL_FRAGMENT_SHADER, frags);
+        s_program = glCreateProgram();
+        glAttachShader(s_program, vsh);
+        glAttachShader(s_program, fsh);
+        glLinkProgram(s_program);
+
+        GLint success;
+        glGetProgramiv(s_program, GL_LINK_STATUS, &success);
+        if (!success)
+        {
+            char buf[512];
+            glGetProgramInfoLog(s_program, sizeof(buf), nullptr, buf);
+            TRACE("Link error: %s", buf);
+        }
+        glDeleteShader(vsh);
+        glDeleteShader(fsh);
+    }
     GLuint Shader::CompileVertexShader(GLenum type, const char* source)
     {
         GLint success;
