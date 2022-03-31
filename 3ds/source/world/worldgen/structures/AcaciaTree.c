@@ -5,14 +5,8 @@ void AcaciaTree_Gen(WorkQueue* queue, WorkerItem item,int x, int y, int z, int h
     int newz = z;
     for (int i = y; i < y + height-1; i++)
     {
-        for (int l = z; l < z + rand() %2; l++)
-        {
-            for (int lx = x; lx < x+1; lx++)
-            {
-                Chunk_SetBlock(item.chunk, lx, i, l, Block_LogAcacia);
-                newz = l;
-            }
-        }
+        Chunk_SetBlock(item.chunk, x, i, newz, Block_LogAcacia);    
+        if (i > 3 && newz == z) newz+1;
     }
     for (int hx = 0; hx < 2; hx++){
         switch(hx)
@@ -43,5 +37,9 @@ void AcaciaTree_Gen(WorkQueue* queue, WorkerItem item,int x, int y, int z, int h
     Chunk_SetBlock(item.chunk, x+2, y + height - 1, newz, Block_LeavesAcacia);
     Chunk_SetBlock(item.chunk, x, y + height - 1, newz+2, Block_LeavesAcacia);
     Chunk_SetBlock(item.chunk, x, y + height - 1, newz-2, Block_LeavesAcacia);
+    Chunk_SetBlock(item.chunk, x-3, y + height - 2, newz-4, Block_Air);
+    Chunk_SetBlock(item.chunk, x-3, y + height - 2, newz+4, Block_Air);
+    Chunk_SetBlock(item.chunk, x+3, y + height - 2, newz-4, Block_Air);
+    Chunk_SetBlock(item.chunk, x+3, y + height - 2, newz+4, Block_Air);
     
 }
