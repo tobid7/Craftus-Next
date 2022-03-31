@@ -2,7 +2,7 @@
 #include <misc/Collision.h>
 #include <entity/Damage.h>
 #include <misc/Sound.h>
-
+#include "misc/Crash.h"
 
 void Player_Init(Player* player, World* world) {
 	player->position = f3_new(0.f, 0.f, 0.f);
@@ -101,46 +101,63 @@ void Player_Init(Player* player, World* world) {
 
 void Player_Respawn(Player* player, Damage* dmg)
 {
+	Log("Starting Respawn");
      if (player->difficulty!=4) {
+		 Log("Diff isn't 4");
 				if(player->spawnset=0) {
+					Log("Begin spset0");
 					if (dmg->cause==NULL){
+						Log("Cause is NULL");
 						DebugUI_Log("Player died");
 					} else {
+						Log("Cause is: %s", dmg->cause);
 						DebugUI_Log("Died by %s",dmg->cause);
 					}
 					DebugUI_Log("No spawn was set");
+
 					player->position.x=0.0;
 					World* world = player->world;
+					Log("Set X pos and get world");
 					int spawnY = 1;
+					Log("Get Heighest block on Player spawn");
 					while (World_GetBlock(world, player->spawnx, spawnY, player->spawnz) != Block_Air)
 						spawnY++;
-
+					
+					Log("Offset Stuff");
 					bool shouldOffset = world->genSettings.type != WorldGen_SuperFlat;
 					player->position.y=shouldOffset ? spawnY + 1 : spawnY;
 					player->position.z=0.0;
                                         player->gamemode=0;
 				} 
 				if (player->spawnset=1){
+					Log("Spawnset is 1");
 					if (dmg->cause==NULL){
+						Log("No Cause");
 						DebugUI_Log("Player died");
 					} else {
+						Log("Cause is: %s", dmg->cause);
 						DebugUI_Log("Died by %s",dmg->cause);
 					}
 					player->position.x=player->spawnx;
 					World* world = player->world;
+					Log("set Pos and Get world");
 					int spawnY = 1;
+					Log("Get heightest block");
 					while (World_GetBlock(world, player->spawnx, spawnY, player->spawnz) != Block_Air)
 						spawnY++;
-
+					Log("Offset STuff");
 					bool shouldOffset = world->genSettings.type != WorldGen_SuperFlat;
 					player->position.y=shouldOffset ? spawnY + 1 : spawnY;
 					player->position.z=player->spawnz;
                                         player->gamemode=0;
 				}
+				Log("Set HP");
 				player->hp=20;
 				player->hunger=20;
+				Log("Set Cause to NULL");
 				dmg->cause=NULL;
 			} else {
+				Log("lol ur world is gone iksdeh");
 				DebugUI_Log("lol ur world is gone");
 				/*char buffer[512];
 				sprintf(buffer, "sdmc:/craftus_redesigned/saves/%s", worlds.data[selectedWorld].path);
