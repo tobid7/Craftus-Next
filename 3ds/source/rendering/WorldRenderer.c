@@ -119,6 +119,7 @@ static void renderWorld() {
 	{
 		skycol = 0xa7e5ffff;
 	}
+	DebugUI_Text("Time: %i", world->time);
 	memset(chunkRendered, 0, sizeof(chunkRendered));
 
 	int polysTotal = 0, clustersDrawn = 0, steps = 0;
