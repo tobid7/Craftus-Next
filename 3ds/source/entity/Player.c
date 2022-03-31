@@ -204,7 +204,7 @@ void Player_Update(Player* player, Damage* dmg) {
 			}
 		//}
 		//Respawning stuff
-		if (player->hp<=0&&player->totem==false){
+		if (player->hp<=0/*&&player->totem==false*/){
 			Player_Respawn(player, dmg);
 		}
 
