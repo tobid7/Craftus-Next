@@ -101,63 +101,64 @@ void Player_Init(Player* player, World* world) {
 
 void Player_Respawn(Player* player, Damage* dmg)
 {
-	Log("Starting Respawn");
+	Log("Starting Respawn\n");
      if (player->difficulty!=4) {
-		 Log("Diff isn't 4");
+		 Log("Diff isn't 4\n");
 				if(player->spawnset=0) {
-					Log("Begin spset0");
+					Log("Begin spset0\n");
 					if (dmg->cause==NULL){
-						Log("Cause is NULL");
+						Log("Cause is NULL\n");
 						DebugUI_Log("Player died");
 					} else {
-						Log("Cause is: %s", dmg->cause);
+						Log("Cause is: %s\n", dmg->cause);
 						DebugUI_Log("Died by %s",dmg->cause);
 					}
 					DebugUI_Log("No spawn was set");
 
 					player->position.x=0.0;
 					World* world = player->world;
-					Log("Set X pos and get world");
+					Log("Set X pos and get world\n");
 					int spawnY = 1;
-					Log("Get Heighest block on Player spawn");
+					Log("Get Heighest block on Player spawn\n");
 					while (World_GetBlock(world, player->spawnx, spawnY, player->spawnz) != Block_Air)
 						spawnY++;
 					
-					Log("Offset Stuff");
+					Log("Offset Stuff\n");
 					bool shouldOffset = world->genSettings.type != WorldGen_SuperFlat;
 					player->position.y=shouldOffset ? spawnY + 1 : spawnY;
 					player->position.z=0.0;
                                         player->gamemode=0;
 				} 
 				if (player->spawnset=1){
-					Log("Spawnset is 1");
-					if (dmg->cause==NULL){
-						Log("No Cause");
+					Log("Spawnset is 1\n");
+					//Error Happens here
+					/*if (dmg->cause==NULL){
+						Log("No Cause\n");
 						DebugUI_Log("Player died");
 					} else {
-						Log("Cause is: %s", dmg->cause);
+						Log("Cause is: %s\n", dmg->cause);
 						DebugUI_Log("Died by %s",dmg->cause);
-					}
+					}*/
 					player->position.x=player->spawnx;
 					World* world = player->world;
-					Log("set Pos and Get world");
+					Log("set Pos and Get world\n");
 					int spawnY = 1;
-					Log("Get heightest block");
+					Log("Get heightest block\n");
 					while (World_GetBlock(world, player->spawnx, spawnY, player->spawnz) != Block_Air)
 						spawnY++;
-					Log("Offset STuff");
+					Log("Offset STuff\n");
 					bool shouldOffset = world->genSettings.type != WorldGen_SuperFlat;
 					player->position.y=shouldOffset ? spawnY + 1 : spawnY;
 					player->position.z=player->spawnz;
                                         player->gamemode=0;
 				}
-				Log("Set HP");
+				Log("Set HP\n");
 				player->hp=20;
 				player->hunger=20;
-				Log("Set Cause to NULL");
+				Log("Set Cause to NULL\n");
 				dmg->cause=NULL;
 			} else {
-				Log("lol ur world is gone iksdeh");
+				Log("lol ur world is gone iksdeh\n");
 				DebugUI_Log("lol ur world is gone");
 				/*char buffer[512];
 				sprintf(buffer, "sdmc:/craftus_redesigned/saves/%s", worlds.data[selectedWorld].path);
