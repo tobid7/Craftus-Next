@@ -97,7 +97,7 @@ static void renderWorld() {
 	C3D_FogColor(0xffd990);
 	if (world->wtime < 1500)
 	{
-		skycol = 0x456508ff;
+		skycol = 0xa0d9ffff;
 	}
 	if (world->wtime > 1500 && world->wtime < 10500)
 	{
