@@ -156,7 +156,8 @@ void Player_Respawn(Player* player, Damage* dmg)
 				player->hp=20;
 				player->hunger=20;
 				Log("Set Cause to NULL\n");
-				dmg->cause=NULL;
+				//Next Error
+				//dmg->cause=NULL;
 			} else {
 				Log("lol ur world is gone iksdeh\n");
 				DebugUI_Log("lol ur world is gone");
