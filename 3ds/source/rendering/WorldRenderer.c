@@ -97,27 +97,27 @@ static void renderWorld() {
 	C3D_FogColor(0xffd990);
 	if (world->wtime < 1500)
 	{
-		//skycol = pack_rgba() (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + ((world->wtime/1500)*255);
+		skycol = 0x456508ff;
 	}
 	if (world->wtime > 1500 && world->wtime < 10500)
 	{
-		//skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + (1*255);
+		skycol = 0x90d9ffff;
 	}
 	if (world->wtime > 10500 && world->wtime < 12000)
 	{
-		//skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + ((world->wtime/12000)*255);
+		skycol = 0x99d1ffff;
 	}
 	if (world->wtime > 12000 && world->wtime < 13500)
 	{
-		//skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + ((world->wtime/13500)*255);
+		skycol = 0xa3e1ffff;
 	}
 	if (world->wtime > 13500 && world->wtime < 22500)
 	{
-		//skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + (1*255);
+		skycol = 0x000001ff;
 	}
 	if (world->wtime > 22500 && world->wtime < 24000)
 	{
-		//skycol = (1*255 << 24) + (0.6*255 << 16) + (1*255 << 8) + ((world->wtime/24000)*255);
+		skycol = 0xa7e5ffff;
 	}
 	memset(chunkRendered, 0, sizeof(chunkRendered));
 
