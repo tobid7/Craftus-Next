@@ -44,8 +44,8 @@ void SaveManager_Load(SaveManager* mgr, char* path) {
 world->name, sizeof
 		mpack_node_copy_utf8_cstr(mpack_node_map_cstr(root, "name"), mgr->(mgr->world->name));
 		
-		mpack_node_t timex = mpack_node_map_int_optional(root, "time");
-		mgr->world->wtime = mpack_node_int(timex);
+		/*mpack_node_t timex = mpack_node_map_int_optional(root, "time");
+		mgr->world->wtime = mpack_node_int(timex);*/
 		mpack_node_t worldTypeNode = mpack_node_map_cstr_optional(root, "worldType");
 		if (mpack_node_type(worldTypeNode) != mpack_type_nil)
 			mgr->world->genSettings.type = mpack_node_uint(worldTypeNode);
@@ -106,8 +106,8 @@ void SaveManager_Unload(SaveManager* mgr) {
 
 	mpack_write_cstr(&writer, "name");
 	mpack_write_cstr(&writer, mgr->world->name);
-	mpack_write_int(&writer, "time");
-	mpack_write_int(&writer, mgr->world->wtime);
+	/*mpack_write_int(&writer, "time");
+	mpack_write_int(&writer, mgr->world->wtime);*/
 
 	mpack_write_cstr(&writer, "players");
 	mpack_start_array(&writer, 1);
