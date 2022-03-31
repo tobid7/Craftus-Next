@@ -39,9 +39,9 @@ void AcaciaTree_Gen(WorkQueue* queue, WorkerItem item,int x, int y, int z, int h
             default: break;
         }
     }
-    Chunk_SetBlock(item.chunk, x-3, y + height - 1, newz, Block_LeavesAcacia);
-    Chunk_SetBlock(item.chunk, x+3, y + height - 1, newz, Block_LeavesAcacia);
-    Chunk_SetBlock(item.chunk, x, y + height - 1, newz+3, Block_LeavesAcacia);
-    Chunk_SetBlock(item.chunk, x, y + height - 1, newz-3, Block_LeavesAcacia);
+    Chunk_SetBlock(item.chunk, x-2, y + height - 1, newz, Block_LeavesAcacia);
+    Chunk_SetBlock(item.chunk, x+2, y + height - 1, newz, Block_LeavesAcacia);
+    Chunk_SetBlock(item.chunk, x, y + height - 1, newz+2, Block_LeavesAcacia);
+    Chunk_SetBlock(item.chunk, x, y + height - 1, newz-2, Block_LeavesAcacia);
     
 }
