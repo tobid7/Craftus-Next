@@ -97,7 +97,7 @@ static void renderWorld() {
 	C3D_FogColor(0xffd990);
 	if (world->wtime < 1500)
 	{
-		skycol = SHADER_RGBA(153, 255, (int)((float)world->wtime/1500)*255, 255);
+		skycol = SHADER_RGBA(153, 255, (int)(((float)world->wtime/1500)*255), 255);
 	}
 	if (world->wtime > 1500 && world->wtime < 10500)
 	{
@@ -113,7 +113,7 @@ static void renderWorld() {
 	}
 	if (world->wtime > 13500 && world->wtime < 22500)
 	{
-		skycol = 0x000001ff;
+		skycol = SHADER_RGBA(0, 0, 0, 255);
 	}
 	if (world->wtime > 22500 && world->wtime < 24000)
 	{
