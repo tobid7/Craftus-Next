@@ -17,6 +17,7 @@ typedef struct {
 } GuiVertex;
 
 #define SHADER_RGB(r, g, b) (((b & 0x1f)) | (((g)&0x1f) << 5) | (((r)&0x1f) << 10))
+#define SHADER_RGBA(r, g, b, a) (((b & 0x1f)) | (((g)&0x1f) << 8) | (((r)&0x1f) << 16) | (((r)&0x1f) << 24))
 
 #define SHADER_R(r) (((r) >> 10) & 0x1f)
 #define SHADER_G(g) (((g) >> 5) & 0x1f)
