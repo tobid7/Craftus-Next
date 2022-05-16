@@ -1,3 +1,4 @@
+# Currently New3DS Exclusive ...
 # Craftus-Next <img alt="GitHub milestone" src="https://img.shields.io/github/milestones/progress-percent/Tobi-D7/Craftus-Next/1?style=for-the-badge">
 [![Build Craftus-Next Switch](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/switch.yml/badge.svg?branch=main)](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/switch.yml)
 [![Build Craftus-Next 3ds](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/3ds.yml/badge.svg?branch=main)](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/3ds.yml) <a href="https://github.com/NPI-D7/BCSTM-Player/blob/main/LICENSE"> <img height="22" src="https://img.shields.io/badge/License-GPLv3-informational.svg?style=for-the-badge" alt="License: GPLv3"></a> <img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/m/Tobi-D7/Craftus-Next?style=for-the-badge" height="22"> 
