@@ -113,7 +113,7 @@ int main() {
 			//changeFile("romfs:/assets/sound/music/Minecraft.ogg", &soundg);
 		}
 		
-		DebugUI_Text("%d FPS/*  Usage: CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%% Lin: %d*/", fps);/*, C3D_GetProcessingTime() * 6.f,
+		DebugUI_Text("%d FPS"/*  Usage: CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%% Lin: %d*/, fps);/*, C3D_GetProcessingTime() * 6.f,
 		C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree());*/
 		//DebugUI_Text("X: %f, Y: %f, Z: %f", f3_unpack(player.position));
 		//DebugUI_Text("HP: %i",player.hp);
