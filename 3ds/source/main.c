@@ -151,7 +151,9 @@ int main() {
 				break;
 			else if (gamestate == GameState_Playing) {
 				releaseWorld(&chunkWorker, &savemgr, world);
-
+                                free(world);
+                                World* world = (World*)malloc(sizeof(World));
+                                World_Init(world, &chunkWorker.queue);
 				gamestate = GameState_SelectWorld;
 
 				WorldSelect_ScanWorlds();
