@@ -196,9 +196,9 @@ void Renderer_Render() {
 
 		C3D_BindProgram(&gui_shader);
 		C3D_SetAttrInfo(&gui_vertexAttribs);
-                
+		
 		SpriteBatch_Render(GFX_TOP);
-
+		
 		if (iod <= 0.f) break;
 	}
 

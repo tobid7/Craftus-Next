@@ -4,13 +4,12 @@
             "name": "3ds",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include/**",
-                "/opt/devkitpro/libctru/include/**",
-
-                "/opt/devkitpro/portlibs/3ds/include/**"
+                "/devkitpro/libnx/include/**",
+                "/devkitpro/libctru/include/**",
+                "/devkitpro/portlibs/switch/include/**",
+                "/devkitpro/portlibs/3ds/include/**"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu17",
             "cppStandard": "gnu++17",
             "intelliSenseMode": "linux-gcc-x64"

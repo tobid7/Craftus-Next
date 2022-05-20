@@ -1,0 +1,305 @@
+make.exe --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/Tobi/Craftus-Next'
+ 
+for i in ./3ds/Makefile ./switch/Makefile; do make -C `dirname $i` || exit 1; done;
+ 
+make[1]: Entering directory '/home/Tobi/Craftus-Next/3ds'
+ 
+[ -d build ] || mkdir -p build
+make --no-print-directory -C build -f /home/Tobi/Craftus-Next/3ds/Makefile
+ 
+echo gui.v.pica
+picasso -o gui.shbin /home/Tobi/Craftus-Next/3ds/source/rendering/gui.v.pica
+bin2s gui.shbin | arm-none-eabi-as -o gui.shbin.o
+echo "extern const u8" `(echo gui.shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end[];" > `(echo gui.shbin | tr . _)`.h
+echo "extern const u8" `(echo gui.shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"[];" >> `(echo gui.shbin | tr . _)`.h
+ 
+echo "extern const u32" `(echo gui.shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size";" >> `(echo gui.shbin | tr . _)`.h
+ 
+echo world.v.pica
+picasso -o world.shbin /home/Tobi/Craftus-Next/3ds/source/rendering/world.v.pica
+bin2s world.shbin | arm-none-eabi-as -o world.shbin.o
+echo "extern const u8" `(echo world.shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end[];" > `(echo world.shbin | tr . _)`.h
+echo "extern const u8" `(echo world.shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"[];" >> `(echo world.shbin | tr . _)`.h
+echo "extern const u32" `(echo world.shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size";" >> `(echo world.shbin | tr . _)`.h
+ 
+echo main.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/main.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/main.c -o main.o 
+echo Collision.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Collision.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/misc/Collision.c -o Collision.o 
+echo CommandLine.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/CommandLine.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/misc/CommandLine.c -o CommandLine.o 
+echo Crash.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Crash.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/misc/Crash.c -o Crash.o 
+echo Raycast.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Raycast.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/misc/Raycast.c -o Raycast.o 
+ 
+echo Sound.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Sound.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/misc/Sound.c -o Sound.o 
+ 
+echo DefaultGen.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/DefaultGen.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/DefaultGen.c -o DefaultGen.o 
+ 
+echo FlatBedrock.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/FlatBedrock.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/FlatBedrock.c -o FlatBedrock.o 
+ 
+echo SmeaGen.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/SmeaGen.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/SmeaGen.c -o SmeaGen.o 
+ 
+echo SuperFlatGen.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/SuperFlatGen.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/SuperFlatGen.c -o SuperFlatGen.o 
+ 
+echo Biome.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Biome.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes/Biome.c -o Biome.o 
+ 
+echo Desert.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Desert.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes/Desert.c -o Desert.o 
+ 
+echo Forest.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Forest.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes/Forest.c -o Forest.o 
+ 
+echo Plains.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Plains.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes/Plains.c -o Plains.o 
+ 
+echo Savanna.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Savanna.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes/Savanna.c -o Savanna.o 
+ 
+echo AcaciaTree.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/AcaciaTree.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/structures/AcaciaTree.c -o AcaciaTree.o 
+ 
+echo BirchTree.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/BirchTree.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/structures/BirchTree.c -o BirchTree.o 
+ 
+echo OakTree.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/OakTree.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/structures/OakTree.c -o OakTree.o 
+ 
+echo Pumpkins.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Pumpkins.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/structures/Pumpkins.c -o Pumpkins.o 
+ 
+echo TreeGen.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/TreeGen.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/worldgen/structures/TreeGen.c -o TreeGen.o 
+ 
+echo Block.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Block.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/blocks/Block.c -o Block.o 
+ 
+echo BlockEvent.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/BlockEvent.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/blocks/BlockEvent.c -o BlockEvent.o 
+ 
+echo Item.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Item.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/blocks/Item.c -o Item.o 
+ 
+echo Liquids.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Liquids.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/blocks/Liquids.c -o Liquids.o 
+ 
+echo Camera.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Camera.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/Camera.c -o Camera.o 
+ 
+echo Clouds.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Clouds.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/Clouds.c -o Clouds.o 
+ 
+echo Cursor.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Cursor.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/Cursor.c -o Cursor.o 
+ 
+echo Hand.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Hand.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/Hand.c -o Hand.o 
+ 
+echo PolyGen.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/PolyGen.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/PolyGen.c -o PolyGen.o 
+ 
+echo Renderer.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Renderer.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/Renderer.c -o Renderer.o 
+ 
+echo TextureMap.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/TextureMap.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/TextureMap.c -o TextureMap.o 
+ 
+echo VBOCache.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/VBOCache.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/VBOCache.c -o VBOCache.o 
+echo VertexFmt.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/VertexFmt.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/VertexFmt.c -o VertexFmt.o 
+echo WorldRenderer.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/WorldRenderer.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/rendering/WorldRenderer.c -o WorldRenderer.o 
+echo DebugUI.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/DebugUI.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/gui/DebugUI.c -o DebugUI.o 
+ 
+echo FontLoader.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/FontLoader.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/gui/FontLoader.c -o FontLoader.o 
+ 
+echo Gui.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Gui.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/gui/Gui.c -o Gui.o 
+ 
+echo Inventory.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Inventory.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/gui/Inventory.c -o Inventory.o 
+ 
+echo SpriteBatch.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/SpriteBatch.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/gui/SpriteBatch.c -o SpriteBatch.o 
+ 
+echo WorldSelect.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/WorldSelect.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/gui/WorldSelect.c -o WorldSelect.o 
+ 
+echo Chunk.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Chunk.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/Chunk.c -o Chunk.o 
+ 
+echo ChunkWorker.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/ChunkWorker.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/ChunkWorker.c -o ChunkWorker.o 
+ 
+echo Direction.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Direction.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/Direction.c -o Direction.o 
+ 
+echo WorkQueue.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/WorkQueue.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/WorkQueue.c -o WorkQueue.o 
+ 
+echo World.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/World.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/World.c -o World.o 
+ 
+echo SaveManager.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/SaveManager.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/savegame/SaveManager.c -o SaveManager.o 
+ 
+echo SuperChunk.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/SuperChunk.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/world/savegame/SuperChunk.c -o SuperChunk.o 
+ 
+echo Damage.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Damage.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/entity/Damage.c -o Damage.o 
+ 
+echo Player.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/Player.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/entity/Player.c -o Player.o 
+ 
+echo PlayerController.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/PlayerController.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/source/entity/PlayerController.c -o PlayerController.o 
+ 
+echo mpack.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/mpack.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/mpack/mpack.c -o mpack.o 
+ 
+echo vec.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/vec.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/vec/vec.c -o vec.o 
+ 
+echo sino.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/sino.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/sino/sino.c -o sino.o 
+ 
+echo lodepng.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/lodepng.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/lodepng/lodepng.c -o lodepng.o 
+ 
+echo miniz.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/miniz.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/miniz/miniz.c -o miniz.o 
+ 
+echo ini.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/ini.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/ini/ini.c -o ini.o 
+ 
+echo error.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/error.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/playback/error.c -o error.o 
+ 
+echo file.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/file.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/playback/file.c -o file.o 
+ 
+echo flac.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/flac.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/playback/flac.c -o flac.o 
+ 
+echo mp3.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/mp3.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/playback/mp3.c -o mp3.o 
+ 
+echo opus.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/opus.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/playback/opus.c -o opus.o 
+ 
+echo playback.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/playback.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/playback/playback.c -o playback.o 
+ 
+echo vorbis.c
+ 
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/vorbis.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/playback/vorbis.c -o vorbis.o 
+ 
+echo wav.c
+arm-none-eabi-gcc -MMD -MP -MF /home/Tobi/Craftus-Next/3ds/build/wav.d -g -Wall -mword-relocations -ffunction-sections -fomit-frame-pointer -O2 -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -save-temps -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/3ds/include -I/opt/devkitpro/portlibs/3ds/include -I/opt/devkitpro/libctru/include -I/home/Tobi/Craftus-Next/3ds/build -D__3DS__ `arm-none-eabi-pkg-config opusfile --cflags` -c /home/Tobi/Craftus-Next/3ds/dependencies/playback/wav.c -o wav.o 
+ 
+echo linking Craftus-Next.elf
+arm-none-eabi-gcc -specs=3dsx.specs -g -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -Wl,-Map,Craftus-Next.map  gui.shbin.o world.shbin.o   main.o Collision.o CommandLine.o Crash.o Raycast.o Sound.o DefaultGen.o FlatBedrock.o SmeaGen.o SuperFlatGen.o Biome.o Desert.o Forest.o Plains.o Savanna.o AcaciaTree.o BirchTree.o OakTree.o Pumpkins.o TreeGen.o Block.o BlockEvent.o Item.o Liquids.o Camera.o Clouds.o Cursor.o Hand.o PolyGen.o Renderer.o TextureMap.o VBOCache.o VertexFmt.o WorldRenderer.o DebugUI.o FontLoader.o Gui.o Inventory.o SpriteBatch.o WorldSelect.o Chunk.o ChunkWorker.o Direction.o WorkQueue.o World.o SaveManager.o SuperChunk.o Damage.o Player.o PlayerController.o mpack.o vec.o sino.o lodepng.o miniz.o ini.o error.o file.o flac.o mp3.o opus.o playback.o vorbis.o wav.o  -L/opt/devkitpro/portlibs/3ds/lib -L/opt/devkitpro/libctru/lib -lcurl -lmbedtls -lmbedx509 -lmbedcrypto -larchive -lbz2 -llzma -lm -lz -lcitro2d -lcitro3d -lmpg123 -lvorbisidec -logg -lmikmod -lmad -lctru `arm-none-eabi-pkg-config opusfile --libs` -o /home/Tobi/Craftus-Next/3ds/Craftus-Next.elf
+arm-none-eabi-gcc-nm -CSn /home/Tobi/Craftus-Next/3ds/Craftus-Next.elf > Craftus-Next.lst
+ 
+smdhtool --create "Craftus-Next" "Minecraft clone" "TobiD7, skymz4" /home/Tobi/Craftus-Next/3ds/icon/logo.png /home/Tobi/Craftus-Next/3ds/Craftus-Next.smdh
+echo built ... Craftus-Next.smdh
+ 
+3dsxtool /home/Tobi/Craftus-Next/3ds/Craftus-Next.elf /home/Tobi/Craftus-Next/3ds/Craftus-Next.3dsx --smdh=/home/Tobi/Craftus-Next/3ds/Craftus-Next.smdh --romfs=/home/Tobi/Craftus-Next/3ds/romfs
+echo built ... Craftus-Next.3dsx
+ 
+makerom -f cia -o Craftus-Next.cia -rsf Craftus-Next.rsf -target t -exefslogo -elf Craftus-Next.elf -icon Craftus-Next.smdh -banner banner.bin
+echo built ... Craftus-Next.cia
+make[1]: Leaving directory '/home/Tobi/Craftus-Next/3ds'
+ 
+make[1]: Entering directory '/home/Tobi/Craftus-Next/switch'
+ 
+[ -d build ] || mkdir -p build
+make --no-print-directory -C build -f /home/Tobi/Craftus-Next/switch/Makefile
+ 
+echo main.cpp
+aarch64-none-elf-g++ -MMD -MP -MF /home/Tobi/Craftus-Next/switch/build/main.d -g -Wall -O2 -ffunction-sections -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE  -I/home/Tobi/Craftus-Next/switch/source -I/home/Tobi/Craftus-Next/switch/source/NGS -I/opt/devkitpro/portlibs/switch/include -I/opt/devkitpro/libnx/include -I/home/Tobi/Craftus-Next/switch/build -D__SWITCH__ -fno-rtti -fno-exceptions -c /home/Tobi/Craftus-Next/switch/source/main.cpp -o main.o 
+ 
+echo ngs.cpp
+aarch64-none-elf-g++ -MMD -MP -MF /home/Tobi/Craftus-Next/switch/build/ngs.d -g -Wall -O2 -ffunction-sections -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE  -I/home/Tobi/Craftus-Next/switch/source -I/home/Tobi/Craftus-Next/switch/source/NGS -I/opt/devkitpro/portlibs/switch/include -I/opt/devkitpro/libnx/include -I/home/Tobi/Craftus-Next/switch/build -D__SWITCH__ -fno-rtti -fno-exceptions -c /home/Tobi/Craftus-Next/switch/source/NGS/ngs.cpp -o ngs.o 
+echo linking Craftus-Next.elf
+aarch64-none-elf-g++ -specs=/opt/devkitpro/libnx/switch.specs -g -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE -Wl,-Map,Craftus-Next.map  main.o ngs.o   -L/opt/devkitpro/portlibs/switch/lib -L/opt/devkitpro/libnx/lib -lEGL -lglapi -ldrm_nouveau -lnx -lm -o /home/Tobi/Craftus-Next/switch/Craftus-Next.elf
+aarch64-none-elf-gcc-nm -CSn /home/Tobi/Craftus-Next/switch/Craftus-Next.elf > Craftus-Next.lst
+ 
+nacptool --create "Craftus-Next" "Unspecified Author" "1.0.0" /home/Tobi/Craftus-Next/switch/Craftus-Next.nacp 
+echo built ... Craftus-Next.nacp
+elf2nro /home/Tobi/Craftus-Next/switch/Craftus-Next.elf /home/Tobi/Craftus-Next/switch/Craftus-Next.nro --icon=/home/Tobi/Craftus-Next/switch/icon.jpg --nacp=/home/Tobi/Craftus-Next/switch/Craftus-Next.nacp --romfsdir=/home/Tobi/Craftus-Next/switch/romfs
+echo built ... Craftus-Next.nro
+ 
+make[1]: Leaving directory '/home/Tobi/Craftus-Next/switch'
+ 
+rm -fr bin
+mkdir -p bin
+ 
+find . -name "*.3dsx" ! -path "./bin/*" -exec cp -fv {} bin \;
+find . -name "*.cia" ! -path "./bin/*" -exec cp -fv {} bin \;
+find . -name "*.nro" ! -path "./bin/*" -exec cp -fv {} bin \;
+make: Leaving directory '/home/Tobi/Craftus-Next'
+ 

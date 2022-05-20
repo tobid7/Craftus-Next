@@ -95,7 +95,8 @@ void WorldRenderer_Deinit() {
 static void renderWorld() {
 
 	C3D_FogColor(0xffd990);
-	if (world->wtime < 1500)
+	skycol = 0x90d9ffff;
+	/*if (world->wtime < 1500)
 	{
 		skycol = SHADER_RGBA(153, 255, (int)(((float)world->wtime/1500)*255), 255);
 	}
@@ -118,7 +119,7 @@ static void renderWorld() {
 	if (world->wtime > 22500 && world->wtime < 24000)
 	{
 		skycol = 0xa7e5ffff;
-	}
+	}*/
 	DebugUI_Text("Time: %i", world->wtime);
 	memset(chunkRendered, 0, sizeof(chunkRendered));
 
