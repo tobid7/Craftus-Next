@@ -4,10 +4,11 @@
 #include "world/worldgen/biomes/Plains.h"
 #include "world/worldgen/biomes/Savanna.h"
 
+int b = 0;
+
 enum Biomes Biome_GetRandom()
 {
-    int b = 0;
-    b = rand() % 60;
+    b = rand()%60;
     //b = 55;
     enum Biomes biomex = Biome_Plains;
     switch (b)
