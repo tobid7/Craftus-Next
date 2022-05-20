@@ -94,10 +94,10 @@ bool Gui_Button(float size, const char* label, ...) {
 	int middlePieceSize = w - SLICE_SIZE * 2;
 
 	SpriteBatch_BindGuiTexture(GuiTexture_Widgets);
-	SpriteBatch_PushQuad(x, y, -3, SLICE_SIZE, 20, 0, 46 + (pressed * BUTTON_HEIGHT * 2), SLICE_SIZE, 20);
-	SpriteBatch_PushQuad(x + SLICE_SIZE, y, -3, middlePieceSize, 20, SLICE_SIZE, 46 + (pressed * BUTTON_HEIGHT * 2), middlePieceSize,
+	SpriteBatch_PushQuad(x, y, -3, SLICE_SIZE, 20, 0, 46 + (!pressed * BUTTON_HEIGHT/* * 2*/), SLICE_SIZE, 20);
+	SpriteBatch_PushQuad(x + SLICE_SIZE, y, -3, middlePieceSize, 20, SLICE_SIZE, 46 + (!pressed * BUTTON_HEIGHT/* * 2*/), middlePieceSize,
 			     20);
-	SpriteBatch_PushQuad(x + SLICE_SIZE + middlePieceSize, y, -3, SLICE_SIZE, 20, 192, 46 + (pressed * BUTTON_HEIGHT * 2), SLICE_SIZE,
+	SpriteBatch_PushQuad(x + SLICE_SIZE + middlePieceSize, y, -3, SLICE_SIZE, 20, 192, 46 + (!pressed * BUTTON_HEIGHT/* * 2*/), SLICE_SIZE,
 			     20);
 
 	SpriteBatch_PushTextVargs(x + (w / 2 - textWidth / 2), y + (BUTTON_HEIGHT - CHAR_HEIGHT) / 2, -1, SHADER_RGB(31, 31, 31), true,

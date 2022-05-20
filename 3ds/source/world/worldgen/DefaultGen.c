@@ -5,46 +5,30 @@
 #include <sino/sino.h>
 #include <stdio.h>
 #include <time.h>
+#include "misc/noise.h"
 void DefaultGen_Init(DefaultGen* gen, World* world) { gen->world = world; }
 int height = 0;
 // based off https://github.com/smealum/3dscraft/blob/master/source/generation.c
 void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 	srand(time(NULL));
-	
+	enum Biomes biome = Biome_GetRandom();
 
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
-			enum Biomes biome = Biome_GetRandom();
+			
 			float px = (float)(x + item.chunk->x * CHUNK_SIZE);
 			float pz = (float)(z + item.chunk->z * CHUNK_SIZE);
 
 			const int smeasClusterSize = 8;
 			const int smeasChunkHeight = 16;
-			if (biome == Biome_Plains)
-			{
-				height = (int)(sino_2d((px) / (smeasClusterSize * 4), (pz) / (smeasClusterSize * 4)) * smeasClusterSize) +
-				     (smeasChunkHeight * smeasClusterSize / 2);
-			}
-			if (biome == Biome_Desert)
-			{
-				height = (int)(sino_2d((px) / (smeasClusterSize * 6), (pz) / (smeasClusterSize * 6)) * smeasClusterSize) +
-				     (smeasChunkHeight * smeasClusterSize / 2);
-			}
-			if (biome == Biome_Forest)
-			{
-				height = (int)(sino_2d((px) / (smeasClusterSize * 7), (pz) / (smeasClusterSize * 7)) * smeasClusterSize) +
-				     (smeasChunkHeight * smeasClusterSize / 2);
-			}
-			if (biome == Biome_Savanna)
-			{
-				height = (int)(sino_2d((px) / (smeasClusterSize * 8), (pz) / (smeasClusterSize * 7)) * smeasClusterSize) +
-				     (smeasChunkHeight * smeasClusterSize / 2);
-			}
+			height = (int)(sino_2d((px) / (smeasClusterSize * 4), (pz) / (smeasClusterSize * 4)) * smeasClusterSize) +
+				(smeasChunkHeight * smeasClusterSize / 2);
 			
 
-			/*for (int y = 0; y < height - 3; y++) {
-				Chunk_SetBlock(item.chunk, x, y, z, Block_Stone);
-			}*/
+
+			//for (int y = 0; y < height - 3; y++) {
+			//	Chunk_SetBlock(item.chunk, x, y, z, Block_Stone);
+			//}
 			for (int y = 0; y < Biome_GetLevelInt(A, biome, height); y++)
 			{
 				Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(A, biome));
@@ -65,16 +49,16 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			{
 				Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(E, biome));
 			}
-			/*for (int y = height - 3; y < height; y++) {
-				Chunk_SetBlock(item.chunk, x, y, z, Block_Dirt);
-			}*/
+			//for (int y = height - 3; y < height; y++) {
+			//	Chunk_SetBlock(item.chunk, x, y, z, Block_Dirt);
+			//}
 			//Chunk_SetBlock(item.chunk, x, height, z, Block_Grass);
 			for (int bd = 0; bd < 1 + rand() % 3; bd++)
             {Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);}
-			/*int l = rand() % 800;
-            if (l == 1){
-				Pumpkins_Gen(queue, item);
-			}*/
+			//int l = rand() % 800;
+            //if (l == 1){
+			//	Pumpkins_Gen(queue, item);
+			//}
 			if (Biome_HasTrees(biome)){
 			if (x == rand() % 17 && z == rand() % 17)
 			{	
@@ -103,4 +87,5 @@ void DefaultGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
 			}}
 		}
 	}
+	
 }

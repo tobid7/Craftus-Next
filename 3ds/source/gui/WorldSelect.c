@@ -18,6 +18,8 @@
 
 #include <3ds.h>
 
+#include <GameStates.h>
+
 typedef struct {
 	uint32_t lastPlayed;
 	char name[WORLD_NAME_SIZE];
@@ -103,6 +105,7 @@ static int selectedWorld = -1;
 static bool clicked_play = false;
 static bool clicked_new_world = false;
 static bool clicked_delete_world = false;
+static bool clicked_options = false;
 
 static bool confirmed_world_options = false;
 static bool canceled_world_options = false;
@@ -115,6 +118,8 @@ static WorldGenType worldGenType = WorldGen_SuperFlat;
 static gamemode gamemode1=Gamemode_Survival;
 
 static char* gamemodestr[]={"Survival","Creative","Adventure","Spectator"};
+
+float fovscale = 1.0f;
 
 static char* worldGenTypesStr[] = {"Smea", "Superflat", "FlatBedrock", "Default"};
 
@@ -170,8 +175,9 @@ void WorldSelect_Render() {
 		}
 
 		Gui_Offset(0, 2 * 32 + 5 + BUTTON_TEXT_PADDING);
-		Gui_BeginRowCenter(Gui_RelativeWidth(0.95f), 1);
-		clicked_play = Gui_Button(1.f, "Play selected world");
+		Gui_BeginRowCenter(Gui_RelativeWidth(0.95f), 2);
+		clicked_play = Gui_Button(0.5f, "Play");
+		clicked_options = Gui_Button(0.5f, "Options");
 		Gui_EndRow();
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.95f), 2);
 		clicked_new_world = Gui_Button(0.5f, "New World");
@@ -200,14 +206,14 @@ void WorldSelect_Render() {
 		Gui_EndRow();
 
 		Gui_Offset(0, 32);
-		/*Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
-		Gui_Label(0.45f, true, INT16_MAX, false, "Gamemode:");
+		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
+		Gui_Label(0.45f, true, INT16_MAX, false, "FovScale:\n%f", 60.f + 12.f * fovscale);
 		Gui_Space(0.1f);
-		if (Gui_Button(0.45f, "%s", gamemodestr[gamemode1])) {
-			gamemode1++;
-			if (gamemode1 ==Gamemode_Count) gamemode1 = 0;
+		if (Gui_Button(0.45f, "%f", fovscale)) {
+			fovscale+=0.1f;
+			if (fovscale >=4.2f) fovscale = 0.0f;
 		}
-		Gui_EndRow();*/
+		Gui_EndRow();
 
 		/*Gui_Offset(0, 60);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
@@ -228,10 +234,16 @@ void WorldSelect_Render() {
 	}
 }
 
+extern GameState gamestate;
+
 bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* worldType, bool* newWorld, Player player) {
 	if (clicked_new_world) {
 		clicked_new_world = false;
 		menustate = MenuState_WorldOptions;
+	}
+	if (clicked_options)
+	{
+		gamestate = GameState_Options;
 	}
 	if (confirmed_world_options) {
 		confirmed_world_options = false;
@@ -239,6 +251,7 @@ bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* world
 		player.gamemode = gamemode1;
 		player.difficulty = diffz;
 		//player->gamemode=gamemode3;
+		player.fovAdd = fovscale;
 
 		static SwkbdState swkbd;
 		static char name[WORLD_NAME_SIZE];

@@ -12,6 +12,7 @@
 #include <gui/DebugUI.h>
 #include <gui/Gui.h>
 #include <gui/WorldSelect.h>
+#include <gui/OptionsMenu.h>
 #include <rendering/PolyGen.h>
 #include <rendering/Renderer.h>
 #include <world/ChunkWorker.h>
@@ -27,7 +28,7 @@
 #include <sino/sino.h>
 #include <citro3d.h>
 
-bool showDebugInfo = true;
+bool showDebugInfo = false;
 
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) {
 	for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
@@ -40,9 +41,9 @@ void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) 
 
 	SaveManager_Unload(savemgr);
 }
-
+GameState gamestate = GameState_SelectWorld;
 int main() {
-	GameState gamestate = GameState_SelectWorld;
+	
 	//printf("gfxinit\n");
 	gfxInitDefault();
 
@@ -88,6 +89,8 @@ int main() {
 	DebugUI_Init();
 
 	WorldSelect_Init();
+
+	Options_Init();
 
 	World_Init(world, &chunkWorker.queue);
 
@@ -154,6 +157,11 @@ int main() {
 				WorldSelect_ScanWorlds();
 
 				lastTime = svcGetSystemTick();
+			}
+
+			else if (gamestate == GameState_Options)
+			{
+				gamestate = GameState_SelectWorld;
 			}
 		}
 
@@ -235,7 +243,12 @@ int main() {
 		}
 		else if (gamestate == GameState_Options)
 		{
-		
+			/////////////////////////////////////////////////////////////////
+			if (Options_Update(player))
+			{
+				gamestate = GameState_SelectWorld;
+			}
+			/////////////////////////////////////////////////////////////////
 		}
 		Gui_InputData(inputData);
 	}

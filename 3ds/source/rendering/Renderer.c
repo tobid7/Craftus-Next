@@ -12,6 +12,7 @@
 #include <rendering/PolyGen.h>
 #include <rendering/TextureMap.h>
 #include <rendering/WorldRenderer.h>
+#include <gui/OptionsMenu.h>
 
 #include <citro3d.h>
 
@@ -38,7 +39,7 @@ static int world_shader_uLocProjection, gui_shader_uLocProjection;
 static C3D_AttrInfo world_vertexAttribs, gui_vertexAttribs;
 
 static C3D_Tex logoTex;
-
+static C3D_Tex bgtex;
 
 static World* world;
 static Player* player;
@@ -47,6 +48,8 @@ static WorkQueue* workqueue;
 static GameState* gamestate;
 
 extern bool showDebugInfo;
+
+extern bool rclouds;
 
 void Renderer_Init(World* world_, Player* player_, WorkQueue* queue, GameState* gamestate_) {
 	world = world_;
@@ -99,9 +102,12 @@ void Renderer_Init(World* world_, Player* player_, WorkQueue* queue, GameState* 
 	//Item_Init();
 
 	Texture_Load(&logoTex, "romfs:/assets/textures/gui/title/craftus.png");
+	Texture_Load(&bgtex, "romfs:/assets/textures/gui/bg.png");
 }
 void Renderer_Deinit() {
 	C3D_TexDelete(&logoTex);
+
+	C3D_TexDelete(&bgtex);
 
 	Item_Deinit();
 
@@ -124,6 +130,7 @@ void Renderer_Deinit() {
 }
 
 void Renderer_Render() {
+
 	float iod = osGet3DSliderState() * PLAYER_HALFEYEDIFF;
 
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -178,13 +185,8 @@ void Renderer_Render() {
 
 			C3D_Mtx vp;
 			Mtx_Multiply(&vp, &projection, &view);
-
-			Clouds_Render(world_shader_uLocProjection, &vp, world, 0.f, 0.f);
-
-			/*SpriteBatch_BindGuiTexture(GuiTexture_TBG);
-			SpriteBatch_SetScale(1);
-			SpriteBatch_PushQuad(0, 0, 0, 400, 240, 0, 0, 400, 240);*/
 			
+			if (rclouds) Clouds_Render(world_shader_uLocProjection, &vp, world, 0.f, 0.f);
 
 			SpriteBatch_BindTexture(&logoTex);
 
@@ -210,7 +212,13 @@ void Renderer_Render() {
 	if (*gamestate == GameState_SelectWorld)
 	{
 		WorldSelect_Render();
-                if (showDebugInfo) DebugUI_Draw();
+        if (showDebugInfo) DebugUI_Draw();
+	}
+
+	else if (*gamestate == GameState_Options)
+	{
+		Options_Render();
+		if (showDebugInfo) DebugUI_Draw();
 	}
 	else {
 		SpriteBatch_SetScale(2);

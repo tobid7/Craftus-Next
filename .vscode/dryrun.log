@@ -13,12 +13,12 @@ make[2]: Leaving directory '/home/Tobi/Craftus-Next/3ds'
  
 make[2]: *** build: No such file or directory.  Stop.
 
+make[1]: *** [Makefile:150: build] Error 2
+
 makerom -f cia -o Craftus-Next.cia -rsf Craftus-Next.rsf -target t -exefslogo -elf Craftus-Next.elf -icon Craftus-Next.smdh -banner banner.bin
 echo built ... Craftus-Next.cia
 make[1]: Leaving directory '/home/Tobi/Craftus-Next/3ds'
  
-make[1]: *** [Makefile:150: build] Error 2
-
 make: *** [Makefile:18: craftus] Error 1
 
 make: Leaving directory '/home/Tobi/Craftus-Next'
