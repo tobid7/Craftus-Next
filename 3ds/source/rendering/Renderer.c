@@ -210,6 +210,7 @@ void Renderer_Render() {
 	if (*gamestate == GameState_SelectWorld)
 	{
 		WorldSelect_Render();
+                if (showDebugInfo) DebugUI_Draw();
 	}
 	else {
 		SpriteBatch_SetScale(2);
