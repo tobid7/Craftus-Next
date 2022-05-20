@@ -207,7 +207,7 @@ void WorldSelect_Render() {
 
 		Gui_Offset(0, 32);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
-		/"Gui_Label(0.45f, true, INT16_MAX, false, "FovScale:\n%f", 60.f + 12.f * fovscale);
+		/*"Gui_Label(0.45f, true, INT16_MAX, false, "FovScale:\n%f", 60.f + 12.f * fovscale);
 		Gui_Space(0.1f);
 		if (Gui_Button(0.45f, "%f", fovscale)) {
 			fovscale+=0.1f;
