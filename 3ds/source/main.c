@@ -152,8 +152,19 @@ int main() {
 			else if (gamestate == GameState_Playing) {
 				releaseWorld(&chunkWorker, &savemgr, world);
                                 free(world);
-                                World* world = (World*)malloc(sizeof(World));
+                                ChunkWorker_Deinit(&chunkWorker);
+                                ChunkWorker_Init(&chunkWorker);
+	                        ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_PolyGen, (WorkerFuncObj){&PolyGen_GeneratePolygons, NULL, true});
+	                        ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&SuperFlatGen_Generate, &flatGen, true});
+	                        ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&FlatBedrockGen_Generate, &bdgen, true});
+	                        ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&SmeaGen_Generate, &smeaGen, true});
+	                        ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&DefaultGen_Generate, &dgen, true});
+                                world = (World*)malloc(sizeof(World));
                                 World_Init(world, &chunkWorker.queue);
+                                
+                                ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_Load, (WorkerFuncObj){&SaveManager_LoadChunk, &savemgr, true});
+	                        ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_Save, (WorkerFuncObj){&SaveManager_SaveChunk, &savemgr, true});
+
 				gamestate = GameState_SelectWorld;
 
 				WorldSelect_ScanWorlds();
