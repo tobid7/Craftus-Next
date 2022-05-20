@@ -35,6 +35,8 @@ extern bool showDebugInfo;
 extern bool rclouds;
 
 bool graphicssettings = false;
+
+bool soundsettings = false;
 //static char* diffstr[]={"Peaceful", "Easy", "Normal", "Hard"};
 
 static MenuState2 menustate2 = MenuState_Main;
@@ -56,11 +58,14 @@ void Options_Render() {
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
 		graphicssettings = Gui_Button(1.f, "Graphics");
 		Gui_EndRow();
+		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
+		soundsettings = Gui_Button(1.f, "Sound");
+		Gui_EndRow();
 
-		Gui_VerticalSpace(Gui_RelativeHeight(0.58f));
+		Gui_VerticalSpace(Gui_RelativeHeight(0.35));
 
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		cancelled2 = Gui_Button(1.f, "Main Menu");
+		cancelled2 = Gui_Button(1.0f, "Main Menu");
 	} else if (menustate2 == MenuState_Graphics) {
 		Gui_Offset(0, 10);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
@@ -91,12 +96,12 @@ void Options_Render() {
 		
         Gui_Offset(0, 10);
 		Gui_BeginRow(Gui_RelativeWidth(0.9), 1);
-		Gui_Button(1.0f, "LABEL");
+		Gui_Label(1.0f, true, INT16_MAX, true, "NOT AVAILABLE");
 		Gui_EndRow();
 
         Gui_VerticalSpace(Gui_RelativeHeight(0.4f));
-		Gui_BeginRowCenter(0, 1);
-		cancelled = Gui_Button(1.0f, "Cancel");
+		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
+		cancelled2 = Gui_Button(1.0f, "Main Menu");
 	}
 }
 
@@ -120,6 +125,11 @@ bool Options_Update(Player player) {
     {
         menustate2 = MenuState_Graphics;
     }
+
+	if (soundsettings)
+	{
+		menustate2 = MenuState_Sound;
+	}
 
 	return false;
 }
