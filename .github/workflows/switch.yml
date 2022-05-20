@@ -95,7 +95,7 @@ jobs:
           cd nightlys
           sudo chmod +x nightlytool
           echo running
-          ./nightlytool management/Craftus-Next.ini Craftus-Next NPI-D7 nightlys v$CURRENT_DATE $COMMIT_HASH "\\$COMMIT_SUBJECT\\$COMMIT_MESSAGE\\\\" 0 "$AUTHOR_NAME"
+          #./nightlytool management/Craftus-Next.ini Craftus-Next NPI-D7 nightlys v$CURRENT_DATE $COMMIT_HASH "\\$COMMIT_SUBJECT\\$COMMIT_MESSAGE\\\\" 0 "$AUTHOR_NAME"
           echo creating dirs
           ls -R
           mkdir -p builds/Craftus-Next/
