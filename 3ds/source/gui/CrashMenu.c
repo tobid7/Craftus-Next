@@ -23,8 +23,7 @@ void Crash_Init(const char* crash, ...) {
 	crashtext = crash;
 }
 
-bool cancelled = false;
-bool cancelled2 = false;
+bool cancelled3 = false;
 
 void Crash_Deinit() { /*Nothing*/ }
 
@@ -34,7 +33,7 @@ void Crash_Render() {
 	SpriteBatch_BindGuiTexture(GuiTexture_MenuBackground);
 	for (int i = 0; i < 160 / 32 + 1; i++) {
 		for (int j = 0; j < 120 / 32 + 1; j++) {
-			bool overlay = j >= 2 && menustate2 == MenuState_TempUnused;
+			bool overlay = false;
 			SpriteBatch_PushQuadColor(i * 32, j * 32, overlay ? -4 : -10, 32, 32, 0, 0, 32, 32,
 						  overlay ? INT16_MAX : SHADER_RGB(12, 12, 12));
 		}
@@ -51,7 +50,7 @@ void Crash_Render() {
 	
 	Gui_VerticalSpace(Gui_RelativeHeight(0.35));
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	cancelled2 = Gui_Button(1.0f, "Quit");
+	cancelled3 = Gui_Button(1.0f, "Quit");
 	
 }
 
@@ -59,9 +58,9 @@ void Crash_Render() {
 
 bool Crash_Update(Player player) {
     
-    if (cancelled2)
+    if (cancelled3)
     {
-        cancelled2 = false;
+        cancelled3 = false;
         
         return true;
     }
