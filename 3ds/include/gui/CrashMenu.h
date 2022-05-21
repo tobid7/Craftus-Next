@@ -6,7 +6,7 @@
 
 #include <world/World.h>
 
-void Crash_Init(const char* crash);
+void Crash_Init(const char* crash, ...);
 void Crash_Deinit();
 
 void Crash_Render();
