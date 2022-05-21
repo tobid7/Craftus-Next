@@ -221,7 +221,7 @@ void Renderer_Render() {
 		Options_Render();
 		if (showDebugInfo) DebugUI_Draw();
 	}
-	else if (*gamestate == GameState_Options)
+	else if (*gamestate == GameState_Crash)
 	{
 		Crash_Render();
 		if (showDebugInfo) DebugUI_Draw();
