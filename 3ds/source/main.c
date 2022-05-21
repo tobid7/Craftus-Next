@@ -122,7 +122,23 @@ int main() {
 		DebugUI_Text("X: %f, Y: %f, Z: %f", f3_unpack(player.position));
 		
 
-                if (linearSpaceFree() <= 2097152) Crash("Not enough Memory: %fkb", linearSpaceFree() / 1024);
+                if (linearSpaceFree() <= 2097152)
+                {
+                     releaseWorld(&chunkWorker, &savemgr, world);
+                     SaveManager_Deinit(&savemgr);
+
+	             SuperChunk_DeinitPools();
+
+	             free(world);
+                     WorldSelect_Deinit();
+
+	             DebugUI_Deinit();
+
+	             ChunkWorker_Deinit(&chunkWorker);
+
+	             Renderer_Deinit();
+                     Crash("Not enough Memory!");
+                }
 		//DebugUI_Text("HP: %i",player.hp);
 		//DebugUI_Text("velocity: %f rndy: %f",player.velocity.y,player.rndy);
 		//DebugUI_Text("Time: %i Cause: %c",dmg->time,dmg->cause);
