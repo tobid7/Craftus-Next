@@ -122,21 +122,8 @@ int main() {
 		DebugUI_Text("X: %f, Y: %f, Z: %f", f3_unpack(player.position));
 		
 
-                if (linearSpaceFree() <= 2097152)
+                if (linearSpaceFree() <= 5242880)
                 {
-                     releaseWorld(&chunkWorker, &savemgr, world);
-                     SaveManager_Deinit(&savemgr);
-
-	             SuperChunk_DeinitPools();
-
-	             free(world);
-                     WorldSelect_Deinit();
-
-	             DebugUI_Deinit();
-
-	             ChunkWorker_Deinit(&chunkWorker);
-
-	             Renderer_Deinit();
                      Crash("Not enough Memory!");
                 }
 		//DebugUI_Text("HP: %i",player.hp);
