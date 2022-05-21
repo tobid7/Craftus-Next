@@ -127,7 +127,7 @@ int main() {
                 {
                     //Crash("Not enough Memory!");
 					Crash_Init("Out of Memory!");
-					GameState = GameState_Crash;
+					gamestate = GameState_Crash;
                 }
 		//DebugUI_Text("HP: %i",player.hp);
 		//DebugUI_Text("velocity: %f rndy: %f",player.velocity.y,player.rndy);
