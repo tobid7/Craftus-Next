@@ -251,7 +251,7 @@ bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* world
 		player.gamemode = gamemode1;
 		player.difficulty = diffz;
 		//player->gamemode=gamemode3;
-		player.fovAdd = fovscale;
+		//player.fovAdd = fovscale;
 
 		static SwkbdState swkbd;
 		static char name[WORLD_NAME_SIZE];

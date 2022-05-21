@@ -245,3 +245,9 @@ void WorldRenderer_Render(float iod) {
 		Cursor_Draw(projectionUniform, &camera.vp, world, player->viewRayCast.x, player->viewRayCast.y, player->viewRayCast.z,
 			    player->viewRayCast.direction);
 }
+
+void WorldRenderer_Update(Player* player_, World* world_)
+{
+	player = player_;
+	world = world_;
+}

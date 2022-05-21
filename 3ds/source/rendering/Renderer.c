@@ -243,3 +243,10 @@ void Renderer_Render() {
 
 	C3D_FrameEnd(0);
 }
+
+void Renderer_Update(Player* player_, World* world_)
+{
+	player = player_;
+	world = world_;
+	WorldRenderer_Update(player_, world_);
+}
