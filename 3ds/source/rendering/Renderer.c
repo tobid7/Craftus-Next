@@ -12,6 +12,7 @@
 #include <rendering/PolyGen.h>
 #include <rendering/TextureMap.h>
 #include <rendering/WorldRenderer.h>
+#include <gui/CrashMenu.h>
 #include <gui/OptionsMenu.h>
 
 #include <citro3d.h>
@@ -218,6 +219,11 @@ void Renderer_Render() {
 	else if (*gamestate == GameState_Options)
 	{
 		Options_Render();
+		if (showDebugInfo) DebugUI_Draw();
+	}
+	else if (*gamestate == GameState_Options)
+	{
+		Crash_Render();
 		if (showDebugInfo) DebugUI_Draw();
 	}
 	else {

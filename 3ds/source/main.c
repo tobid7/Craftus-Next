@@ -24,6 +24,7 @@
 #include <world/worldgen/FlatBedrockGen.h>
 #include <world/worldgen/DefaultGen.h>
 #include <misc/Crash.h>
+#include <gui/CrashMenu.h>
 
 #include <sino/sino.h>
 #include <citro3d.h>
@@ -124,7 +125,9 @@ int main() {
 
                 if (linearSpaceFree() <= 5242880)
                 {
-                     Crash("Not enough Memory!");
+                    //Crash("Not enough Memory!");
+					Crash_Init("Out of Memory!");
+					GameState = GameState_Crash;
                 }
 		//DebugUI_Text("HP: %i",player.hp);
 		//DebugUI_Text("velocity: %f rndy: %f",player.velocity.y,player.rndy);
@@ -254,6 +257,13 @@ int main() {
 				gamestate = GameState_SelectWorld;
 			}
 			/////////////////////////////////////////////////////////////////
+		}
+		else if (gamestate == GameState_Crash)
+		{
+			if (Crash_Update(player))
+			{
+				break;
+			}
 		}
 		Gui_InputData(inputData);
 	}
