@@ -1,19 +1,11 @@
-#include "ngs.hpp"
-
-NGS::Game game("Craftus-Next");
+#include <switch.h>
 
 int main()
 {
-    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
-    PadState pad;
-    padInitializeDefault(&pad);
-
-    while (game.IsRunning())
+    
+    while (1)
     {
-        padUpdate(&pad);
-        u32 kDown = padGetButtonsDown(&pad);
-        if (kDown & HidNpadButton_Plus)
-            game.Exit();
+
     }
 
     return 0;
