@@ -25,6 +25,7 @@ bool cancelled3 = false;
 bool worlds = false;
 bool options = false;
 
+bool nu;
 void Title_Deinit() { /*Nothing*/ }
 
 void Title_Render() {
@@ -45,7 +46,7 @@ void Title_Render() {
 	worlds = Gui_Button(true, 1.f, "Singleplayer");
 	Gui_EndRow();
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	soundsettings = Gui_Button(false, 1.f, "Multiplayer");
+	nu = Gui_Button(false, 1.f, "Multiplayer");
 	Gui_EndRow();
 
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
