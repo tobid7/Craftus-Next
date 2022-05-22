@@ -126,6 +126,7 @@ int main() {
                 if (linearSpaceFree() <= 5242880)
                 {
                     //Crash("Not enough Memory!");
+                    releaseWorld(&chunkWorker, &savemgr, world);
 					Crash_Init("Out of Memory!");
 					gamestate = GameState_Crash;
                 }
