@@ -122,7 +122,7 @@ bool Gui_Button(bool available, float size, const char* label, ...) {
 	return false;
 }
 
-float Gui_Slider(float min, float max, float size, const char* label, ...)
+float Gui_Slider(float min, float max, int default, float size, const char* label, ...)
 {
 	#define SLICE_SIZE 8
 
@@ -131,13 +131,16 @@ float Gui_Slider(float min, float max, float size, const char* label, ...)
 
 	int textWidth = SpriteBatch_CalcTextWidthVargs(label, vl);
 	
-	int res = (max + min)/2;
+	int res = default;
 
 	int x = windowX + relativeX;
 	int y = windowY + relativeY - BUTTON_TEXT_PADDING;
 	int w = (size <= 0.f) ? textWidth + SLICE_SIZE : relativeToAbsoluteSize(size);
 
-	bool pressed = Gui_IsCursorInside(x, y, w, BUTTON_HEIGHT);
+	x2 = ((x / (w-24))*(w-24));
+	w2 = 24;
+
+	bool pressed = Gui_IsCursorInside(x2, y, w2, BUTTON_HEIGHT);
 
 	int middlePieceSize = w - SLICE_SIZE * 2;
 
@@ -149,12 +152,16 @@ float Gui_Slider(float min, float max, float size, const char* label, ...)
 		SpriteBatch_PushQuad(x + SLICE_SIZE + middlePieceSize, y, -3, SLICE_SIZE, 20, 192, 46, SLICE_SIZE,
 			     20);
 
-	/*if (1)
+	SpriteBatch_PushQuad(x2, y, -3, SLICE_SIZE, 20, 0, 66 + (pressed * BUTTON_HEIGHT), SLICE_SIZE, 20);
+		SpriteBatch_PushQuad(x2 + SLICE_SIZE, y, -3, middlePieceSize, 20, SLICE_SIZE, 66 + (pressed * BUTTON_HEIGHT), middlePieceSize,
+			     20);
+		SpriteBatch_PushQuad(x2 + SLICE_SIZE + middlePieceSize, y, -3, SLICE_SIZE, 20, 192, 66 + (pressed * BUTTON_HEIGHT), SLICE_SIZE,
+			     20);
+
+	if (pressed)
 	{
-
-	}*/	
-
-
+		x2 = input.touchX / SpriteBatch_GetScale();
+	}
 
 	SpriteBatch_PushTextVargs(x + (w / 2 - textWidth / 2), y + (BUTTON_HEIGHT - CHAR_HEIGHT) / 2, -1, SHADER_RGB(31, 31, 31), true,
 				  INT_MAX, NULL, label, vl);
