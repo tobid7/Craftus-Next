@@ -5,18 +5,19 @@
 #include <gui/DebugUI.h>
 
 float fovScale_ = 2.5f;
+float fov_ = 60.f;
 
 void Camera_Init(Camera* cam) {
 	Mtx_Identity(&cam->view);
 
-	cam->fov = C3D_AngleFromDegrees(30.f);
+	cam->fov = C3D_AngleFromDegrees(fov_);
 	cam->near = 0.2f, cam->far = 8.f * CHUNK_SIZE;
 
 	Mtx_PerspTilt(&cam->projection, cam->fov, ((400.f) / (240.f)), cam->near, cam->far, false);
 }
 
 void Camera_Update(Camera* cam, Player* player, float iod) {
-	float fov = cam->fov + C3D_AngleFromDegrees(12.f) * fovScale_;
+	float fov = C3D_AngleFromDegrees(fov_);//cam->fov + C3D_AngleFromDegrees(12.f) * fovScale_;
 	Mtx_PerspStereoTilt(&cam->projection, fov, ((400.f) / (240.f)), cam->near, cam->far, iod, 1.f, false);
 
 	float3 playerHead =

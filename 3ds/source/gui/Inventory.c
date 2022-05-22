@@ -57,26 +57,27 @@ int Inventory_Draw(int x, int y, int w, ItemStack* stacks, int count, int _site)
 	int site = _site;
 	bool even = false;
 	bool newLine = false;
-        Gui_Offset(0, 0);
-	//if (Gui_Button(true, 0.f, "F3"))
-	//{
-	//	showDebugInfo = !showDebugInfo;
-	//}
+        
 
 	const int16_t colors[2] = {SHADER_RGB_DARKEN(SHADER_RGB(20, 20, 21), 9), SHADER_RGB_DARKEN(SHADER_RGB(20, 20, 21), 8)};
 	if (count > INVENTORY_MAX_PER_SITE)
 	{
 		Gui_Offset(0, 60);
-		if (Gui_Button(true, 0.f, " << ") && site > 1)
+		if (Gui_Button((site > 1), 0.f, " << ") && site > 1)
 		{
 			site--;
 		}
 		Gui_Offset(270, 60);
-		if (Gui_Button(true, 0.f, " >> ") && site*INVENTORY_MAX_PER_SITE<count)
+		if (Gui_Button((site*INVENTORY_MAX_PER_SITE<count), 0.f, " >> ") && site*INVENTORY_MAX_PER_SITE<count)
 		{
 			site++;
 			
 		}
+	}
+	Gui_Offset(0, 100);
+	if (Gui_Button(true, 0.f, "F3"))
+	{
+		showDebugInfo = !showDebugInfo;
 	}
 	int startindex = (site-1) * INVENTORY_MAX_PER_SITE;
 	for (int i = startindex; i < fmin(site*INVENTORY_MAX_PER_SITE,count); i++)
