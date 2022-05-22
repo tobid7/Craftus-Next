@@ -4,6 +4,8 @@
 
 #include <gui/DebugUI.h>
 
+float fovScale_ = 0.0f;
+
 void Camera_Init(Camera* cam) {
 	Mtx_Identity(&cam->view);
 
@@ -14,7 +16,7 @@ void Camera_Init(Camera* cam) {
 }
 
 void Camera_Update(Camera* cam, Player* player, float iod) {
-	float fov = cam->fov + C3D_AngleFromDegrees(12.f) * player->fovAdd;
+	float fov = cam->fov + C3D_AngleFromDegrees(12.f) * fovScale_;
 	Mtx_PerspStereoTilt(&cam->projection, fov, ((400.f) / (240.f)), cam->near, cam->far, iod, 1.f, false);
 
 	float3 playerHead =
