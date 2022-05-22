@@ -122,6 +122,50 @@ bool Gui_Button(bool available, float size, const char* label, ...) {
 	return false;
 }
 
+float Gui_Slider(float min, float max, float size, const char* label, ...)
+{
+	#define SLICE_SIZE 8
+
+	va_list vl;
+	va_start(vl, label);
+
+	int textWidth = SpriteBatch_CalcTextWidthVargs(label, vl);
+	
+	int res = (max + min)/2;
+
+	int x = windowX + relativeX;
+	int y = windowY + relativeY - BUTTON_TEXT_PADDING;
+	int w = (size <= 0.f) ? textWidth + SLICE_SIZE : relativeToAbsoluteSize(size);
+
+	bool pressed = Gui_IsCursorInside(x, y, w, BUTTON_HEIGHT);
+
+	int middlePieceSize = w - SLICE_SIZE * 2;
+
+	SpriteBatch_BindGuiTexture(GuiTexture_Widgets);
+
+	SpriteBatch_PushQuad(x, y, -3, SLICE_SIZE, 20, 0, 46, SLICE_SIZE, 20);
+		SpriteBatch_PushQuad(x + SLICE_SIZE, y, -3, middlePieceSize, 20, SLICE_SIZE, 46, middlePieceSize,
+			     20);
+		SpriteBatch_PushQuad(x + SLICE_SIZE + middlePieceSize, y, -3, SLICE_SIZE, 20, 192, 46, SLICE_SIZE,
+			     20);
+
+	/*if (1)
+	{
+
+	}*/	
+
+
+
+	SpriteBatch_PushTextVargs(x + (w / 2 - textWidth / 2), y + (BUTTON_HEIGHT - CHAR_HEIGHT) / 2, -1, SHADER_RGB(31, 31, 31), true,
+				  INT_MAX, NULL, label, vl);
+	va_end(vl);
+
+	relativeX += w + paddingX;
+	currentRow.highestElement = MAX(currentRow.highestElement, BUTTON_HEIGHT);
+
+	return res;
+}
+
 void Gui_Space(float space) { relativeX += relativeToAbsoluteSize(space) + paddingX; }
 void Gui_VerticalSpace(int y) { windowY += y; }
 

@@ -28,6 +28,7 @@ void Gui_Label(float size, bool shadow, int16_t color, bool center, const char* 
 #define BUTTON_HEIGHT 20
 #define BUTTON_TEXT_PADDING ((BUTTON_HEIGHT - CHAR_HEIGHT) / 2)
 bool Gui_Button(bool available, float size, const char* label, ...);
+float Gui_Slider(float min, float max, float size, const char* label, ...);
 
 bool Gui_IsCursorInside(int x, int y, int w, int h);
 bool Gui_WasCursorInside(int x, int y, int w, int h);
