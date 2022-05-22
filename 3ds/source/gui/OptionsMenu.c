@@ -56,34 +56,34 @@ void Options_Render() {
 	if (menustate2 == MenuState_Main) {
 		Gui_Offset(0, 10);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		graphicssettings = Gui_Button(1.f, "Graphics");
+		graphicssettings = Gui_Button(true, 1.f, "Graphics");
 		Gui_EndRow();
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		soundsettings = Gui_Button(1.f, "Sound");
+		soundsettings = Gui_Button(true, 1.f, "Sound");
 		Gui_EndRow();
 
 		Gui_VerticalSpace(Gui_RelativeHeight(0.35));
 
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		cancelled2 = Gui_Button(1.0f, "Main Menu");
+		cancelled2 = Gui_Button(true, 1.0f, "Main Menu");
 	} else if (menustate2 == MenuState_Graphics) {
 		Gui_Offset(0, 10);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		if (Gui_Button(1.f, "Fov: %f", 60 + 12 * fovscale2))
+		if (Gui_Button(true, 1.f, "Fov: %f", 60 + 12 * fovscale2))
         {
             fovscale2+=0.1f;
 			if (fovscale2 >=4.2f) fovscale2 = 0.0f;
         }
 		Gui_EndRow();
         Gui_BeginRowCenter(Gui_RelativeWidth(0.9), 1);
-        if (Gui_Button(1.0f, "Debug: %s", showDebugInfo ? "true" : "false"))
+        if (Gui_Button(true, 1.0f, "Debug: %s", showDebugInfo ? "true" : "false"))
         {
             showDebugInfo = !showDebugInfo;
         }
         
         Gui_EndRow();
         Gui_BeginRowCenter(Gui_RelativeWidth(0.9), 1);
-        if (Gui_Button(1.0f, "Clouds: %s", rclouds ? "true" : "false"))
+        if (Gui_Button(true, 1.0f, "Clouds: %s", rclouds ? "true" : "false"))
         {
             rclouds = !rclouds;
         }
@@ -91,7 +91,7 @@ void Options_Render() {
 		Gui_VerticalSpace(Gui_RelativeHeight(0.2f));
 
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		cancelled2 = Gui_Button(1.f, "Main Menu");
+		cancelled2 = Gui_Button(true, 1.f, "Main Menu");
 	} else if (menustate2 == MenuState_Sound) {
 		
         Gui_Offset(0, 10);
@@ -101,7 +101,7 @@ void Options_Render() {
 
         Gui_VerticalSpace(Gui_RelativeHeight(0.4f));
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		cancelled2 = Gui_Button(1.0f, "Main Menu");
+		cancelled2 = Gui_Button(true, 1.0f, "Main Menu");
 	}
 }
 

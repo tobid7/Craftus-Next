@@ -58,7 +58,7 @@ int Inventory_Draw(int x, int y, int w, ItemStack* stacks, int count, int _site)
 	bool even = false;
 	bool newLine = false;
         Gui_Offset(0, 0);
-	//if (Gui_Button(0.f, "F3"))
+	//if (Gui_Button(true, 0.f, "F3"))
 	//{
 	//	showDebugInfo = !showDebugInfo;
 	//}
@@ -67,12 +67,12 @@ int Inventory_Draw(int x, int y, int w, ItemStack* stacks, int count, int _site)
 	if (count > INVENTORY_MAX_PER_SITE)
 	{
 		Gui_Offset(0, 60);
-		if (Gui_Button(0.f, " << ") && site > 1)
+		if (Gui_Button(true, 0.f, " << ") && site > 1)
 		{
 			site--;
 		}
 		Gui_Offset(270, 60);
-		if (Gui_Button(0.f, " >> ") && site*INVENTORY_MAX_PER_SITE<count)
+		if (Gui_Button(true, 0.f, " >> ") && site*INVENTORY_MAX_PER_SITE<count)
 		{
 			site++;
 			

@@ -48,9 +48,9 @@ void Crash_Render() {
 	Gui_Label(1.0f, true, INT16_MAX, true, crashtext);
 	Gui_EndRow();
 	
-	Gui_VerticalSpace(Gui_RelativeHeight(0.35));
+	Gui_VerticalSpace(Gui_RelativeHeight(0.4));
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	cancelled3 = Gui_Button(1.0f, "Quit");
+	cancelled3 = Gui_Button(true, 1.0f, "Quit");
 	
 }
 
