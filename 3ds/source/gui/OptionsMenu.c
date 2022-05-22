@@ -71,7 +71,7 @@ void Options_Render() {
 		Gui_VerticalSpace(Gui_RelativeHeight(0.35));
 
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		cancelled2 = Gui_Button(true, 1.0f, "Main Menu");
+		cancelled2 = Gui_Button(true, 1.0f, "Back");
 	} else if (menustate2 == MenuState_Graphics) {
 		Gui_Offset(0, 10);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
@@ -102,7 +102,7 @@ void Options_Render() {
 		Gui_VerticalSpace(Gui_RelativeHeight(0.2f));
 
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		cancelled2 = Gui_Button(true, 1.f, "Main Menu");
+		cancelled2 = Gui_Button(true, 1.f, "Back");
 	} else if (menustate2 == MenuState_Sound) {
 		
         Gui_Offset(0, 10);
@@ -112,7 +112,7 @@ void Options_Render() {
 
         Gui_VerticalSpace(Gui_RelativeHeight(0.7f));
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		cancelled2 = Gui_Button(true, 1.0f, "Main Menu");
+		cancelled2 = Gui_Button(true, 1.0f, "Back");
 	}
 }
 

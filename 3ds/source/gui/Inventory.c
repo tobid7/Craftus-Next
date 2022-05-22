@@ -74,7 +74,7 @@ int Inventory_Draw(int x, int y, int w, ItemStack* stacks, int count, int _site)
 			
 		}
 	}
-	Gui_Offset(0, 100);
+	Gui_Offset(0, 150);
 	if (Gui_Button(true, 0.f, "F3"))
 	{
 		showDebugInfo = !showDebugInfo;

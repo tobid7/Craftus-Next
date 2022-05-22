@@ -166,7 +166,7 @@ int main() {
 		u32 keysheld = hidKeysHeld(), keysdown = hidKeysDown();
 		if (keysdown & KEY_START) {
 			if (gamestate == GameState_SelectWorld)
-				break;
+				gamestate = GameState_Title;
 			else if (gamestate == GameState_Playing) {
 				releaseWorld(&chunkWorker, &savemgr, world);
                                 
@@ -267,7 +267,7 @@ int main() {
 			if (Options_Update(player))
 			{
 				//Renderer_Update(&player, &world);
-				gamestate = GameState_SelectWorld;
+				gamestate = GameState_Title;
 			}
 			/////////////////////////////////////////////////////////////////
 		}
