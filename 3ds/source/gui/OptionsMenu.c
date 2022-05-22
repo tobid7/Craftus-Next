@@ -73,10 +73,15 @@ void Options_Render() {
 	} else if (menustate2 == MenuState_Graphics) {
 		Gui_Offset(0, 10);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-		if (Gui_Slider(30, 110, 70, 1.f, fovScale_, "Fov: %f", 60 + 12 * fovScale_))
+		/*if (Gui_Slider(30, 110, 70, 1.f, fovScale_, "Fov: %f", 60 + 12 * fovScale_))
         {
             fovScale_+=0.1f;
 			if (fovScale_ >=4.2f) fovScale_ = 0.0f;
+        }*/
+                if (Gui_Button(true, 1.f, fovScale_, "Fov: %f", 30 + 12 * fovScale_))
+        {
+            fovScale_+=0.1f;
+			if (fovScale_ >=6.67f) fovScale_ = 0.0f;
         }
 		Gui_EndRow();
         Gui_BeginRowCenter(Gui_RelativeWidth(0.9), 1);
