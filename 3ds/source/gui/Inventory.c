@@ -58,10 +58,10 @@ int Inventory_Draw(int x, int y, int w, ItemStack* stacks, int count, int _site)
 	bool even = false;
 	bool newLine = false;
         Gui_Offset(0, 0);
-	if (Gui_Button(0.f, "F3"))
-	{
-		showDebugInfo = !showDebugInfo;
-	}
+	//if (Gui_Button(0.f, "F3"))
+	//{
+	//	showDebugInfo = !showDebugInfo;
+	//}
 
 	const int16_t colors[2] = {SHADER_RGB_DARKEN(SHADER_RGB(20, 20, 21), 9), SHADER_RGB_DARKEN(SHADER_RGB(20, 20, 21), 8)};
 	if (count > INVENTORY_MAX_PER_SITE)
