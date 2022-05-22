@@ -255,7 +255,7 @@ int main() {
 			/////////////////////////////////////////////////////////////////
 			if (Options_Update(player))
 			{
-				Renderer_Update(&player, &world);
+				//Renderer_Update(&player, &world);
 				gamestate = GameState_SelectWorld;
 			}
 			/////////////////////////////////////////////////////////////////
