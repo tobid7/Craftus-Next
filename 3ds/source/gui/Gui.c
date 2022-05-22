@@ -122,7 +122,7 @@ bool Gui_Button(bool available, float size, const char* label, ...) {
 	return false;
 }
 
-void Gui_Slider(float min, float max, float default, float result, float size, const char* label, ...)
+bool Gui_Slider(float min, float max, float default, float result, float size, const char* label, ...)
 {
 	#define SLICE_SIZE 8
 
@@ -171,6 +171,7 @@ void Gui_Slider(float min, float max, float default, float result, float size, c
 	currentRow.highestElement = MAX(currentRow.highestElement, BUTTON_HEIGHT);
 	if (res2!= -1) res = res2;
 	result = res;
+	return false;
 }
 
 void Gui_Space(float space) { relativeX += relativeToAbsoluteSize(space) + paddingX; }
