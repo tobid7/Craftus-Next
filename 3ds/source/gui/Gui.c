@@ -137,8 +137,8 @@ bool Gui_Slider(float min, float max, float default_, float result, float size, 
 	int y = windowY + relativeY - BUTTON_TEXT_PADDING;
 	int w = (size <= 0.f) ? textWidth + SLICE_SIZE : relativeToAbsoluteSize(size);
 
-	x2 = ((x / (w-24))*(w-24));
-	w2 = 24;
+	float x2 = ((x / (w-24))*(w-24));
+	float w2 = 24;
 
 	bool pressed = Gui_IsCursorInside(x2, y, w2, BUTTON_HEIGHT);
 
@@ -157,7 +157,7 @@ bool Gui_Slider(float min, float max, float default_, float result, float size, 
 			     20);
 		SpriteBatch_PushQuad(x2 + SLICE_SIZE + middlePieceSize, y, -3, SLICE_SIZE, 20, 192, 66 + (pressed * BUTTON_HEIGHT), SLICE_SIZE,
 			     20);
-	res2 ((x2 / w) * max);
+	res2 = ((x2 / w) * max);
 	if (pressed)
 	{
 		x2 = input.touchX / SpriteBatch_GetScale();
