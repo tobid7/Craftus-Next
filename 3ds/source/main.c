@@ -31,6 +31,8 @@
 
 bool showDebugInfo = false;
 
+bool savedcrash = false;
+
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) {
 	for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
 		for (int j = 0; j < CHUNKCACHE_SIZE; j++) {
@@ -126,7 +128,11 @@ int main() {
                 if (linearSpaceFree() <= 5242880)
                 {
                     //Crash("Not enough Memory!");
-                    releaseWorld(&chunkWorker, &savemgr, world);
+                    if (!savedcrash) 
+                    {
+                          releaseWorld(&chunkWorker, &savemgr, world);
+                          savedcrash = true;
+                    }
 					Crash_Init("Out of Memory!");
 					gamestate = GameState_Crash;
                 }
