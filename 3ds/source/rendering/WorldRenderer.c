@@ -28,6 +28,7 @@ static World* world;
 static WorkQueue* workqueue;
 
 bool rclouds = true;
+bool rhandr = true;
 
 static Camera camera;
 
@@ -239,7 +240,7 @@ void WorldRenderer_Render(float iod) {
 	renderWorld();
 
 	if (rclouds) Clouds_Render(projectionUniform, &camera.vp, world, player->position.x, player->position.z);
-        Hand_Draw(projectionUniform, &camera.projection, player->quickSelectBar[player->quickSelectBarSlot], player);
+    if (rhandr) Hand_Draw(projectionUniform, &camera.projection, player->quickSelectBar[player->quickSelectBarSlot], player);
 
 	if (player->blockInActionRange)
 		Cursor_Draw(projectionUniform, &camera.vp, world, player->viewRayCast.x, player->viewRayCast.y, player->viewRayCast.z,

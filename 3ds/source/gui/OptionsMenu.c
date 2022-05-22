@@ -36,6 +36,8 @@ extern bool showDebugInfo;
 
 extern bool rclouds;
 
+extern bool rhandr;
+
 bool graphicssettings = false;
 
 bool soundsettings = false;
@@ -78,9 +80,9 @@ void Options_Render() {
         }
 		Gui_EndRow();
         Gui_BeginRowCenter(Gui_RelativeWidth(0.9), 1);
-        if (Gui_Button(true, 1.0f, "Debug: %s", showDebugInfo ? "true" : "false"))
+        if (Gui_Button(true, 1.0f, "Hand: %s", rhandr ? "true" : "false"))
         {
-            showDebugInfo = !showDebugInfo;
+            rhandr = !rhandr;
         }
         
         Gui_EndRow();
@@ -101,7 +103,7 @@ void Options_Render() {
 		Gui_Label(1.0f, true, INT16_MAX, true, "NOT AVAILABLE");
 		Gui_EndRow();
 
-        Gui_VerticalSpace(Gui_RelativeHeight(0.4f));
+        Gui_VerticalSpace(Gui_RelativeHeight(0.7f));
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
 		cancelled2 = Gui_Button(true, 1.0f, "Main Menu");
 	}

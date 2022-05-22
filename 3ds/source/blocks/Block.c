@@ -474,7 +474,7 @@ void Block_GetColor(Block block, uint8_t metadata, Direction direction, uint8_t 
 	}
 }
 
-bool Block_Opaque(Block block, uint8_t metadata) { return block != Block_Air && block != Block_Glass && block != Block_Door_Top && block != Block_Door_Bottom; }
+bool Block_Opaque(Block block, uint8_t metadata) { return block != Block_Air && block != Block_Glass && block != Block_Door_Top && block != Block_Door_Bottom && block != Block_Water && block != Block_Lava; }
 
 const char* BlockNames[Blocks_Count] = {
 	"Air","Stone","Dirt","Grass","Cobblestone","Sand","Log","Leaves","Glass","Stone Bricks","Bricks","Planks","Wool","Bedrock","Gravel",
