@@ -19,6 +19,8 @@ typedef struct {
 
 	KeyCombo openCmd;
 
+	KeyCombo pauseGame;
+
 	KeyCombo crouch;
 } PlayerControlScheme;
 typedef struct {

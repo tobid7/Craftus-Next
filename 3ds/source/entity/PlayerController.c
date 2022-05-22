@@ -52,7 +52,7 @@ const PlayerControlScheme platform_default_scheme = {.forward = K3DS_CPAD_UP,
 						     .jump = K3DS_DUP,
 						     .switchBlockLeft = K3DS_DLEFT,
 						     .switchBlockRight = K3DS_DRIGHT,
-						     .openCmd = K3DS_SELECT,
+						     .pauseGame = K3DS_SELECT,
 						     .crouch = K3DS_DDOWN};
 const PlayerControlScheme n3ds_default_scheme = {.forward = K3DS_CPAD_UP,
 						 .backward = K3DS_CPAD_DOWN,
@@ -67,7 +67,7 @@ const PlayerControlScheme n3ds_default_scheme = {.forward = K3DS_CPAD_UP,
 						 .jump = K3DS_A && K3DS_B && K3DS_DUP,
 						 .switchBlockLeft = K3DS_L && K3DS_DLEFT,
 						 .switchBlockRight = K3DS_R && K3DS_DRIGHT,
-						 .openCmd = K3DS_SELECT,
+						 .pauseGame = K3DS_SELECT,
 						 .crouch = K3DS_Y && K3DS_X && K3DS_DDOWN};
 static void convertPlatformInput(InputData* input, float ctrls[], bool keysdown[], bool keysup[]) {
 #define reg_bin_key(i, k)                                                         \
