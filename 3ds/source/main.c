@@ -34,7 +34,7 @@ bool showDebugInfo = false;
 
 bool savedcrash = false;
 
-TitleResult tres_;
+bool forcequit;
 
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) {
 	for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
@@ -183,6 +183,8 @@ int main() {
 			}
 		}
 
+		if (forcequit) break;
+
 		circlePosition circlePos;
 		hidCircleRead(&circlePos);
 
@@ -278,11 +280,9 @@ int main() {
 		}
 		else if (gamestate == GameState_Title)
 		{
-			if (Title_Update(player, tres_))
+			if (Title_Update(player))
 			{
-				if (tres_.worlds) gamestate = GameState_SelectWorld;
-				if (tres_.settings) gamestate = GameState_Options;
-				if (tres_.exit_) break;
+				
 			}
 		}
 		Gui_InputData(inputData);

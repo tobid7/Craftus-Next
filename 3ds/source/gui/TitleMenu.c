@@ -17,9 +17,14 @@
 
 #include <3ds.h>
 
+#include <GameStates.h>
+
 void Title_Init() {
 	
 }
+
+extern bool forcequit;
+extern GameState gamestate;
 
 bool cancelled4 = false;
 bool worlds = false;
@@ -60,26 +65,26 @@ void Title_Render() {
 
 
 
-bool Title_Update(Player player, TitleResult res) {
+bool Title_Update(Player player) {
     
     if (options)
     {
         options = false;
-        res.settings = true;
+        gamestate = GameState_Options;
         return true;
     }
 
     if (worlds)
     {
         options = false;
-        res.worlds = true;
+        gamestate = GameState_SelectWorld;
         return true;
     }
 
     if (cancelled4)
     {
         cancelled4 = false;
-        res.exit_ = true;
+        forcequit = true;
         return true;
     }
 
