@@ -4,7 +4,7 @@
 
 #include <gui/DebugUI.h>
 
-float fovScale_ = 0.0f;
+float fovScale_ = 2.5f;
 
 void Camera_Init(Camera* cam) {
 	Mtx_Identity(&cam->view);
