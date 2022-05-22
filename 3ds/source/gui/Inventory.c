@@ -4,6 +4,8 @@
 #include <gui/SpriteBatch.h>
 #include <rendering/VertexFmt.h>
 
+extern bool showDebugInfo;
+
 static ItemStack *sourceStack = NULL, *proposedSourceStack = NULL;
 
 static void clickAtStack(ItemStack* stack) {
@@ -55,6 +57,11 @@ int Inventory_Draw(int x, int y, int w, ItemStack* stacks, int count, int _site)
 	int site = _site;
 	bool even = false;
 	bool newLine = false;
+        Gui_Offset(0, 0);
+	if (Gui_Button(0.f, "F3"))
+	{
+		showDebugInfo = !showDebugInfo;
+	}
 
 	const int16_t colors[2] = {SHADER_RGB_DARKEN(SHADER_RGB(20, 20, 21), 9), SHADER_RGB_DARKEN(SHADER_RGB(20, 20, 21), 8)};
 	if (count > INVENTORY_MAX_PER_SITE)
