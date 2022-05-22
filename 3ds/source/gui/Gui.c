@@ -122,7 +122,7 @@ bool Gui_Button(bool available, float size, const char* label, ...) {
 	return false;
 }
 
-float Gui_Slider(float min, float max, int default, float size, const char* label, ...)
+void Gui_Slider(float min, float max, float default, float result, float size, const char* label, ...)
 {
 	#define SLICE_SIZE 8
 
@@ -131,8 +131,8 @@ float Gui_Slider(float min, float max, int default, float size, const char* labe
 
 	int textWidth = SpriteBatch_CalcTextWidthVargs(label, vl);
 	
-	int res = default;
-
+	float res = default;
+	float res2 = -1;
 	int x = windowX + relativeX;
 	int y = windowY + relativeY - BUTTON_TEXT_PADDING;
 	int w = (size <= 0.f) ? textWidth + SLICE_SIZE : relativeToAbsoluteSize(size);
@@ -157,7 +157,7 @@ float Gui_Slider(float min, float max, int default, float size, const char* labe
 			     20);
 		SpriteBatch_PushQuad(x2 + SLICE_SIZE + middlePieceSize, y, -3, SLICE_SIZE, 20, 192, 66 + (pressed * BUTTON_HEIGHT), SLICE_SIZE,
 			     20);
-
+	res2 ((x2 / w) * max);
 	if (pressed)
 	{
 		x2 = input.touchX / SpriteBatch_GetScale();
@@ -169,8 +169,8 @@ float Gui_Slider(float min, float max, int default, float size, const char* labe
 
 	relativeX += w + paddingX;
 	currentRow.highestElement = MAX(currentRow.highestElement, BUTTON_HEIGHT);
-
-	return res;
+	if (res2!= -1) res = res2;
+	result = res;
 }
 
 void Gui_Space(float space) { relativeX += relativeToAbsoluteSize(space) + paddingX; }
