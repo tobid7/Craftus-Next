@@ -21,7 +21,7 @@ void Pause_Init() {
 	
 }
 
-bool cancelled3 = false;
+bool cancelled5 = false;
 
 void Pause_Deinit() { /*Nothing*/ }
 
@@ -48,7 +48,7 @@ void Pause_Render() {
 	
 	Gui_VerticalSpace(Gui_RelativeHeight(0.4));
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	cancelled3 = Gui_Button(true, 1.0f, "Quit");
+	cancelled5 = Gui_Button(true, 1.0f, "Quit");
 	
 }
 
@@ -56,9 +56,9 @@ void Pause_Render() {
 
 bool Pause_Update(Player player) {
     
-    if (cancelled3)
+    if (cancelled5)
     {
-        cancelled3 = false;
+        cancelled5 = false;
         
         return true;
     }

@@ -9,7 +9,7 @@
 typedef struct {
     bool settings;
     bool worlds;
-    bool exit;
+    bool exit_;
 } TitleResult;
 
 void Title_Init();

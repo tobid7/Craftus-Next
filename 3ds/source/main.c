@@ -282,7 +282,7 @@ int main() {
 			{
 				if (tres_.worlds) gamestate = GameState_SelectWorld;
 				if (tres_.settings) gamestate = GameState_Options;
-				if (tres_.exit) break;
+				if (tres_.exit_) break;
 			}
 		}
 		Gui_InputData(inputData);

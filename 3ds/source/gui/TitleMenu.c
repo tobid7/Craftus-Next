@@ -21,7 +21,7 @@ void Title_Init() {
 	
 }
 
-bool cancelled3 = false;
+bool cancelled4 = false;
 bool worlds = false;
 bool options = false;
 
@@ -54,7 +54,7 @@ void Title_Render() {
 	
 	Gui_VerticalSpace(Gui_RelativeHeight(0.4));
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	cancelled3 = Gui_Button(true, 1.0f, "Quit");
+	cancelled4 = Gui_Button(true, 1.0f, "Quit");
 	
 }
 
@@ -76,10 +76,10 @@ bool Title_Update(Player player, TitleResult res) {
         return true;
     }
 
-    if (cancelled3)
+    if (cancelled4)
     {
-        cancelled3 = false;
-        res.exit = true;
+        cancelled4 = false;
+        res.exit_ = true;
         return true;
     }
 

@@ -21,7 +21,7 @@ void Death_Init() {
 	
 }
 
-bool cancelled3 = false;
+bool cancelled6 = false;
 
 void Death_Deinit() { /*Nothing*/ }
 
@@ -48,7 +48,7 @@ void Death_Render() {
 	
 	Gui_VerticalSpace(Gui_RelativeHeight(0.4));
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	cancelled3 = Gui_Button(true, 1.0f, "Quit");
+	cancelled6 = Gui_Button(true, 1.0f, "Quit");
 	
 }
 
@@ -56,9 +56,9 @@ void Death_Render() {
 
 bool Death_Update(Player player) {
     
-    if (cancelled3)
+    if (cancelled6)
     {
-        cancelled3 = false;
+        cancelled6 = false;
         
         return true;
     }
