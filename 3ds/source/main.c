@@ -25,6 +25,7 @@
 #include <world/worldgen/DefaultGen.h>
 #include <misc/Crash.h>
 #include <gui/CrashMenu.h>
+#include <gui/TitleMenu.h>
 
 #include <sino/sino.h>
 #include <citro3d.h>
@@ -32,6 +33,8 @@
 bool showDebugInfo = false;
 
 bool savedcrash = false;
+
+TitleResult tres_;
 
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) {
 	for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
@@ -44,7 +47,7 @@ void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) 
 
 	SaveManager_Unload(savemgr);
 }
-GameState gamestate = GameState_SelectWorld;
+GameState gamestate = GameState_Title;
 int main() {
 	
 	//printf("gfxinit\n");
@@ -271,6 +274,15 @@ int main() {
 			if (Crash_Update(player))
 			{
 				break;
+			}
+		}
+		else if (gamestate == GameState_Title)
+		{
+			if (Title_Update(player, tres_))
+			{
+				if (tres_.worlds) gamestate = GameState_SelectWorld;
+				if (tres_.settings) gamestate = GameState_Options;
+				if (tres_.exit) break;
 			}
 		}
 		Gui_InputData(inputData);

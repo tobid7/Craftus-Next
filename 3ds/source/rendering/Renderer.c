@@ -14,6 +14,7 @@
 #include <rendering/WorldRenderer.h>
 #include <gui/CrashMenu.h>
 #include <gui/OptionsMenu.h>
+#include <gui/TitleMenu.h>
 
 #include <citro3d.h>
 
@@ -224,6 +225,11 @@ void Renderer_Render() {
 	else if (*gamestate == GameState_Crash)
 	{
 		Crash_Render();
+		if (showDebugInfo) DebugUI_Draw();
+	}
+	else if (*gamestate == GameState_Title)
+	{
+		Title_Render();
 		if (showDebugInfo) DebugUI_Draw();
 	}
 	else {
