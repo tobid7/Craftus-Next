@@ -7,9 +7,9 @@
 #include <world/World.h>
 
 typedef struct {
-    bool settings = false;
-    bool worlds = false;
-    bool exit = false;
+    bool settings;
+    bool worlds;
+    bool exit;
 } TitleResult;
 
 void Title_Init();
