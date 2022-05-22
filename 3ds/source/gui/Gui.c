@@ -122,7 +122,7 @@ bool Gui_Button(bool available, float size, const char* label, ...) {
 	return false;
 }
 
-bool Gui_Slider(float min, float max, float default, float result, float size, const char* label, ...)
+bool Gui_Slider(float min, float max, float default_, float result, float size, const char* label, ...)
 {
 	#define SLICE_SIZE 8
 
@@ -131,7 +131,7 @@ bool Gui_Slider(float min, float max, float default, float result, float size, c
 
 	int textWidth = SpriteBatch_CalcTextWidthVargs(label, vl);
 	
-	float res = default;
+	float res = default_;
 	float res2 = -1;
 	int x = windowX + relativeX;
 	int y = windowY + relativeY - BUTTON_TEXT_PADDING;
