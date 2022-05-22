@@ -78,7 +78,7 @@ void Options_Render() {
             fovScale_+=0.1f;
 			if (fovScale_ >=4.2f) fovScale_ = 0.0f;
         }*/
-                if (Gui_Button(true, 1.f, fovScale_, "Fov: %f", 30 + 12 * fovScale_))
+                if (Gui_Button(true, 1.f, "Fov: %f", 30 + 12 * fovScale_))
         {
             fovScale_+=0.1f;
 			if (fovScale_ >=6.67f) fovScale_ = 0.0f;
