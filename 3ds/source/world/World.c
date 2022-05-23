@@ -65,6 +65,7 @@ Chunk* World_LoadChunk(World* world, int x, int z) {
 void World_UnloadChunk(World* world, Chunk* chunk) {
 	WorkQueue_AddItem(world->workqueue, (WorkerItem){WorkerItemType_Save, chunk});
 	vec_push(&world->freeChunks, chunk);
+        vec_clear(&world->freeChunks);
 	chunk->references--;
 }
 
