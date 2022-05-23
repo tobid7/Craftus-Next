@@ -424,6 +424,9 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 				case Direction_Top:
 					i=icon.bee_nest_top;
 					break;
+                                case Direction_Bottom:
+					i=icon.bee_nest_top;
+					break;
 				default:
 					i = icon.bee_nest_side;
 					break;
@@ -435,6 +438,9 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 					i = icon.bee_nest_front_honey;
 					break;
 				case Direction_Top:
+					i=icon.bee_nest_top;
+					break;
+                                case Direction_Bottom:
 					i=icon.bee_nest_top;
 					break;
 				default:
