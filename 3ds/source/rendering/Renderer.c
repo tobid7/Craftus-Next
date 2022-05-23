@@ -160,7 +160,7 @@ void Renderer_Render() {
 
 			SpriteBatch_BindGuiTexture(GuiTexture_Widgets);
 			if (iod == 0.f) SpriteBatch_PushQuad(200 / 2 - 16 / 2, 120 / 2 - 16 / 2, 0, 16, 16, 240, 0, 16, 16);
-                        if (showDebugInfo) DebugUI_Draw();
+                        //if (showDebugInfo) DebugUI_Draw();
 			/*SpriteBatch_BindGuiTexture(GuiTexture_Icons);
 			SpriteBatch_SetScale(2);
 			for (int h = 0; h < 10; h++)
@@ -240,7 +240,7 @@ void Renderer_Render() {
 					  120 - INVENTORY_QUICKSELECT_HEIGHT, player->quickSelectBar, player->quickSelectBarSlots,
 					  &player->quickSelectBarSlot);
 		player->inventorySite = Inventory_Draw(16, 0, 160, player->inventory, sizeof(player->inventory) / sizeof(ItemStack),player->inventorySite);
-		//if (showDebugInfo) DebugUI_Draw();
+		if (showDebugInfo) DebugUI_Draw();
 		
 	}
 
