@@ -162,7 +162,7 @@ int main() {
 					Crash_Init("Out of Memory!");
 					gamestate = GameState_Crash;
                 }
-		//DebugUI_Text("HP: %i",player.hp);
+		DebugUI_Text("HP: %i",player.hp);
 		//DebugUI_Text("velocity: %f rndy: %f",player.velocity.y,player.rndy);
 		//DebugUI_Text("Time: %i Cause: %c",dmg->time,dmg->cause);
 		//DebugUI_Text("SX: %f SY: %f SZ: %f",player->spawnx,player->spawny,player->spawnz);
