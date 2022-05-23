@@ -51,83 +51,83 @@ GameState gamestate = GameState_Title;
 int main() {
 	
 	//printf("gfxinit\n");
-        Log("Init Gfx\n");
+        //Log("Init Gfx\n");
 	gfxInitDefault();
-        Log("New3dsSpeed\n");
+        //Log("New3dsSpeed\n");
 	// Enable N3DS 804MHz operation, where available
 	osSetSpeedupEnable(true);
-        Log("Crate Playbackinfo\n");
+        //Log("Crate Playbackinfo\n");
 	struct playbackInfo_t soundg;
 	//consoleInit(GFX_TOP, NULL);
-        Log("Enable 3d\n");
+        //Log("Enable 3d\n");
 	gfxSet3D(true);
 	//printf("romfsinit\n");
-        Log("Init romfs\n");
+        //Log("Init romfs\n");
 	romfsInit();
 
-        Log("Create Generators\n");
+        //Log("Create Generators\n");
 	SuperFlatGen flatGen;
 	SmeaGen smeaGen;
 	FlatBedrockGen bdgen;
 	DefaultGen dgen;
-        Log("Init SuperChunk\n");
+        //Log("Init SuperChunk\n");
 	SuperChunk_InitPools();
 
-        Log("Init SaveManager\n");
+        //Log("Init SaveManager\n");
 	SaveManager_InitFileSystem();
 
 	ChunkWorker chunkWorker;
-        Log("Init Chunkworker\n");
+        //Log("Init Chunkworker\n");
 	ChunkWorker_Init(&chunkWorker);
-        Log("Add Generators\n");
+        //Log("Add Generators\n");
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_PolyGen, (WorkerFuncObj){&PolyGen_GeneratePolygons, NULL, true});
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&SuperFlatGen_Generate, &flatGen, true});
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&FlatBedrockGen_Generate, &bdgen, true});
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&SmeaGen_Generate, &smeaGen, true});
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen, (WorkerFuncObj){&DefaultGen_Generate, &dgen, true});
-        Log("Init noise\n");
+        //Log("Init noise\n");
 	sino_init();
 
 	World* world = (World*)malloc(sizeof(World));
 
 	Player player;
 	PlayerController playerCtrl;
-        Log("Setup Player\n");
+        //Log("Setup Player\n");
 	Player_Init(&player, world);
-        Log("Setup Player ctrl\n");
+        //Log("Setup Player ctrl\n");
 	PlayerController_Init(&playerCtrl, &player);
         
-        Log("Init SuperFlat\n");
+        //Log("Init SuperFlat\n");
 	SuperFlatGen_Init(&flatGen, world);
-        Log("Init BedrockFlat\n");
+        //Log("Init BedrockFlat\n");
 	FlatBedrockGen_Init(&bdgen, world);
-        Log("Init Defaultgen\n");
+        //Log("Init Defaultgen\n");
 	DefaultGen_Init(&dgen, world);
-        Log("Init smea\n");
+        //Log("Init smea\n");
 	SmeaGen_Init(&smeaGen, world);
 
-        Log("Init Renderer\n");
+        //Log("Init Renderer\n");
 	Renderer_Init(world, &player, &chunkWorker.queue, &gamestate);
 	
-        Log("Init DebugUI\n");
+        //Log("Init DebugUI\n");
 	DebugUI_Init();
 
-        Log("Init WorldSel, Options\n");
+        //Log("Init WorldSel, Options\n");
 	WorldSelect_Init();
 
 	Options_Init();
 
-        Log("Init Init World\n");
+        //Log("Init Init World\n");
 	World_Init(world, &chunkWorker.queue);
 
 	SaveManager savemgr;
-        Log("Init SaveManager\n");
+        //Log("Init SaveManager\n");
 	SaveManager_Init(&savemgr, &player);
-        Log("Init Add Save Load\n");
+        //Log("Init Add Save Load\n");
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_Load, (WorkerFuncObj){&SaveManager_LoadChunk, &savemgr, true});
 	ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_Save, (WorkerFuncObj){&SaveManager_SaveChunk, &savemgr, true});
          
-        Log("Init Setup fps dt calculator\n");
+        //Log("Init Setup fps dt calculator\n");
 	uint64_t lastTime = svcGetSystemTick();
 	float dt = 0.f, timeAccum = 0.f, fpsClock = 0.f;
 	int frameCounter = 0, fps = 0;
