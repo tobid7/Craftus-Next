@@ -36,8 +36,8 @@ void Log(const char* reason, ...) {
 	va_list vl;
 	va_start(vl, reason);
 	vprintf(reason, vl);
-
-	FILE* f = fopen("sdmc:/craftus_redesigned/Log.txt", "a");
+        mkdir("sdmc:/craftus_next", 0777);
+	FILE* f = fopen("sdmc:/craftus_next/Log.txt", "a");
 	vfprintf(f, reason, vl);
 	fclose(f);
 
