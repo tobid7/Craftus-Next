@@ -179,7 +179,7 @@ int main() {
 
 			else if (gamestate == GameState_Options)
 			{
-				gamestate = GameState_SelectWorld;
+				gamestate = GameState_Title;
 			}
 		}
 
