@@ -24,11 +24,11 @@ extern GameState gamestate;
 
 extern float dt;
 
+bool cancelled5 = false;
 void Pause_Init() {
      cancelled5 = false;
 }
 
-bool cancelled5 = false;
 
 bool options55 = false;
 
@@ -82,6 +82,7 @@ bool Pause_Update(Player player) {
         gamestate = GameState_Playing;
         return true;
     }
+    cancelled5 = false;
 
 	return false;
 }
