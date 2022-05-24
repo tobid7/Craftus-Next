@@ -25,10 +25,12 @@ extern GameState gamestate;
 extern float dt;
 
 bool cancelled5 = false;
+bool save_quit = false;
 void Pause_Init() {
      cancelled5 = false;
 }
 
+extern bool Save__;
 
 bool options55 = false;
 
@@ -58,9 +60,14 @@ void Pause_Render() {
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
 	options = Gui_Button(true, 1.0f, "Options");*/
 	
-	Gui_VerticalSpace(Gui_RelativeHeight(0.4));
+	Gui_VerticalSpace(Gui_RelativeHeight(0.39));
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
 	cancelled5 = Gui_Button(true, 1.0f, "Back To Game");
+	Gui_EndRow();
+	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
+	save_quit = Gui_Button(true, 1.0f, "Save and Quit");
+	Gui_EndRow();
+
 	
 }
 
@@ -83,6 +90,13 @@ bool Pause_Update(Player player) {
         gamestate = GameState_Playing;
         return true;
     }
+	if (save_quit)
+	{
+		save_quit = false;
+		Save__ = true;
+		return true;
+	}
+	
     cancelled5 = false;
 
 	return false;

@@ -28,6 +28,8 @@
 	 GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB8) | \
 GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO))
 
+extern bool frompause;
+
 #define CLEAR_COLOR_SKY 0x90d9ffff
 extern u32 skycol;
 //#define CLEAR_COLOR_SKY 0x06070cff
@@ -139,7 +141,7 @@ void Renderer_Render() {
 
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
-	if (*gamestate == GameState_Playing || *gamestate == GameState_Pause) PolyGen_Harvest();
+	if (*gamestate == GameState_Playing || *gamestate == GameState_Pause || frompause) PolyGen_Harvest();
 
 	for (int i = 0; i < 2; i++) {
 		C3D_RenderTargetClear(renderTargets[i], C3D_CLEAR_ALL, skycol, 0);
@@ -155,13 +157,20 @@ void Renderer_Render() {
 		C3D_BindProgram(&world_shader);
 		C3D_SetAttrInfo(&world_vertexAttribs);
 
-		if (*gamestate == GameState_Playing || *gamestate == GameState_Pause) {
+		if (*gamestate == GameState_Playing || *gamestate == GameState_Pause || frompause) {
 			C3D_TexBind(0, Block_GetTextureMap());
 
 			WorldRenderer_Render(!i ? -iod : iod);
 
 			SpriteBatch_BindGuiTexture(GuiTexture_Widgets);
 			if (iod == 0.f) SpriteBatch_PushQuad(200 / 2 - 16 / 2, 120 / 2 - 16 / 2, 0, 16, 16, 240, 0, 16, 16);
+
+
+			/*if (gamestate == GameState_Pause || (gamestate == GameState_Options && frompause))
+			{
+				SpriteBatch_PushSingleColorQuad(0, 0, 0, 400, 240, 0);
+			}*/
+			
                         //if (showDebugInfo) DebugUI_Draw();
 			/*SpriteBatch_BindGuiTexture(GuiTexture_Icons);
 			SpriteBatch_SetScale(2);
@@ -178,7 +187,7 @@ void Renderer_Render() {
 			*/
 			
 		}
-		else if (*gamestate == GameState_SelectWorld || *gamestate == GameState_Options || *gamestate == GameState_Title) {
+		else if (*gamestate == GameState_SelectWorld || (*gamestate == GameState_Options && frompause == false) || *gamestate == GameState_Title) {
 			C3D_Mtx projection;
 			Mtx_PerspStereoTilt(&projection, C3D_AngleFromDegrees(90.f), ((400.f) / (240.f)), 0.22f, 4.f * CHUNK_SIZE,
 					    !i ? -iod : iod, 3.f, false);

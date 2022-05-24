@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <ini/ini.h>
 
 #include <entity/Player.h>
 
@@ -20,12 +21,22 @@
 extern GameState gamestate;
 
 GameState from;
-void Options_Init(GameState from_) {
-	from = from_;
-}
+
+bool frompause = false;
 
 bool cancelled = false;
 bool cancelled2 = false;
+
+int j;
+
+extern float fov_;
+
+int fov;
+
+void Options_Init(GameState from_) {
+	if (from_ == GameState_Pause) frompause = true;
+	from = from_;
+}
 
 void Options_Deinit() { /*Nothing*/ }
 
@@ -34,8 +45,6 @@ typedef enum { MenuState_Main, MenuState_Graphics, MenuState_Sound, MenuState_In
 float fovscale2 = 1.0f;
 
 extern float fovScale_;
-
-extern float fov_;
 
 extern bool showDebugInfo;
 
@@ -133,6 +142,7 @@ bool Options_Update(Player player) {
         cancelled2 = false;
         menustate2 = MenuState_Main;
 		gamestate = from;
+		frompause = false;
         return true;
     }
 

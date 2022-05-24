@@ -40,6 +40,8 @@ bool forcequit;
 
 float dt = 0.f;
 
+bool Save__ = false;
+
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) {
 	for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
 		for (int j = 0; j < CHUNKCACHE_SIZE; j++) {
@@ -192,10 +194,10 @@ int main() {
 
 		hidScanInput();
 		u32 keysheld = hidKeysHeld(), keysdown = hidKeysDown();
-		if (keysdown & KEY_START) {
+		if (keysdown & KEY_START || Save__) {
 			if (gamestate == GameState_SelectWorld)
 				gamestate = GameState_Title;
-			else if (gamestate == GameState_Playing) {
+			else if (gamestate == GameState_Playing ||gamestate == GameState_Pause) {
 				releaseWorld(&chunkWorker, &savemgr, world);
                                 
 				gamestate = GameState_SelectWorld;
@@ -209,6 +211,7 @@ int main() {
 			{
 				gamestate = GameState_Title;
 			}
+			Save__ = false;
 		}
 
 		if (forcequit) break;
