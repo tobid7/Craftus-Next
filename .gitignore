@@ -1,3 +1,5 @@
-build/*
+3ds/build/*
 *.elf
 *.3dsx
+*.cia
+.vscode/*
