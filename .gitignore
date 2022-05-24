@@ -2,4 +2,7 @@
 *.elf
 *.3dsx
 *.cia
+*.nro
+*.nacp
+switch/build/*
 .vscode/*
