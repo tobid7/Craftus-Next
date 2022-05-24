@@ -75,6 +75,7 @@ bool Pause_Update(Player player) {
 		Options_Init(GameState_Pause);
 		gamestate = GameState_Options;
                 options55 = false;
+                return true;
 	}
 
     if (cancelled5)
