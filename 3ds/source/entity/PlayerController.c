@@ -9,6 +9,10 @@
 #include <unistd.h>
 #include <misc/Sound.h>
 
+#include <GameStates.h>
+
+extern GameState gamestate;
+
 //#ifdef _3DS
 #include <3ds.h>
 #define PLATFORM_BUTTONS 23
@@ -150,7 +154,7 @@ void PlayerController_Init(PlayerController* ctrl, Player* player) {
 
 	bool elementMissing = false;
 
-	const char path[] = "sdmc:/craftus_redesigned/options.ini";
+	const char path[] = "sdmc:/Craftus-Next/options.ini";
 	if (access(path, F_OK) != -1) {
 		ini_t* cfg = ini_load(path);
 
@@ -182,6 +186,7 @@ void PlayerController_Init(PlayerController* ctrl, Player* player) {
 		loadKey(switchBlockRight);
 		loadKey(openCmd);
 		loadKey(crouch);
+		loadKey(pauseGame);
 #undef loadKey
 
 		if (!ini_sget(cfg, "controls", "auto_jumping", "%d", &ctrl->player->autoJumpEnabled)) elementMissing = true;
@@ -223,6 +228,7 @@ void PlayerController_Init(PlayerController* ctrl, Player* player) {
 		writeKey(switchBlockRight);
 		writeKey(openCmd);
 		writeKey(crouch);
+		writeKey(pauseGame);
 
 #undef writeKey
 
@@ -309,6 +315,12 @@ void PlayerController_Update(PlayerController* ctrl, InputData input, float dt) 
 	if (cmdLine) {
 		CommandLine_Activate(player->world, player);
 		ctrl->openedCmd = true;
+	}
+
+	float paused = WasKeyPressed(ctrl->controlScheme.pauseGame, &agnosticInput);
+	if (paused) {
+		gamestate = GameState_Pause;
+		paused = 0.f;
 	}
 
 	Player_Move(player, dt, movement);

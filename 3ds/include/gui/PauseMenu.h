@@ -6,6 +6,8 @@
 
 #include <world/World.h>
 
+#include <citro3d.h>
+
 void Pause_Init();
 void Pause_Deinit();
 

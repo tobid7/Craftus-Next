@@ -17,11 +17,20 @@
 
 #include <3ds.h>
 
+#include <GameStates.h>
+#include <gui/OptionsMenu.h>
+
+extern GameState gamestate;
+
+extern float dt;
+
 void Pause_Init() {
-	
+
 }
 
 bool cancelled5 = false;
+
+bool options55 = false;
 
 void Pause_Deinit() { /*Nothing*/ }
 
@@ -39,16 +48,19 @@ void Pause_Render() {
 
 	
 	Gui_Offset(0, 10);
-    Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	Gui_Label(1.0f, true, INT16_MAX, true, "You Died");
-	Gui_EndRow();
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	Gui_Label(1.0f, true, INT16_MAX, true, "By ...");
+	options55 = Gui_Button(true, 1.f, "Options");
 	Gui_EndRow();
+	/*Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
+	nu = Gui_Button(false, 1.f, "Multiplayer");
+	Gui_EndRow();
+
+	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
+	options = Gui_Button(true, 1.0f, "Options");*/
 	
 	Gui_VerticalSpace(Gui_RelativeHeight(0.4));
 	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-	cancelled5 = Gui_Button(true, 1.0f, "Quit");
+	cancelled5 = Gui_Button(true, 1.0f, "Back To Game");
 	
 }
 
@@ -56,10 +68,19 @@ void Pause_Render() {
 
 bool Pause_Update(Player player) {
     
+	dt = 0.f;
+
+	if (options55)
+	{
+		options55 = false;
+		Options_Init(GameState_Pause);
+		gamestate = GameState_Options;
+	}
+
     if (cancelled5)
     {
         cancelled5 = false;
-        
+        gamestate = GameState_Playing;
         return true;
     }
 

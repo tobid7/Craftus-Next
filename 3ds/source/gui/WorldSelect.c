@@ -19,6 +19,7 @@
 #include <3ds.h>
 
 #include <GameStates.h>
+#include <gui/OptionsMenu.h>
 
 typedef struct {
 	uint32_t lastPlayed;
@@ -243,6 +244,7 @@ bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* world
 	}
 	if (clicked_options)
 	{
+		Options_Init(GameState_SelectWorld);
 		gamestate = GameState_Options;
 	}
 	if (confirmed_world_options) {

@@ -15,6 +15,8 @@
 #include <gui/CrashMenu.h>
 #include <gui/OptionsMenu.h>
 #include <gui/TitleMenu.h>
+#include <gui/PauseMenu.h>
+#include <gui/DeathMenu.h>
 
 #include <citro3d.h>
 
@@ -137,7 +139,7 @@ void Renderer_Render() {
 
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
-	if (*gamestate == GameState_Playing) PolyGen_Harvest();
+	if (*gamestate == GameState_Playing || *gamestate == GameState_Pause) PolyGen_Harvest();
 
 	for (int i = 0; i < 2; i++) {
 		C3D_RenderTargetClear(renderTargets[i], C3D_CLEAR_ALL, skycol, 0);
@@ -153,7 +155,7 @@ void Renderer_Render() {
 		C3D_BindProgram(&world_shader);
 		C3D_SetAttrInfo(&world_vertexAttribs);
 
-		if (*gamestate == GameState_Playing) {
+		if (*gamestate == GameState_Playing || *gamestate == GameState_Pause) {
 			C3D_TexBind(0, Block_GetTextureMap());
 
 			WorldRenderer_Render(!i ? -iod : iod);
@@ -175,7 +177,8 @@ void Renderer_Render() {
 			
 			*/
 			
-		} else {
+		}
+		else if (*gamestate == GameState_SelectWorld || *gamestate == GameState_Options || *gamestate == GameState_Title) {
 			C3D_Mtx projection;
 			Mtx_PerspStereoTilt(&projection, C3D_AngleFromDegrees(90.f), ((400.f) / (240.f)), 0.22f, 4.f * CHUNK_SIZE,
 					    !i ? -iod : iod, 3.f, false);
@@ -231,6 +234,16 @@ void Renderer_Render() {
 	else if (*gamestate == GameState_Title)
 	{
 		Title_Render();
+		if (showDebugInfo) DebugUI_Draw();
+	}
+	else if (*gamestate == GameState_Pause)
+	{
+		Pause_Render();
+		if (showDebugInfo) DebugUI_Draw();
+	}
+	else if (*gamestate == GameState_Death)
+	{
+		Death_Render();
 		if (showDebugInfo) DebugUI_Draw();
 	}
 	else {

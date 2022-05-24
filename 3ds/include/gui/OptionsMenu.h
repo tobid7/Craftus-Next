@@ -6,11 +6,13 @@
 
 #include <world/World.h>
 
+#include <GameStates.h>
+
 typedef struct {
     float fovscale;    
 } Options_Result;
 
-void Options_Init();
+void Options_Init(GameState from_);
 void Options_Deinit();
 
 void Options_Render();

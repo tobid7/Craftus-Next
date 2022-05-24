@@ -18,6 +18,7 @@
 #include <3ds.h>
 
 #include <GameStates.h>
+#include <gui/OptionsMenu.h>
 
 void Title_Init() {
 	
@@ -70,6 +71,7 @@ bool Title_Update(Player player) {
     if (options)
     {
         options = false;
+		Options_Init(GameState_Title);
         gamestate = GameState_Options;
         return true;
     }

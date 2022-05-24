@@ -36,6 +36,8 @@ bool savedcrash = false;
 
 bool forcequit;
 
+float dt = 0.f;
+
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) {
 	for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
 		for (int j = 0; j < CHUNKCACHE_SIZE; j++) {
@@ -115,7 +117,7 @@ int main() {
         //Log("Init WorldSel, Options\n");
 	WorldSelect_Init();
 
-	Options_Init();
+	Options_Init(GameState_Title);
 
         //Log("Init Init World\n");
 	World_Init(world, &chunkWorker.queue);
@@ -129,7 +131,7 @@ int main() {
          
         //Log("Init Setup fps dt calculator\n");
 	uint64_t lastTime = svcGetSystemTick();
-	float dt = 0.f, timeAccum = 0.f, fpsClock = 0.f;
+	float timeAccum = 0.f, fpsClock = 0.f;
 	int frameCounter = 0, fps = 0;
 	bool initBackgroundSound = true;
 	while (aptMainLoop()) 
@@ -147,8 +149,9 @@ int main() {
 		
 		DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps, C3D_GetProcessingTime() * 6.f,
 		C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024 / 1024);
-		DebugUI_Text("Buf: %5.2f%% Lin: %dkb VRAM: %dkb", C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024, vramSpaceFree() / 1024);
+		DebugUI_Text("Buf: %5.2f%% Lin: %dkb", C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024);
 		DebugUI_Text("X: %f, Y: %f, Z: %f", f3_unpack(player.position));
+		DebugUI_Text("DT: %f", dt);
 		
 
                 if (linearSpaceFree() <= 5242880)
@@ -290,7 +293,7 @@ int main() {
 			if (Options_Update(player))
 			{
 				//Renderer_Update(&player, &world);
-				gamestate = GameState_Title;
+				//gamestate = GameState_Title;
 			}
 			/////////////////////////////////////////////////////////////////
 		}

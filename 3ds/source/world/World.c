@@ -8,6 +8,8 @@
 #include <limits.h>
 #include <stdint.h>
 
+extern float dt;
+
 void World_Init(World* world, WorkQueue* workqueue) {
 	strcpy(world->name, "TestWelt");
 
@@ -202,7 +204,7 @@ void World_UpdateChunkCache(World* world, int orginX, int orginZ) {
 }
 
 void World_Tick(World* world) {
-	world->wtime++;
+	world->wtime += 1;
 	if (world->wtime > 23999)
 	{
 		world->wtime = 0;

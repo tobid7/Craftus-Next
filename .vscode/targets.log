@@ -9,11 +9,10 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # There is NO WARRANTY, to the extent permitted by law.
  
 
-# Make data base, printed on Fri May 20 22:25:27 2022
+# Make data base, printed on Tue May 24 13:55:24 2022
 
 # Variables
 
- 
 # environment
 FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
@@ -33,11 +32,12 @@ AR := arm-none-eabi-gcc-ar
 # environment
 USERPROFILE = C:\Users\Tobi
 # makefile (from 'Makefile', line 112)
+ 
 OFILES :=  gui.shbin.o world.shbin.o   main.o Collision.o CommandLine.o Crash.o Raycast.o Sound.o noise.o DefaultGen.o FlatBedrock.o SmeaGen.o SuperFlatGen.o Biome.o Desert.o Forest.o Plains.o Savanna.o AcaciaTree.o BirchTree.o OakTree.o Pumpkins.o TreeGen.o Block.o BlockEvent.o Item.o Liquids.o Camera.o Clouds.o Cursor.o Hand.o PolyGen.o Renderer.o TextureMap.o VBOCache.o VertexFmt.o WorldRenderer.o DebugUI.o FontLoader.o Gui.o Inventory.o OptionsMenu.o SpriteBatch.o WorldSelect.o Chunk.o ChunkWorker.o Direction.o WorkQueue.o World.o SaveManager.o SuperChunk.o Damage.o Player.o PlayerController.o mpack.o vec.o sino.o lodepng.o miniz.o ini.o error.o file.o flac.o mp3.o opus.o playback.o vorbis.o wav.o 
 # environment
 LOCALAPPDATA = C:\Users\Tobi\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-03cd2539-e0c7-4c66-8f02-aa8ca92a50dd-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-5e66d8c3-8834-4352-8698-e81d391896a7-sock
 # makefile (from 'Makefile', line 86)
 VPATH := /home/Tobi/Craftus-Next/3ds/source /home/Tobi/Craftus-Next/3ds/source/misc /home/Tobi/Craftus-Next/3ds/source/world/worldgen /home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes /home/Tobi/Craftus-Next/3ds/source/world/worldgen/structures /home/Tobi/Craftus-Next/3ds/source/blocks /home/Tobi/Craftus-Next/3ds/source/rendering /home/Tobi/Craftus-Next/3ds/source/gui /home/Tobi/Craftus-Next/3ds/source/world /home/Tobi/Craftus-Next/3ds/source/world/savegame /home/Tobi/Craftus-Next/3ds/source/entity /home/Tobi/Craftus-Next/3ds/source/savegame /home/Tobi/Craftus-Next/3ds/dependencies/mpack /home/Tobi/Craftus-Next/3ds/dependencies/vec /home/Tobi/Craftus-Next/3ds/dependencies/sino /home/Tobi/Craftus-Next/3ds/dependencies/lodepng /home/Tobi/Craftus-Next/3ds/dependencies/miniz /home/Tobi/Craftus-Next/3ds/dependencies/ini /home/Tobi/Craftus-Next/3ds/dependencies/playback /home/Tobi/Craftus-Next/3ds/data
 # makefile (from 'Makefile', line 91)
@@ -61,7 +61,7 @@ MAKE_COMMAND := make
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5484_ZEFMNVNSVMIILQRN
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_1608_JFLZNNHMMMSNNKVE
 # makefile (from 'Makefile', line 92)
 CPPFILES := $(subst ,,                  )
 # environment
@@ -95,7 +95,6 @@ MAKEFLAGS = pqrRw
 # makefile (from 'Makefile', line 93)
 SFILES := $(subst ,,                  )
 # makefile (from 'Makefile', line 40)
- 
 ICON := icon/logo.png
 # environment
 ONEDRIVE = C:\Users\Tobi\OneDrive
@@ -134,7 +133,7 @@ ASFLAGS := -g -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 5484
+VSCODE_PID = 1608
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 28)
@@ -161,6 +160,7 @@ INCLUDE := -I/home/Tobi/Craftus-Next/3ds/dependencies -I/home/Tobi/Craftus-Next/
 MAKE_HOST := x86_64-pc-msys
 # environment
 PROGRAMDATA = C:\ProgramData
+ 
 # default
 SHELL := /bin/sh
 # environment
@@ -193,7 +193,6 @@ MAKEFILES = ./3ds/Makefile ./switch/Makefile
 ^F = $(notdir $^)
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 5)
 UNAME_R := 3.3.4-341.x86_64
- 
 # environment
 PROMPT = $P$G
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 19)
@@ -319,13 +318,13 @@ STRIP := arm-none-eabi-strip
 # environment
 PROCESSOR_REVISION = 2100
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 22)
+ 
 CXX := arm-none-eabi-g++
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 21)
 CC := arm-none-eabi-gcc
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 25)
 OBJCOPY := arm-none-eabi-objcopy
 # makefile (from 'Makefile', line 31)
- 
 SOURCES := source source/misc source/world/worldgen source/world/worldgen/biomes source/world/worldgen/structures source/blocks source/rendering source/gui source/world source/world/savegame source/entity source/savegame dependencies/mpack dependencies/vec dependencies/sino dependencies/lodepng dependencies/miniz dependencies/ini dependencies/playback
 # makefile (from 'Makefile', line 37)
 APP_TITLE := Craftus-Next
@@ -334,10 +333,12 @@ DATA := data
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 # variable set hash-table stats:
+ 
 # Load=158/1024=15%, Rehash=0, Collisions=24/337=7%
 
 # Pattern-specific Variable Values
 
+ 
 # No pattern-specific variable values.
 
 # Directories
@@ -401,7 +402,6 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 
 %.arm.o: %.arm.c
 #  recipe to execute (from '/opt/devkitpro/devkitARM/base_rules', line 23):
- 
 	$(SILENTMSG) $(notdir $<)
 	$(SILENTCMD)$(CC) -MMD -MP -MF $(DEPSDIR)/$*.arm.d $(CFLAGS) -marm -c $< -o $@ $(ERROR_FILTER)
 
@@ -410,6 +410,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 	$(SILENTMSG) $(notdir $<)
 	$(SILENTCMD)$(CC) -MMD -MP -MF $(DEPSDIR)/$*.arm.d $(OBJCFLAGS) -marm -c $< -o $@ $(ERROR_FILTER)
 
+ 
 %.thumb.o: %.thumb.cpp
 #  recipe to execute (from '/opt/devkitpro/devkitARM/base_rules', line 33):
 	$(SILENTMSG) $(notdir $<)
@@ -563,7 +564,6 @@ all: build make_cia
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
- 
 # Load=0/32=0%, Rehash=0, Collisions=0/7=0%
 
 run:
@@ -579,6 +579,7 @@ build:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: ''
 #  File does not exist.
+ 
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
@@ -636,7 +637,7 @@ make_cia:
 # strcache performance: lookups = 291 / hit rate = 32%
 # hash-table stats:
 # Load=195/8192=2%, Rehash=0, Collisions=7/291=2%
-# Finished Make data base on Fri May 20 22:25:27 2022
+# Finished Make data base on Tue May 24 13:55:24 2022
 
 # make[1]: Leaving directory '/home/Tobi/Craftus-Next/3ds'
  
@@ -649,12 +650,12 @@ make_cia:
 # There is NO WARRANTY, to the extent permitted by law.
  
 
-# Make data base, printed on Fri May 20 22:25:27 2022
+# Make data base, printed on Tue May 24 13:55:24 2022
 
 # Variables
 
-# environment
  
+# environment
 FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
 SYSTEMDRIVE = C:
@@ -667,7 +668,7 @@ USERPROFILE = C:\Users\Tobi
 # environment
 LOCALAPPDATA = C:\Users\Tobi\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-03cd2539-e0c7-4c66-8f02-aa8ca92a50dd-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-5e66d8c3-8834-4352-8698-e81d391896a7-sock
 # environment
 VSCODE_CWD = C:\Users\Tobi\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -681,7 +682,7 @@ MAKE_COMMAND := make
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5484_ZEFMNVNSVMIILQRN
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_1608_JFLZNNHMMMSNNKVE
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -739,7 +740,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 5484
+VSCODE_PID = 1608
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
@@ -801,7 +802,6 @@ PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
 # environment
- 
 USERDOMAIN = PC
 # 'override' directive
 GNUMAKEFLAGS := 
@@ -830,7 +830,7 @@ PROCESSOR_ARCHITECTURE = AMD64
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # makefile (from 'Makefile', line 2)
-DATESTRING := 20220520
+DATESTRING := 20220524
 # environment
 HOME = /home/Tobi
 # environment
@@ -968,6 +968,6 @@ all: craftus
 # strcache performance: lookups = 31 / hit rate = 38%
 # hash-table stats:
 # Load=19/8192=0%, Rehash=0, Collisions=0/31=0%
-# Finished Make data base on Fri May 20 22:25:27 2022
+# Finished Make data base on Tue May 24 13:55:24 2022
 
  

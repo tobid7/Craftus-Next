@@ -17,8 +17,11 @@
 
 #include <3ds.h>
 
-void Options_Init() {
-	//
+extern GameState gamestate;
+
+GameState from;
+void Options_Init(GameState from_) {
+	from = from_;
 }
 
 bool cancelled = false;
@@ -129,6 +132,7 @@ bool Options_Update(Player player) {
     {
         cancelled2 = false;
         menustate2 = MenuState_Main;
+		gamestate = from;
         return true;
     }
 
