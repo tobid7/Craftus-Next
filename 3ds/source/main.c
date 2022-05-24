@@ -26,6 +26,8 @@
 #include <misc/Crash.h>
 #include <gui/CrashMenu.h>
 #include <gui/TitleMenu.h>
+#include <gui/PauseMenu.h>
+#include <gui/DeathMenu.h>
 
 #include <sino/sino.h>
 #include <citro3d.h>
@@ -307,6 +309,20 @@ int main() {
 		else if (gamestate == GameState_Title)
 		{
 			if (Title_Update(player))
+			{
+				
+			}
+		}
+		else if (gamestate == GameState_Pause)
+		{
+			if (Pause_Update(player))
+			{
+				
+			}
+		}
+		else if (gamestate == GameState_Death)
+		{
+			if (Death_Update(player))
 			{
 				
 			}
