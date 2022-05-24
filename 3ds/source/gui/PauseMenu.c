@@ -68,7 +68,7 @@ void Pause_Render() {
 
 bool Pause_Update(Player player) {
     
-	dt = 0.f;
+	//dt = 0.f;
 
 	if (options55)
 	{
