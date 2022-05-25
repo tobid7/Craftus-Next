@@ -2,13 +2,9 @@
 
 #include <vec/vec.h>
 
-#include <gui/DebugUI.h>
-
 #include <3ds.h>
 
 static vec_t(VBO_Block) freedBlocks;
-
-int freedBlocks__ = 0;
 
 static LightLock lock;
 
@@ -27,13 +23,11 @@ VBO_Block VBO_Alloc(size_t size) {
 	LightLock_Lock(&lock);
 	if (freedBlocks.length > 0) {
 		VBO_Block block;
-		freedBlocks__ = 0;
 		int i;
 		vec_foreach (&freedBlocks, block, i) {
 			if (size <= block.size && block.size - size <= 2048) {
 				vec_splice(&freedBlocks, i, 1);
 				LightLock_Unlock(&lock);
-				freedBlocks__++;
 				return block;
 			}
 		}
@@ -41,7 +35,6 @@ VBO_Block VBO_Alloc(size_t size) {
 	VBO_Block block;
 	block.memory = linearAlloc(size);
 	block.size = size;
-	DebugUI_Text("FB: %i", freedBlocks__);
 	LightLock_Unlock(&lock);
 	return block;
 }
