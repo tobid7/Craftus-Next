@@ -185,7 +185,7 @@ int main() {
 		dt = ((float)(currentTime / (float)TICKS_PER_MSEC) - (float)(lastTime / (float)TICKS_PER_MSEC)) / 1000.f;
 		lastTime = currentTime;
 		timeAccum += dt;
-		dt__ = timeAccum;
+		dt__ = dt;
 		frameCounter++;
 		fpsClock += dt;
 		if (fpsClock >= 1.f) {
