@@ -13,6 +13,12 @@ A more updated version of the Craftus Minecraft Clone
 - [ ] Multiplayer
 - [ ] Decoration (Flowers, ..)
 - [ ] Port to c++
+  - [ ] SpriteBatch (UI)
+  - [ ] OpenGL
+  - [ ] Citro3d
+  - [ ] Sound
+  - [ ] 3D Renderer
+  - [ ] Everything in the list
 - [ ] Better Terrain Gen
 - [ ] Biomes
 - [x] Trees
