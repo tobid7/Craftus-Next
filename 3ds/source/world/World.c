@@ -204,7 +204,7 @@ void World_UpdateChunkCache(World* world, int orginX, int orginZ) {
 }
 
 void World_Tick(World* world) {
-	world->wtime += 1 * dt__;
+	world->wtime += 1;
 	if (world->wtime > 23999)
 	{
 		world->wtime = 0;
