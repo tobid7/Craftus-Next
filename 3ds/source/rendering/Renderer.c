@@ -171,7 +171,7 @@ void Renderer_Render() {
 				SpriteBatch_PushSingleColorQuad(0, 0, 0, 400, 240, 0);
 			}*/
 			
-            if (showDebugInfo) DebugUI_Draw();
+            //if (showDebugInfo) DebugUI_Draw();
 			/*SpriteBatch_BindGuiTexture(GuiTexture_Icons);
 			SpriteBatch_SetScale(2);
 			for (int h = 0; h < 10; h++)
@@ -212,7 +212,7 @@ void Renderer_Render() {
 			SpriteBatch_PushQuad(128/2, -10, 0, 256, 64, 0, 0, 128, 32);
 			SpriteBatch_SetScale(2);
 			SpriteBatch_PushText(0, 110, 0, INT16_MAX, true, INT_MAX, NULL, "v" CRAFTUS_VERSION_STR);
-			if (showDebugInfo) DebugUI_Draw();
+			//if (showDebugInfo) DebugUI_Draw();
 		}
 
 		C3D_BindProgram(&gui_shader);
