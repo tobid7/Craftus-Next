@@ -8,7 +8,7 @@
 #include <limits.h>
 #include <stdint.h>
 
-extern float dt;
+extern float dt__;
 
 void World_Init(World* world, WorkQueue* workqueue) {
 	strcpy(world->name, "TestWelt");
