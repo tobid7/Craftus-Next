@@ -1,0 +1,6 @@
+[submodule "Platforms/Windows/glfw"]
+	path = Platforms/Windows/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "CNE/external/glm"]
+	path = CNE/external/glm
+	url = https://github.com/g-truc/glm.git

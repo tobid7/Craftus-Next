@@ -3,6 +3,8 @@
         "world.h": "c",
         "workqueue.h": "c",
         "3ds.h": "c",
-        "treegen.h": "c"
+        "treegen.h": "c",
+        "xlocmes": "cpp",
+        "vector": "cpp"
     }
 }

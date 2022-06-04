@@ -6,3 +6,6 @@
 *.nacp
 switch/build/*
 .vscode/*
+Platforms/Windows/build
+Platforms/Windows/buildmsvc
+Platforms/Windows/*.exe

@@ -9,14 +9,12 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # There is NO WARRANTY, to the extent permitted by law.
  
 
-# Make data base, printed on Tue May 24 16:20:55 2022
+# Make data base, printed on Sat Jun  4 19:30:55 2022
 
 # Variables
 
 # environment
  
-FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
-# environment
 SYSTEMDRIVE = C:
 # environment
 JAVA_HOME = C:\Program Files\Eclipse Adoptium\jdk-11.0.15.10-hotspot\
@@ -37,13 +35,15 @@ OFILES :=  gui.shbin.o world.shbin.o   main.o Collision.o CommandLine.o Crash.o 
 # environment
 LOCALAPPDATA = C:\Users\Tobi\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-fe4f531f-4326-4098-88c8-236fe7d8e41a-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-6bd8605d-1390-4da1-923a-917d37f19de4-sock
 # makefile (from 'Makefile', line 86)
 VPATH := /home/Tobi/Craftus-Next/3ds/source /home/Tobi/Craftus-Next/3ds/source/misc /home/Tobi/Craftus-Next/3ds/source/world/worldgen /home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes /home/Tobi/Craftus-Next/3ds/source/world/worldgen/structures /home/Tobi/Craftus-Next/3ds/source/blocks /home/Tobi/Craftus-Next/3ds/source/rendering /home/Tobi/Craftus-Next/3ds/source/gui /home/Tobi/Craftus-Next/3ds/source/world /home/Tobi/Craftus-Next/3ds/source/world/savegame /home/Tobi/Craftus-Next/3ds/source/entity /home/Tobi/Craftus-Next/3ds/source/savegame /home/Tobi/Craftus-Next/3ds/dependencies/mpack /home/Tobi/Craftus-Next/3ds/dependencies/vec /home/Tobi/Craftus-Next/3ds/dependencies/sino /home/Tobi/Craftus-Next/3ds/dependencies/lodepng /home/Tobi/Craftus-Next/3ds/dependencies/miniz /home/Tobi/Craftus-Next/3ds/dependencies/ini /home/Tobi/Craftus-Next/3ds/dependencies/playback /home/Tobi/Craftus-Next/3ds/data
 # makefile (from 'Makefile', line 91)
 CFILES := main.c Collision.c CommandLine.c Crash.c Raycast.c Sound.c noise.c DefaultGen.c FlatBedrock.c SmeaGen.c SuperFlatGen.c Biome.c Desert.c Forest.c Plains.c Savanna.c AcaciaTree.c BirchTree.c OakTree.c Pumpkins.c TreeGen.c Block.c BlockEvent.c Item.c Liquids.c Camera.c Clouds.c Cursor.c Hand.c PolyGen.c Renderer.c TextureMap.c VBOCache.c VertexFmt.c WorldRenderer.c CrashMenu.c DeathMenu.c DebugUI.c FontLoader.c Gui.c Inventory.c OptionsMenu.c PauseMenu.c SpriteBatch.c TitleMenu.c WorldSelect.c Chunk.c ChunkWorker.c Direction.c WorkQueue.c World.c SaveManager.c SuperChunk.c Damage.c Player.c PlayerController.c  mpack.c vec.c sino.c lodepng.c miniz.c ini.c error.c file.c flac.c mp3.c opus.c playback.c vorbis.c wav.c
 # environment
 VSCODE_CWD = C:\Users\Tobi\AppData\Local\Programs\Microsoft VS Code
+# environment
+CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
 # environment
 SYSTEMROOT = C:\Windows
 # makefile (from 'Makefile', line 46)
@@ -61,11 +61,9 @@ MAKE_COMMAND := make
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10428_CTFKJGKXOVGXREVW
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_6296_QQSKMULQOFLLWKAU
 # makefile (from 'Makefile', line 92)
 CPPFILES := $(subst ,,                  )
-# environment
-FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -133,7 +131,7 @@ ASFLAGS := -g -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 10428
+VSCODE_PID = 6296
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 28)
@@ -142,6 +140,7 @@ RANLIB := arm-none-eabi-gcc-ranlib
 DEVKITPPC = /opt/devkitpro/devkitPPC
 # makefile (from 'Makefile', line 36)
 APP_AUTHOR := TobiD7, skymz4
+ 
 # makefile (from 'Makefile', line 33)
 INCLUDES := dependencies include
 # automatic
@@ -183,7 +182,7 @@ MAKE = $(MAKE_COMMAND)
 # makefile (from 'Makefile', line 95)
 SHLISTFILES := $(subst ,,                  )
 # makefile (from '/opt/devkitpro/devkitARM/3ds_rules', line 9)
-PATH := /opt/devkitpro/portlibs/3ds/bin:/opt/devkitpro/tools/bin:/opt/devkitpro/devkitARM/bin:/c/Program Files/Eclipse Adoptium/jdk-11.0.15.10-hotspot/bin:/opt/devkitpro/msys2/usr/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0:/c/Windows/System32/OpenSSH:/c/Program Files/Git/cmd:/opt/devkitpro/tools/bin:/c/Program Files/CMake/bin:/c/Program Files/Meson:/opt/devkitpro/devkitARM/bin:/home/Tobi/vcpkg:/home/Tobi/Documents/jdk-17.0.2/bin:/home/Tobi/AppData/Local/Programs/Python/Python310/Scripts:/home/Tobi/AppData/Local/Programs/Python/Python310:/home/Tobi/AppData/Local/Microsoft/WindowsApps:/home/Tobi/AppData/Local/Programs/Microsoft VS Code/bin:/home/Tobi/AppData/Local/GitHubDesktop/bin
+PATH := /opt/devkitpro/portlibs/3ds/bin:/opt/devkitpro/tools/bin:/opt/devkitpro/devkitARM/bin:/c/Program Files/Eclipse Adoptium/jdk-11.0.15.10-hotspot/bin:/opt/devkitpro/msys2/usr/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0:/c/Windows/System32/OpenSSH:/c/Program Files/Git/cmd:/opt/devkitpro/tools/bin:/c/Program Files/CMake/bin:/c/Program Files/Meson:/opt/devkitpro/devkitARM/bin:/home/Tobi/vcpkg:/home/Tobi/Documents/jdk-17.0.2/bin:/c/ProgramData/chocolatey/bin:/home/Tobi/AppData/Local/Programs/Python/Python310/Scripts:/home/Tobi/AppData/Local/Programs/Python/Python310:/home/Tobi/AppData/Local/Microsoft/WindowsApps:/home/Tobi/AppData/Local/Programs/Microsoft VS Code/bin:/home/Tobi/AppData/Local/GitHubDesktop/bin:/c/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin
 # environment
 COMPUTERNAME = PC
 # environment
@@ -192,9 +191,10 @@ MAKEFILES = ./3ds/Makefile ./switch/Makefile
 ^F = $(notdir $^)
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 5)
 UNAME_R := 3.3.4-341.x86_64
- 
 # environment
 PROMPT = $P$G
+# environment
+CHOCOLATEYLASTPATHUPDATE = 132988372326183814
 # makefile (from '/opt/devkitpro/devkitARM/base_tools', line 19)
 PREFIX := arm-none-eabi-
 # makefile (from 'Makefile', line 73)
@@ -236,6 +236,7 @@ PICAFILES :=       gui.v.pica world.v.pica
 # makefile (from 'Makefile', line 56)
 ARCH := -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 # makefile (from 'Makefile', line 39)
+ 
 BANNER_AUDIO := romfs/theme.wav
 # makefile (from 'Makefile', line 38)
 APP_DESCRIPTION := Minecraft clone
@@ -332,13 +333,12 @@ DATA := data
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 # variable set hash-table stats:
- 
-# Load=158/1024=15%, Rehash=0, Collisions=24/337=7%
+# Load=158/1024=15%, Rehash=0, Collisions=23/337=7%
 
+ 
 # Pattern-specific Variable Values
 
 # No pattern-specific variable values.
- 
 
 # Directories
 
@@ -360,7 +360,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 # /home/Tobi/Craftus-Next/3ds/dependencies/lodepng (device 1820687712, inode 1688849860938348): 4 files, no impossibilities.
 # source/savegame: could not be stat'd.
 # source/gui (device 1820687712, inode 281474977386025): 13 files, no impossibilities.
-# . (device 1820687712, inode 1125899907264388): 16 files, no impossibilities.
+# . (device 1820687712, inode 1125899907264388): 20 files, no impossibilities.
 # /home/Tobi/Craftus-Next/3ds/source/world/savegame (device 1820687712, inode 281474977386059): 4 files, no impossibilities.
 # /home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes (device 1820687712, inode 281474977386067): 7 files, no impossibilities.
 # /home/Tobi/Craftus-Next/3ds/source/world/worldgen (device 1820687712, inode 281474977386062): 8 files, no impossibilities.
@@ -384,7 +384,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 # /home/Tobi/Craftus-Next/3ds/source/entity (device 1820687712, inode 281474977386021): 5 files, no impossibilities.
 # dependencies/sino (device 1820687712, inode 281474977385822): 4 files, no impossibilities.
 
-# 290 files, no impossibilities in 41 directories.
+# 294 files, no impossibilities in 41 directories.
 
 # Implicit Rules
 
@@ -457,6 +457,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 %.o: %.cpp
 #  recipe to execute (from '/opt/devkitpro/devkitARM/base_rules', line 79):
 	$(SILENTMSG) $(notdir $<)
+ 
 	$(SILENTCMD)$(CXX) -MMD -MP -MF $(DEPSDIR)/$*.d $(CXXFLAGS) -c $< -o $@ $(ERROR_FILTER)
 
 %.o: %.c
@@ -577,7 +578,6 @@ build:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: ''
 #  File does not exist.
- 
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
@@ -606,6 +606,7 @@ build:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+ 
 
 .PHONY: build clean all
 #  Implicit rule search has not been done.
@@ -629,17 +630,18 @@ make_cia:
 # General ('VPATH' variable) search path:
 # /home/Tobi/Craftus-Next/3ds/source:/home/Tobi/Craftus-Next/3ds/source/misc:/home/Tobi/Craftus-Next/3ds/source/world/worldgen:/home/Tobi/Craftus-Next/3ds/source/world/worldgen/biomes:/home/Tobi/Craftus-Next/3ds/source/world/worldgen/structures:/home/Tobi/Craftus-Next/3ds/source/blocks:/home/Tobi/Craftus-Next/3ds/source/rendering:/home/Tobi/Craftus-Next/3ds/source/gui:/home/Tobi/Craftus-Next/3ds/source/world:/home/Tobi/Craftus-Next/3ds/source/world/savegame:/home/Tobi/Craftus-Next/3ds/source/entity:/home/Tobi/Craftus-Next/3ds/source/savegame:/home/Tobi/Craftus-Next/3ds/dependencies/mpack:/home/Tobi/Craftus-Next/3ds/dependencies/vec:/home/Tobi/Craftus-Next/3ds/dependencies/sino:/home/Tobi/Craftus-Next/3ds/dependencies/lodepng:/home/Tobi/Craftus-Next/3ds/dependencies/miniz:/home/Tobi/Craftus-Next/3ds/dependencies/ini:/home/Tobi/Craftus-Next/3ds/dependencies/playback:/home/Tobi/Craftus-Next/3ds/data
 
-# strcache buffers: 1 (0) / strings = 199 / storage = 2844 B / avg = 14 B
-# current buf: size = 8162 B / used = 2844 B / count = 199 / avg = 14 B
+# strcache buffers: 1 (0) / strings = 202 / storage = 2897 B / avg = 14 B
+# current buf: size = 8162 B / used = 2897 B / count = 202 / avg = 14 B
 
-# strcache performance: lookups = 295 / hit rate = 32%
+# strcache performance: lookups = 299 / hit rate = 32%
 # hash-table stats:
-# Load=199/8192=2%, Rehash=0, Collisions=7/295=2%
-# Finished Make data base on Tue May 24 16:20:55 2022
+# Load=202/8192=2%, Rehash=0, Collisions=7/299=2%
+# Finished Make data base on Sat Jun  4 19:30:55 2022
 
 # make[1]: Leaving directory '/home/Tobi/Craftus-Next/3ds'
  
 # GNU Make 4.3
+ 
 # Built for x86_64-pc-msys
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -647,12 +649,11 @@ make_cia:
 # There is NO WARRANTY, to the extent permitted by law.
  
 
-# Make data base, printed on Tue May 24 16:20:55 2022
+# Make data base, printed on Sat Jun  4 19:30:55 2022
 
 # Variables
+ 
 
-# environment
-FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
 SYSTEMDRIVE = C:
 # environment
@@ -664,9 +665,11 @@ USERPROFILE = C:\Users\Tobi
 # environment
 LOCALAPPDATA = C:\Users\Tobi\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-fe4f531f-4326-4098-88c8-236fe7d8e41a-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-6bd8605d-1390-4da1-923a-917d37f19de4-sock
 # environment
 VSCODE_CWD = C:\Users\Tobi\AppData\Local\Programs\Microsoft VS Code
+# environment
+CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
 # environment
 SYSTEMROOT = C:\Windows
 # environment
@@ -676,12 +679,9 @@ PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\Wi
 # default
 MAKE_COMMAND := make
 # automatic
- 
 @D = $(patsubst %/,%,$(dir $@))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10428_CTFKJGKXOVGXREVW
-# environment
-FPS_BROWSER_USER_PROFILE_STRING = Default
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_6296_QQSKMULQOFLLWKAU
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -737,9 +737,10 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 10428
+VSCODE_PID = 6296
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
+ 
 # environment
 DEVKITPPC = /opt/devkitpro/devkitPPC
 # automatic
@@ -769,7 +770,7 @@ MAKELEVEL := 0
 # default
 MAKE = $(MAKE_COMMAND)
 # environment
-PATH = /c/Program Files/Eclipse Adoptium/jdk-11.0.15.10-hotspot/bin:/opt/devkitpro/msys2/usr/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0:/c/Windows/System32/OpenSSH:/c/Program Files/Git/cmd:/opt/devkitpro/tools/bin:/c/Program Files/CMake/bin:/c/Program Files/Meson:/opt/devkitpro/devkitARM/bin:/home/Tobi/vcpkg:/home/Tobi/Documents/jdk-17.0.2/bin:/home/Tobi/AppData/Local/Programs/Python/Python310/Scripts:/home/Tobi/AppData/Local/Programs/Python/Python310:/home/Tobi/AppData/Local/Microsoft/WindowsApps:/home/Tobi/AppData/Local/Programs/Microsoft VS Code/bin:/home/Tobi/AppData/Local/GitHubDesktop/bin
+PATH = /c/Program Files/Eclipse Adoptium/jdk-11.0.15.10-hotspot/bin:/opt/devkitpro/msys2/usr/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0:/c/Windows/System32/OpenSSH:/c/Program Files/Git/cmd:/opt/devkitpro/tools/bin:/c/Program Files/CMake/bin:/c/Program Files/Meson:/opt/devkitpro/devkitARM/bin:/home/Tobi/vcpkg:/home/Tobi/Documents/jdk-17.0.2/bin:/c/ProgramData/chocolatey/bin:/home/Tobi/AppData/Local/Programs/Python/Python310/Scripts:/home/Tobi/AppData/Local/Programs/Python/Python310:/home/Tobi/AppData/Local/Microsoft/WindowsApps:/home/Tobi/AppData/Local/Programs/Microsoft VS Code/bin:/home/Tobi/AppData/Local/GitHubDesktop/bin:/c/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin
 # environment
 COMPUTERNAME = PC
 # makefile (from 'Makefile', line 4)
@@ -779,6 +780,8 @@ MAKEFILES := ./3ds/Makefile ./switch/Makefile
 # environment
 PROMPT = $P$G
 # environment
+CHOCOLATEYLASTPATHUPDATE = 132988372326183814
+# environment
 LOGONSERVER = \\PC
 # environment
 VSCODE_LOG_NATIVE = false
@@ -787,7 +790,6 @@ USERNAME = Tobi
 # environment
 COMMONPROGRAMFILES = C:\Program Files\Common Files
 # automatic
- 
 ?F = $(notdir $?)
 # environment
 PROGRAMW6432 = C:\Program Files
@@ -825,10 +827,11 @@ APPDATA = C:\Users\Tobi\AppData\Roaming
 HOMEDRIVE = C:
 # environment
 PROCESSOR_ARCHITECTURE = AMD64
+ 
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # makefile (from 'Makefile', line 2)
-DATESTRING := 20220524
+DATESTRING := 20220604
 # environment
 HOME = /home/Tobi
 # environment
@@ -858,7 +861,7 @@ PROCESSOR_REVISION = 2100
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 # variable set hash-table stats:
-# Load=102/1024=10%, Rehash=0, Collisions=12/151=8%
+# Load=102/1024=10%, Rehash=0, Collisions=11/151=7%
 
 # Pattern-specific Variable Values
 
@@ -866,9 +869,9 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 
 # Directories
 
-# . (device 1820687712, inode 1688849860494093): 13 files, no impossibilities.
+# . (device 1820687712, inode 1688849860494093): 14 files, no impossibilities.
 
-# 13 files, no impossibilities in 1 directories.
+# 14 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -921,9 +924,9 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 23):
 	@rm -fr bin
+ 
 	@rm -f *.bz2
 	@for i in $(MAKEFILES); do $(MAKE) -C `dirname $$i` clean || exit 1; done;
 
@@ -961,12 +964,12 @@ all: craftus
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 20 / storage = 153 B / avg = 7 B
-# current buf: size = 8162 B / used = 153 B / count = 20 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 21 / storage = 157 B / avg = 7 B
+# current buf: size = 8162 B / used = 157 B / count = 21 / avg = 7 B
 
-# strcache performance: lookups = 32 / hit rate = 37%
+# strcache performance: lookups = 33 / hit rate = 36%
 # hash-table stats:
-# Load=20/8192=0%, Rehash=0, Collisions=0/32=0%
-# Finished Make data base on Tue May 24 16:20:55 2022
+# Load=21/8192=0%, Rehash=0, Collisions=0/33=0%
+# Finished Make data base on Sat Jun  4 19:30:55 2022
 
  
