@@ -22,9 +22,10 @@ namespace CNE
     }
     void GL_Renderer::Render()
     {
-        this->Clear();
+        //GL_Renderer::Clear();
         glViewport(posx, posy, sizex, sizey);
-        
+        glClearColor(clearcol.r, clearcol.g, clearcol.b, clearcol.a);
+        glClear(GL_COLOR_BUFFER_BIT);
         if(m_drawstack_3d.size() > 0) {
             
             //3D

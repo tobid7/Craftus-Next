@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 3.1 )
 
 project( Craftus-Next LANGUAGES C CXX )
 
-include_directories( ../../CNE/external/OpenGL/include/ ../../CNE/external/ ../../CNE/ ../../CNE/driver/def ../../CNE/driver/ogl ../../CNE/Graphics glfw glm)
+include_directories( src ../../CNE/external/OpenGL/include/ ../../CNE/external/ ../../CNE/ ../../CNE/driver/def ../../CNE/driver/ogl ../../CNE/Graphics glfw glm)
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
 set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
@@ -25,6 +25,7 @@ set( Craftus-Next-SRC
     ../../CNE/Graphics/Color.cpp
     ../../CNE/driver/ogl/OpenGL_Shader.cpp
     ../../CNE/external/lodepng.cpp
+    src/stb_image.h
     ${APP_ICON_RESOURCE_WINDOWS}
      )
      
