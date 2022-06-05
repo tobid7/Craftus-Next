@@ -41,23 +41,24 @@ int main(void)
     shader = CNE_Shader();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
     renderer.SetClearColor(CNE::Color(51, 76, 76, 255));
 
     window = glfwCreateWindow(1920, 1080, "Craftus-Next", NULL, NULL);
+    /*GLFWimage icons[1];
+    unsigned int *wh, *hw;
+    lodepng_decode_file(&icons[0].pixels, wh, hw, "res/icon.png", LCT_RGBA, 4);
+    icons[0].width = 256;
+    icons[0].height = 256;
+    glfwSetWindowIcon(window, 1, icons);*/
     if (!window)
     {
         glfwTerminate();
         return 0;
     }
     glfwMakeContextCurrent(window);
-    
-    GLFWimage icons[1];
-    unsigned int *wh, *hw;
-    lodepng_decode_file(&icons[0].pixels, wh, hw, "res/icon.png", LCT_RGBA, 4);
-    glfwSetWindowIcon(window, 1, icons);
 
     renderer = CNE_Renderer();
     shader.Compile(vertBasic, fragBasic);

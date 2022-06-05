@@ -1,7 +1,6 @@
 #pragma once
 #include "Color.hpp"
 #include "RenderObject.hpp"
-#include "Polygon.hpp"
 #include "cne.hpp"
 
 namespace CNE
