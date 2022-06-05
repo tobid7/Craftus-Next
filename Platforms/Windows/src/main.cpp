@@ -9,6 +9,8 @@
 
 #include "Shaders.hpp"
 
+#include "lodepng.h"
+
 using namespace std;
 
 float ratio;
@@ -52,6 +54,11 @@ int main(void)
     }
     glfwMakeContextCurrent(window);
     
+    GLFWimage icons[1];
+    unsigned int *wh, *hw;
+    lodepng_decode_file(&icons[0].pixels, wh, hw, "res/icon.png", LCT_RGBA, 4);
+    glfwSetWindowIcon(window, 1, icons);
+
     renderer = CNE_Renderer();
     shader.Compile(vertBasic, fragBasic);
     shader2d.Compile(vert2D_Basic, fragBasic);
