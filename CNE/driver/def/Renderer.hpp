@@ -18,6 +18,8 @@ namespace CNE
         virtual int GetPosY() = 0;
         virtual void SetClearColor(Color clcol) = 0;
         virtual Color GetClearColor() = 0;
+        virtual void Draw(CNE::RObject &t_object) = 0;
+        virtual void Clear() = 0;
         std::map<int, std::vector<std::pair<CNE::RObject*, std::function<bool()>>>, std::less<int>> m_drawstack_2d, m_drawstack_3d;
     };
 }

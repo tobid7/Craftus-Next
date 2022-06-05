@@ -8,8 +8,8 @@ namespace CNE
     class SpriteBatch
     {
         public:
-        virtual ~SpriteBatch();
-        virtual void Init();
-        virtual void Render();
+        virtual ~SpriteBatch(){}
+        virtual void Init() = 0;
+        virtual void Render() = 0;
     };
 }

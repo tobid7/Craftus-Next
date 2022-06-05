@@ -19,6 +19,8 @@ namespace CNE
         int GetPosY() override;
         void SetClearColor(Color clcol) override;
         Color GetClearColor() override;
+        void Draw(CNE::RObject &t_object) override;
+        virtual void Clear() override;
         
 
         private:

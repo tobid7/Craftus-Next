@@ -7,6 +7,7 @@ namespace CNE
     {
         public:
         virtual ~Shader(){}
+        virtual bool CompileFile(const char* vertex, const char* fragment) = 0;
         virtual bool Compile(const char* vertex, const char* fragment) = 0;
         virtual void Use() = 0;
         virtual int GetID() = 0;
