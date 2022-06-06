@@ -279,7 +279,7 @@ int main(void)
         // If a second has passed.
         if ( currentTime - previousTime >= 1.0 )
         {
-            title = "Craftus-Next FPS: " + std::to_string(frameCount);
+            title = "Craftus-Next >> FPS: " + std::to_string(frameCount);
             // Display the frame count here any way you want.
             glfwSetWindowTitle(window, title.c_str());
 
