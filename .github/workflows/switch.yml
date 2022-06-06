@@ -54,5 +54,5 @@ jobs:
       - name: "Publish build to GH Actions"
         uses: actions/upload-artifact@v2
         with:
-          path: Craftus-Next.exe
+          path: Platforms/Windows/build/Debug/Craftus-Next.exe
           name: "windows"
