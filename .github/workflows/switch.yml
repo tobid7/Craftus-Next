@@ -36,8 +36,12 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: seanmiddleditch/gha-setup-vsdevenv@master
+      - name: Check
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: SetUp
+        uses: seanmiddleditch/gha-setup-vsdevenv@master
       - name: Build on Windows
         shell: bash
         run: |
