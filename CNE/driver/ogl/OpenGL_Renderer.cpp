@@ -17,15 +17,15 @@ namespace CNE
     }
     void GL_Renderer::Clear()
     {
-        glClearColor(clearcol.r, clearcol.g, clearcol.b, clearcol.a);
+        glClearColor((GLfloat)clearcol.r/255, (GLfloat)clearcol.g/255, (GLfloat)clearcol.b/255, (GLfloat)clearcol.a/255);
         glClear(GL_COLOR_BUFFER_BIT);
     }
     void GL_Renderer::Render()
     {
-        //GL_Renderer::Clear();
+        this->Clear();
         glViewport(posx, posy, sizex, sizey);
-        glClearColor(clearcol.r, clearcol.g, clearcol.b, clearcol.a);
-        glClear(GL_COLOR_BUFFER_BIT);
+        //glClearColor((GLfloat)clearcol.r/255, (GLfloat)clearcol.g/255, (GLfloat)clearcol.b/255, (GLfloat)clearcol.a/255);
+        //glClear(GL_COLOR_BUFFER_BIT);
         if(m_drawstack_3d.size() > 0) {
             
             //3D

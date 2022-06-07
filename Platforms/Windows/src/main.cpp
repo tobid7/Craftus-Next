@@ -9,8 +9,6 @@
 
 #include "Shaders.hpp"
 
-#include "lodepng.h"
-
 // GLM headers
 #define GLM_FORCE_PURE
 #include <glm/vec3.hpp>
@@ -46,7 +44,6 @@ CNE_Shader shader;
 CNE_Shader shader2d;
 
 //static GLuint s_vao, s_vbo;
-
 typedef struct
 {
     float position[3];
@@ -120,20 +117,22 @@ static const Vertex2 vertex_list[] =
 #define vertex_list_count (sizeof(vertex_list)/sizeof(vertex_list[0]))
 
 static GLuint s_vao, s_vbo;
+static GLuint fs_vao, fs_vbo;
 static GLuint s_tex;
 
 static GLint loc_mdlvMtx, loc_projMtx;
 static GLint loc_lightPos, loc_ambient, loc_diffuse, loc_specular, loc_tex_diffuse;
-static uint64_t s_startTicks;
 
 static void sceneUpdate()
 {
     glm::mat4 mdlvMtx{1.0};
     mdlvMtx = glm::translate(mdlvMtx, glm::vec3{0.0f, 0.0f, -3.0f});
-    mdlvMtx = glm::rotate(mdlvMtx, (float)previousTime * TAU * 0.234375f, glm::vec3{1.0f, 0.0f, 0.0f});
-    mdlvMtx = glm::rotate(mdlvMtx, (float)previousTime * TAU * 0.234375f / 2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
+    mdlvMtx = glm::rotate(mdlvMtx, (float)2.f * TAU * 0.234375f, glm::vec3{1.0f, 0.0f, 0.0f});
+    mdlvMtx = glm::rotate(mdlvMtx, (float)2.f * TAU * 0.234375f / 2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
     glUniformMatrix4fv(loc_mdlvMtx, 1, GL_FALSE, glm::value_ptr(mdlvMtx));
+
 }
+
 
 int main(void)
 {
@@ -147,9 +146,9 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
-    renderer.SetClearColor(CNE::Color(255, 255, 255, 255));
 
     window = glfwCreateWindow(1280, 720, "Craftus-Next", NULL, NULL);
+    
     /*GLFWimage icons[1];
     unsigned int *wh, *hw;
     lodepng_decode_file(&icons[0].pixels, wh, hw, "res/icon.png", LCT_RGBA, 4);
@@ -164,12 +163,14 @@ int main(void)
     glfwMakeContextCurrent(window);
     
     renderer = CNE_Renderer();
-    shader.Compile(vertCubeNX, fragCubeNX);
+    renderer.SetClearColor(CNE::Color(41, 41, 41, 255));
+    shader.Compile(vertCube, fragCube);
+    
     shader2d.Compile(vertNX, fragNX);
     
 
     //TEST//
-    /*struct Vertex
+    struct Vertex
     {
         float position[3];
         float color[3];
@@ -184,14 +185,13 @@ int main(void)
         { {  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f, 1.0f } },
         { {  0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f, 0.0f } },
         { {  -0.5f,  0.5f, 0.0f }, { 0.0f, 0.0f, 1.0f } },
-
     };
-    glGenVertexArrays(1, &s_vao);
-    glGenBuffers(1, &s_vbo);
+    glGenVertexArrays(1, &fs_vao);
+    glGenBuffers(1, &fs_vbo);
     
-    glBindVertexArray(s_vao);
+    glBindVertexArray(fs_vao);
 
-    glBindBuffer(GL_ARRAY_BUFFER, s_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, fs_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
@@ -201,7 +201,9 @@ int main(void)
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    glBindVertexArray(0);*/
+    glBindVertexArray(0);
+
+    shader.Use();
     
     loc_mdlvMtx = glGetUniformLocation(shader.GetID(), "mdlvMtx");
     loc_projMtx = glGetUniformLocation(shader.GetID(), "projMtx");
@@ -286,18 +288,21 @@ int main(void)
             frameCount = 0;
             previousTime = currentTime;
         }
-
-        //sceneUpdate();
-        //shader2d.Use();
         glfwGetFramebufferSize(window, &width, &height);
         renderer.SetSize(width, height);
         renderer.Render();
+
+        sceneUpdate();
+        
         //TEST//
-        //glBindVertexArray(s_vao); 
-        //glDrawArrays(GL_TRIANGLES, 0, 6);
+        glEnable(GL_DEPTH_TEST);
         shader.Use();
         glBindVertexArray(s_vao); 
-        glDrawArrays(GL_TRIANGLES, 0, vertex_list_count);
+        glDrawArrays(GL_LINES, 0, vertex_list_count);
+        glDisable(GL_DEPTH_TEST);
+        shader2d.Use();
+        glBindVertexArray(fs_vao); 
+        glDrawArrays(GL_TRIANGLES, 0, 6);
         //TEST//
         
         glfwSwapBuffers(window);

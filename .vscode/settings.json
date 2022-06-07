@@ -5,6 +5,8 @@
         "3ds.h": "c",
         "treegen.h": "c",
         "xlocmes": "cpp",
-        "vector": "cpp"
-    }
+        "vector": "cpp",
+        "string": "cpp"
+    },
+    "cmake.configureOnOpen": false
 }

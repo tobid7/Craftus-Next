@@ -14,6 +14,9 @@ add_library(glad "../../CNE/external/OpenGL/include/glad/glad.h" "../../CNE/exte
 
 set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icon.rc")
 
+set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lws2_32 ${CMAKE_CXX_STANDARD_LIBRARIES}")
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
 
 if( MSVC )
     SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
@@ -24,8 +27,7 @@ set( Craftus-Next-SRC
     ../../CNE/driver/ogl/OpenGL_Renderer.cpp
     ../../CNE/Graphics/Color.cpp
     ../../CNE/driver/ogl/OpenGL_Shader.cpp
-    ../../CNE/external/lodepng.cpp
-    src/stb_image.h
+    #src/stb_image.h
     ${APP_ICON_RESOURCE_WINDOWS}
      )
      
