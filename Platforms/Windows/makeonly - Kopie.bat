@@ -3,4 +3,5 @@ rm *.exe
 cd build
 mingw32-make
 cp *.exe ../
+Craftus-Next
 pause

@@ -18,7 +18,7 @@ namespace CNE
     void GL_Renderer::Clear()
     {
         glClearColor((GLfloat)clearcol.r/255, (GLfloat)clearcol.g/255, (GLfloat)clearcol.b/255, (GLfloat)clearcol.a/255);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
     void GL_Renderer::Render()
     {

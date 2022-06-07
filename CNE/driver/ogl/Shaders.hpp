@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-const char* vertCube = R"text(
+static const char* const vertCube = R"text(
     #version 320 es
     precision mediump float;
     layout (location = 0) in vec3 inPos;
@@ -32,7 +32,7 @@ const char* vertCube = R"text(
     }
 )text";
 
-const char* fragCube = R"text(
+static const char* const fragCube = R"text(
     #version 320 es
     precision mediump float;
     in vec2 vtxTexCoord;

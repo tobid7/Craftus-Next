@@ -43,7 +43,6 @@ CNE_Renderer renderer;
 CNE_Shader shader;
 CNE_Shader shader2d;
 
-//static GLuint s_vao, s_vbo;
 typedef struct
 {
     float position[3];
@@ -127,8 +126,8 @@ static void sceneUpdate()
 {
     glm::mat4 mdlvMtx{1.0};
     mdlvMtx = glm::translate(mdlvMtx, glm::vec3{0.0f, 0.0f, -3.0f});
-    mdlvMtx = glm::rotate(mdlvMtx, (float)2.f * TAU * 0.234375f, glm::vec3{1.0f, 0.0f, 0.0f});
-    mdlvMtx = glm::rotate(mdlvMtx, (float)2.f * TAU * 0.234375f / 2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
+    mdlvMtx = glm::rotate(mdlvMtx, (float)previousTime * TAU * 0.234375f, glm::vec3{1.0f, 0.0f, 0.0f});
+    mdlvMtx = glm::rotate(mdlvMtx, (float)previousTime * TAU * 0.234375f / 2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
     glUniformMatrix4fv(loc_mdlvMtx, 1, GL_FALSE, glm::value_ptr(mdlvMtx));
 
 }
@@ -161,6 +160,7 @@ int main(void)
         return 0;
     }
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
     
     renderer = CNE_Renderer();
     renderer.SetClearColor(CNE::Color(41, 41, 41, 255));
@@ -178,14 +178,15 @@ int main(void)
 
     static const Vertex vertices[] =
     {
-        { { -0.5f, -0.5f, 0.0f }, { 1.0f, 0.0f, 0.0f } },
-        { {  0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f, 0.0f } },
-        { {  -0.5f,  0.5f, 0.0f }, { 0.0f, 0.0f, 1.0f } },
+        { { -0.3f, -0.3f, 0.0f }, { 1.0f, 0.0f, 0.0f } },
+        { {  0.3f, -0.3f, 0.0f }, { 0.0f, 1.0f, 0.0f } },
+        { {  -0.3f,  0.3f, 0.0f }, { 0.0f, 0.0f, 1.0f } },
 
-        { {  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f, 1.0f } },
-        { {  0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f, 0.0f } },
-        { {  -0.5f,  0.5f, 0.0f }, { 0.0f, 0.0f, 1.0f } },
+        { {  0.3f,  0.3f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+        { {  0.3f, -0.3f, 0.0f }, { 0.0f, 1.0f, 0.0f } },
+        { {  -0.3f,  0.3f, 0.0f }, { 0.0f, 0.0f, 1.0f } },
     };
+
     glGenVertexArrays(1, &fs_vao);
     glGenBuffers(1, &fs_vbo);
     
@@ -204,7 +205,6 @@ int main(void)
     glBindVertexArray(0);
 
     shader.Use();
-    
     loc_mdlvMtx = glGetUniformLocation(shader.GetID(), "mdlvMtx");
     loc_projMtx = glGetUniformLocation(shader.GetID(), "projMtx");
     loc_lightPos = glGetUniformLocation(shader.GetID(), "lightPos");
@@ -218,7 +218,7 @@ int main(void)
 
     glGenVertexArrays(1, &s_vao);
     glGenBuffers(1, &s_vbo);
-    
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(s_vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, s_vbo);
@@ -233,11 +233,13 @@ int main(void)
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2), (void*)offsetof(Vertex2, normal));
     glEnableVertexAttribArray(2);
 
-    
+    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    
+    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
+
     // Textures
     glGenTextures(1, &s_tex);
     glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
@@ -249,15 +251,13 @@ int main(void)
 
     int width, height, nchan;
     stbi_set_flip_vertically_on_load(true);
-    FILE* fp = fopen("res/icon.png", "rb");
-    stbi_uc* img = stbi_load_from_file(fp, &width, &height, &nchan, 4);
+    stbi_uc* img = stbi_load("res/icon.png", &width, &height, &nchan, 4);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img);
     stbi_image_free(img);
-    fclose(fp);
 
     // Uniforms
     glUseProgram(shader.GetID());
-    auto projMtx = glm::perspective(40.0f*TAU/360.0f, 1280.0f/720.0f, 0.01f, 1000.0f);
+    auto projMtx = glm::perspective(60.0f*TAU/360.0f, (float)width/height, 0.01f, 1000.0f);
     glUniformMatrix4fv(loc_projMtx, 1, GL_FALSE, glm::value_ptr(projMtx));
     glUniform4f(loc_lightPos, 0.0f, 0.0f, 0.5f, 1.0f);
     glUniform3f(loc_ambient, 0.1f, 0.1f, 0.1f);
@@ -291,18 +291,23 @@ int main(void)
         glfwGetFramebufferSize(window, &width, &height);
         renderer.SetSize(width, height);
         renderer.Render();
+        projMtx = glm::perspective(60.0f*TAU/360.0f, (float)width/height, 0.01f, 1000.0f);
 
         sceneUpdate();
         
         //TEST//
-        glEnable(GL_DEPTH_TEST);
         shader.Use();
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+        
         glBindVertexArray(s_vao); 
-        glDrawArrays(GL_LINES, 0, vertex_list_count);
+        glDrawArrays(GL_TRIANGLES, 0, vertex_list_count);
         glDisable(GL_DEPTH_TEST);
+        glBindVertexArray(0);
         shader2d.Use();
         glBindVertexArray(fs_vao); 
         glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
         //TEST//
         
         glfwSwapBuffers(window);
