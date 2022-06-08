@@ -20,11 +20,18 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#include <imgui.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_impl_glfw.h>
+
+
 using namespace std;
 
 constexpr auto TAU = glm::two_pi<float>();
 
 double previousTime;
+
+int fps = 0;
 
 float ratio;
 int width, height;
@@ -160,13 +167,18 @@ int main(void)
         return 0;
     }
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    glfwSwapInterval(0);
     
     renderer = CNE_Renderer();
     renderer.SetClearColor(CNE::Color(41, 41, 41, 255));
     shader.Compile(vertCube, fragCube);
     
     shader2d.Compile(vertNX, fragNX);
+
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init();
+    
     
 
     //TEST//
@@ -282,6 +294,7 @@ int main(void)
         if ( currentTime - previousTime >= 1.0 )
         {
             title = "Craftus-Next >> FPS: " + std::to_string(frameCount);
+            fps = frameCount;
             // Display the frame count here any way you want.
             glfwSetWindowTitle(window, title.c_str());
 
@@ -292,8 +305,18 @@ int main(void)
         renderer.SetSize(width, height);
         renderer.Render();
         projMtx = glm::perspective(60.0f*TAU/360.0f, (float)width/height, 0.01f, 1000.0f);
-
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
         sceneUpdate();
+        bool xddd = true;
+        
+        //ImGui::ShowMetricsWindow(&xddd);
+        ImGui::Begin("Debug", &xddd, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowPos(ImVec2{0, 0});
+        ImGui::SetWindowSize(ImVec2{100, 40});
+        ImGui::Text("Fps %i", fps);
+        ImGui::End();
         
         //TEST//
         shader.Use();
@@ -303,13 +326,12 @@ int main(void)
         glBindVertexArray(s_vao); 
         glDrawArrays(GL_TRIANGLES, 0, vertex_list_count);
         glDisable(GL_DEPTH_TEST);
-        glBindVertexArray(0);
         shader2d.Use();
         glBindVertexArray(fs_vao); 
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
         //TEST//
-        
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
