@@ -33,31 +33,31 @@ jobs:
         with:
           path: ~/artifacts/*
           name: ubuntu
-  windows:
-    runs-on: windows-latest
-    steps:
-      - name: Check
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: SetUp
-        uses: seanmiddleditch/gha-setup-vsdevenv@master
-      - name: Build on Windows
-        shell: bash
-        run: |
-          cd Platforms/Windows
-          mkdir -p build
-          cd build
-          cmake ..
-          cmake --build .
+#  windows:
+#    runs-on: windows-latest
+#    steps:
+#      - name: Check
+#        uses: actions/checkout@v2
+#        with:
+#          submodules: recursive
+#      - name: SetUp
+#        uses: seanmiddleditch/gha-setup-vsdevenv@master
+#      - name: Build on Windows
+#        shell: bash
+#        run: |
+#          cd Platforms/Windows
+#          mkdir -p build
+#          cd build
+#          cmake ..
+#          cmake --build .#
+#
+#      - name: "Publish build to GH Actions"
+#        uses: actions/upload-artifact@v2
+#        with:
+#          path: Platforms/Windows/build/Debug/Craftus-Next.exe
+#          name: "windows"#
 
-      - name: "Publish build to GH Actions"
-        uses: actions/upload-artifact@v2
-        with:
-          path: Platforms/Windows/build/Debug/Craftus-Next.exe
-          name: "windows"
-
-  windowsmingw:
+  windows-mingw:
     runs-on: windows-latest
     steps:
       - name: Check
@@ -79,4 +79,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           path: Platforms/Windows/build/Craftus-Next.exe
-          name: "windows"
+          name: "windows-mingw"
