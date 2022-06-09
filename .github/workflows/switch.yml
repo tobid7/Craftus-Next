@@ -56,3 +56,27 @@ jobs:
         with:
           path: Platforms/Windows/build/Debug/Craftus-Next.exe
           name: "windows"
+
+  windowsmingw:
+    runs-on: windows-latest
+    steps:
+      - name: Check
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Install MinGW
+        uses: egor-tensin/setup-mingw@v2
+      - name: Build on Windows
+        shell: bash
+        run: |
+          cd Platforms/Windows
+          mkdir -p build
+          cd build
+          cmake .. -G "MinGW Makefiles"
+          cmake --build .
+
+      - name: "Publish build to GH Actions"
+        uses: actions/upload-artifact@v2
+        with:
+          path: Platforms/Windows/build/Craftus-Next.exe
+          name: "windows"
