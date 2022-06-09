@@ -5,11 +5,10 @@ int drawcalls = 0;
 namespace CNE
 {
     GL_Renderer::GL_Renderer()
-    {
+    {   
+        #ifndef __SWITCH__
         gladLoadGL();
-
-
-
+        #endif
     }
     GL_Renderer::~GL_Renderer()
     {

@@ -24,8 +24,6 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 
-#include "Camera.h"
-
 using namespace std;
 
 // settings
@@ -33,7 +31,7 @@ unsigned int SCR_WIDTH = 1920;
 unsigned int SCR_HEIGHT = 1080;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+CNE_Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -41,6 +39,8 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f; 
 float lastFrame = 0.0f;
+
+bool settingsm = false;
 
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
@@ -77,16 +77,22 @@ static void sceneUpdate()
 void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+    {
+        settingsm = !settingsm;
+    } 
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
+        camera.Move(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
+        camera.Move(BACKWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
+        camera.Move(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+        camera.Move(RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.Move(UP, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.Move(DOWN, deltaTime);
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
@@ -140,7 +146,7 @@ int main(void)
     //glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, videomode->width, videomode->height, videomode->refreshRate);
     SCR_WIDTH = videomode->width;
     SCR_HEIGHT = videomode->height;
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
     glfwSetWindowPos(window, 0, 0);
     
     if (!window)
@@ -308,7 +314,9 @@ int main(void)
         ImGui::NewFrame();
         sceneUpdate();
         bool xddd = true;
-        
+        if (settingsm) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        if (!settingsm) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
         //ImGui::ShowMetricsWindow(&xddd);
         ImGui::Begin("Debug", &xddd, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
         ImGui::SetWindowPos(ImVec2{0, 0});
@@ -317,6 +325,12 @@ int main(void)
         ImGui::Text("Res: %i | %i", SCR_WIDTH, SCR_HEIGHT);
         ImGui::Text("OpenGL: %i.%i", GLVersion.major, GLVersion.minor);
         ImGui::End();
+
+        /*ImGui::Begin("Settings", &settingsm, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowPos(ImVec2{0, 200});
+        ImGui::SetWindowSize(ImVec2{400, 200});
+        if (ImGui::Button("Close")) glfwSetWindowShouldClose(window, true);
+        ImGui::End();*/
         
         //TEST//
         float currentFrame = static_cast<float>(glfwGetTime());
@@ -340,9 +354,9 @@ int main(void)
 
         // light properties
         glm::vec3 lightColor;
-        lightColor.x = static_cast<float>(sin(glfwGetTime() * 2.0));
-        lightColor.y = static_cast<float>(sin(glfwGetTime() * 0.7));
-        lightColor.z = static_cast<float>(sin(glfwGetTime() * 1.3));
+        lightColor.x = static_cast<float>(/*sin(glfwGetTime() * 2.0)*/0/255);
+        lightColor.y = static_cast<float>(/*sin(glfwGetTime() * 0.7)*/0/255);
+        lightColor.z = static_cast<float>(/*sin(glfwGetTime() * 1.3)*/255/255);
         glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); // decrease the influence
         glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // low influence
         lightningShader.setVec3("light.ambient", ambientColor);
@@ -356,7 +370,7 @@ int main(void)
         lightningShader.setFloat("material.shininess", 32.0f);
 
         // view/projection transformations
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         lightningShader.setMat4("projection", projection);
         lightningShader.setMat4("view", view);
