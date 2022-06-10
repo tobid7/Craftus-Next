@@ -9,3 +9,4 @@ switch/build/*
 Platforms/Windows/build
 Platforms/Windows/buildmsvc
 Platforms/Windows/*.exe
+CNE/external/glm
