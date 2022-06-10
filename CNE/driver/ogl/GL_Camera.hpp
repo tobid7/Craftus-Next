@@ -1,16 +1,31 @@
 #ifndef GL_CAMERA_HPP
 #define GL_CAMERA_HPP
 
-#include "Camera.hpp"
-
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
+
+enum Camera_Movement {
+    FORWARD,
+    BACKWARD,
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
+};
+
+// Default camera values
+const float YAW         = -90.0f;
+const float PITCH       =  0.0f;
+const float SPEED       =  2.5f;
+const float SENSITIVITY =  0.1f;
+const float FOV        =  45.0f;
+
 namespace CNE
 {
-    class GL_Camera : public CNE::Camera
+    class GL_Camera
     {
     public:
         // camera Attributes
@@ -52,7 +67,7 @@ namespace CNE
         }
 
         // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-        void Move(Camera_Movement direction, float deltaTime) override
+        void Move(Camera_Movement direction, float deltaTime)
         {
             float velocity = MovementSpeed * deltaTime;
             if (direction == FORWARD)

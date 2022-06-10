@@ -24,6 +24,8 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 
+#include "Camera.hpp"
+
 using namespace std;
 
 // settings
@@ -32,6 +34,7 @@ unsigned int SCR_HEIGHT = 1080;
 
 // camera
 CNE_Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera cam;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -168,6 +171,14 @@ int main(void)
     ImGui_ImplOpenGL3_Init();
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
+
+
+    cam.pos = glm::vec3(10.0f, 10.0f, 8.0f); // Some arbitrary position for the cam
+    cam.up = glm::vec3(0.0f, 1.0f, 0.0f); // Set the up vector as Y
+    cam.ar = SCR_WIDTH / SCR_HEIGHT; // Set the aspect ratio, window size is 640x480
+    cam.angle = sin(45); //65 degrees // Set the field of view angle
+    cam.near = 0.1; // Set the near clipping plane distance
+    cam.far = 60.0; // Set the far clipping plane distance
     
     
 
@@ -287,10 +298,14 @@ int main(void)
 
     previousTime = glfwGetTime();
     int frameCount = 0;
+    cam.genViewMat(); // Generate the View matrix
+    cam.genProjMat(); // Generate the Projection Matrix
 
     glfwSetKeyCallback(window, key_callback);
     while (!glfwWindowShouldClose(window))
     {
+        cam.genViewMat(); // Generate the View matrix
+        cam.genProjMat(); 
         //FPS
         double currentTime = glfwGetTime();
         frameCount++;
@@ -324,7 +339,11 @@ int main(void)
         ImGui::Text("Fps %i", fps);
         ImGui::Text("Res: %i | %i", SCR_WIDTH, SCR_HEIGHT);
         ImGui::Text("OpenGL: %i.%i", GLVersion.major, GLVersion.minor);
+        ImGui::Text("Pos: %f, %f, %f", camera.Position.x, camera.Position.y, camera.Position.z);
         ImGui::End();
+
+        cam.setAspectRatio(SCR_WIDTH / SCR_HEIGHT);
+        
 
         /*ImGui::Begin("Settings", &settingsm, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
         ImGui::SetWindowPos(ImVec2{0, 200});
@@ -344,13 +363,16 @@ int main(void)
         // render
         // ------
         glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        cam.setCameraPos(camera.Position);
+        cam.setCameraFocus(camera.Front);
         // be sure to activate shader when setting uniforms/drawing objects
         lightningShader.Use();
         lightningShader.setVec3("light.position", lightPos);
-        lightningShader.setVec3("viewPos", camera.Position);
+        lightningShader.setVec3("viewPos", cam.pos);
+        //lightningShader.setVec3("viewPos", glm::vec3(cam.getPositionX(), cam.getPositionY(), cam.getPositionZ()));
 
         // light properties
         glm::vec3 lightColor;
@@ -370,8 +392,9 @@ int main(void)
         lightningShader.setFloat("material.shininess", 32.0f);
 
         // view/projection transformations
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
+        //cam.view = glm::rotate(cam.view, 0.017453f, glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 projection = /*cam.getProjMat();*/glm::perspective(glm::radians(camera.Fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 view = /*cam.getViewMat();*/camera.GetViewMatrix();
         lightningShader.setMat4("projection", projection);
         lightningShader.setMat4("view", view);
 

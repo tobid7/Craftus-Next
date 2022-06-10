@@ -54,6 +54,7 @@ set( Craftus-Next-SRC
     ../../CNE/driver/ogl/OpenGL_Renderer.cpp
     ../../CNE/Graphics/Color.cpp
     ../../CNE/driver/ogl/OpenGL_Shader.cpp
+    ../../CNE/driver/ogl/Camera.cpp
     #src/stb_image.h
     ${APP_ICON_RESOURCE_WINDOWS}
      )
