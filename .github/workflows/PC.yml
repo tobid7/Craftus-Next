@@ -82,6 +82,7 @@ jobs:
           cd build
           cmake .. -G "MinGW Makefiles"
           cmake --build .
+          make
           echo ::set-output name=commit_tag::$(git describe --abbrev=0 --tags)
           echo ::set-output name=commit_hash::$(git log --format=%h -1)
           # Webhook info
@@ -93,7 +94,7 @@ jobs:
       - name: "Publish build to GH Actions"
         uses: actions/upload-artifact@v2
         with:
-          path: Platforms/Windows/build/Craftus-Next.exe
+          path: Platforms/Windows/build/bin/*
           name: "windows-mingw"
 
   publish_build:

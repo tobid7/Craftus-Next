@@ -1,5 +1,7 @@
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 #include "cne.hpp"
 
@@ -19,10 +21,6 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
-#include <imgui.h>
-#include <imgui_impl_opengl3.h>
-#include <imgui_impl_glfw.h>
 
 #include "Camera.hpp"
 
@@ -55,16 +53,6 @@ int fps = 0;
 float ratio;
 int width, height;
 
-static void error_callback(int error, const char* description)
-{
-    fputs(description, stderr);
-}
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-}
-
 CNE_Renderer renderer;
 CNE_Shader lightningShader;
 CNE_Shader shader2d;
@@ -72,93 +60,15 @@ CNE_Shader lightCubeShader;
 
 static GLuint fs_vao, fs_vbo;
 
-static void sceneUpdate()
-{
-
-}
-
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        settingsm = !settingsm;
-    } 
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.Move(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.Move(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.Move(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.Move(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        camera.Move(UP, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        camera.Move(DOWN, deltaTime);
-}
-
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
-{
-    float xpos = static_cast<float>(xposIn);
-    float ypos = static_cast<float>(yposIn);
-
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-    lastX = xpos;
-    lastY = ypos;
-
-    camera.ProcessMouseMovement(xoffset, yoffset);
-}
-
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    camera.ProcessMouseScroll(static_cast<float>(yoffset));
-}
-
 int main(void)
 {
-    GLFWwindow* window;
-    glfwSetErrorCallback(error_callback);
-    if (!glfwInit())
-        return 0;
-    lightningShader = CNE_Shader();
+    sf::Window window(sf::VideoMode().getDesktopMode()/*sf::VideoMode(1280, 720)*/, "Craftus-Next", sf::Style::None);
+    window.setVerticalSyncEnabled(true);
 
-    const GLFWvidmode * videomode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RED_BITS, videomode->redBits);
-    glfwWindowHint(GLFW_GREEN_BITS, videomode->greenBits);
-    glfwWindowHint(GLFW_BLUE_BITS, videomode->blueBits);
-    glfwWindowHint(GLFW_REFRESH_RATE, videomode->refreshRate);
-    
-    window = glfwCreateWindow(videomode->width, videomode->height, "Craftus-Next", NULL, NULL);
-    //glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, videomode->width, videomode->height, videomode->refreshRate);
-    SCR_WIDTH = videomode->width;
-    SCR_HEIGHT = videomode->height;
-    
-    glfwSetWindowPos(window, 0, 0);
-    
-    if (!window)
-    {
-        glfwTerminate();
-        return 0;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    SCR_WIDTH = window.getSize().x;
+    SCR_HEIGHT = window.getSize().y;
+    width = window.getSize().x;
+    height = window.getSize().y;
     
     renderer = CNE_Renderer();
     renderer.SetClearColor(CNE::Color(41, 41, 41, 255));
@@ -166,11 +76,6 @@ int main(void)
     
     shader2d.Compile(vertNX, fragNX);
     lightCubeShader.Compile(vertLightCube, fragLightCube);
-    ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init();
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
 
 
     cam.pos = glm::vec3(10.0f, 10.0f, 8.0f); // Some arbitrary position for the cam
@@ -179,8 +84,6 @@ int main(void)
     cam.angle = sin(45); //65 degrees // Set the field of view angle
     cam.near = 0.1; // Set the near clipping plane distance
     cam.far = 60.0; // Set the far clipping plane distance
-    
-    
 
     //TEST//
     struct Vertex
@@ -296,18 +199,24 @@ int main(void)
 
     std::string title;
 
-    previousTime = glfwGetTime();
+    //previousTime = glfwGetTime();
     int frameCount = 0;
     cam.genViewMat(); // Generate the View matrix
     cam.genProjMat(); // Generate the Projection Matrix
-
-    glfwSetKeyCallback(window, key_callback);
-    while (!glfwWindowShouldClose(window))
+    sf::Clock deltaClock;
+    //glfwSetKeyCallback(window, key_callback);
+    while (window.isOpen())
     {
+        sf::Event Event;
+        while (window.pollEvent(Event)) {
+        if (Event.type == sf::Event::Closed)
+	        window.close();
+        }
+        
         cam.genViewMat(); // Generate the View matrix
         cam.genProjMat(); 
         //FPS
-        double currentTime = glfwGetTime();
+        double currentTime = 1;
         frameCount++;
         // If a second has passed.
         if ( currentTime - previousTime >= 1.0 )
@@ -315,55 +224,33 @@ int main(void)
             title = "Craftus-Next >> FPS: " + std::to_string(frameCount);
             fps = frameCount;
             // Display the frame count here any way you want.
-            glfwSetWindowTitle(window, title.c_str());
+            //glfwSetWindowTitle(window, title.c_str());
 
             frameCount = 0;
             previousTime = currentTime;
         }
-        glfwGetFramebufferSize(window, &width, &height);
+        ///glfwGetFramebufferSize(window, &width, &height);
         renderer.SetSize(width, height);
         renderer.Render();
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        sceneUpdate();
         bool xddd = true;
-        if (settingsm) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        if (!settingsm) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-        //ImGui::ShowMetricsWindow(&xddd);
-        ImGui::Begin("Debug", &xddd, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowPos(ImVec2{0, 0});
-        ImGui::SetWindowSize(ImVec2{300, 100});
-        ImGui::Text("Fps %i", fps);
-        ImGui::Text("Res: %i | %i", SCR_WIDTH, SCR_HEIGHT);
-        ImGui::Text("OpenGL: %i.%i", GLVersion.major, GLVersion.minor);
-        ImGui::Text("Pos: %f, %f, %f", camera.Position.x, camera.Position.y, camera.Position.z);
-        ImGui::End();
+        //if (settingsm) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        //if (!settingsm) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         cam.setAspectRatio(SCR_WIDTH / SCR_HEIGHT);
         
-
-        /*ImGui::Begin("Settings", &settingsm, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowPos(ImVec2{0, 200});
-        ImGui::SetWindowSize(ImVec2{400, 200});
-        if (ImGui::Button("Close")) glfwSetWindowShouldClose(window, true);
-        ImGui::End();*/
-        
         //TEST//
-        float currentFrame = static_cast<float>(glfwGetTime());
+        float currentFrame = 1/*static_cast<float>(glfwGetTime())*/;
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
         // input
         // -----
-        processInput(window);
+        //processInput(window);
 
         // render
         // ------
         glEnable(GL_DEPTH_TEST);
-        glDisable(GL_CULL_FACE);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         cam.setCameraPos(camera.Position);
@@ -423,13 +310,10 @@ int main(void)
         /*shader2d.Use();
         glBindVertexArray(fs_vao); 
         glDrawArrays(GL_TRIANGLES, 0, 6);*/
-        //TEST//
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+       
+        window.display();
     }
-    glfwDestroyWindow(window);
-    glfwTerminate();
+    //glfwDestroyWindow(window);
+    //glfwTerminate();
     return 0;
 }
