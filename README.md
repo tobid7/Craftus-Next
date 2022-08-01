@@ -1,6 +1,8 @@
-# Old3ds is fixed but now the biggest problems are the memory leaks  ...
+# Info
+- Currently  there are Memory leaks.
+- v0.6 will be released soon
+
 # Craftus-Next <img alt="GitHub milestone" src="https://img.shields.io/github/milestones/progress-percent/Tobi-D7/Craftus-Next/1?style=for-the-badge">
-[![Build Craftus-Next Switch](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/switch.yml/badge.svg?branch=main)](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/switch.yml)
 [![Build Craftus-Next 3ds](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/3ds.yml/badge.svg?branch=main)](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/3ds.yml) <a href="https://github.com/NPI-D7/BCSTM-Player/blob/main/LICENSE"> <img height="22" src="https://img.shields.io/badge/License-GPLv3-informational.svg?style=for-the-badge" alt="License: GPLv3"></a> <img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/m/Tobi-D7/Craftus-Next?style=for-the-badge" height="22"> 
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Tobi-D7/Craftus-Next?style=for-the-badge" height="22">
 <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/Tobi-D7/Craftus-Next?style=for-the-badge" height="22">
@@ -19,6 +21,7 @@ A more updated version of the Craftus Minecraft Clone
   - [ ] Sound
   - [ ] 3D Renderer
   - [ ] Everything in the list
+  - [ ] RenderD7 as Main 2D System?
 - [ ] Better Terrain Gen
 - [ ] Biomes
 - [x] Trees
@@ -30,6 +33,8 @@ A more updated version of the Craftus Minecraft Clone
 - [x] Respawn freezes cause ↑
 - [ ] Animated Textures
 - [ ] Tex Colors for blocks
+- [ ] Resourcepack Loader basen on Minecraft Java Resourcepacks
+- [ ] Shaders (Modern Systems)
 
 
 # Original Redme
