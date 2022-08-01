@@ -14,7 +14,7 @@ void Player_Init(Player* player, World* world) {
 	player->grounded = false;
 	player->sprinting = false;
 	player->world = world;
-	player->gamemode=0;
+	player->gamemode=1;
 	player->difficulty=1;
 
 	player->fovAdd = 0.f;
@@ -171,7 +171,7 @@ void Player_Update(Player* player, Damage* dmg) {
 	player->view = f3_new(-sinf(player->yaw) * cosf(player->pitch), sinf(player->pitch), -cosf(player->yaw) * cosf(player->pitch));
 	player->blockInSight =Raycast_Cast(player->world, f3_new(player->position.x, player->position.y + PLAYER_EYEHEIGHT, player->position.z), player->view,&player->viewRayCast);
 	player->blockInActionRange = player->blockInSight && player->viewRayCast.distSqr < 3.5f * 3.5f * 3.5f;
-	//if (player->gamemode!=1){
+	if (player->gamemode!=1){
 		//Fall damage
 		if (player->velocity.y<=-12){
 			player->rndy;
@@ -202,12 +202,12 @@ void Player_Update(Player* player, Damage* dmg) {
 					player->hungertimer=0;
 				}
 			}
-		//}
+		}
 		//Respawning stuff
 		if (player->hp<=0/*&&player->totem==false*/){
 			Player_Respawn(player, dmg);
 		}
-
+               
 
                 if (player->position.y < -30){
 			Player_Respawn(player, dmg);
