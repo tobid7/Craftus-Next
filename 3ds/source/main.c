@@ -209,7 +209,7 @@ int main() {
 				lastTime = svcGetSystemTick();
 			}
 
-			else if (gamestate == GameState_Options)
+			else if (gamestate == GameState_Options || GameState_SelectWorld)
 			{
 				gamestate = GameState_Title;
 			}

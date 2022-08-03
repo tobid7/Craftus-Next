@@ -157,6 +157,7 @@ bool Options_Update(Player player) {
 			Block_Deinit();
 			Block_Init();
 			DebugUI_Log("Reloaded Blocks!");
+			reload = false;
 		}
         cancelled2 = false;
         menustate2 = MenuState_Main;
