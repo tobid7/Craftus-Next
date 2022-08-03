@@ -66,7 +66,7 @@ int main() {
 	osSetSpeedupEnable(true);
         //Log("Crate Playbackinfo\n");
 	struct playbackInfo_t soundg;
-	//consoleInit(GFX_TOP, NULL);
+	//consoleInit(GFX_BOTTOM, NULL);
         //Log("Enable 3d\n");
 	gfxSet3D(true);
 	//printf("romfsinit\n");
@@ -197,9 +197,9 @@ int main() {
 		hidScanInput();
 		u32 keysheld = hidKeysHeld(), keysdown = hidKeysDown();
 		if (keysdown & KEY_START || Save__) {
-			if (gamestate == GameState_SelectWorld)
-				gamestate = GameState_Title;
-			else if (gamestate == GameState_Playing ||gamestate == GameState_Pause) {
+			if (gamestate == GameState_SelectWorld){
+				gamestate = GameState_Title;}
+			else if (gamestate == GameState_Playing || gamestate == GameState_Pause) {
 				releaseWorld(&chunkWorker, &savemgr, world);
                                 
 				gamestate = GameState_SelectWorld;

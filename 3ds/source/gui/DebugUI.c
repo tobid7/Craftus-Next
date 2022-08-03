@@ -61,14 +61,14 @@ void DebugUI_Draw() {
 	int yOffset = (240 / 3) * 2;
 	for (int i = 0; i < LOG_LINES; i++) {
 		int step = 0;
-		SpriteBatch_PushText(0, yOffset, 100, INT16_MAX, false, 320, &step, "%s", logLines[i]);
+		SpriteBatch_PushText(0, yOffset, 100, INT16_MAX, true, 320, &step, "%s", logLines[i]);
 		yOffset += step;
 		if (yOffset >= 240) break;
 	}
 	yOffset = 0;
 	for (int i = 0; i < STATUS_LINES; i++) {
 		int step = 0;
-		SpriteBatch_PushText(0, yOffset, 100, INT16_MAX, false, 320, &step, "%s", statusLines[i]);
+		SpriteBatch_PushText(0, yOffset, 100, INT16_MAX, true, 320, &step, "%s", statusLines[i]);
 		yOffset += step;
 
 		memset(statusLines[i], 0x0, STATUS_LINE_LENGTH);

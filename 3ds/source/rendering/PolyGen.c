@@ -9,6 +9,8 @@
 #include <stdbool.h>
 #include <vec/vec.h>
 
+#include <misc/Crash.h>
+
 #include <3ds.h>
 
 const WorldVertex cube_sides_lut[] = {
@@ -368,7 +370,7 @@ void PolyGen_GeneratePolygons(WorkQueue* queue, WorkerItem item, void* this) {
 
 					int16_t iconUV[2];
 					Block_GetTexture(face.block, face.direction, face.metadata, iconUV);
-
+					//Log("Block UV: %d, %d\n", iconUV[0], iconUV[1]);
 					WorldVertex* data = face.transparent ? transparentData : opaqueData;
 					memcpy(data, &cube_sides_lut[face.direction * 6], sizeof(WorldVertex) * 6);
 

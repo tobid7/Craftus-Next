@@ -1,7 +1,4 @@
 #include <glad/glad.h>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 
 #include "cne.hpp"
 
@@ -62,17 +59,12 @@ static GLuint fs_vao, fs_vbo;
 
 int main(void)
 {
-    //sf::Window window(sf::VideoMode().getDesktopMode()/*sf::VideoMode(1280, 720)*/, "Craftus-Next", sf::Style::None);
-    sf::Window window(/*sf::VideoMode().getDesktopMode()*/sf::VideoMode(1280, 720), "Craftus-Next", sf::Style::None);
-    sf::Image icn;
-    icn.loadFromFile("icon.png");
-    window.setIcon(256, 256, icn.getPixelsPtr());
-    window.setVerticalSyncEnabled(true);
+    
 
-    SCR_WIDTH = window.getSize().x;
+    /*SCR_WIDTH = window.getSize().x;
     SCR_HEIGHT = window.getSize().y;
     width = window.getSize().x;
-    height = window.getSize().y;
+    height = window.getSize().y;*/
     
     renderer = CNE_Renderer();
     renderer.SetClearColor(CNE::Color(41, 41, 41, 255));
@@ -201,37 +193,23 @@ int main(void)
     //TEST//
 
     std::string title;
-    sf::Clock deltaClock;
-    previousTime = deltaClock.restart().asSeconds();
+    
+    previousTime = 0;
     int frameCount = 0;
     cam.genViewMat(); // Generate the View matrix
     cam.genProjMat(); // Generate the Projection Matrix
     
     //glfwSetKeyCallback(window, key_callback);
-    while (window.isOpen())
+    while (1)
     {
-        sf::Event Event;
-        while (window.pollEvent(Event)) {
-            if (Event.type == sf::Event::Closed)
-	            window.close();
-            else if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Escape)
-            window.close();
-            else if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::W)
-            camera.Move(Camera_Movement::FORWARD, deltaTime);
-            else if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::A)
-            camera.Move(Camera_Movement::RIGHT, deltaTime);
-            else if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::S)
-            camera.Move(Camera_Movement::BACKWARD, deltaTime);
-            else if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::D)
-            camera.Move(Camera_Movement::LEFT, deltaTime);
-        }
+        
         
         cam.genViewMat(); // Generate the View matrix
         cam.genProjMat(); 
         //FPS
-        sf::Time time = deltaClock.restart();
+        
 
-        float currentTime = time.asSeconds();
+        float currentTime = 0;
         frameCount++;
         // If a second has passed.
         if ( currentTime - previousTime >= 1.0 )
@@ -239,7 +217,7 @@ int main(void)
             title = "Craftus-Next >> FPS: " + std::to_string(frameCount);
             fps = frameCount;
 
-            window.setTitle(sf::String(title));
+            
 
             frameCount = 0;
             previousTime = currentTime;
@@ -254,7 +232,7 @@ int main(void)
         cam.setAspectRatio(SCR_WIDTH / SCR_HEIGHT);
         
         //TEST//
-        float currentFrame = time.asSeconds();
+        float currentFrame = 0;
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -325,7 +303,6 @@ int main(void)
         glBindVertexArray(fs_vao); 
         glDrawArrays(GL_TRIANGLES, 0, 6);*/
 
-        window.display();
         
     }
     //glfwDestroyWindow(window);

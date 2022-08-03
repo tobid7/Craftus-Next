@@ -18,6 +18,8 @@
 
 #include <3ds.h>
 
+#include <gui/DebugUI.h>
+
 extern GameState gamestate;
 
 GameState from;
@@ -30,6 +32,8 @@ bool cancelled2 = false;
 int j;
 
 extern float fov_;
+
+extern int NmipmapLevels;
 
 int fov;
 
@@ -55,6 +59,8 @@ extern bool rhandr;
 bool graphicssettings = false;
 
 bool soundsettings = false;
+
+bool reload = false;
 //static char* diffstr[]={"Peaceful", "Easy", "Normal", "Hard"};
 
 static MenuState2 menustate2 = MenuState_Main;
@@ -85,19 +91,26 @@ void Options_Render() {
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
 		cancelled2 = Gui_Button(true, 1.0f, "Back");
 	} else if (menustate2 == MenuState_Graphics) {
-		Gui_Offset(0, 10);
-		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
+		Gui_Offset(8, 10);
+		Gui_BeginRow(Gui_RelativeWidth(0.479f), 2);
 		/*if (Gui_Slider(30, 110, 70, 1.f, fovScale_, "Fov: %f", 60 + 12 * fovScale_))
         {
             fovScale_+=0.1f;
 			if (fovScale_ >=4.2f) fovScale_ = 0.0f;
         }*/
-        if (Gui_Button(true, 1.f, "Fov: %f", fov_))
+        if (Gui_Button(true, 1.f, "Fov: %i", (int)fov_))
         {
             fov_+= 1.f;
 			if (fov_ > 110.f) fov_ = 30.f;
         }
+		if (Gui_Button(true, 1.f, "MipMap: %i", (int)NmipmapLevels))
+        {
+			reload = true;
+            NmipmapLevels+= 1;
+			if (NmipmapLevels > 4) NmipmapLevels = 0;
+        }
 		Gui_EndRow();
+		Gui_Offset(0, 35);
         Gui_BeginRowCenter(Gui_RelativeWidth(0.9), 1);
         if (Gui_Button(true, 1.0f, "Hand: %s", rhandr ? "true" : "false"))
         {
@@ -139,6 +152,12 @@ bool Options_Update(Player player) {
     
     if (cancelled2)
     {
+		if(reload)
+		{
+			Block_Deinit();
+			Block_Init();
+			DebugUI_Log("Reloaded Blocks!");
+		}
         cancelled2 = false;
         menustate2 = MenuState_Main;
 		gamestate = from;

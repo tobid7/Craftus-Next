@@ -11,6 +11,8 @@
 
 #include <misc/Crash.h>
 
+int NmipmapLevels = 2;
+
 uint32_t hash(char* str) {
 	unsigned long hash = 5381;
 	int c;
@@ -22,7 +24,7 @@ void tileImage32(u32* src, u8* dst, int sizex, int sizez);
 
 void Texture_Load(C3D_Tex* result, char* filename) {
 	uint32_t* image = NULL;
-	unsigned int width = 255, height = 255;
+	unsigned int width = 256, height = 256;
 	uint32_t error = lodepng_decode32_file((uint8_t**)&image, &width, &height, filename);
 	if (error == 0 && image != NULL) {
 		uint32_t* imgInLinRam = (uint32_t*)linearAlloc(width * height * sizeof(uint32_t));
@@ -129,9 +131,9 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
 	int locX = 0;
 	int locY = 0;
 
-	// printf("TextureMapInit %s\n", files);
+	Log("TextureMapInit %s\n", files);
 
-	const int mipmapLevels = 2;
+	const int mipmapLevels = NmipmapLevels;
 	const int maxSize = 4 * TEXTURE_MAPSIZE * TEXTURE_MAPSIZE;
 
 	uint32_t* buffer = (uint32_t*)linearAlloc(maxSize);
@@ -156,7 +158,8 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
 			icon->u = 256 * locX;
 			icon->v = 256 * locY;
 
-			// printf("Stiched texture %s(hash: %u) at %d, %d\n", filename, icon->textureHash, locX, locY);
+			Log("Stiched texture %s(hash: %u) at %d, %d\n", filename, icon->textureHash, locX, locY);
+			Log("Texture UV %s(hash: %u) at %d, %d\n", filename, icon->textureHash, icon->u, icon->v);
 
 			locX += TEXTURE_TILESIZE;
 			if (locX == TEXTURE_MAPSIZE) {
@@ -164,7 +167,7 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
 				locX = 0;
 			}
 		} else {
-			printf("Image size(%d, %d) doesn't match or ptr null(internal error)\n'", w, h);
+			Log("Image size(%d, %d) doesn't match or ptr null(internal error)\n'", w, h);
 		}
 		free(image);
 		filename = files[++filei];
@@ -174,7 +177,7 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
 	GSPGPU_FlushDataCache(buffer, maxSize);
 	if (!C3D_TexInitWithParams(&map->texture, NULL,
 				   (C3D_TexInitParams){TEXTURE_MAPSIZE, TEXTURE_MAPSIZE, mipmapLevels, GPU_RGBA8, GPU_TEX_2D, true}))
-		printf("Couldn't alloc texture memory\n");
+		Log("Couldn't alloc texture memory\n");
 	C3D_TexSetFilter(&map->texture, GPU_NEAREST, GPU_NEAREST);
 
 	C3D_SyncDisplayTransfer(

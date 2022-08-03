@@ -4,10 +4,10 @@
             "name": "3ds",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/devkitpro/libnx/include/**",
-                "/devkitpro/libctru/include/**",
-                "/devkitpro/portlibs/switch/include/**",
-                "/devkitpro/portlibs/3ds/include/**"
+                "/opt/devkitpro/libnx/include/**",
+                "/opt/devkitpro/libctru/include/**",
+                "/opt/devkitpro/portlibs/switch/include/**",
+                "/opt/devkitpro/portlibs/3ds/include/**"
             ],
             "defines": [],
             "cStandard": "gnu17",
