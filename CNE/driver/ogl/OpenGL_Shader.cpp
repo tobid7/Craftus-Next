@@ -1,5 +1,6 @@
 #include "OpenGL_Shader.hpp"
-#include <glad/glad.h>
+#define GLAD_OPTION_GL_HEADER_ONLY
+#include <glad.h>
 
 namespace CNE
 {

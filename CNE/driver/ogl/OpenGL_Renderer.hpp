@@ -1,7 +1,8 @@
 #pragma once
 #include "Renderer.hpp"
 #include "Color.hpp"
-#include <glad/glad.h>
+#define GLAD_OPTION_GL_HEADER_ONLY
+#include <glad.h>
 
 namespace CNE
 {
@@ -19,7 +20,6 @@ namespace CNE
         int GetPosY() override;
         void SetClearColor(Color clcol) override;
         Color GetClearColor() override;
-        void Draw(CNE::RObject &t_object) override;
         virtual void Clear() override;
         
 

@@ -1,7 +1,8 @@
 #pragma once
 #include "Shader.hpp"
 #include "glm/glm.hpp"
-#include "glad/glad.h"
+#define GLAD_OPTION_GL_HEADER_ONLY
+#include <glad.h>
 
 namespace CNE
 {

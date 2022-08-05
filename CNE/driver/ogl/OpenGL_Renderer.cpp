@@ -1,4 +1,5 @@
 #include "OpenGL_Renderer.hpp"
+#include <OpenGL_RenderContext.hpp>
 
 int drawcalls = 0;
 
@@ -23,63 +24,8 @@ namespace CNE
     {
         this->Clear();
         glViewport(posx, posy, sizex, sizey);
-        //glClearColor((GLfloat)clearcol.r/255, (GLfloat)clearcol.g/255, (GLfloat)clearcol.b/255, (GLfloat)clearcol.a/255);
-        //glClear(GL_COLOR_BUFFER_BIT);
-        if(m_drawstack_3d.size() > 0) {
-            
-            //3D
-            if (m_drawstack_3d.size() > 0) {
-
-                for (const auto &entry : m_drawstack_3d) { // for every layer
-                    for (const auto &robj : entry.second) { // draw every object
-                        if (robj.second()) {
-                            drawcalls++;
-                            robj.first->Draw();
-                        }
-                    }
-                }
-                m_drawstack_3d.clear();
-            }
-        }
-        // draw 2d
-        if (m_drawstack_2d.size() > 0) {
-            if(m_drawstack_2d.size() > 0) {
-               // C2D_SceneBegin(m_targetTopLeft->getRenderTarget());
-
-                for(const auto &entry : m_drawstack_2d) { // for every layer
-                    for(const auto &robj : entry.second) { // draw every object
-                        if (robj.second()) {
-                            drawcalls++;
-                            robj.first->Draw();
-                        }
-                    }
-                }
-
-                m_drawstack_2d.clear();
-            }
-        }
-        
     }
-    void GL_Renderer::Draw(CNE::RObject &t_object)
-    {
-        if (1 == 0) {
-            if(m_drawstack_2d.count(1) > 0) {
-                m_drawstack_2d[1].insert(m_drawstack_2d[1].end(), std::make_pair(&t_object, [](){return true;}));
-            } else {
-                std::vector<std::pair<CNE::RObject*, std::function<bool()>>> newStack;
-                newStack.push_back(std::make_pair(&t_object, [](){return true;}));
-                m_drawstack_2d.insert(std::make_pair(1, newStack));
-            }
-        } else {
-            if(m_drawstack_3d.count(1) > 0) {
-                m_drawstack_3d[1].insert(m_drawstack_3d[1].end(), std::make_pair(&t_object, [](){return true;}));
-            } else {
-                std::vector<std::pair<CNE::RObject*, std::function<bool()>>> newStack;
-                newStack.push_back(std::make_pair(&t_object, [](){return true;}));
-                m_drawstack_3d.insert(std::make_pair(1, newStack));
-            }
-        }
-    }   
+    
     void GL_Renderer::SetPos(int x, int y)
     {
         posx = x;
