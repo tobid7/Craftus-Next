@@ -26,7 +26,7 @@ set( Craftus-Next-SRC
     ../../CNE/driver/ogl/OpenGL_Renderer.cpp
     ../../CNE/Graphics/Color.cpp
     ../../CNE/Graphics/API/API.cpp
-    ../../CNE/Graphics/API/Renderer.cpp
+    #../../CNE/Graphics/API/Renderer.cpp
     ../../CNE/driver/ogl/OpenGL_Shader.cpp
     ../../CNE/driver/ogl/OpenGL_Texture.cpp
     ../../CNE/driver/ogl/OpenGL_2DBatch.cpp

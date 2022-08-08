@@ -6,7 +6,7 @@
 
 namespace CNE
 {
-    class GL_Renderer : public CNi::NRenderer
+    class GL_Renderer : public CNE::NRenderer
     {
         public:
         GL_Renderer();

@@ -68,7 +68,6 @@ int main(void)
     API_ERROR("Set ERROR CALLBACK");
     if (!glfwInit())
         exit(EXIT_FAILURE);
-    API_ERROR("GLFW SUCCESS");
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
@@ -78,23 +77,20 @@ int main(void)
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
-    API_ERROR("Window success");
     //Window Icon
     GLFWimage images[1];
     images[0] = load_icon("icon.png");
     glfwSetWindowIcon(window, 1, images);
     unload_icon(images[0]);
-    API_ERROR("Icon Success");
     glfwSetKeyCallback(window, key_callback);
  
     glfwMakeContextCurrent(window);
-    API_ERROR("Context Current");
     CNi::SetApi(CNi::OPENGL);
-    
-    API_ERROR("Init GL");
+    auto ren = CNi::GetRenderer();
     gladSetGLPostCallback((GLADpostcallback)_post_call_callback_default);
     glfwSwapInterval(1);
     lastTime = glfwGetTime();
+    ren->SetClearColor(CNE::Color::Gray);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -103,7 +99,7 @@ int main(void)
         // If a second has passed.
         if ( currentTime - lastTime >= 1.0 ) 
         {
-            std::string title = "Craftus-Next >> FPS: " + std::to_string(frameCount) + " DT: " + std::to_string(deltatime) + "ms ";// + ren.GetRenderApiName();
+            std::string title = "Craftus-Next >> FPS: " + std::to_string(frameCount) + " DT: " + std::to_string(deltatime) + "ms " + ren->GetRenderApiName();
             fps = frameCount;
             // Display the frame count here any way you want.
             glfwSetWindowTitle(window, title.c_str());
@@ -117,7 +113,9 @@ int main(void)
         lastFrame = currentFrame;
 
         glfwGetFramebufferSize(window, &w, &h);
+        ren->SetSize(w, h);
 
+        ren->Clear();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

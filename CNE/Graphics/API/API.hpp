@@ -1,5 +1,6 @@
 #pragma once
 #include <headers.hpp>
+#include <NRenderer.hpp>
 
 #define API_ERROR(msg) ({std::ofstream err("api-error.txt", std::ios::app); \
     err << "Error: " << msg << std::endl; \
@@ -16,5 +17,5 @@ namespace CNi
     };
     extern G_API gapi;
     void SetApi(G_API t_api);
-    void SetUp();
+    CNE::NRenderer* GetRenderer();
 }
