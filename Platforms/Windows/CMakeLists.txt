@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 3.1 )
 
 project( Craftus-Next LANGUAGES C CXX )
 
-include_directories( src glad ../../CNE/external/ ../../CNE/ ../../CNE/driver/def ../../CNE/driver/ogl ../../CNE/Graphics glm glfw)
+include_directories( src glad ../../CNE/external/ ../../CNE/ ../../CNE/driver/def ../../CNE/driver/ogl ../../CNE/Graphics ../../CNE/Graphics/API glm glfw)
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
 set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
@@ -11,6 +11,7 @@ add_subdirectory(GLFW3)
 add_subdirectory( ../../CNE/external/OpenGL/ glad)
 
 set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icon.rc")
+
 
 #set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
 
@@ -24,13 +25,18 @@ set( Craftus-Next-SRC
     src/main.cpp
     ../../CNE/driver/ogl/OpenGL_Renderer.cpp
     ../../CNE/Graphics/Color.cpp
+    ../../CNE/Graphics/API/API.cpp
+    ../../CNE/Graphics/API/Renderer.cpp
     ../../CNE/driver/ogl/OpenGL_Shader.cpp
+    ../../CNE/driver/ogl/OpenGL_Texture.cpp
+    ../../CNE/driver/ogl/OpenGL_2DBatch.cpp
     ../../CNE/driver/ogl/Camera.cpp
     #src/stb_image.h
     ${APP_ICON_RESOURCE_WINDOWS}
-     )
+    )
      
-add_executable( Craftus-Next WIN32 ${Craftus-Next-SRC} )
+add_executable(Craftus-Next WIN32 ${Craftus-Next-SRC} )
+
 target_link_libraries( Craftus-Next glad glm glfw)
 if( MSVC )
     if(${CMAKE_VERSION} VERSION_LESS "3.6.0") 

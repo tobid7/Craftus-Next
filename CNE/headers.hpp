@@ -8,3 +8,4 @@
 #include <map>
 #include <vector>
 #include <functional>
+#include <memory>

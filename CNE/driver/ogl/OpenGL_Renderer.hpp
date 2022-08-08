@@ -1,29 +1,31 @@
 #pragma once
-#include "Renderer.hpp"
+#include "NRenderer.hpp"
 #include "Color.hpp"
-#define GLAD_OPTION_GL_HEADER_ONLY
+
 #include <glad.h>
 
 namespace CNE
 {
-    class GL_Renderer : public Renderer
+    class GL_Renderer : public CNi::NRenderer
     {
         public:
         GL_Renderer();
         ~GL_Renderer();
         void Render() override;
-        void SetSize(int x, int y) override;
-        int GetSizeX() override;
-        int GetSizeY() override;
-        void SetPos(int x, int y) override;
-        int GetPosX() override;
-        int GetPosY() override;
-        void SetClearColor(Color clcol) override;
-        Color GetClearColor() override;
-        virtual void Clear() override;
+        void SetSize(int x, int y);
+        int GetSizeX();
+        int GetSizeY();
+        void SetPos(int x, int y);
+        int GetPosX();
+        int GetPosY();
+        void SetClearColor(Color clcol);
+        Color GetClearColor();
+        void Clear();
+        std::string GetRenderApiName();
         
 
         private:
+        int ver = 0;
         Color clearcol;
         int sizex = 0;
         int sizey = 0;

@@ -1,34 +1,32 @@
 #pragma once
 #include <iostream>
 
-static const char* const vertTex = R"text(
+static const char* const vertTex = R"text(  
     #version 330 core
-    out vec4 FragColor;
-    
-    in vec3 ourColor;
-    in vec2 TexCoord;
+    layout (location = 0) in vec4 vertex; // <vec2 position, vec2 texCoords>
 
-    uniform sampler2D ourTexture;
+    out vec2 TexCoords;
+
+    uniform mat4 model;
+    uniform mat4 projection;
 
     void main()
     {
-        FragColor = texture(ourTexture, TexCoord);
+        TexCoords = vertex.zw;
+        gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
     }
 )text";
 
 static const char* const fragTex = R"text(
     #version 330 core
-    layout (location = 0) in vec3 aPos;
-    layout (location = 1) in vec3 aColor;
-    layout (location = 2) in vec2 aTexCoord;
-
-    out vec3 ourColor;
-    out vec2 TexCoord;
-
+    in vec2 TexCoords;
+    out vec4 color;
+    
+    uniform sampler2D image;
+    uniform vec3 spriteColor;
+    
     void main()
-    {
-        gl_Position = vec4(aPos, 1.0);
-        ourColor = aColor;
-        TexCoord = aTexCoord;
-    }
+    {    
+        color = vec4(spriteColor, 1.0) * texture(image, TexCoords);
+    }  
 )text";

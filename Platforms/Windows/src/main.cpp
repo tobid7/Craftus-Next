@@ -10,10 +10,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-CNE_Renderer renderer;
-CNE_Shader draw2d;
-//CNE_2DBatch _2dscreen;
-
 float lastTime;
 float currentTime;
 float deltatime;
@@ -22,6 +18,8 @@ float lastFrame = 0.0f;
 float currentFrame;
 int frameCount;
 float fps;
+
+int w, h;
 
 GLFWimage load_icon(std::string path)
 {
@@ -38,6 +36,9 @@ void unload_icon(GLFWimage image)
 static void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error: %s\n", description);
+    std::ofstream errfile("glfw.txt", std::ios::app);
+    errfile << "ERROR: " << description << std::endl;
+    errfile.close();
 }
  
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -45,41 +46,53 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
- 
+
+void _post_call_callback_default(const char *name, void *funcptr, int len_args, ...) {
+    GLenum error_code;
+    error_code = glad_glGetError();
+
+    if (error_code != GL_NO_ERROR) {
+        fprintf(stderr, "ERROR %d in %s\n", error_code, name);
+        std::ofstream errfile("glerrors.txt", std::ios::app);
+        errfile << "ERROR: " << std::to_string(error_code) << " " << name << std::endl;
+        errfile.close();
+    }
+}
 int main(void)
 {
+    freopen("out.txt","w",stdout);
     GLFWwindow* window;
-    GLuint vertex_buffer, vertex_shader, fragment_shader, program;
-    GLint mvp_location, vpos_location, vcol_location;
+    API_ERROR("Window");
  
     glfwSetErrorCallback(error_callback);
- 
+    API_ERROR("Set ERROR CALLBACK");
     if (!glfwInit())
         exit(EXIT_FAILURE);
- 
+    API_ERROR("GLFW SUCCESS");
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
- 
+
     window = glfwCreateWindow(1280, 720, "Craftus-Next", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
+    API_ERROR("Window success");
     //Window Icon
     GLFWimage images[1];
     images[0] = load_icon("icon.png");
     glfwSetWindowIcon(window, 1, images);
     unload_icon(images[0]);
-
+    API_ERROR("Icon Success");
     glfwSetKeyCallback(window, key_callback);
  
     glfwMakeContextCurrent(window);
+    API_ERROR("Context Current");
+    CNi::SetApi(CNi::OPENGL);
     
-    renderer = CNE_Renderer();
-    renderer.SetClearColor(CNE::Color(255, 255, 255, 255));
-    //_2dscreen = CNE_2DBatch();
-
+    API_ERROR("Init GL");
+    gladSetGLPostCallback((GLADpostcallback)_post_call_callback_default);
     glfwSwapInterval(1);
     lastTime = glfwGetTime();
 
@@ -88,9 +101,9 @@ int main(void)
         currentTime = glfwGetTime();
         frameCount++;
         // If a second has passed.
-        if ( currentTime - lastTime >= 1.0 )
+        if ( currentTime - lastTime >= 1.0 ) 
         {
-            std::string title = "Craftus-Next >> FPS: " + std::to_string(frameCount) + " DT: " + std::to_string(deltatime) + "ms";
+            std::string title = "Craftus-Next >> FPS: " + std::to_string(frameCount) + " DT: " + std::to_string(deltatime) + "ms ";// + ren.GetRenderApiName();
             fps = frameCount;
             // Display the frame count here any way you want.
             glfwSetWindowTitle(window, title.c_str());
@@ -103,9 +116,8 @@ int main(void)
         deltatime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        //_2dscreen.AddRect(0, 0, 500, 200, CNE::Color(20, 40, 50, 255));
-        
-        renderer.Render();
+        glfwGetFramebufferSize(window, &w, &h);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -113,6 +125,7 @@ int main(void)
     glfwDestroyWindow(window);
  
     glfwTerminate();
+    fclose(stdout);
     exit(EXIT_SUCCESS);
 }
  

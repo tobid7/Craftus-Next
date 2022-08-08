@@ -62,5 +62,6 @@
         "typeinfo": "cpp",
         "bit": "cpp"
     },
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": "${workspaceFolder}/Platforms/Windows"
 }

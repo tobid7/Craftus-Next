@@ -7,7 +7,7 @@ namespace CNE
     {
         public:
         virtual ~Texture(){}
-        virtual void Load(std::string path);
-        virtual void Free();
+        virtual void Load(std::string path) = 0;
+        virtual void Use() = 0;
     };
 }

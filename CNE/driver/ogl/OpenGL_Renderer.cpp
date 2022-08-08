@@ -3,12 +3,22 @@
 
 int drawcalls = 0;
 
+int rwidth;
+int rheight;
+
 namespace CNE
 {
     GL_Renderer::GL_Renderer()
     {   
         #ifndef __SWITCH__
-        gladLoadGL();
+        API_ERROR("LoadingGlad!");
+        ver = gladLoaderLoadGL();
+        
+        if (ver == 0)
+        {
+            API_ERROR("Could not load Glad!");
+        }
+        
         #endif
     }
     GL_Renderer::~GL_Renderer()
@@ -20,8 +30,17 @@ namespace CNE
         glClearColor((GLfloat)clearcol.r/255, (GLfloat)clearcol.g/255, (GLfloat)clearcol.b/255, (GLfloat)clearcol.a/255);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
+    
+    std::string GL_Renderer::GetRenderApiName()
+    {
+        API_ERROR("Getting Version");
+        std::string vers = "OpenGL " + std::to_string(GLAD_VERSION_MAJOR(ver)) + "." + std::to_string(GLAD_VERSION_MINOR(ver));
+        return vers;
+    }
     void GL_Renderer::Render()
     {
+        rwidth = sizex;
+        rheight = sizey;
         this->Clear();
         glViewport(posx, posy, sizex, sizey);
     }
