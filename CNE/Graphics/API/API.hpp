@@ -13,9 +13,10 @@ namespace CNi
     enum G_API
     {
         OPENGL,
-        VULKAN
+        VULKAN,
+        CITRO3D         //3DS
     };
     extern G_API gapi;
     void SetApi(G_API t_api);
-    CNE::NRenderer* GetRenderer();
+    CNi::NRenderer* GetRenderer();
 }

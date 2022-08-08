@@ -3,9 +3,9 @@
 #include "OpenGL_Shader.hpp"
 #include "Shaders.hpp"
 
-namespace CNEi
+namespace CNi
 {
-    class GL_2DBatch : public CNEi::_2DBatch
+    class GL_2DBatch : public CNi::_2DBatch
     {
         public:
         GL_2DBatch(void);
@@ -14,7 +14,7 @@ namespace CNEi
         void DrawText(int x, int y, float size, CNE::Color t_col, std::string t_text) override;
         void DrawCentered(int x, int y, float size, CNE::Color t_col, std::string t_text, int maxwidth, int maxheight) override;
         private:
-        CNE::GL_Shader baseshader;
+        CNi::GL_Shader baseshader;
         unsigned int quadVAO;
 
     };

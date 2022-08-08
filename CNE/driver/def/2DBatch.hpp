@@ -2,7 +2,7 @@
 #include "headers.hpp"
 #include "Color.hpp"
 
-namespace CNEi
+namespace CNi
 {
     class _2DBatch
     {

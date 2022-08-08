@@ -1,12 +1,12 @@
 #include "OpenGL_Renderer.hpp"
-#include <OpenGL_RenderContext.hpp>
+#include "API.hpp"
 
 int drawcalls = 0;
 
 int rwidth;
 int rheight;
 
-namespace CNE
+namespace CNi
 {
     GL_Renderer::GL_Renderer()
     {   
@@ -71,11 +71,11 @@ namespace CNE
     {
         return sizey;
     }
-    void GL_Renderer::SetClearColor(Color clcol)
+    void GL_Renderer::SetClearColor(CNE::Color clcol)
     {
         clearcol = clcol;
     }
-    Color GL_Renderer::GetClearColor()
+    CNE::Color GL_Renderer::GetClearColor()
     {
         return clearcol;
     }

@@ -2,7 +2,7 @@
 #include "headers.hpp"
 #include "Color.hpp"
 
-namespace CNE
+namespace CNi
 {
     class NRenderer
     {
@@ -15,8 +15,8 @@ namespace CNE
         virtual int GetSizeY() = 0;
         virtual int GetPosX() = 0;
         virtual int GetPosY() = 0;
-        virtual void SetClearColor(Color clcol) = 0;
-        virtual Color GetClearColor() = 0;
+        virtual void SetClearColor(CNE::Color clcol) = 0;
+        virtual CNE::Color GetClearColor() = 0;
         virtual void Clear() = 0;
         virtual std::string GetRenderApiName() = 0;
     };

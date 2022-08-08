@@ -1,6 +1,7 @@
 #include <API.hpp>
 #include <NRenderer.hpp>
 #include <OpenGL_Renderer.hpp>
+#include <VK_Renderer.hpp>
 
 namespace CNi
 {
@@ -9,12 +10,15 @@ namespace CNi
     {
         gapi = t_api;
     }
-    CNE::NRenderer* GetRenderer()
+    CNi::NRenderer* GetRenderer()
     {
         switch(gapi)
         {
             case OPENGL:
-            return new CNE::GL_Renderer();
+            return new CNi::GL_Renderer();
+            break;
+            case VULKAN:
+            return new CNi::VK_Renderer();
             break;
             default:
             API_ERROR("Unknown Graphics API");

@@ -1,7 +1,7 @@
 #pragma once
 #include "headers.hpp"
 
-namespace CNE
+namespace CNi
 {
     class Shader
     {

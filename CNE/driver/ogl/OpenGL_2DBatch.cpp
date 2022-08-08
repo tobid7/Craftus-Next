@@ -4,7 +4,7 @@ extern int rwidth;
 extern int rheight;
 
 
-void CNEi::GL_2DBatch::DrawRect(int x, int y, int w, int h, CNE::Color t_col)
+void CNi::GL_2DBatch::DrawRect(int x, int y, int w, int h, CNE::Color t_col)
 {
     // configure VAO/VBO
     unsigned int VBO;
@@ -29,19 +29,19 @@ void CNEi::GL_2DBatch::DrawRect(int x, int y, int w, int h, CNE::Color t_col)
     baseshader.Use();
     glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices));
 }
-void CNEi::GL_2DBatch::DrawRectF(float x, float y, float w, float h, CNE::Color t_col)
+void CNi::GL_2DBatch::DrawRectF(float x, float y, float w, float h, CNE::Color t_col)
 {
 
 }
-void CNEi::GL_2DBatch::DrawText(int x, int y, float size, CNE::Color t_col, std::string t_text)
+void CNi::GL_2DBatch::DrawText(int x, int y, float size, CNE::Color t_col, std::string t_text)
 {
 
 }
-void CNEi::GL_2DBatch::DrawCentered(int x, int y, float size, CNE::Color t_col, std::string t_text, int maxwidth, int maxheight)
+void CNi::GL_2DBatch::DrawCentered(int x, int y, float size, CNE::Color t_col, std::string t_text, int maxwidth, int maxheight)
 {
 
 }
-namespace CNEi
+namespace CNi
 {
     GL_2DBatch::GL_2DBatch(void)
     {

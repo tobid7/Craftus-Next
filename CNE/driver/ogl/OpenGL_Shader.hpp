@@ -4,7 +4,7 @@
 #define GLAD_OPTION_GL_HEADER_ONLY
 #include <glad.h>
 
-namespace CNE
+namespace CNi
 {
     class GL_Shader : public Shader
     {

@@ -2,7 +2,7 @@
 #define GLAD_OPTION_GL_HEADER_ONLY
 #include <glad.h>
 
-namespace CNE
+namespace CNi
 {
     GL_Shader::GL_Shader()
     {

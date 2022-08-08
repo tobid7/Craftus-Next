@@ -60,12 +60,11 @@ void _post_call_callback_default(const char *name, void *funcptr, int len_args, 
 }
 int main(void)
 {
-    freopen("out.txt","w",stdout);
     GLFWwindow* window;
-    API_ERROR("Window");
+
  
     glfwSetErrorCallback(error_callback);
-    API_ERROR("Set ERROR CALLBACK");
+
     if (!glfwInit())
         exit(EXIT_FAILURE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
