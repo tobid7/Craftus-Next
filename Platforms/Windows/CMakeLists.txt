@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 3.1 )
 
 project( Craftus-Next LANGUAGES C CXX )
 
-include_directories( src glad ../../CNE/external/ ../../CNE/ ../../CNE/driver/def ../../CNE/driver/ogl ../../CNE/driver/vulkan ../../CNE/Graphics ../../CNE/Graphics/API glm glfw)
+include_directories( src glad ../../CNE/external/ ../../CNE/platform/PC ../../CNE/ ../../CNE/driver/def ../../CNE/driver/ogl ../../CNE/driver/vulkan ../../CNE/Graphics ../../CNE/Graphics/API glm glfw)
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
 set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
@@ -31,7 +31,7 @@ set( Craftus-Next-SRC
     ../../CNE/driver/ogl/OpenGL_Shader.cpp
     ../../CNE/driver/ogl/OpenGL_Texture.cpp
     ../../CNE/driver/ogl/OpenGL_2DBatch.cpp
-    #../../CNE/driver/ogl/Camera.cpp
+    ../../CNE/platform/PC/PC_Window.cpp
     #src/stb_image.h
     ${APP_ICON_RESOURCE_WINDOWS}
     )

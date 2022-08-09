@@ -1,5 +1,7 @@
 #include <VK_Renderer.hpp>
 #include <API.hpp>
+#include <glfw/glfw3.h>
+
 
 namespace CNi
 {

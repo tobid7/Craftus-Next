@@ -1,5 +1,6 @@
 #include "OpenGL_Renderer.hpp"
 #include "API.hpp"
+#include <glfw/glfw3.h>
 
 int drawcalls = 0;
 
@@ -12,11 +13,12 @@ namespace CNi
     {   
         #ifndef __SWITCH__
         API_ERROR("LoadingGlad!");
-        ver = gladLoaderLoadGL();
+        ver = gladLoadGL(glfwGetProcAddress);
         
         if (ver == 0)
         {
             API_ERROR("Could not load Glad!");
+            API_EXIT_PANIC();
         }
         
         #endif

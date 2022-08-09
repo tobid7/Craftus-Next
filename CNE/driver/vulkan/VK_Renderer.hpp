@@ -31,5 +31,8 @@ namespace CNi
         int sizey = 0;
         int posx = 0;
         int posy = 0;
+
+        //VK
+        
     };
 }

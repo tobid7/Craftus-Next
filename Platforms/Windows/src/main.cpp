@@ -9,6 +9,7 @@
 #include <cne.hpp>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <PC_Window.hpp>
 
 float lastTime;
 float currentTime;
@@ -62,13 +63,15 @@ int main(void)
 {
     GLFWwindow* window;
 
- 
+    
     glfwSetErrorCallback(error_callback);
 
     if (!glfwInit())
         exit(EXIT_FAILURE);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+
 
     window = glfwCreateWindow(1280, 720, "Craftus-Next", NULL, NULL);
     if (!window)
@@ -84,12 +87,15 @@ int main(void)
     glfwSetKeyCallback(window, key_callback);
  
     glfwMakeContextCurrent(window);
+    gladSetGLPostCallback((GLADpostcallback)_post_call_callback_default);
     CNi::SetApi(CNi::OPENGL);
     auto ren = CNi::GetRenderer();
-    gladSetGLPostCallback((GLADpostcallback)_post_call_callback_default);
+    
     glfwSwapInterval(1);
     lastTime = glfwGetTime();
-    ren->SetClearColor(CNE::Color::Gray);
+    ren->SetClearColor(CNE::Color(0, 0, 0, 0)); //Transparent
+    
+    
 
     while (!glfwWindowShouldClose(window))
     {
