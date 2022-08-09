@@ -1,6 +1,6 @@
 #include "OpenGL_Renderer.hpp"
 #include "API.hpp"
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 int drawcalls = 0;
 

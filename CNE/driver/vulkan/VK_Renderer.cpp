@@ -1,6 +1,6 @@
 #include <VK_Renderer.hpp>
 #include <API.hpp>
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 
 namespace CNi
@@ -68,7 +68,7 @@ namespace CNi
     
     std::string VK_Renderer::GetRenderApiName()
     {
-        std::string vers = "Vulkan " + std::to_string(GLAD_VERSION_MAJOR(ver)) + "." + std::to_string(GLAD_VERSION_MINOR(ver));
+        std::string vers = "";//"Vulkan " + std::to_string(GLAD_VERSION_MAJOR(ver)) + "." + std::to_string(GLAD_VERSION_MINOR(ver));
         return vers;
     }
 }

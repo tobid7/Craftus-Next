@@ -1,7 +1,7 @@
 #pragma once
 #include "headers.hpp"
-#define GLAD_VULKAN
-#include <vulkan.h>
+
+//#include <vulkan.h>
 #include "NRenderer.hpp"
 
 namespace CNi
