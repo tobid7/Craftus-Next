@@ -18,7 +18,8 @@ namespace CNi
             return new CNi::GL_Renderer();
             break;
             case VULKAN:
-            return new CNi::VK_Renderer();
+            //return new CNi::VK_Renderer();
+            API_ERROR("Vulkan Not Supported yet");
             break;
             default:
             API_ERROR("Unknown Graphics API");

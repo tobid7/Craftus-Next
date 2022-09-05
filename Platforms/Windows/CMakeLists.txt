@@ -5,7 +5,10 @@ project( Craftus-Next LANGUAGES C CXX )
 include_directories( src glad ../../CNE/external/ ../../CNE/platform/PC ../../CNE/ ../../CNE/driver/def ../../CNE/driver/ogl ../../CNE/driver/vulkan ../../CNE/Graphics ../../CNE/Graphics/API glm glfw)
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
+set( GLFW_BUILD_TESTS OFF CACHE BOOL  "GLFW lib only" )
+set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL  "GLFW lib only" )
 set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
+
 add_subdirectory( ../../CNE/external/glm/ glm)
 add_subdirectory(GLFW3)
 add_subdirectory( ../../CNE/external/OpenGL/ glad)
@@ -18,9 +21,21 @@ set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icon.rc")
 
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -Wl,--no-as-needed -ldl")
 
-#if( MSVC )
- #   SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
-#endif()
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
+
+if( MSVC )
+    SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
+endif()
+
+if (MSVC)
+add_custom_target(res ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/res ${CMAKE_BINARY_DIR}/${PROJECT_NAME}/Debug/res
+    DEPENDS ${MY_TARGET})
+else()
+add_custom_target(res ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/res ${CMAKE_BINARY_DIR}/${PROJECT_NAME}/res
+    DEPENDS ${MY_TARGET})
+endif()
 
 set( Craftus-Next-SRC
     src/main.cpp

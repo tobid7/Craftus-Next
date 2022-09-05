@@ -1,5 +1,5 @@
 #include <VK_Renderer.hpp>
-#include <API.hpp>
+/*#include <API.hpp>
 #include <GLFW/glfw3.h>
 
 
@@ -71,4 +71,4 @@ namespace CNi
         std::string vers = "";//"Vulkan " + std::to_string(GLAD_VERSION_MAJOR(ver)) + "." + std::to_string(GLAD_VERSION_MINOR(ver));
         return vers;
     }
-}
+}*/

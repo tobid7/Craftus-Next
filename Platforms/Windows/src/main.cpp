@@ -80,7 +80,7 @@ int main(void)
     }
     //Window Icon
     GLFWimage images[1];
-    images[0] = load_icon("icon.png");
+    images[0] = load_icon("res/icon.png");
     glfwSetWindowIcon(window, 1, images);
     unload_icon(images[0]);
     glfwSetKeyCallback(window, key_callback);

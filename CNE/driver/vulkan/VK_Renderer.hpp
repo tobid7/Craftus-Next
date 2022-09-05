@@ -1,6 +1,6 @@
 #pragma once
 #include "headers.hpp"
-
+/*
 //#include <vulkan.h>
 #include "NRenderer.hpp"
 
@@ -35,4 +35,4 @@ namespace CNi
         //VK
         
     };
-}
+}*/
