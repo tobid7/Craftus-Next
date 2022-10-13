@@ -1,6 +1,0 @@
-[submodule "CNE/external/glm"]
-	path = CNE/external/glm
-	url = https://github.com/g-truc/glm.git
-[submodule "Platforms/Windows/GLFW3"]
-	path = Platforms/Windows/GLFW3
-	url = https://github.com/glfw/glfw.git
