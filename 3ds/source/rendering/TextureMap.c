@@ -11,7 +11,7 @@
 
 #include <misc/Crash.h>
 
-int NmipmapLevels = 2;
+int NmipmapLevels = 0;
 
 uint32_t hash(char* str) {
 	unsigned long hash = 5381;
