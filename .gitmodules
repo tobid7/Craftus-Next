@@ -1,0 +1,3 @@
+[submodule "external/NImGui"]
+	path = external/NImGui
+	url = https://github.com/tobid7vx/NImGui.git
