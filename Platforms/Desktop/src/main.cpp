@@ -4,6 +4,7 @@
 //#include <stb_image.h>
 #define __DESKTOP__
 #include <NImGui/NImGui.hpp>
+#include <Error.hpp>
 
 static const char* const vertexShaderSource = R"text(
     #version 330 core
@@ -151,7 +152,7 @@ int main(void)
 {
     NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
     sceneInit();
-    
+    ErrorCode code;
     while(app.IsRunning())
     {
         app.SetVsync(vsy);
