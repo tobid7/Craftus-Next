@@ -1,5 +1,5 @@
 #include <GL_Renderer.hpp>
-
+#include <glad.h>
 
 namespace Base
 {

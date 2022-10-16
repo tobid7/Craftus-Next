@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.22)
 
 project(CraftusNext)
 
+set(BASE_DESKTOP CACHE BOOL ON)
+
 set(ICON_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icon.rc")
 
 set(CMAKE_CXX_STANDARD_LIBRARIES "-static -static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
@@ -16,6 +18,7 @@ endif()
 
 add_subdirectory(../../external/NImGui NImGui)
 add_subdirectory(../../base base)
+
 
 add_executable(${PROJECT_NAME} src/main.cpp ${ICON_WINDOWS})
 
