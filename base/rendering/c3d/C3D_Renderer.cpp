@@ -3,7 +3,7 @@
 #include <citro3d.h>
 #include <3ds.h>
 
-namespace CN
+namespace Base
 {
     ErrorCode C3D_Renderer::Init()
     {

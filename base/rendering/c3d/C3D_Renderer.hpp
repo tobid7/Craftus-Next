@@ -3,7 +3,7 @@
 
 #include <Renderer.hpp>
 
-namespace CN
+namespace Base
 {
     class C3D_Renderer : public Renderer
     {

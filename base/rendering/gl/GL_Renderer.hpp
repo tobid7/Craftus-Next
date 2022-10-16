@@ -3,7 +3,7 @@
 
 #include <Renderer.hpp>
 
-namespace CN
+namespace Base
 {
     class GL_Renderer : public Renderer
     {

@@ -7,15 +7,15 @@ project(base)
 set(BASE_CFLAGS "")
 
 set(BASE_SOURCE
-)
+Base.cpp)
 
 set(BASE_EXTRAINCLUDES "")
 set(BASE_EXTRADEPS "")
 
 #Add external glfw library
-add_library(${PROJECT_NAME} INTERFACE ${BASE_SOURCE})
+add_library(${PROJECT_NAME} STATIC ${BASE_SOURCE})
 
-target_include_directories(${PROJECT_NAME} INTERFACE . misc rendering ${BASE_EXTRAINCLUDES})
+target_include_directories(${PROJECT_NAME} PUBLIC . misc rendering ${BASE_EXTRAINCLUDES})
 
 target_link_libraries(${PROJECT_NAME} ${BASE_EXTRADEPS})
 

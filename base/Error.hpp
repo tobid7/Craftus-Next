@@ -15,7 +15,7 @@ std::map<int, std::string> codes = {
 };
 std::vector<std::string> errors;
 
-namespace CN
+namespace Base
 {
     std::string DecodeError(ErrorCode code)
     {

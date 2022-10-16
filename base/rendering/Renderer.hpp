@@ -3,7 +3,7 @@
 
 #include <Error.hpp>
 
-namespace CN
+namespace Base
 {
     class Renderer
     {   
