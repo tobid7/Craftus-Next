@@ -157,7 +157,7 @@ void task1(std::string msg)
 {
     while (initps)
     {
-        std::cout << "task1 says: " << msg;
+        //std::cout << "task1 says: " << msg;
     }
 }
 
@@ -196,7 +196,11 @@ int main(void)
     bool updt = false;
     while(app.IsRunning())
     {
-        if(!updt) app.SetWindowPos(NImGui::Vec2i((app.GetMonitorSize().x/2)-(app.GetWindowSize().x/2), (app.GetMonitorSize().y/2)-(app.GetWindowSize().y/2)));
+        if(!updt)
+        {
+            app.SetWindowPos(NImGui::Vec2i((app.GetMonitorSize().x/2)-(app.GetWindowSize().x/2), (app.GetMonitorSize().y/2)-(app.GetWindowSize().y/2)));
+            updt = true;    
+        }
         app.SetVsync(vsy);
         deltatime = deltaclock.GetAsMs();
         deltaclock.Reset();

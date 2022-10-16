@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.22)
 
 project(CraftusNext)
 
-#find_package(CURL REQUIRED)
-
 set(ICON_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icon.rc")
 
 set(CMAKE_CXX_STANDARD_LIBRARIES "-static -static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
