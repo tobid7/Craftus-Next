@@ -133,6 +133,8 @@ int frames;
 int fps = 0;
 float deltatime = 0.f;
 
+bool vsy = true;
+
 std::string FrameRate()
 {
     frames ++;
@@ -149,14 +151,19 @@ int main(void)
 {
     NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
     sceneInit();
+    
     while(app.IsRunning())
     {
+        app.SetVsync(vsy);
         deltatime = deltaclock.GetAsMs();
         deltaclock.Reset();
         ImGui::Begin("Fps");
         ImGui::Text("Fps -> %s", FrameRate().c_str());
         ImGui::Text("Delta -> %sms", std::to_string(deltatime).c_str());
-
+        ImGui::Checkbox("Vsync", &vsy);
+        ImGui::Text("MouseLeft -> %d", (int)app.IsMouseButtonDown(NImGui::MouseButton::Left));
+        ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
+        
         ImGui::End();
         sceneRender();   
         app.SwapBuffers();
