@@ -1,10 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <thread>
 //#define STB_IMAGE_IMPLEMENTATION
 //#include <stb_image.h>
 #define __DESKTOP__
 #include <NImGui/NImGui.hpp>
 #include <Error.hpp>
+
+
 
 static const char* const vertexShaderSource = R"text(
     #version 330 core
@@ -127,7 +130,7 @@ static void sceneExit()
     glDeleteVertexArrays(1, &s_vao);
     glDeleteProgram(s_program);
 }
- 
+
 NImGui::Timer deltaclock;
 NImGui::Timer frameclock;
 int frames;
@@ -148,13 +151,52 @@ std::string FrameRate()
     return std::to_string(fps);
 }
 
-int main(void)
+bool initps = true;
+
+void task1(std::string msg)
 {
-    NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
+    while (initps)
+    {
+        std::cout << "task1 says: " << msg;
+    }
+}
+
+int main(void)
+{   
+    NImGui::App app("Craftus-Next", NImGui::Vec2i(900, 400), NImGui::BORDERLESS | NImGui::TRANSPARENT);
+    app.SetWindowPos(NImGui::Vec2i((app.GetMonitorSize().x/2)-(app.GetWindowSize().x/2), (app.GetMonitorSize().y/2)-(app.GetWindowSize().y/2)));
     sceneInit();
     ErrorCode code;
+    NImGui::Image testt;
+    testt.LoadImage("loading.png");
+    NImGui::Timer clk;
+    std::thread t1(task1, "Hello");
     while(app.IsRunning())
     {
+        ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowPos(ImVec2(app.GetWindowPos().x, app.GetWindowPos().y));
+        ImGui::SetWindowSize(ImVec2(app.GetWindowSize().x, app.GetWindowSize().y));
+        ImGui::Image(testt.GetTextureID(), testt.GetSize());
+
+        ImGui::SetCursorPos(ImVec2(37, 380));
+        ImGui::Text("Loading %c -> %s", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3], "Craftus-Next");
+        ImGui::ProgressBar(((clk.GetAsMs()/1000)/7), ImVec2(-283, 2));
+        
+        ImGui::End();
+        app.SwapBuffers();
+        if((clk.GetAsMs()/1000) > 7)
+        {
+            initps = false;
+            t1.join();
+            break;
+        }
+    }
+    
+    app.SetWindowSize(NImGui::Vec2i(1280, 720));
+    bool updt = false;
+    while(app.IsRunning())
+    {
+        if(!updt) app.SetWindowPos(NImGui::Vec2i((app.GetMonitorSize().x/2)-(app.GetWindowSize().x/2), (app.GetMonitorSize().y/2)-(app.GetWindowSize().y/2)));
         app.SetVsync(vsy);
         deltatime = deltaclock.GetAsMs();
         deltaclock.Reset();
@@ -163,13 +205,13 @@ int main(void)
         ImGui::Text("Delta -> %sms", std::to_string(deltatime).c_str());
         ImGui::Checkbox("Vsync", &vsy);
         ImGui::Text("MouseLeft -> %d", (int)app.IsMouseButtonDown(NImGui::MouseButton::Left));
+        ImGui::Image(testt.GetTextureID(), testt.GetSize());
         ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
-        
+
         ImGui::End();
-        sceneRender();   
+        sceneRender();
         app.SwapBuffers();
     }
     sceneExit();
     exit(EXIT_SUCCESS);
 }
- 

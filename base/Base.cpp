@@ -10,6 +10,6 @@ namespace Base
 
     void Exit()
     {
-        
+
     }
 }
