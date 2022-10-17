@@ -27,7 +27,11 @@ std::string GetTimeStr(void)
 	time_t unixTime;
 	struct tm timeStruct;
 	time(&unixTime);
-	localtime_s(&timeStruct, &unixTime);
+	
+	localtime_r(&unixTime, &timeStruct);
+	
+	//localtime_s(&timeStruct, &unixTime);
+	
 	return FormatString("%04i-%02i-%02i_%02i-%02i-%02i", timeStruct.tm_year + 1900, timeStruct.tm_mon + 1, timeStruct.tm_mday,
 		timeStruct.tm_hour, timeStruct.tm_min, timeStruct.tm_sec);
 }

@@ -1,4 +1,4 @@
-#include <C3D_Renderer.hpp>
+#include <c3d/C3D_Renderer.hpp>
 
 #include <citro3d.h>
 #include <3ds.h>

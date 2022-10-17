@@ -5,13 +5,13 @@ cmake_minimum_required(VERSION 3.22)
 project(base)
 
 #Options
-option(BASE_DESKTOP "Desktop Platform" ON)
+option(BASE_DESKTOP "Desktop Platform" OFF)
 option(BASE_CTR "Ctr Platform" OFF)
 
 set(BASE_VER "0.2.0")
 set(BASE_NM "Base-Engine")
 
-set(BASE_CFLAGS "")
+set(BASE_CFLAGS "-D__BASE_BUILD__")
 
 list(APPEND BASE_CFLAGS -DBASE_VERSION=\"${BASE_VER}\" -DBASE_NAME=\"${BASE_NM}\")
 
@@ -44,6 +44,24 @@ if(BASE_DESKTOP)
     list(APPEND BASE_CFLAGS -D__BASE_DESKTOP__)
 endif()
 
+if(BASE_CTR)
+    message(LOG "Building for 3ds")
+    
+    list(APPEND BASE_SOURCE
+    #${BASE_SOURCE}
+    rendering/c3d/C3D_Renderer.cpp
+    rendering/c3d/C3D_Texture.cpp)
+    list(APPEND BASE_EXTRAINCLUDES
+    #${BASE_EXTRAINCLUDES}
+    )
+    list(APPEND BASE_EXTRADEPS
+    #${BASE_EXTRADEPS}
+    )
+    #cmake_host_system_information(RESULT DK_NAME QUERY OS_NAME)
+    set(BASE_PL "Desktop -> ${CMAKE_SYSTEM_NAME}")
+    list(APPEND BASE_CFLAGS -DBASE_PLATFORM=\"${BASE_PL}\")
+    list(APPEND BASE_CFLAGS -D__BASE_CTR__)
+endif()
 
 #Add external glfw library
 add_library(${PROJECT_NAME} STATIC ${BASE_SOURCE})
