@@ -20,8 +20,11 @@ A more updated version of the Craftus Minecraft Clone
   - [ ] Citro3d
   - [ ] Sound
   - [ ] 3D Renderer
-  - [ ] Everything in the list
-  - [ ] RenderD7 as Main 2D System?
+  - [ ] NImGui as Desktop Base
+  - [ ] Base-Engine
+  - [ ] Bitmap Engine (for Texture map)
+    - [ ] Alternative for 3ds (slow)
+  - [x] Use Cmake for Everything 
 - [ ] Better Terrain Gen
 - [ ] Biomes
 - [x] Trees
@@ -35,6 +38,7 @@ A more updated version of the Craftus Minecraft Clone
 - [ ] Tex Colors for blocks
 - [ ] Resourcepack Loader basen on Minecraft Java Resourcepacks
 - [ ] Shaders (Modern Systems)
+  - [ ] *Minecraft Shaders if possible
 
 
 # Original Redme
