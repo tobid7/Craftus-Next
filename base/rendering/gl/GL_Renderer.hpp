@@ -1,7 +1,6 @@
-#ifndef __GL_RENDERER_H__
-#define __GL_RENDERER_H__
-
+#pragma once
 #include <Renderer.hpp>
+#include <gl/gl.h>
 
 namespace Base
 {
@@ -13,4 +12,3 @@ namespace Base
         ErrorCode Update() override;
     };
 }
-#endif // __GL_RENDERER_H__

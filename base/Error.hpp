@@ -1,37 +1,35 @@
-#ifndef __ERROR_H__
-#define __ERROR_H__
-
+#pragma once
 #include <iostream>
 #include <string>
 #include <map>
 #include <vector>
 
 typedef int ErrorCode;
-std::map<int, std::string> codes = {
-    {0, "(0) -> Success"},
-    {1, "(1) -> Error (Unknown)"},
-    {2, "(2) -> Error (Unknown)"},
-    {NULL, "What are you trying to do?"},
-};
-std::vector<std::string> errors;
+extern std::map<int, std::string> codes;
+extern std::vector<std::string> errors;
 
 namespace Base
 {
-    std::string DecodeError(ErrorCode code)
+    inline std::string DecodeError(ErrorCode code)
     {
         return codes.at(code);
     }
 
-    void AddError(ErrorCode code)
+    inline void AddError(ErrorCode code)
     {
         errors.push_back(DecodeError(code));
     }
 
-    ErrorCode PrintErrors()
+    inline void PrintError(ErrorCode code)
+    {
+        std::cout << DecodeError(code) << std::endl;
+    }
+
+    inline ErrorCode PrintErrors()
     {
         if (errors.size() < 1)
         {
-            return 2;
+            return 1;
         }
         for (std::string err : errors)
         {
@@ -40,4 +38,3 @@ namespace Base
         return 0;
     }
 }
-#endif // __ERROR_H__

@@ -1,12 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <thread>
-//#define STB_IMAGE_IMPLEMENTATION
-//#include <stb_image.h>
 #define __DESKTOP__
 #include <NImGui/NImGui.hpp>
-#include <Error.hpp>
 #include <imgui_internal.h>
+
+#include <Error.hpp>
+#include <Base.hpp>
+
+#include <filesystem>
 
 namespace ImGui {
     
@@ -114,12 +116,94 @@ std::string FrameRate()
 
 bool initps = true;
 
+bool task = true;
+
+Base::BitmapPrinter pr(512, 512);
+
+bool isev(int num)
+{
+    if ( num % 2 == 0)
+    return true;
+    else
+    return false;
+
+    return false;
+}
+
+int prc = 0;
+int prj = 0;
 void task1(std::string msg)
 {
-    while (initps)
+    
+    Base::BitmapPrinter ll(256, 256);
+    NImGui::Timer tm;
+    
+    pr.SetDecoder(Base::BITMAP2TEX);
+
+    int fi = 0;
+    int fi2 = 0;
+    
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"tex"}})
     {
-        //std::cout << "task1 says: " << msg;
+        prc++;
     }
+    pr.Clear();
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"tex"}})
+    {
+        if(fi*16 > 512)
+        {
+            fi2++;
+            fi = 0;
+        }
+        if(fi2*16 < 512)
+        {
+            auto g = direntd.path();
+            ll.DecodePNGFile(g.generic_string());
+            if(!(ll.GetBitmap().bmp_info_header.width > 16) && !(ll.GetBitmap().bmp_info_header.height > 16))
+            {
+                pr.DrawBitmap(fi*16, fi2*16, ll.GetBitmap());
+                fi++;
+            }
+        }
+        
+        prj++;
+    }
+    pr.SavePng("blocks.png");
+    pr.Clear();
+    fi = 0;
+    fi2 = 0;
+
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"items"}})
+    {
+        if(fi*16 > 512)
+        {
+            fi2++;
+            fi = 0;
+        }
+        if(fi2*16 < 512)
+        {
+            auto g = direntd.path();
+            ll.DecodePNGFile(g.generic_string());
+            if(!(ll.GetBitmap().bmp_info_header.width > 16) && !(ll.GetBitmap().bmp_info_header.height > 16))
+            {
+                pr.DrawBitmap(fi*16, fi2*16, ll.GetBitmap());
+                fi++;
+            }
+        }
+        
+        prj++;
+    }
+    
+    std::cout << "Createt Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
+    tm.Reset();
+    pr.SavePng("items.png");
+    std::cout << "Saved Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
+    tm.Reset();
+    pr.UpdateScreen();
+    std::cout << "Updated Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
+    tm.Reset();
+    
+    task = false;
 }
 
 int main(void)
@@ -133,7 +217,7 @@ int main(void)
     ErrorCode code;
     NImGui::Image testt;
     testt.LoadImage("loading.png");
-    
+    std::cout << Base::GetVersion() << " " << Base::GetName() << " " << Base::GetPlatform() << std::endl;
     NImGui::Timer clk;
     std::thread t1(task1, "Hello");
     while(app.IsRunning())
@@ -142,7 +226,7 @@ int main(void)
         ImGui::SetWindowPos(ImVec2(app.GetWindowPos().x, app.GetWindowPos().y));
         ImGui::SetWindowSize(ImVec2(app.GetWindowSize().x, app.GetWindowSize().y));
         ImGui::Image(testt.GetTextureID(), testt.GetSize());
-
+        
         ImGui::SetCursorPos(ImVec2(37, 375));
         ImGui::Spinner("T", 5, 2, col);
         ImGui::SameLine();
@@ -150,11 +234,11 @@ int main(void)
         //ImGui::Text("Loading %c -> %s", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3], "Craftus-Next");
         
         //ImGui::BufferingBar("T", ((clk.GetAsMs()/1000)/7), ImVec2(400, 6), bg, col);
-        ImGui::ProgressBar(((clk.GetAsMs()/1000)/7), ImVec2(600, 2));
+        //ImGui::ProgressBar((prj/prc), ImVec2(600, 2));
         
         ImGui::End();
         app.SwapBuffers();
-        if((clk.GetAsMs()/1000) > 7)
+        if(!task)
         {
             initps = false;
             t1.join();

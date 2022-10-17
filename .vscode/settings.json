@@ -67,7 +67,8 @@
         "forward_list": "cpp",
         "valarray": "cpp",
         "semaphore": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "codecvt": "cpp"
     },
     "cmake.configureOnOpen": false,
     "cmake.sourceDirectory": "${workspaceFolder}/Platforms/Windows"

@@ -1,6 +1,4 @@
-#ifndef __RENDERER_H__
-#define __RENDERER_H__
-
+#pragma once
 #include <Error.hpp>
 
 namespace Base
@@ -13,5 +11,3 @@ namespace Base
         virtual ErrorCode Update() = 0;
     }; 
 } // namespace CN
-
-#endif // __RENDERER_H__

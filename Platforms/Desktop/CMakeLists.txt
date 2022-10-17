@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 
 project(CraftusNext)
 
-set(BASE_DESKTOP CACHE BOOL ON)
+#set(BASE_DESKTOP CACHE BOOL ON)
 
 set(ICON_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icon.rc")
 
@@ -24,7 +24,7 @@ add_executable(${PROJECT_NAME} src/main.cpp ${ICON_WINDOWS})
 
 target_include_directories(${PROJECT_NAME} PRIVATE NImGui base)
 
-target_link_libraries(${PROJECT_NAME} NImGui base)
+target_link_libraries(${PROJECT_NAME} base NImGui)
 
 if( MSVC )
     if(${CMAKE_VERSION} VERSION_LESS "3.6.0") 
