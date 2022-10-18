@@ -9,6 +9,20 @@
 #include <Base.hpp>
 
 #include <filesystem>
+#include <algorithm>
+#include <numeric>
+#include <future>
+#include <string>
+#include <mutex>
+
+#include <ini.hpp>
+
+std::string task_ = "";
+
+std::string RemoveExtPath(std::string name)
+{
+    return remove_ext(GetFileName(name));
+}
 
 namespace ImGui {
     
@@ -132,9 +146,23 @@ bool isev(int num)
 
 int prc = 0;
 int prj = 0;
-void task1(std::string msg)
+
+unsigned hash_str(const char* s)
 {
-    
+   unsigned h = 37;
+   while (*s) {
+     h = (h * 54059) ^ (s[0] * 76963);
+     s++;
+   }
+   return h % 86969; // or return h % C;
+}
+
+INI::INIStructure st;
+INI::INIStructure it;
+
+bool task1(std::string msg)
+{
+    task_ = "Init Loader!";
     Base::BitmapPrinter ll(256, 256);
     NImGui::Timer tm;
     
@@ -142,6 +170,7 @@ void task1(std::string msg)
 
     int fi = 0;
     int fi2 = 0;
+    task_ = "Setup Block TexMap";
     if (std::filesystem::is_directory("tex"))
     {
     for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"tex"}})
@@ -149,6 +178,9 @@ void task1(std::string msg)
         prc++;
     }
     pr.Clear();
+    
+    INI::INIFile blockss("blocks.ini");
+    blockss.generate(st);
     for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"tex"}})
     {
         if(fi*16 > 512)
@@ -159,23 +191,43 @@ void task1(std::string msg)
         if(fi2*16 < 512)
         {
             auto g = direntd.path();
+            std::string wk = RemoveExtPath(g.generic_string());
             ll.DecodePNGFile(g.generic_string());
             if(!(ll.GetBitmap().bmp_info_header.width > 16) && !(ll.GetBitmap().bmp_info_header.height > 16))
             {
                 pr.DrawBitmap(fi*16, fi2*16, ll.GetBitmap());
+                st[std::to_string(hash_str(wk.c_str()))]["name"] = wk;
+                st[std::to_string(hash_str(wk.c_str()))]["u1"] = std::to_string((float)(((float)fi*(float)16)/(float)512));
+                st[std::to_string(hash_str(wk.c_str()))]["v1"] = std::to_string((float)(((float)fi2*(float)16)/(float)512));
+                st[std::to_string(hash_str(wk.c_str()))]["u2"] = std::to_string((float)((((float)fi*(float)16)+(float)16)/(float)512));
+                st[std::to_string(hash_str(wk.c_str()))]["v2"] = std::to_string((float)((((float)fi2*(float)16)+(float)16)/(float)512));
                 fi++;
+                task_ = "Generating TexMap:" + wk;
+                
             }
+            
         }
         
         prj++;
     }
+    
+    //blockss.generate(st);
+    blockss.write(st);
+    
     pr.SavePng("blocks.png");
     }
     pr.Clear();
     fi = 0;
     fi2 = 0;
+    INI::INIFile itemss("items.ini");
+    itemss.generate(it);
+    task_ = "Setup Item TexMap";
     if (std::filesystem::is_directory("items"))
     {
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"items"}})
+    {
+        prc++;
+    }
     for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"items"}})
     {
         if(fi*16 > 512)
@@ -186,16 +238,24 @@ void task1(std::string msg)
         if(fi2*16 < 512)
         {
             auto g = direntd.path();
+            std::string wk = RemoveExtPath(g.generic_string());
             ll.DecodePNGFile(g.generic_string());
             if(!(ll.GetBitmap().bmp_info_header.width > 16) && !(ll.GetBitmap().bmp_info_header.height > 16))
             {
                 pr.DrawBitmap(fi*16, fi2*16, ll.GetBitmap());
+                it[std::to_string(hash_str(wk.c_str()))]["name"] = wk;
+                it[std::to_string(hash_str(wk.c_str()))]["u1"] = std::to_string((float)(((float)fi*(float)16)/(float)512));
+                it[std::to_string(hash_str(wk.c_str()))]["v1"] = std::to_string((float)(((float)fi2*(float)16)/(float)512));
+                it[std::to_string(hash_str(wk.c_str()))]["u2"] = std::to_string((float)((((float)fi*(float)16)+(float)16)/(float)512));
+                it[std::to_string(hash_str(wk.c_str()))]["v2"] = std::to_string((float)((((float)fi2*(float)16)+(float)16)/(float)512));
                 fi++;
+                task_ = "Generating TexMap:" + wk;
             }
         }
         
         prj++;
     }
+    itemss.write(it);
     std::cout << "Createt Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
     tm.Reset();
     pr.SavePng("items.png");
@@ -207,6 +267,7 @@ void task1(std::string msg)
     tm.Reset();
     
     task = false;
+    return true;
 }
 
 int main(void)
@@ -222,7 +283,8 @@ int main(void)
     testt.LoadImage("loading.png");
     std::cout << Base::GetVersion() << " " << Base::GetName() << " " << Base::GetPlatform() << std::endl;
     NImGui::Timer clk;
-    std::thread t1(task1, "Hello");
+    //std::thread t1(task1, "Hello");
+    std::future<bool> ftt = std::async(task1, "NULL");
     while(app.IsRunning())
     {
         ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs);
@@ -233,10 +295,10 @@ int main(void)
         ImGui::SetCursorPos(ImVec2(37, 375));
         ImGui::Spinner("T", 5, 2, col);
         ImGui::SameLine();
-        ImGui::Text("Loading -> %s", "Craftus-Next");
+        ImGui::Text("Loading -> %s", task_.c_str());
         //ImGui::Text("Loading %c -> %s", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3], "Craftus-Next");
         
-        //ImGui::BufferingBar("T", ((clk.GetAsMs()/1000)/7), ImVec2(400, 6), bg, col);
+        //ImGui::BufferingBar("T", (prj/prc), ImVec2(600, 6), bg, col);
         //ImGui::ProgressBar((prj/prc), ImVec2(600, 2));
         
         ImGui::End();
@@ -244,7 +306,7 @@ int main(void)
         if(!task)
         {
             initps = false;
-            t1.join();
+            //t1.join();
             break;
         }
     }
@@ -252,7 +314,25 @@ int main(void)
     app.SetWindowSize(NImGui::Vec2i(1280, 720));
     bool updt = false;
     app.SetFullScreen(true);
+    NImGui::Image img;
+    img.LoadImage("blocks.png");
+    NImGui::Image img2;
+    img2.LoadImage("items.png");
+    std::vector<std::string> ids;
+    for(auto const& it2 : st)
+    {
+        auto const& section = it2.first;
+        ids.push_back(section);
+    }
 
+    std::vector<std::string> idsi;
+    for(auto const& it2i : it)
+    {
+        auto const& section2 = it2i.first;
+        idsi.push_back(section2);
+    }
+    int bllll = 0;
+    int illll = 0;
     while(app.IsRunning())
     {
         if(!updt)
@@ -260,6 +340,7 @@ int main(void)
             app.SetWindowPos(NImGui::Vec2i((app.GetMonitorSize().x/2)-(app.GetWindowSize().x/2), (app.GetMonitorSize().y/2)-(app.GetWindowSize().y/2)));
             updt = true;    
         }
+        pr.UpdateScreen();
         app.SetVsync(vsy);
         deltatime = deltaclock.GetAsMs();
         deltaclock.Reset();
@@ -271,10 +352,19 @@ int main(void)
         ImGui::Checkbox("Vsync", &vsy);
         ImGui::Text("MouseLeft -> %d", (int)app.IsMouseButtonDown(NImGui::MouseButton::Left));
         ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
+        ImGui::Text("Block -> %s", st[ids[bllll]]["name"].c_str());
+        ImGui::InputInt("Block", &bllll);
+        ImGui::SameLine();
+        ImGui::Image(img.GetTextureID(), ImVec2(16, 16), ImVec2(std::atof(st[ids[bllll]]["u1"].c_str()), std::atof(st[ids[bllll]]["v1"].c_str())), ImVec2(std::atof(st[ids[bllll]]["u2"].c_str()), std::atof(st[ids[bllll]]["v2"].c_str())));
+        
+        ImGui::Text("Item -> %s", it[idsi[illll]]["name"].c_str());
+        ImGui::InputInt("Item", &illll);
+        ImGui::SameLine();
+        ImGui::Image(img2.GetTextureID(), ImVec2(16, 16), ImVec2(std::atof(it[idsi[illll]]["u1"].c_str()), std::atof(it[idsi[illll]]["v1"].c_str())), ImVec2(std::atof(it[idsi[illll]]["u2"].c_str()), std::atof(it[idsi[illll]]["v2"].c_str())));
         
         ImGui::End();
         app.SwapBuffers();
     }
 
-    exit(EXIT_SUCCESS);
+    return 0;
 }

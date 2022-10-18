@@ -3,6 +3,7 @@
 #include <string>
 #include <BaseRender.hpp>
 #include <TextureMapper.hpp>
+#include <stringcheats.hpp>
 
 namespace Base
 {
