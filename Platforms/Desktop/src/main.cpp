@@ -274,13 +274,13 @@ int main(void)
 {   
     NImGui::App app("Craftus-Next", NImGui::Vec2i(900, 400), NImGui::BORDERLESS | NImGui::TRANSPARENT);
     app.SetWindowPos(NImGui::Vec2i((app.GetMonitorSize().x/2)-(app.GetWindowSize().x/2), (app.GetMonitorSize().y/2)-(app.GetWindowSize().y/2)));
-    app.LoadIcon("icon.png");
+    app.LoadIcon("res/icon.png");
     const ImU32 col = ImGui::GetColorU32(ImGuiCol_ButtonHovered);
     const ImU32 bg = ImGui::GetColorU32(ImGuiCol_Button);
 
     ErrorCode code;
     NImGui::Image testt;
-    testt.LoadImage("loading.png");
+    testt.LoadImage("res/loading.png");
     std::cout << Base::GetVersion() << " " << Base::GetName() << " " << Base::GetPlatform() << std::endl;
     NImGui::Timer clk;
     //std::thread t1(task1, "Hello");
@@ -290,6 +290,7 @@ int main(void)
         ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs);
         ImGui::SetWindowPos(ImVec2(app.GetWindowPos().x, app.GetWindowPos().y));
         ImGui::SetWindowSize(ImVec2(app.GetWindowSize().x, app.GetWindowSize().y));
+        ImGui::SetCursorPos(ImVec2(0, 0));
         ImGui::Image(testt.GetTextureID(), testt.GetSize());
         
         ImGui::SetCursorPos(ImVec2(37, 375));
@@ -318,7 +319,7 @@ int main(void)
     img.LoadImage("blocks.png");
     NImGui::Image img2;
     img2.LoadImage("items.png");
-    std::vector<std::string> ids;
+    /*std::vector<std::string> ids;
     for(auto const& it2 : st)
     {
         auto const& section = it2.first;
@@ -332,7 +333,7 @@ int main(void)
         idsi.push_back(section2);
     }
     int bllll = 0;
-    int illll = 0;
+    int illll = 0;*/
     while(app.IsRunning())
     {
         if(!updt)
@@ -352,7 +353,7 @@ int main(void)
         ImGui::Checkbox("Vsync", &vsy);
         ImGui::Text("MouseLeft -> %d", (int)app.IsMouseButtonDown(NImGui::MouseButton::Left));
         ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
-        ImGui::Text("Block -> %s", st[ids[bllll]]["name"].c_str());
+        /*ImGui::Text("Block -> %s", st[ids[bllll]]["name"].c_str());
         ImGui::InputInt("Block", &bllll);
         ImGui::SameLine();
         ImGui::Image(img.GetTextureID(), ImVec2(16, 16), ImVec2(std::atof(st[ids[bllll]]["u1"].c_str()), std::atof(st[ids[bllll]]["v1"].c_str())), ImVec2(std::atof(st[ids[bllll]]["u2"].c_str()), std::atof(st[ids[bllll]]["v2"].c_str())));
@@ -361,7 +362,7 @@ int main(void)
         ImGui::InputInt("Item", &illll);
         ImGui::SameLine();
         ImGui::Image(img2.GetTextureID(), ImVec2(16, 16), ImVec2(std::atof(it[idsi[illll]]["u1"].c_str()), std::atof(it[idsi[illll]]["v1"].c_str())), ImVec2(std::atof(it[idsi[illll]]["u2"].c_str()), std::atof(it[idsi[illll]]["v2"].c_str())));
-        
+        */
         ImGui::End();
         app.SwapBuffers();
     }
