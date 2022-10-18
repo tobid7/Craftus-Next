@@ -27,11 +27,15 @@ std::string GetTimeStr(void)
 	time_t unixTime;
 	struct tm timeStruct;
 	time(&unixTime);
-	
+	#ifdef _WIN32 // Includes both 32 bit and 64 bit
+	    #ifdef _WIN64
+	    localtime_s(&timeStruct, &unixTime);
+	    #else 
+	    localtime_s(&timeStruct, &unixTime);
+	    #endif
+	#else
 	localtime_r(&unixTime, &timeStruct);
-	
-	//localtime_s(&timeStruct, &unixTime);
-	
+	#endif
 	return FormatString("%04i-%02i-%02i_%02i-%02i-%02i", timeStruct.tm_year + 1900, timeStruct.tm_mon + 1, timeStruct.tm_mday,
 		timeStruct.tm_hour, timeStruct.tm_min, timeStruct.tm_sec);
 }
@@ -227,6 +231,7 @@ void Base::BitmapPrinter::Benchmark()
 			std::string resultt = "TestMode: " + std::to_string(testfpsd) + "fps" + "\nRendered Frames: " + renderedf + "\nMax Cpu Time: " + avgdtt + "\nAvg Cpu Time: " + avgcpu + "\nAvg Fps: " + avgfps + "\nAvg EncodeTime: " + avgcpu2 + "ms/f\nAvg DecodeTime: " + avgcpu3 + "ms\n";
 			this->ClearBlank();
 			this->DrawRectFilled(0, 0, this->bitmap.bmp_info_header.width, this->bitmap.bmp_info_header.height, 0, 0, 0, 255);
+			std::cout << resultt << std::endl;
 			std::string outname = csvpc + "/benchmark_" + GetTimeStr() + ".png";
 			this->SavePng(outname);
 			benchmark = false;

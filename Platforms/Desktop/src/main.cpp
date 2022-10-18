@@ -142,7 +142,8 @@ void task1(std::string msg)
 
     int fi = 0;
     int fi2 = 0;
-    
+    if (std::filesystem::is_directory("tex"))
+    {
     for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"tex"}})
     {
         prc++;
@@ -169,10 +170,12 @@ void task1(std::string msg)
         prj++;
     }
     pr.SavePng("blocks.png");
+    }
     pr.Clear();
     fi = 0;
     fi2 = 0;
-
+    if (std::filesystem::is_directory("items"))
+    {
     for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"items"}})
     {
         if(fi*16 > 512)
@@ -193,10 +196,10 @@ void task1(std::string msg)
         
         prj++;
     }
-    
     std::cout << "Createt Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
     tm.Reset();
     pr.SavePng("items.png");
+    }
     std::cout << "Saved Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
     tm.Reset();
     pr.UpdateScreen();
@@ -249,6 +252,7 @@ int main(void)
     app.SetWindowSize(NImGui::Vec2i(1280, 720));
     bool updt = false;
     app.SetFullScreen(true);
+
     while(app.IsRunning())
     {
         if(!updt)
@@ -269,7 +273,6 @@ int main(void)
         ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
         
         ImGui::End();
-
         app.SwapBuffers();
     }
 
