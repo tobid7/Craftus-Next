@@ -38,14 +38,14 @@ int main(void)
     double bg = svcGetSystemTick();
     Base::BitmapPrinter pr(256, 256);
     pr.DrawRect(0, 0, 20, 20, 3, 100, 100, 100, 255);
-    pr.UpdateScreen();
+    
     double ed = svcGetSystemTick();
     printf("RenderTime -> %fms", (ed - bg)/1000/1000);
     C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
     C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
     C2D_Prepare();
     top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-    
+    pr.UpdateScreen();
     //NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
     while(aptMainLoop())
     {

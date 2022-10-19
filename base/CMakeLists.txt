@@ -24,6 +24,7 @@ set(BASE_EXTRAINCLUDES "")
 set(BASE_EXTRADEPS "")
 
 if(BASE_DESKTOP)
+    message("Building for a Desktop Platform")
     add_subdirectory(../external/glm glm)
     list(APPEND BASE_SOURCE
     #${BASE_SOURCE}
@@ -45,7 +46,7 @@ if(BASE_DESKTOP)
 endif()
 
 if(BASE_CTR)
-    message(LOG "Building for 3ds")
+    message("Building for 3ds")
     
     list(APPEND BASE_SOURCE
     #${BASE_SOURCE}

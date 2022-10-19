@@ -166,7 +166,7 @@ bool task1(std::string msg)
     Base::BitmapPrinter ll(256, 256);
     NImGui::Timer tm;
     
-    pr.SetDecoder(Base::BITMAP2TEX);
+    pr.SetDecoder(Base::BITMAP2PNG2TEX);
 
     int fi = 0;
     int fi2 = 0;
@@ -270,6 +270,8 @@ bool task1(std::string msg)
     return true;
 }
 
+bool prevcrash = false;
+
 int main(void)
 {   
     NImGui::App app("Craftus-Next", NImGui::Vec2i(900, 400), NImGui::BORDERLESS | NImGui::TRANSPARENT);
@@ -288,6 +290,7 @@ int main(void)
     while(app.IsRunning())
     {
         ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs);
+        prevcrash = true;
         ImGui::SetWindowPos(ImVec2(app.GetWindowPos().x, app.GetWindowPos().y));
         ImGui::SetWindowSize(ImVec2(app.GetWindowSize().x, app.GetWindowSize().y));
         ImGui::SetCursorPos(ImVec2(0, 0));
@@ -303,6 +306,7 @@ int main(void)
         //ImGui::ProgressBar((prj/prc), ImVec2(600, 2));
         
         ImGui::End();
+        prevcrash = false;
         app.SwapBuffers();
         if(!task)
         {
@@ -334,14 +338,25 @@ int main(void)
     }
     int bllll = 0;
     int illll = 0;*/
+
+    Base::BitmapPrinter llj(20, 20);
+    llj.SetDecoder(Base::BITMAP2PNG2TEX);
+    llj.Clear();
+    llj.UpdateScreen();
     while(app.IsRunning())
     {
+        if (prevcrash)
+        {
+            ImGui::End();
+            prevcrash = false;
+        }
+        
         if(!updt)
         {
             app.SetWindowPos(NImGui::Vec2i((app.GetMonitorSize().x/2)-(app.GetWindowSize().x/2), (app.GetMonitorSize().y/2)-(app.GetWindowSize().y/2)));
             updt = true;    
         }
-        pr.UpdateScreen();
+        //pr.UpdateScreen();
         app.SetVsync(vsy);
         deltatime = deltaclock.GetAsMs();
         deltaclock.Reset();
@@ -353,6 +368,7 @@ int main(void)
         ImGui::Checkbox("Vsync", &vsy);
         ImGui::Text("MouseLeft -> %d", (int)app.IsMouseButtonDown(NImGui::MouseButton::Left));
         ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
+        ImGui::Image((ImTextureID)llj.GetImage().GetRegID(), ImVec2(20, 20));
         /*ImGui::Text("Block -> %s", st[ids[bllll]]["name"].c_str());
         ImGui::InputInt("Block", &bllll);
         ImGui::SameLine();

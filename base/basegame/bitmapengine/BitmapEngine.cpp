@@ -174,12 +174,12 @@ bool Base::BitmapPrinter::UpdateScreenF(int framerate)
 bool Base::BitmapPrinter::UpdateScreen()
 {
 	bool updtt = false;
-	if (isscreen)
-	{
+	//if (isscreen)
+	//{
 		if(renderframe.GetRegID() != 0) renderframe.Destroy();
 		this->Decode(decc);
 		updtt = true;
-	}	
+	//}	
 	return updtt;
 }
 
@@ -295,21 +295,25 @@ void Base::BitmapPrinter::SetupBenchmark(int framerate)
 
 bool Base::BitmapPrinter::Decode(Decoder deccc)
 {
+	std::cout << "Decoding Bitmap" << std::endl;
 	bool res = false;
 
 	switch (deccc)
 	{
 	case Decoder::BITMAP2PNG2TEX:
+		std::cout << "BMP2PNG2TEX" << std::endl;
 		renderframe.LoadMem(BitmapConverter::ConvertBMP2PNGData(this->bitmap.DATA()));
 		res = true;
 		break;
 	case Decoder::BITMAP2TEX:
 		//renderframe.LoadFromBitmap(this->bitmap);
+		std::cout << "BMP2TEX" << std::endl;
 		renderframe.LoadMem(this->bitmap.DATA());
 		res = true;
 		break;
 	
 	default:
+		std::cout << "Decoder Unknown" << std::endl;
 		res = false;
 		break;
 	}
