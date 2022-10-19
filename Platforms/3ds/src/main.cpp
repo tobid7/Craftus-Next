@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <3ds.h>
 #include <citro3d.h>
 #include <citro2d.h>
@@ -11,22 +12,24 @@
 //#include <stb_image.h>
  
 //NImGui::Timer deltaclock;
-//NImGui::Timer frameclock;
-//int frames;
-//int fps = 0;
+Base::Timer frameclock;
+int frames;
+int fps = 0;
 //float deltatime = 0.f;
 //
-//std::string FrameRate()
-//{
-//    frames ++;
-//    if ((frameclock.GetAsMs()/1000) >= 1.f)
-//    {
-//        fps = frames;
-//        frames = 0;
-//        frameclock.Reset();
-//    }
-//    return std::to_string(fps);
-//}
+std::string FrameRate()
+{
+    frames ++;
+    if ((frameclock.GetAsMs()/1000) >= 1.f)
+    {
+        fps = frames;
+        frames = 0;
+        frameclock.Reset();
+    }
+    return std::to_string(fps);
+}
+
+C2D_TextBuf tb;
 C3D_RenderTarget *top;
 int main(void)
 {
@@ -35,25 +38,37 @@ int main(void)
     consoleInit(GFX_BOTTOM, NULL);
     printf("test\n");
     std::cout << Base::GetPlatform() << std::endl;
-    double bg = svcGetSystemTick();
-    Base::BitmapPrinter pr(256, 256);
-    pr.DrawRect(0, 0, 20, 20, 3, 100, 100, 100, 255);
+    Base::Timer tm;
+    //Base::BitmapPrinter pr(256, 256);
+    //pr.DrawRect(0, 0, 20, 20, 3, 100, 100, 100, 255);
     
-    double ed = svcGetSystemTick();
-    printf("RenderTime -> %fms", (ed - bg)/1000/1000);
+    double ed = tm.GetAsMs();
+    printf("RenderTime -> %fms", ed);
     C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
     C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
     C2D_Prepare();
+    C2D_TextBufNew(900);
+    C2D_TextBufClear(tb);
+    C2D_FontLoadSystem(CFG_REGION_EUR);
     top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-    pr.UpdateScreen();
+    //pr.UpdateScreen();
+    BaseTexture tex;
+    tex.Load("romfs:/loading.png");
     //NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
+    Base::Timer delta;
+    double dt = 0;
+    
     while(aptMainLoop())
     {
+        C2D_TextBufClear(tb);
+        dt = delta.GetAsMs();
+        delta.Reset();
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
         C2D_SceneBegin(top);
         //C2D_DrawRectSolid(0, 0, 0.5f, 400, 240, C2D_Color32(255, 255, 255, 255));
-        C2D_DrawImageAt(pr.GetImage().GetCtrReg(), 0, 0, 0.5f);
+        C2D_DrawImageAt(tex.GetCtrReg(), 0, 0, 0.5f);
+
         //deltatime = deltaclock.GetAsMs();
         //deltaclock.Reset();
         C3D_FrameEnd(0);

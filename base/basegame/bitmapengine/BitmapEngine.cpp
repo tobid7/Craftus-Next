@@ -342,5 +342,6 @@ namespace Base
 		BitmapConverter::ConvertPNG2BMPFile(file);
 		bitmap.read("irufghiorgudripygpiodhuysg.bmp");
 		remove("irufghiorgudripygpiodhuysg.bmp");
+		return true;
 	}
 }

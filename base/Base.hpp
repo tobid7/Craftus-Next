@@ -5,6 +5,8 @@
 #include <TextureMapper.hpp>
 #include <stringcheats.hpp>
 
+#include <Timer.hpp>
+
 namespace Base
 {
     struct Vec2i
