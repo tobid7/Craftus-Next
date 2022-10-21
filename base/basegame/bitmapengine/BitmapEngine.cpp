@@ -176,9 +176,9 @@ bool Base::BitmapPrinter::UpdateScreen()
 	bool updtt = false;
 	//if (isscreen)
 	//{
-		if(renderframe.GetRegID() != 0) renderframe.Destroy();
-		this->Decode(decc);
-		updtt = true;
+	if(renderframe.GetRegID() != 0) renderframe.Destroy();
+	this->Decode(decc);
+	updtt = true;
 	//}	
 	return updtt;
 }

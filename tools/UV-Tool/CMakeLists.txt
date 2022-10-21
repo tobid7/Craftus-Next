@@ -9,7 +9,7 @@ set(ICON_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icon.rc")
 if (UNIX)
     set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
 else()
-    set(CMAKE_CXX_STANDARD_LIBRARIES "-static -ldl -static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
+    set(CMAKE_CXX_STANDARD_LIBRARIES "-static -mwindows -ldl -static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
 endif()
 
 

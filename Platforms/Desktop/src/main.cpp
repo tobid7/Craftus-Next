@@ -17,7 +17,12 @@
 
 #include <ini.hpp>
 
+#include <json.hpp>
+
 std::string task_ = "";
+
+nlohmann::json blocksj;
+nlohmann::json itemsj;
 
 std::string RemoveExtPath(std::string name)
 {
@@ -171,17 +176,15 @@ bool task1(std::string msg)
     int fi = 0;
     int fi2 = 0;
     task_ = "Setup Block TexMap";
-    if (std::filesystem::is_directory("tex"))
+    if (std::filesystem::is_directory("block"))
     {
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"tex"}})
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"block"}})
     {
         prc++;
     }
     pr.Clear();
     
-    INI::INIFile blockss("blocks.ini");
-    blockss.generate(st);
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"tex"}})
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"block"}})
     {
         if(fi*16 > 512)
         {
@@ -196,11 +199,12 @@ bool task1(std::string msg)
             if(!(ll.GetBitmap().bmp_info_header.width > 16) && !(ll.GetBitmap().bmp_info_header.height > 16))
             {
                 pr.DrawBitmap(fi*16, fi2*16, ll.GetBitmap());
-                st[std::to_string(hash_str(wk.c_str()))]["name"] = wk;
+                /*st[std::to_string(hash_str(wk.c_str()))]["name"] = wk;
                 st[std::to_string(hash_str(wk.c_str()))]["u1"] = std::to_string((float)(((float)fi*(float)16)/(float)512));
                 st[std::to_string(hash_str(wk.c_str()))]["v1"] = std::to_string((float)(((float)fi2*(float)16)/(float)512));
                 st[std::to_string(hash_str(wk.c_str()))]["u2"] = std::to_string((float)((((float)fi*(float)16)+(float)16)/(float)512));
-                st[std::to_string(hash_str(wk.c_str()))]["v2"] = std::to_string((float)((((float)fi2*(float)16)+(float)16)/(float)512));
+                st[std::to_string(hash_str(wk.c_str()))]["v2"] = std::to_string((float)((((float)fi2*(float)16)+(float)16)/(float)512));*/
+                blocksj[std::to_string(hash_str(wk.c_str()))] = {{"name", wk}, {"u1", (float)(((float)fi*(float)16)/(float)512)}, {"v1", (float)(((float)fi2*(float)16)/(float)512)}, {"u2", (float)((((float)fi*(float)16)+(float)16)/(float)512)}, {"v2", (float)((((float)fi2*(float)16)+(float)16)/(float)512)},};
                 fi++;
                 task_ = "Generating TexMap:" + wk;
                 
@@ -212,23 +216,21 @@ bool task1(std::string msg)
     }
     
     //blockss.generate(st);
-    blockss.write(st);
+    //blockss.write(st);
     
     pr.SavePng("blocks.png");
     }
     pr.Clear();
     fi = 0;
     fi2 = 0;
-    INI::INIFile itemss("items.ini");
-    itemss.generate(it);
     task_ = "Setup Item TexMap";
-    if (std::filesystem::is_directory("items"))
+    if (std::filesystem::is_directory("item"))
     {
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"items"}})
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"item"}})
     {
         prc++;
     }
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"items"}})
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"item"}})
     {
         if(fi*16 > 512)
         {
@@ -243,11 +245,12 @@ bool task1(std::string msg)
             if(!(ll.GetBitmap().bmp_info_header.width > 16) && !(ll.GetBitmap().bmp_info_header.height > 16))
             {
                 pr.DrawBitmap(fi*16, fi2*16, ll.GetBitmap());
-                it[std::to_string(hash_str(wk.c_str()))]["name"] = wk;
+                /*it[std::to_string(hash_str(wk.c_str()))]["name"] = wk;
                 it[std::to_string(hash_str(wk.c_str()))]["u1"] = std::to_string((float)(((float)fi*(float)16)/(float)512));
                 it[std::to_string(hash_str(wk.c_str()))]["v1"] = std::to_string((float)(((float)fi2*(float)16)/(float)512));
                 it[std::to_string(hash_str(wk.c_str()))]["u2"] = std::to_string((float)((((float)fi*(float)16)+(float)16)/(float)512));
-                it[std::to_string(hash_str(wk.c_str()))]["v2"] = std::to_string((float)((((float)fi2*(float)16)+(float)16)/(float)512));
+                it[std::to_string(hash_str(wk.c_str()))]["v2"] = std::to_string((float)((((float)fi2*(float)16)+(float)16)/(float)512));*/
+                itemsj[std::to_string(hash_str(wk.c_str()))] = {{"name", wk}, {"u1", (float)(((float)fi*(float)16)/(float)512)}, {"v1", (float)(((float)fi2*(float)16)/(float)512)}, {"u2", (float)((((float)fi*(float)16)+(float)16)/(float)512)}, {"v2", (float)((((float)fi2*(float)16)+(float)16)/(float)512)},};
                 fi++;
                 task_ = "Generating TexMap:" + wk;
             }
@@ -255,7 +258,13 @@ bool task1(std::string msg)
         
         prj++;
     }
-    itemss.write(it);
+    //itemss.write(it);
+    std::ofstream blocksl("blocks.json");
+    std::ofstream itemsl("items.json");
+    blocksl << blocksj.dump(4);
+    itemsl << itemsj.dump(4);
+    blocksl.close();
+    itemsl.close();
     std::cout << "Createt Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
     tm.Reset();
     pr.SavePng("items.png");
@@ -323,28 +332,52 @@ int main(void)
     img.LoadImage("blocks.png");
     NImGui::Image img2;
     img2.LoadImage("items.png");
-    /*std::vector<std::string> ids;
-    for(auto const& it2 : st)
-    {
-        auto const& section = it2.first;
-        ids.push_back(section);
-    }
-
-    std::vector<std::string> idsi;
-    for(auto const& it2i : it)
-    {
-        auto const& section2 = it2i.first;
-        idsi.push_back(section2);
-    }
-    int bllll = 0;
-    int illll = 0;*/
 
     Base::BitmapPrinter llj(20, 20);
     llj.SetDecoder(Base::BITMAP2PNG2TEX);
     llj.Clear();
+    llj.DrawRectFilled(0, 0, 20, 20, 255, 255, 255, 255);
     llj.UpdateScreen();
+    nlohmann::json lbl;
+    nlohmann::json lil;
+    std::ifstream fb("blocks.json");
+    std::ifstream fi("items.json");
+    lbl = nlohmann::json::parse(fb);
+    lil = nlohmann::json::parse(fi);
+    fb.close();
+    fi.close();
+
+    int bid = 1;
+    int iid = 1;
+    std::vector<std::string> idsb;
+    for (auto& el : lbl.items())
+    {
+        idsb.push_back(el.key());
+    }
+    std::vector<std::string> idsi;
+    for (auto& el : lil.items())
+    {
+        idsi.push_back(el.key());
+    }
     while(app.IsRunning())
     {
+        if (bid < 1)
+        {
+            bid = 1;
+        }
+        if (iid < 1)
+        {
+            iid = 1;
+        }
+        if (bid > lbl.size())
+        {
+            bid = lbl.size();
+        }
+        if (iid > lil.size())
+        {
+            iid = lil.size();
+        }
+        
         if (prevcrash)
         {
             ImGui::End();
@@ -369,16 +402,19 @@ int main(void)
         ImGui::Text("MouseLeft -> %d", (int)app.IsMouseButtonDown(NImGui::MouseButton::Left));
         ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
         ImGui::Image((ImTextureID)llj.GetImage().GetRegID(), ImVec2(20, 20));
-        /*ImGui::Text("Block -> %s", st[ids[bllll]]["name"].c_str());
-        ImGui::InputInt("Block", &bllll);
+        nlohmann::json bbj = lbl.at(idsb[bid-1]);
+        ImGui::Text("Block (%d/%d) -> %s", bid, idsb.size(), bbj.at("name").get<std::string>().c_str());
+        ImGui::InputInt("Block", &bid);
         ImGui::SameLine();
-        ImGui::Image(img.GetTextureID(), ImVec2(16, 16), ImVec2(std::atof(st[ids[bllll]]["u1"].c_str()), std::atof(st[ids[bllll]]["v1"].c_str())), ImVec2(std::atof(st[ids[bllll]]["u2"].c_str()), std::atof(st[ids[bllll]]["v2"].c_str())));
+        ImGui::Image(img.GetTextureID(), ImVec2(16, 16), ImVec2(bbj.at("u1").get<float>(), bbj.at("v1").get<float>()), ImVec2(bbj.at("u2").get<float>(), bbj.at("v2").get<float>()));
         
-        ImGui::Text("Item -> %s", it[idsi[illll]]["name"].c_str());
-        ImGui::InputInt("Item", &illll);
+        nlohmann::json ibj = lil.at(idsi[iid-1]);
+
+        ImGui::Text("Item (%d/%d) -> %s", iid, idsi.size(), ibj.at("name").get<std::string>().c_str());
+        ImGui::InputInt("Item", &iid);
         ImGui::SameLine();
-        ImGui::Image(img2.GetTextureID(), ImVec2(16, 16), ImVec2(std::atof(it[idsi[illll]]["u1"].c_str()), std::atof(it[idsi[illll]]["v1"].c_str())), ImVec2(std::atof(it[idsi[illll]]["u2"].c_str()), std::atof(it[idsi[illll]]["v2"].c_str())));
-        */
+        ImGui::Image(img2.GetTextureID(), ImVec2(16, 16), ImVec2(ibj.at("u1").get<float>(), ibj.at("v1").get<float>()), ImVec2(ibj.at("u2").get<float>(), ibj.at("v2").get<float>()));
+        
         ImGui::End();
         app.SwapBuffers();
     }
