@@ -19,7 +19,7 @@ namespace Base {
 		void Reset()
 		{
 			#ifdef __BASE_CTR__
-			m_Start = svcGetSystemTick();
+			m_Start = osGetTime();
 			#else
 			m_Start = std::chrono::high_resolution_clock::now();
 			#endif
@@ -28,7 +28,7 @@ namespace Base {
 		float Get()
 		{
 			#ifdef __BASE_CTR__
-			return (svcGetSystemTick() - m_Start) * 1000;
+			return (osGetTime() - m_Start);
 			#else
 			return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - m_Start).count() * 0.001f * 0.001f * 0.001f;
 			#endif
@@ -36,7 +36,11 @@ namespace Base {
 
 		float GetAsMs()
 		{
+			#ifdef __BASE_CTR__
+			return Get();
+			#else
 			return Get() * 1000.0f;
+			#endif
 		}
 
 	    private:

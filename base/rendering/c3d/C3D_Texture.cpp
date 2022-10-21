@@ -36,6 +36,7 @@ namespace Base
             stbi_image_free(data);
             size[0] = width;
             size[1] = height;
+            regi = 1;
             std::cout << "Generated Texture: " << /*std::to_string(regid) << */" -> Size: " << std::to_string(size[0]) << ", " << std::to_string(size[1]) << std::endl;
         }
         else
@@ -78,7 +79,8 @@ namespace Base
             stbi_image_free(data);
             size[0] = width;
             size[1] = height;
-            std::cout << "Generated Texture: " << /*std::to_string(regid) << */" -> Size: " << std::to_string(size[0]) << ", " << std::to_string(size[1]) << std::endl;
+            regi = 1;
+            std::cout << "Generated Texture: " << /*std::to_string(regid) << */"from mem -> Size: " << std::to_string(size[0]) << ", " << std::to_string(size[1]) << std::endl;
         }
         else
         {
@@ -98,6 +100,7 @@ namespace Base
     ErrorCode C3D_Texture::Destroy()
     {
         C3D_TexDelete(regid.tex);
+        regi = 0;
     }
     
     float C3D_Texture::GetW()
@@ -111,7 +114,7 @@ namespace Base
     
     unsigned int C3D_Texture::GetRegID()
     {
-        return 1;
+        return regi;
     }
     
     C2D_Image C3D_Texture::GetCtrReg()

@@ -22,6 +22,7 @@ namespace Base
         private:
         C2D_Image regid;
         float size[2];
-        unsigned int reg;
+        unsigned int regi = 0;
+        unsigned int reg = 0;
     };
 }

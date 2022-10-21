@@ -20,7 +20,7 @@ int fps = 0;
 std::string FrameRate()
 {
     frames ++;
-    if ((frameclock.GetAsMs()/1000) >= 1.f)
+    if ((frameclock.Get()/1000) >= 1.f)
     {
         fps = frames;
         frames = 0;
@@ -36,14 +36,16 @@ int main(void)
     aptInit();
     gfxInitDefault();
     consoleInit(GFX_BOTTOM, NULL);
+    romfsInit();
     printf("test\n");
     std::cout << Base::GetPlatform() << std::endl;
     Base::Timer tm;
-    //Base::BitmapPrinter pr(256, 256);
-    //pr.DrawRect(0, 0, 20, 20, 3, 100, 100, 100, 255);
+    Base::BitmapPrinter pr(256, 256);
+    Base::BitmapPrinter ll(256, 256);
+    ll.DecodePNGFile("romfs:/loading.png");
+    pr.DrawBitmap(0, 0, ll.GetBitmap());
     
-    double ed = tm.GetAsMs();
-    printf("RenderTime -> %fms", ed);
+    
     C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
     C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
     C2D_Prepare();
@@ -51,7 +53,10 @@ int main(void)
     C2D_TextBufClear(tb);
     C2D_FontLoadSystem(CFG_REGION_EUR);
     top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-    //pr.UpdateScreen();
+    pr.SetDecoder(Base::BITMAP2PNG2TEX);
+    pr.UpdateScreen();
+    double ed = tm.GetAsMs();
+    printf("RenderTime -> %fms\n", ed);
     BaseTexture tex;
     tex.Load("romfs:/loading.png");
     //NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
@@ -60,6 +65,8 @@ int main(void)
     
     while(aptMainLoop())
     {
+        printf("\033[8;0HFPS: %s", FrameRate().c_str());
+        printf("\033[9;0HDT: %f", dt);
         C2D_TextBufClear(tb);
         dt = delta.GetAsMs();
         delta.Reset();
@@ -67,7 +74,8 @@ int main(void)
         C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
         C2D_SceneBegin(top);
         //C2D_DrawRectSolid(0, 0, 0.5f, 400, 240, C2D_Color32(255, 255, 255, 255));
-        C2D_DrawImageAt(tex.GetCtrReg(), 0, 0, 0.5f);
+        C2D_DrawImageAt(tex.GetCtrReg(), -1, -1, 0.5f);
+        C2D_DrawImageAt(pr.GetImage().GetCtrReg(), 0, 0, 0.5f);
 
         //deltatime = deltaclock.GetAsMs();
         //deltaclock.Reset();
