@@ -22,6 +22,12 @@ int main()
         
         ImGui::Image(img.GetTextureID(), img.GetSize());
         ImGui::End();
+        ImGui::Begin("Base-UV-Tool2", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration);
+        ImGui::SetWindowPos(ImVec2(UV.GetWindowPos().x, UV.GetWindowPos().y));
+        ImGui::SetWindowSize(ImVec2(UV.GetWindowSize().x, UV.GetWindowSize().y));
+        
+        ImGui::Image(img.GetTextureID(), img.GetSize());
+        ImGui::End();
         UV.SwapBuffers();
     }
     remove("json.json");

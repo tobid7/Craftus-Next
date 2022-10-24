@@ -86,6 +86,7 @@ namespace Base
     ErrorCode GL_Texture::Destroy()
     {
         glDeleteTextures(1, &regid);
+        return 0;
     }
     
     float GL_Texture::GetW()

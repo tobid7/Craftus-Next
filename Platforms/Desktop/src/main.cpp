@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <thread>
-#define __DESKTOP__
+//#define __DESKTOP__
 #include <NImGui/NImGui.hpp>
 #include <imgui_internal.h>
 
@@ -137,8 +137,6 @@ bool initps = true;
 
 bool task = true;
 
-Base::BitmapPrinter pr(ms, ms);
-
 bool isev(int num)
 {
     if ( num % 2 == 0)
@@ -169,6 +167,8 @@ int ts = 32;
 
 int ms = 1024;
 
+Base::BitmapPrinter pr(ms, ms);
+
 bool task1(std::string msg)
 {
     task_ = "Init Loader!";
@@ -180,6 +180,13 @@ bool task1(std::string msg)
     int fi = 0;
     int fi2 = 0;
     task_ = "Setup Block TexMap";
+    if (std::filesystem::is_directory("item"))
+    {
+    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"item"}})
+    {
+        prc++;
+    }
+    }
     if (std::filesystem::is_directory("block"))
     {
     for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"block"}})
@@ -316,7 +323,7 @@ int main(void)
         //ImGui::Text("Loading %c -> %s", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3], "Craftus-Next");
         
         //ImGui::BufferingBar("T", (prj/prc), ImVec2(600, 6), bg, col);
-        //ImGui::ProgressBar((prj/prc), ImVec2(600, 2));
+        ImGui::ProgressBar((prj/prc), ImVec2(600, 2));
         
         ImGui::End();
         prevcrash = false;
@@ -363,6 +370,7 @@ int main(void)
     {
         idsi.push_back(el.key());
     }
+
     while(app.IsRunning())
     {
         if (bid < 1)

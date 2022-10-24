@@ -70,7 +70,8 @@
         "stop_token": "cpp",
         "codecvt": "cpp",
         "future": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "filesystem": "cpp"
     },
     "cmake.configureOnOpen": false,
     "cmake.sourceDirectory": "${workspaceFolder}/Platforms/Windows"

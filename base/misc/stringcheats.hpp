@@ -7,6 +7,19 @@
 #include <cstdio>
 #include <cstring>
 
+inline int __stricmp___(const char *a, const char *b) {
+  int ca, cb;
+  do {
+     ca = * (unsigned char *)a;
+     cb = * (unsigned char *)b;
+     ca = tolower(toupper(ca));
+     cb = tolower(toupper(cb));
+     a++;
+     b++;
+   } while (ca == cb && ca != '\0');
+   return ca - cb;
+}
+
 namespace Base
 {
   inline bool NameIsEndingWith(const std::string &name, const std::vector<std::string> &extensions)
@@ -19,7 +32,7 @@ namespace Base
 
 	  for(int i = 0; i < (int)extensions.size(); i++) {
 		  const std::string ext = extensions.at(i);
-		  if (strcasecmp(name.c_str() + name.size() - ext.size(), ext.c_str()) == 0) return true;
+		  if (__stricmp___(name.c_str() + name.size() - ext.size(), ext.c_str()) == 0) return true;
 	  }
 
 	  return false;

@@ -5,11 +5,22 @@
 #include <stdio.h>
 #include <stdarg.h>  
 #include <time.h>
-#include <unistd.h>
+#include <cstring>
 #include <fstream>
-#include <string.h>
 #include <string>
 
+int __stricmp(const char *a, const char *b) {
+  int ca, cb;
+  do {
+     ca = * (unsigned char *)a;
+     cb = * (unsigned char *)b;
+     ca = tolower(toupper(ca));
+     cb = tolower(toupper(cb));
+     a++;
+     b++;
+   } while (ca == cb && ca != '\0');
+   return ca - cb;
+}
 
 std::string FormatString(std::string fmt_str, ...)
 {
@@ -53,7 +64,7 @@ bool NameIsEndingWith(const std::string &name, const std::vector<std::string> &e
 
 	  for(int i = 0; i < (int)extensions.size(); i++) {
 		  const std::string ext = extensions.at(i);
-		  if (strcasecmp(name.c_str() + name.size() - ext.size(), ext.c_str()) == 0) return true;
+		  if (__stricmp(name.c_str() + name.size() - ext.size(), ext.c_str()) == 0) return true;
 	  }
 
 	  return false;

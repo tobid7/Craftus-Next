@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.22)
 #Set Project Name
 project(base)
 
+set(CMAKE_CXX_STANDARD 20) # no need to manually adjust the CXXFLAGS
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 #Options
 option(BASE_DESKTOP "Desktop Platform" OFF)
 option(BASE_CTR "Ctr Platform" OFF)
@@ -64,11 +67,10 @@ if(BASE_CTR)
     list(APPEND BASE_CFLAGS -D__BASE_CTR__)
 endif()
 
-#Add external glfw library
-add_library(${PROJECT_NAME} STATIC ${BASE_SOURCE})
+add_library(${PROJECT_NAME} ${BASE_SOURCE})
 
 target_include_directories(${PROJECT_NAME} PUBLIC . basegame basegame/bitmapengine misc rendering ${BASE_EXTRAINCLUDES})
 
-target_link_libraries(${PROJECT_NAME} ${BASE_EXTRADEPS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${BASE_EXTRADEPS})
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${BASE_CFLAGS})
