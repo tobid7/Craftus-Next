@@ -3,6 +3,34 @@
 
 #include <fstream>
 
+bool itm = false;
+bool abt = false;
+
+void HandleMenuBar()
+{
+    itm = false;
+    if(ImGui::BeginMenuBar())
+    {
+        if(ImGui::BeginMenu("File"))
+        {
+            if(ImGui::MenuItem("Exit", "Strg + Q", &itm))
+            {
+                exit(EXIT_SUCCESS);
+            }
+            ImGui::EndMenu();
+        }
+        if(ImGui::BeginMenu("About"))
+        {
+            if(ImGui::MenuItem("Software", "None", &itm))
+            {
+                abt = true;
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar();
+    }
+}
+
 int main()
 {
     NImGui::App UV("Base-UV-Generator", NImGui::Vec2i(900, 400), NImGui::NORESIZE);
@@ -16,17 +44,15 @@ int main()
     while (UV.IsRunning())
     {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-        ImGui::Begin("Base-UV-Tool", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration);
+        ImGui::Begin("Base-UV-Tool", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_MenuBar);
+        HandleMenuBar();
         ImGui::SetWindowPos(ImVec2(UV.GetWindowPos().x, UV.GetWindowPos().y));
         ImGui::SetWindowSize(ImVec2(UV.GetWindowSize().x, UV.GetWindowSize().y));
         
         ImGui::Image(img.GetTextureID(), img.GetSize());
         ImGui::End();
-        ImGui::Begin("Base-UV-Tool2", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration);
-        ImGui::SetWindowPos(ImVec2(UV.GetWindowPos().x, UV.GetWindowPos().y));
-        ImGui::SetWindowSize(ImVec2(UV.GetWindowSize().x, UV.GetWindowSize().y));
-        
-        ImGui::Image(img.GetTextureID(), img.GetSize());
+        ImGui::Begin("About", &abt, ImGuiWindowFlags_Modal);
+
         ImGui::End();
         UV.SwapBuffers();
     }

@@ -147,8 +147,8 @@ bool isev(int num)
     return false;
 }
 
-int prc = 0;
-int prj = 0;
+float prc = 0;
+float prj = 0;
 
 unsigned hash_str(const char* s)
 {
@@ -180,6 +180,7 @@ bool task1(std::string msg)
     int fi = 0;
     int fi2 = 0;
     task_ = "Setup Block TexMap";
+    
     if (std::filesystem::is_directory("item"))
     {
     for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"item"}})
@@ -237,10 +238,6 @@ bool task1(std::string msg)
     task_ = "Setup Item TexMap";
     if (std::filesystem::is_directory("item"))
     {
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"item"}})
-    {
-        prc++;
-    }
     for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"item"}})
     {
         if(fi*ts > ms)

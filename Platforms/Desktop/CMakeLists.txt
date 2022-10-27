@@ -38,10 +38,11 @@ endif()
 
 add_subdirectory(../../external/NImGui NImGui)
 add_subdirectory(../../base base)
+add_subdirectory(../../external/tracy tracy)
 
 add_executable(${PROJECT_NAME} src/main.cpp ${ICON_WINDOWS})
 
-target_include_directories(${PROJECT_NAME} PUBLIC NImGui base)
+target_include_directories(${PROJECT_NAME} PUBLIC NImGui base tracy)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC base NImGui)
 
