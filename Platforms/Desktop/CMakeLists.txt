@@ -42,7 +42,7 @@ add_subdirectory(../../external/tracy tracy)
 
 add_executable(${PROJECT_NAME} src/main.cpp ${ICON_WINDOWS})
 
-target_include_directories(${PROJECT_NAME} PUBLIC NImGui base tracy)
+target_include_directories(${PROJECT_NAME} PUBLIC NImGui src base tracy)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC base NImGui)
 
@@ -53,3 +53,49 @@ if( MSVC )
         set_property( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME} )
     endif()
 endif()
+
+#------------------------------------------------------------------------------------------------------------
+# NSIS CONFIG
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/res"
+        DESTINATION "."
+        COMPONENT appData)
+
+install(TARGETS "${PROJECT_NAME}"
+RUNTIME
+DESTINATION "."
+COMPONENT App)
+
+#install(RUNTIME_DEPENDENCY_SET NImGui RUNTIME DESTINATION "." COMPONENT App)
+
+set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+include(InstallRequiredSystemLibraries)
+install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+        DESTINATION "."
+        COMPONENT App)
+#
+# CPACK macros below here
+#
+set (CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+set (CPACK_PACKAGE_VENDOR "Tobi-D7")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Craftus-Next powered by Base-Engine")
+set (CPACK_PACKAGE_VERSION "0.2.0")
+set (CPACK_PACKAGE_VERSION_MAJOR "0")
+set (CPACK_PACKAGE_VERSION_MINOR "2")
+set (CPACK_PACKAGE_VERSION_PATCH "0")
+set (CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
+
+
+set(CPACK_COMPONENTS_ALL App appData)
+
+set(CPACK_COMPONENT_APP_DESCRIPTION "Craftus-Next & required dlls")
+set(CPACK_COMPONENT_APPDATA_DESCRIPTION "Some extra data")
+
+#set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\DC.bmp")
+#set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/source/DC.ico")
+#set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/source/DC.ico")
+ 
+
+set(CPACK_NSIS_MENU_LINKS "${PROJECT_NAME}" "Craftus-Next")
+# Must be after the last CPACK macros
+include(CPack)

@@ -71,7 +71,8 @@
         "codecvt": "cpp",
         "future": "cpp",
         "mutex": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "xstring": "cpp"
     },
     "cmake.configureOnOpen": false,
     "cmake.sourceDirectory": "${workspaceFolder}/Platforms/Windows"

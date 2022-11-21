@@ -4,6 +4,7 @@
 #include <BaseRender.hpp>
 #include <TextureMapper.hpp>
 #include <stringcheats.hpp>
+#include <StealConsole.hpp>
 
 #include <Timer.hpp>
 

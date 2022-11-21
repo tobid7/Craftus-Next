@@ -19,10 +19,12 @@
 
 #include <json.hpp>
 
-std::string task_ = "";
+#include <Console.hpp>
 
-nlohmann::json blocksj;
-nlohmann::json itemsj;
+ConsoleWindow stc;
+std::unique_ptr<Base::StealConsole> stolenc;
+
+std::string task_ = "";
 
 std::string RemoveExtPath(std::string name)
 {
@@ -147,9 +149,6 @@ bool isev(int num)
     return false;
 }
 
-float prc = 0;
-float prj = 0;
-
 unsigned hash_str(const char* s)
 {
    unsigned h = 37;
@@ -160,129 +159,16 @@ unsigned hash_str(const char* s)
    return h % 86969; // or return h % C;
 }
 
-INI::INIStructure st;
-INI::INIStructure it;
-
-int ts = 32;
-
-int ms = 1024;
-
-Base::BitmapPrinter pr(ms, ms);
+Base::Timer ztm;
 
 bool task1(std::string msg)
 {
     task_ = "Init Loader!";
-    Base::BitmapPrinter ll(256, 256);
-    NImGui::Timer tm;
     
-    pr.SetDecoder(Base::BITMAP2PNG2TEX);
-
-    int fi = 0;
-    int fi2 = 0;
-    task_ = "Setup Block TexMap";
-    
-    if (std::filesystem::is_directory("item"))
+    while(ztm.GetAsMs() >= 50000000)
     {
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"item"}})
-    {
-        prc++;
+        task_ = "Init: " + std::to_string(ztm.GetAsMs()) + "/" + std::to_string(50000*1000);
     }
-    }
-    if (std::filesystem::is_directory("block"))
-    {
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"block"}})
-    {
-        prc++;
-    }
-    pr.Clear();
-    
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"block"}})
-    {
-        if(fi*ts > ms)
-        {
-            fi2++;
-            fi = 0;
-        }
-        if(fi2*ts < ms)
-        {
-            auto g = direntd.path();
-            std::string wk = RemoveExtPath(g.generic_string());
-            ll.DecodePNGFile(g.generic_string());
-            if(!(ll.GetBitmap().bmp_info_header.width > ts) && !(ll.GetBitmap().bmp_info_header.height > ts))
-            {
-                pr.DrawBitmap(fi*ts, fi2*ts, ll.GetBitmap());
-                /*st[std::to_string(hash_str(wk.c_str()))]["name"] = wk;
-                st[std::to_string(hash_str(wk.c_str()))]["u1"] = std::to_string((float)(((float)fi*(float)ts)/(float)ms));
-                st[std::to_string(hash_str(wk.c_str()))]["v1"] = std::to_string((float)(((float)fi2*(float)ts)/(float)ms));
-                st[std::to_string(hash_str(wk.c_str()))]["u2"] = std::to_string((float)((((float)fi*(float)ts)+(float)ts)/(float)ms));
-                st[std::to_string(hash_str(wk.c_str()))]["v2"] = std::to_string((float)((((float)fi2*(float)ts)+(float)ts)/(float)ms));*/
-                blocksj[std::to_string(hash_str(wk.c_str()))] = {{"name", wk}, {"u1", (float)(((float)fi*(float)ts)/(float)ms)}, {"v1", (float)(((float)fi2*(float)ts)/(float)ms)}, {"u2", (float)((((float)fi*(float)ts)+(float)ts)/(float)ms)}, {"v2", (float)((((float)fi2*(float)ts)+(float)ts)/(float)ms)},};
-                fi++;
-                task_ = "Generating TexMap:" + wk;
-                
-            }
-            
-        }
-        
-        prj++;
-    }
-    
-    //blockss.generate(st);
-    //blockss.write(st);
-    
-    pr.SavePng("blocks.png");
-    }
-    pr.Clear();
-    fi = 0;
-    fi2 = 0;
-    task_ = "Setup Item TexMap";
-    if (std::filesystem::is_directory("item"))
-    {
-    for(auto const& direntd : std::filesystem::directory_iterator{std::filesystem::path{"item"}})
-    {
-        if(fi*ts > ms)
-        {
-            fi2++;
-            fi = 0;
-        }
-        if(fi2*ts < ms)
-        {
-            auto g = direntd.path();
-            std::string wk = RemoveExtPath(g.generic_string());
-            ll.DecodePNGFile(g.generic_string());
-            if(!(ll.GetBitmap().bmp_info_header.width > ts) && !(ll.GetBitmap().bmp_info_header.height > ts))
-            {
-                pr.DrawBitmap(fi*ts, fi2*ts, ll.GetBitmap());
-                /*it[std::to_string(hash_str(wk.c_str()))]["name"] = wk;
-                it[std::to_string(hash_str(wk.c_str()))]["u1"] = std::to_string((float)(((float)fi*(float)ts)/(float)ms));
-                it[std::to_string(hash_str(wk.c_str()))]["v1"] = std::to_string((float)(((float)fi2*(float)ts)/(float)ms));
-                it[std::to_string(hash_str(wk.c_str()))]["u2"] = std::to_string((float)((((float)fi*(float)ts)+(float)ts)/(float)ms));
-                it[std::to_string(hash_str(wk.c_str()))]["v2"] = std::to_string((float)((((float)fi2*(float)ts)+(float)ts)/(float)ms));*/
-                itemsj[std::to_string(hash_str(wk.c_str()))] = {{"name", wk}, {"u1", (float)(((float)fi*(float)ts)/(float)ms)}, {"v1", (float)(((float)fi2*(float)ts)/(float)ms)}, {"u2", (float)((((float)fi*(float)ts)+(float)ts)/(float)ms)}, {"v2", (float)((((float)fi2*(float)ts)+(float)ts)/(float)ms)},};
-                fi++;
-                task_ = "Generating TexMap:" + wk;
-            }
-        }
-        
-        prj++;
-    }
-    //itemss.write(it);
-    std::ofstream blocksl("blocks.json");
-    std::ofstream itemsl("items.json");
-    blocksl << blocksj.dump(4);
-    itemsl << itemsj.dump(4);
-    blocksl.close();
-    itemsl.close();
-    std::cout << "Createt Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
-    tm.Reset();
-    pr.SavePng("items.png");
-    }
-    std::cout << "Saved Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
-    tm.Reset();
-    pr.UpdateScreen();
-    std::cout << "Updated Bitmap in " << tm.GetAsMs()/1000 << "s" << std::endl;
-    tm.Reset();
-    
     task = false;
     return true;
 }
@@ -291,11 +177,14 @@ bool prevcrash = false;
 
 int main(void)
 {   
+    stolenc = std::make_unique<Base::StealConsole>();
     NImGui::App app("Craftus-Next", NImGui::Vec2i(900, 400), NImGui::BORDERLESS | NImGui::TRANSPARENT);
     app.SetWindowPos(NImGui::Vec2i((app.GetMonitorSize().x/2)-(app.GetWindowSize().x/2), (app.GetMonitorSize().y/2)-(app.GetWindowSize().y/2)));
     app.LoadIcon("res/icon.png");
     const ImU32 col = ImGui::GetColorU32(ImGuiCol_ButtonHovered);
     const ImU32 bg = ImGui::GetColorU32(ImGuiCol_Button);
+
+    stc.AdditionalFlags(ImGuiWindowFlags_NoResize);
 
     ErrorCode code;
     NImGui::Image testt;
@@ -303,7 +192,9 @@ int main(void)
     std::cout << Base::GetVersion() << " " << Base::GetName() << " " << Base::GetPlatform() << std::endl;
     NImGui::Timer clk;
     //std::thread t1(task1, "Hello");
-    std::future<bool> ftt = std::async(task1, "NULL");
+    ztm.Reset();
+    //std::future<bool> ftt = std::async(task1, "NULL");
+    //task = false;
     while(app.IsRunning())
     {
         ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs);
@@ -312,7 +203,8 @@ int main(void)
         ImGui::SetWindowSize(ImVec2(app.GetWindowSize().x, app.GetWindowSize().y));
         ImGui::SetCursorPos(ImVec2(0, 0));
         ImGui::Image(testt.GetTextureID(), testt.GetSize());
-        
+        ImGui::SetCursorPos(ImVec2(37, 200));
+        ImGui::Text("Console:\n%s", stolenc->GetStdout().c_str());
         ImGui::SetCursorPos(ImVec2(37, 375));
         ImGui::Spinner("T", 5, 2, col);
         ImGui::SameLine();
@@ -320,7 +212,7 @@ int main(void)
         //ImGui::Text("Loading %c -> %s", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3], "Craftus-Next");
         
         //ImGui::BufferingBar("T", (prj/prc), ImVec2(600, 6), bg, col);
-        ImGui::ProgressBar((prj/prc), ImVec2(600, 2));
+        //ImGui::ProgressBar((prj/prc), ImVec2(600, 2));
         
         ImGui::End();
         prevcrash = false;
@@ -336,57 +228,17 @@ int main(void)
     app.SetWindowSize(NImGui::Vec2i(1280, 720));
     bool updt = false;
     app.SetFullScreen(true);
-    NImGui::Image img;
-    img.LoadImage("blocks.png");
-    NImGui::Image img2;
-    img2.LoadImage("items.png");
 
     Base::BitmapPrinter llj(20, 20);
     llj.SetDecoder(Base::BITMAP2PNG2TEX);
     llj.Clear();
     llj.DrawRectFilled(0, 0, 20, 20, 255, 255, 255, 255);
     llj.UpdateScreen();
-    nlohmann::json lbl;
-    nlohmann::json lil;
-    std::ifstream fb("blocks.json");
-    std::ifstream fi("items.json");
-    lbl = nlohmann::json::parse(fb);
-    lil = nlohmann::json::parse(fi);
-    fb.close();
-    fi.close();
 
-    int bid = 1;
-    int iid = 1;
-    std::vector<std::string> idsb;
-    for (auto& el : lbl.items())
-    {
-        idsb.push_back(el.key());
-    }
-    std::vector<std::string> idsi;
-    for (auto& el : lil.items())
-    {
-        idsi.push_back(el.key());
-    }
-
+    app.SetClearColor(NImGui::Vec4f(0.05f, 0.05f, 0.05f, 1.0f));
+    
     while(app.IsRunning())
     {
-        if (bid < 1)
-        {
-            bid = 1;
-        }
-        if (iid < 1)
-        {
-            iid = 1;
-        }
-        if (bid > lbl.size())
-        {
-            bid = lbl.size();
-        }
-        if (iid > lil.size())
-        {
-            iid = lil.size();
-        }
-        
         if (prevcrash)
         {
             ImGui::End();
@@ -403,7 +255,7 @@ int main(void)
         deltatime = deltaclock.GetAsMs();
         deltaclock.Reset();
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-        ImGui::Begin("Fps", NULL, ImGuiWindowFlags_NoDocking);
+        ImGui::Begin("Settings", NULL, ImGuiWindowFlags_NoDocking);
         if(ImGui::Button("Close")) break;
         ImGui::Text("Fps -> %s", FrameRate().c_str());
         ImGui::Text("Delta -> %sms", std::to_string(deltatime).c_str());
@@ -411,20 +263,11 @@ int main(void)
         ImGui::Text("MouseLeft -> %d", (int)app.IsMouseButtonDown(NImGui::MouseButton::Left));
         ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
         ImGui::Image((ImTextureID)llj.GetImage().GetRegID(), ImVec2(20, 20));
-        nlohmann::json bbj = lbl.at(idsb[bid-1]);
-        ImGui::Text("Block (%d/%d) -> %s", bid, idsb.size(), bbj.at("name").get<std::string>().c_str());
-        ImGui::InputInt("Block", &bid);
-        ImGui::SameLine();
-        ImGui::Image(img.GetTextureID(), ImVec2(ts, ts), ImVec2(bbj.at("u1").get<float>(), bbj.at("v1").get<float>()), ImVec2(bbj.at("u2").get<float>(), bbj.at("v2").get<float>()));
-        
-        nlohmann::json ibj = lil.at(idsi[iid-1]);
-
-        ImGui::Text("Item (%d/%d) -> %s", iid, idsi.size(), ibj.at("name").get<std::string>().c_str());
-        ImGui::InputInt("Item", &iid);
-        ImGui::SameLine();
-        ImGui::Image(img2.GetTextureID(), ImVec2(ts, ts), ImVec2(ibj.at("u1").get<float>(), ibj.at("v1").get<float>()), ImVec2(ibj.at("u2").get<float>(), ibj.at("v2").get<float>()));
-        
         ImGui::End();
+        stc.Clear();
+        stc.AddLog(stolenc->GetStdout().c_str());
+        ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
+        stc.Draw("Console");
         app.SwapBuffers();
     }
 
