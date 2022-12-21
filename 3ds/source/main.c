@@ -44,8 +44,6 @@ float dt__ = 0.f;
 
 bool Save__ = false;
 
-bool isN3ds = false;
-
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) {
 	for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
 		for (int j = 0; j < CHUNKCACHE_SIZE; j++) {
@@ -143,28 +141,6 @@ int main() {
 	int frameCounter = 0, fps = 0;
 	bool initBackgroundSound = true;
 
-	cfguInit();
-	u8 mdl;
-	Result llcres = CFGU_GetSystemModel(&mdl);
-	if(R_SUCCEEDED(llcres))
-	{
-		switch (mdl)
-		{
-		case CFG_MODEL_N3DS:
-			isN3ds = true;
-			break;
-		case CFG_MODEL_N3DSXL:
-			isN3ds = true;
-			break;
-		case CFG_MODEL_N2DSXL:
-			isN3ds = true;
-			break;
-		default:
-		isN3ds = false;
-			break;
-		}
-	}
-	cfguExit();
 	while (aptMainLoop()) 
 	{
 		if (initBackgroundSound)
@@ -180,12 +156,12 @@ int main() {
 		
 		DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps, C3D_GetProcessingTime() * 6.f,
 		C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024 / 1024);
-		DebugUI_Text("Buf: %5.2f%% Lin: %dkb N3ds: %s", C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024, isN3ds ? "true" : "false");
+		DebugUI_Text("Buf: %5.2f%% Lin: %dkb N3ds: %s", C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024);
 		DebugUI_Text("X: %f, Y: %f, Z: %f", f3_unpack(player.position));
 		DebugUI_Text("DT: %f > TDRES: %f", dt__, dt__*60);
 		
 		
-                if (linearSpaceFree() <= isN3ds ? 5242880 : 8388608)
+                if (linearSpaceFree() <= 5242880)
                 {
                     //Crash("Not enough Memory!");
                     if (!savedcrash) 
