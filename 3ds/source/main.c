@@ -145,8 +145,25 @@ int main() {
 
 	cfguInit();
 	u8 mdl;
-	CFGU_GetSystemModel(&mdl);
-	isN3ds = (mdl == CFG_MODEL_N3DS || mdl == CFG_MODEL_N2DSXL || mdl == CFG_MODEL_N3DSXL);
+	Result llcres = CFGU_GetSystemModel(&mdl);
+	if(R_SUCCEEDED(llcres))
+	{
+		switch (mdl)
+		{
+		case CFG_MODEL_N3DS:
+			isN3ds = true;
+			break;
+		case CFG_MODEL_N3DSXL:
+			isN3ds = true;
+			break;
+		case CFG_MODEL_N2DSXL:
+			isN3ds = true;
+			break;
+		default:
+		isN3ds = false;
+			break;
+		}
+	}
 	cfguExit();
 	while (aptMainLoop()) 
 	{
