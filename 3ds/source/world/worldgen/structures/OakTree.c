@@ -50,7 +50,7 @@ void OakTree_Gen(WorkQueue* queue, WorkerItem item,int x, int y, int z, int heig
     }
     srand(time(NULL));
     int dd = 0;
-    dd = rand() % 100;
+    dd = random_number(0, 100);
     if (dd == 5)
     {
         Chunk_SetBlock(item.chunk, x-1, y + height - 5, z, Block_BeeNest);

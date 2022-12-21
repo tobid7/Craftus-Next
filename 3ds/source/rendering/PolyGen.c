@@ -374,7 +374,7 @@ void PolyGen_GeneratePolygons(WorkQueue* queue, WorkerItem item, void* this) {
 					WorldVertex* data = face.transparent ? transparentData : opaqueData;
 					memcpy(data, &cube_sides_lut[face.direction * 6], sizeof(WorldVertex) * 6);
 
-#define oneDivIconsPerRow (32768 / 8)
+#define oneDivIconsPerRow (32768/8)
 #define halfTexel (6)
 
 					uint8_t color[3];

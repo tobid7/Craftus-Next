@@ -29,7 +29,7 @@ static Texture_Map textureMap;
 	A(bee_nest_top, "bee_nest_top.png"), A(bee_nest_side, "bee_nest_side.png"), A(bee_nest_front, "bee_nest_front.png"),			\
 	A(bee_nest_front_honey, "bee_nest_front_honey.png"), A(melon_side, "melon_side.png"), A(melon_top, "melon_top.png"),			\
 	A(leaves_acacia_opaque, "leaves_acacia_opaque.png"), A(log_acacia_side, "log_acacia.png"), 										\
-	A(log_acacia_top, "log_acacia_top.png"), A(planks_acacia, "planks_acacia.png"), A(acacia_grass_side, "acacia_grass_side.png"), 				\
+	A(log_acacia_top, "log_acacia_top.png"), A(planks_acacia, "planks_acacia.png"), A(acacia_grass_side, "acacia_grass_side.png"),  \
 	A(acacia_grass_top, "acacia_grass_top.png")
 
 #define A(i, n) PPRX n
@@ -462,6 +462,12 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata, int16_
 void Block_GetColor(Block block, uint8_t metadata, Direction direction, uint8_t out_rgb[]) {
 	if ((block == Block_Grass && direction == Direction_Top) || block == Block_Leaves) {
 		out_rgb[0] = 140;
+		out_rgb[1] = 214;
+		out_rgb[2] = 123;
+		return;
+	}
+	if ((block == Block_GrassAcacia && direction == Direction_Top) || block == Block_Leaves) {
+		out_rgb[0] = 200;
 		out_rgb[1] = 214;
 		out_rgb[2] = 123;
 		return;

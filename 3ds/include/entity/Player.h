@@ -58,7 +58,7 @@ typedef struct {
 
 	Raycast_Result viewRayCast;
 	bool blockInSight, blockInActionRange;
-	ItemStack inventory[128];
+	ItemStack inventory[256];
 } Player;
 
 void Player_Init(Player* player, World* world);

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <thread>
+
 //#define __DESKTOP__
 #include <NImGui/NImGui.hpp>
 #include <imgui_internal.h>
@@ -197,6 +198,7 @@ int main(void)
     //task = false;
     while(app.IsRunning())
     {
+        task_ = std::to_string(ztm.GetAsMs()) + "/" + std::to_string(5000);
         ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs);
         prevcrash = true;
         ImGui::SetWindowPos(ImVec2(app.GetWindowPos().x, app.GetWindowPos().y));
@@ -217,9 +219,10 @@ int main(void)
         ImGui::End();
         prevcrash = false;
         app.SwapBuffers();
-        if(!task)
+        if(!task || ztm.GetAsMs() > 5000)
         {
             initps = false;
+            
             //t1.join();
             break;
         }

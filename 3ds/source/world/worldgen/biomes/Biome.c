@@ -8,7 +8,7 @@ int b = 0;
 
 enum Biomes Biome_GetRandom()
 {
-    b = rand()%60;
+    b = random_number(0, 60);
     //b = 55;
     enum Biomes biomex = Biome_Plains;
     switch (b)
@@ -313,7 +313,7 @@ enum Trees GetTreeType(enum Biomes biome)
         tree = 0;
         break;
         case Biome_Plains:
-        al = rand () % 20;
+        al = random_number(0, 20);
 				if (al > 7)
 				{
 					tree = Oak;
@@ -323,7 +323,7 @@ enum Trees GetTreeType(enum Biomes biome)
 				}
         break;
         case Biome_Forest:
-        al = rand () % 20;
+        al = random_number(0, 20);
 				if (al > 7)
 				{
 					tree = Oak;

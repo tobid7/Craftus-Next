@@ -7,9 +7,9 @@ void Pumpkins_Gen(WorkQueue* queue, WorkerItem item)
     {
         int xx = 0;
         int zz = 0;
-        xx = rand() % 17;
-        zz = rand() % 17;
+        xx = random_number(0, 17);
+        zz = random_number(0, 17);
         int y = (int)Chunk_GetHeightMap(item.chunk, xx, zz);
-        Chunk_SetBlock(item.chunk, rand() % 16, y, rand() % 16, Block_Pumpkin);
+        Chunk_SetBlock(item.chunk, random_number(0, 16), y, random_number(0, 16), Block_Pumpkin);
     }
 }

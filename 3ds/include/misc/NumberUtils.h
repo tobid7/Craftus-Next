@@ -2,6 +2,9 @@
 
 #include <math.h>
 #include <stdbool.h>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifndef MAX
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
@@ -35,5 +38,23 @@ static inline bool AABB_Overlap(float x0, float y0, float z0, float w0, float h0
 
 #define DEG_TO_RAD (M_PI * 2.f / 360.f)
 #define RAD_TO_DEG ((1.f / M_PI) * 180.f)
+
+static inline int random_number(int min_num, int max_num)
+{
+    int result = 0, low_num = 0, hi_num = 0;
+
+    if (min_num < max_num)
+    {
+        low_num = min_num;
+        hi_num = max_num + 1; // include max_num in output
+    } else {
+        low_num = max_num + 1; // include max_num in output
+        hi_num = min_num;
+    }
+
+    srand(time(NULL));
+    result = (rand() % (hi_num - low_num)) + low_num;
+    return result;
+}
 
 #define TICKS_PER_MSEC 268111.856
