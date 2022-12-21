@@ -21,7 +21,7 @@ list(APPEND BASE_CFLAGS -DBASE_VERSION=\"${BASE_VER}\" -DBASE_NAME=\"${BASE_NM}\
 set(BASE_SOURCE Base.cpp
 basegame/bitmapengine/BitmapEngine.cpp
 basegame/bitmapengine/bmpconverter.cpp
-external/lodepng.cpp StealConsole.cpp)
+external/lodepng.cpp StealConsole.cpp ui/Gui.cpp)
 
 set(BASE_EXTRAINCLUDES "")
 set(BASE_EXTRADEPS "")

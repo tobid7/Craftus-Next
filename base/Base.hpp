@@ -5,6 +5,7 @@
 #include <TextureMapper.hpp>
 #include <stringcheats.hpp>
 #include <StealConsole.hpp>
+#include <ui/Gui.hpp>
 
 #include <Timer.hpp>
 

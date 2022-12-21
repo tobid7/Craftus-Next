@@ -239,6 +239,7 @@ int main(void)
     llj.UpdateScreen();
 
     app.SetClearColor(NImGui::Vec4f(0.05f, 0.05f, 0.05f, 1.0f));
+    Base::Gui::Init(app.GetWindowSize().x, app.GetWindowSize().y);
     
     while(app.IsRunning())
     {
