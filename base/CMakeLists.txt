@@ -57,9 +57,13 @@ if(BASE_CTR)
     rendering/c3d/C3D_Texture.cpp)
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
+    ${DEVKITPRO}/libctru/include
     )
     list(APPEND BASE_EXTRADEPS
     #${BASE_EXTRADEPS}
+    #citro3d
+    #ctru
+    #citro2d
     )
     #cmake_host_system_information(RESULT DK_NAME QUERY OS_NAME)
     set(BASE_PL "Desktop -> ${CMAKE_SYSTEM_NAME}")
