@@ -34,7 +34,8 @@ if(BASE_DESKTOP)
     #OpenGL Support(3.3+)
     external/glad/glad.c
     rendering/gl/GL_Renderer.cpp
-    rendering/gl/GL_Texture.cpp)
+    rendering/gl/GL_Texture.cpp
+    rendering/gl/GL_VArray.cpp)
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
     external/glad

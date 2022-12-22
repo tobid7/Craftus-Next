@@ -10,7 +10,6 @@
 #define BASE_PLATFORM "NULL"
 #endif
 
-
 std::map<int, std::string> codes = {
     {0, "(0) -> Success"},
     {1, "(1) -> Error (Unknown)"},
@@ -19,30 +18,14 @@ std::map<int, std::string> codes = {
 };
 std::vector<std::string> errors;
 
-namespace Base
-{
-    void Init()
-    {
-        
-    }
+namespace Base {
+void Init() {}
 
-    void Exit()
-    {
+void Exit() {}
 
-    }
-    
-    std::string GetVersion()
-    {
-        return BASE_VERSION;
-    }
-    
-    std::string GetName()
-    {
-        return BASE_NAME;
-    }
-    
-    std::string GetPlatform()
-    {
-        return BASE_PLATFORM;
-    }
-}
+std::string GetVersion() { return BASE_VERSION; }
+
+std::string GetName() { return BASE_NAME; }
+
+std::string GetPlatform() { return BASE_PLATFORM; }
+} // namespace Base

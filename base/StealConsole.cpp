@@ -1,7 +1,6 @@
 #include <StealConsole.hpp>
 #include <iostream>
 
-
 namespace Base {
 StealConsole::StealConsole() {
   std::streambuf *old = std::cout.rdbuf(this->stolen_stdout.rdbuf());

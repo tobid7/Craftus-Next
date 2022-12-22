@@ -3,15 +3,14 @@
 
 #include <Renderer.hpp>
 
-namespace Base
-{
-    class C3D_Renderer : public Renderer
-    {
-        public:
-        ErrorCode Init() override;
-        ErrorCode Exit() override;
-        ErrorCode Update() override;
-    };
-}
+namespace Base {
+class C3D_Renderer : public Renderer {
+public:
+  ErrorCode Init() override;
+  ErrorCode Exit() override;
+  ErrorCode Update() override;
+  ErrorCode DrawArrays(int count) override;
+};
+} // namespace Base
 
 #endif // __C3D_RENDERER_H__

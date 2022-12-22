@@ -6,7 +6,9 @@
                 "${workspaceFolder}/**",
                 //"C:/devkitpro/libnx/include/**",
                 "C:/devkitpro/libctru/include/**",
+                "/opt/devkitpro/libctru/include/**",
                 //"C:/devkitpro/portlibs/switch/include/**",
+                "/opt/devkitpro/portlibs/3ds/include/**",
                 "C:/devkitpro/portlibs/3ds/include/**"
             ],
             "defines": [],
