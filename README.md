@@ -16,6 +16,8 @@ A more updated version of the Craftus Minecraft Clone
 - [ ] Decoration (Flowers, ..)
 - [ ] Port to c++
   - [ ] SpriteBatch (UI)
+  - [ ] Wide Screen (BSR) on 3ds
+  - [ ] Smooth lightning ([Here](https://github.com/Tobi-D7/Craftus-Next/issues/16))
   - [ ] OpenGL
   - [ ] Citro3d
   - [ ] Sound
