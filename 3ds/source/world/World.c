@@ -8,6 +8,8 @@
 #include <limits.h>
 #include <stdint.h>
 
+#include <gui/DebugUI.h>
+
 extern float dt__;
 
 void World_Init(World* world, WorkQueue* workqueue) {
@@ -205,6 +207,7 @@ void World_UpdateChunkCache(World* world, int orginX, int orginZ) {
 
 void World_Tick(World* world) {
 	world->wtime += 1;
+	
 	if (world->wtime > 23999)
 	{
 		world->wtime = 0;

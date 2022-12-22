@@ -167,6 +167,7 @@ void PolyGen_Deinit() {
 void PolyGen_Harvest() {
 	if (LightLock_TryLock(&updateLock) == 0) {
 		DebugUI_Text("VBOUpdates %d", vboUpdates.length);
+		DebugUI_Text("FloodFillQueue %d", (sizeof(vec_t(QueueElement)) + (sizeof(vec_t(QueueElement)) * floodfill_queue.length)));
 		if (vboUpdates.length > 0) {
 			if (vboUpdates.data[0].delay++ > 2)
 				while (vboUpdates.length > 0) {

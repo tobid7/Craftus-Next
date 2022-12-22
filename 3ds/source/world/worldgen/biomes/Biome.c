@@ -8,7 +8,7 @@ int b = 0;
 
 enum Biomes Biome_GetRandom()
 {
-    b = random_number(0, 60);
+    b = random_number(0, 600);
     //b = 55;
     enum Biomes biomex = Biome_Plains;
     switch (b)
@@ -16,10 +16,10 @@ enum Biomes Biome_GetRandom()
         case 0 ... 30:
         biomex = Biome_Plains;
         break;
-        case 31 ... 40:
+        case 31 ... 35:
         biomex = Biome_Desert;
         break;
-        case 41 ... 50:
+        case 36 ... 50:
         biomex = Biome_Forest;
         break;
         case 51 ... 60:
