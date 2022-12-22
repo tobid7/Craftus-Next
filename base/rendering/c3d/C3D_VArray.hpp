@@ -1,5 +1,6 @@
 #pragma once
 #include <citro3d.h>
+#include <3ds.h>
 #include <rendering/VArray.hpp>
 
 namespace Base {

@@ -4,7 +4,7 @@
 #include <citro3d.h>
 
 namespace Base {
-ErrorCode C3D_Renderer::Init() {}
+ErrorCode C3D_Renderer::Init(int screenw, int screenh) {}
 
 ErrorCode C3D_Renderer::Exit() {}
 
@@ -13,5 +13,10 @@ ErrorCode C3D_Renderer::Update() {}
 ErrorCode C3D_Renderer::DrawArrays(int count) {
   C3D_DrawArrays(GPU_TRIANGLES, 0, count);
   return 0;
+}
+
+ErrorCode C3D_Renderer::BeginDraw()
+{
+  
 }
 } // namespace Base

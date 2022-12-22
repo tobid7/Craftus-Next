@@ -6,10 +6,11 @@
 namespace Base {
 class C3D_Renderer : public Renderer {
 public:
-  ErrorCode Init() override;
+  ErrorCode Init(int screenw, int screenh) override;
   ErrorCode Exit() override;
   ErrorCode Update() override;
   ErrorCode DrawArrays(int count) override;
+  ErrorCode BeginDraw() override;
 };
 } // namespace Base
 

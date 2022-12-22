@@ -18,6 +18,12 @@ public:
     m_b = b;
     m_a = a;
   }
+  color_t(float r, float g, float b, float a = 1.f) {
+    m_r = r*255;
+    m_g = g*255;
+    m_b = b*255;
+    m_a = a*255;
+  }
   color_t(std::string hexval, uint8_t a = 255) { m_a = a; }
   ~color_t() {}
   uint8_t r() { return m_r; }

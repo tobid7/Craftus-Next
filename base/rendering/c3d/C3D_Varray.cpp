@@ -13,18 +13,16 @@ void C3D_VertexArray::Destroy() {}
 void C3D_VertexArray::Bind() {
   buffinfo = C3D_GetBufInfo();
   BufInfo_Init(buffinfo);
-  BufInfo_Add(buffinfo, vbo_data, vtxsize, 3, 0x210);
+  BufInfo_Add(buffinfo, vbo_data, vtx_size, numAttr, 0x210);
 }
 
 void C3D_VertexArray::UnBind() {}
 
 void C3D_VertexArray::AddAttrInfo(int index, int size, int type,
                                   bool normmalized, size_t stride,
-                                  const void *pointer) {}
-
-void C3D_VertexArray::AddAttrInfo(int index, int size, int type,
-                                  bool normmalized, size_t stride,
-                                  const void *pointer) {}
+                                  const void *pointer) {
+  AttrInfo_AddLoader(attrinfo, index, GPU_FLOAT, size);
+}
 
 void C3D_VertexArray::UpdateSubData(const void *data, int offs, size_t size) {}
 } // namespace Base

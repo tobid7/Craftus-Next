@@ -5,9 +5,14 @@
 #if defined(__BASE_DESKTOP__)
 #include <gl/GL_Renderer.hpp>
 #include <gl/GL_Texture.hpp>
+#include <gl/GL_Varray.hpp>
+#include <gl/GL_Shader.hpp>
+#include <rendering/Vertex.hpp>
 
 typedef Base::GL_Renderer BaseRenderer;
 typedef Base::GL_Texture BaseTexture;
+typedef Base::GL_VertexArray BaseVertexArray;
+typedef Base::GL_Shader BaseShader;
 #elif defined(__BASE_CTR__)
 #include <c3d/C3D_Renderer.hpp>
 #include <c3d/C3D_Texture.hpp>
@@ -18,6 +23,10 @@ typedef Base::C3D_Texture BaseTexture;
 #else
 #include <Renderer.hpp>
 #include <Texture.hpp>
+#include <Shader.hpp>
+#include <VArray.hpp>
 typedef Base::Renderer BaseRenderer;
 typedef Base::Texture BaseTexture;
+typedef Base::VertexArray BaseVertexArray;
+typedef Base::Shader BaseShader;
 #endif
