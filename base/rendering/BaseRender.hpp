@@ -16,9 +16,13 @@ typedef Base::GL_Shader BaseShader;
 #elif defined(__BASE_CTR__)
 #include <c3d/C3D_Renderer.hpp>
 #include <c3d/C3D_Texture.hpp>
+#include <c3d/C3D_Shader.hpp>
+#include <c3d/C3D_VArray.hpp>
 
 typedef Base::C3D_Renderer BaseRenderer;
 typedef Base::C3D_Texture BaseTexture;
+typedef Base::C3D_VertexArray BaseVertexArray;
+typedef Base::C3D_Shader BaseShader;
 
 #else
 #include <Renderer.hpp>

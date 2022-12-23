@@ -1,6 +1,7 @@
 #pragma once
 #include <BaseRender.hpp>
 #include <misc/color_t.h>
+#include <Vertex.hpp>
 
 namespace Base
 {

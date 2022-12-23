@@ -54,6 +54,8 @@ int main(void)
     //NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
     Base::Timer delta;
     double dt = 0;
+    BaseRenderer ren;
+    ren.Init(400, 240);
     
     while(aptMainLoop())
     {
@@ -62,7 +64,8 @@ int main(void)
         //C2D_TextBufClear(tb);
         dt = delta.GetAsMs();
         delta.Reset();
-        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+        //ren.BeginDraw();
+        C3D_FrameBegin(1);
         C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
         C2D_SceneBegin(top);
         //C2D_DrawRectSolid(0, 0, 0.5f, 400, 240, C2D_Color32(255, 255, 255, 255));

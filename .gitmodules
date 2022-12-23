@@ -7,3 +7,6 @@
 [submodule "external/tracy"]
 	path = external/tracy
 	url = https://github.com/wolfpld/tracy.git
+[submodule "external/libpicasso"]
+	path = external/libpicasso
+	url = https://github.com/Tobi-D7/libpicasso
