@@ -12,7 +12,7 @@
 
 std::map<int, std::string> codes = {
     {0, "(0) -> Success"},
-    {1, "(1) -> Error (Unknown)"},
+    {1, "(1) -> Error (Unknown/Boolean-false)"},
     {2, "(2) -> Texture Not Found"},
     {NULL, "What are you trying to do?"},
 };
