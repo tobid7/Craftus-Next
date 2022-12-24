@@ -45,7 +45,7 @@ public:
   bool UpdateScreen();
   void Clear(uint8_t b = 0, uint8_t g = 0, uint8_t r = 0, uint8_t a = 255);
   void ClearBlank();
-  BaseTexture GetImage();
+  //BaseTexture GetImage();
   /// Test to Find out The Best Settings for BitmapPrinter
   void Benchmark();
   /// Setup the Benchmark
@@ -58,7 +58,7 @@ private:
   bool Decode(Decoder deccc);
   // parameter
   int frame = 0;
-  BaseTexture renderframe;
+  //BaseTexture renderframe;
   bool isscreen = false;
   BMP bitmap = BMP(
       20, 20,

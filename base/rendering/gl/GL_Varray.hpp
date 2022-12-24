@@ -7,13 +7,13 @@ class GL_VertexArray : public VertexArray {
 public:
   GL_VertexArray() {}
   ~GL_VertexArray() {}
-  void Create(const void *data, uint32_t numVertices, size_t vtxsize) override;
-  void Destroy() override;
-  void Bind() override;
-  void UnBind() override;
-  void AddAttrInfo(int index, int size, int type, bool normmalized,
+  void I_Create(const void *data, uint32_t numVertices, size_t vtxsize) override;
+  void I_Destroy() override;
+  void I_Bind() override;
+  void I_UnBind() override;
+  void I_AddAttrInfo(int index, int size, int type, bool normmalized,
                    size_t stride, const void *pointer) override;
-  void UpdateSubData(const void *data, int offs, size_t size) override;
+  void I_UpdateSubData(const void *data, int offs, size_t size) override;
 
 private:
   GLuint vao, vbo;

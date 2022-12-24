@@ -3,7 +3,7 @@
 #include <gl/GL_Texture.hpp>
 
 namespace Base {
-ErrorCode GL_Texture::Load(std::string file, int register_) {
+ErrorCode GL_Texture::I_Load(std::string file, int register_) {
   glGenTextures(1, &regid);
   reg = register_;
   int width, height, nrComponents;
@@ -40,7 +40,7 @@ ErrorCode GL_Texture::Load(std::string file, int register_) {
   return 0;
 }
 
-ErrorCode GL_Texture::LoadMem(std::vector<unsigned char> mem, int register_) {
+ErrorCode GL_Texture::I_LoadMem(std::vector<unsigned char> mem, int register_) {
   glGenTextures(1, &regid);
   reg = register_;
   int width, height, nrComponents;
@@ -77,18 +77,18 @@ ErrorCode GL_Texture::LoadMem(std::vector<unsigned char> mem, int register_) {
   return 0;
 }
 
-ErrorCode GL_Texture::Bind() {
+ErrorCode GL_Texture::I_Bind() {
   glBindTexture(GL_TEXTURE0 + reg, regid);
   return 0;
 }
 
-ErrorCode GL_Texture::Destroy() {
+ErrorCode GL_Texture::I_Destroy() {
   glDeleteTextures(1, &regid);
   return 0;
 }
 
-float GL_Texture::GetW() { return size[0]; }
-float GL_Texture::GetH() { return size[1]; }
+float GL_Texture::I_GetW() { return size[0]; }
+float GL_Texture::I_GetH() { return size[1]; }
 
-unsigned int GL_Texture::GetRegID() { return regid; }
+unsigned int GL_Texture::I_GetRegID() { return regid; }
 } // namespace Base

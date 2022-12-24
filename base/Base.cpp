@@ -19,7 +19,16 @@ std::map<int, std::string> codes = {
 std::vector<std::string> errors;
 
 namespace Base {
-void Init() {}
+RenderApi _rnd_api;
+void Init() {
+#if defined(__BASE_DESKTOP__)
+  _rnd_api = RenderApi::OPENGL;
+#elif defined(__BASE_CTR__)
+  _rnd_api = RenderApi::CITRO3D;
+#else
+  exit(EXIT_FAILURE);
+#endif
+}
 
 void Exit() {}
 

@@ -82,8 +82,8 @@ Base::BitmapPrinter::BitmapPrinter(int w, int h) {
 }
 
 Base::BitmapPrinter::~BitmapPrinter() {
-  if (renderframe.GetRegID() != 0)
-    renderframe.Destroy();
+  /*if (renderframe.GetRegID() != 0)
+    renderframe.Destroy();*/
 }
 
 bool Base::BitmapPrinter::DecodeBMPFile(std::string file) {
@@ -137,11 +137,11 @@ void Base::BitmapPrinter::SavePng(std::string name) {
   lodepng::save_file(ImageBuffer, name);
 }
 
-BaseTexture Base::BitmapPrinter::GetImage() {
+/*BaseTexture Base::BitmapPrinter::GetImage() {
   BaseTexture img;
   // img.LoadFromBitmap(bitmap);
   return img;
-}
+}*/
 
 void Base::BitmapPrinter::UsePreMap(BMP map) { bitmap = map; }
 void Base::BitmapPrinter::UsePrePrintMap(BitmapPrinter printmap) {
@@ -158,8 +158,8 @@ bool Base::BitmapPrinter::UpdateScreenF(int framerate) {
   bool updtt = false;
   if (isscreen) {
     if (frame == (60 / framerate)) {
-      if (renderframe.GetRegID() != 0)
-        renderframe.Destroy();
+      /*if (renderframe.GetRegID() != 0)
+        renderframe.Destroy();*/
 
       this->Decode(decc);
       frame = 0;
@@ -173,8 +173,8 @@ bool Base::BitmapPrinter::UpdateScreen() {
   bool updtt = false;
   // if (isscreen)
   //{
-  if (renderframe.GetRegID() != 0)
-    renderframe.Destroy();
+  /*if (renderframe.GetRegID() != 0)
+    renderframe.Destroy();*/
   this->Decode(decc);
   updtt = true;
   //}
@@ -307,14 +307,14 @@ bool Base::BitmapPrinter::Decode(Decoder deccc) {
   switch (deccc) {
   case Decoder::BITMAP2PNG2TEX:
     std::cout << "BMP2PNG2TEX" << std::endl;
-    renderframe.LoadMem(
-        BitmapConverter::ConvertBMP2PNGData(this->bitmap.DATA()));
+    //renderframe.LoadMem(
+    //    BitmapConverter::ConvertBMP2PNGData(this->bitmap.DATA()));
     res = true;
     break;
   case Decoder::BITMAP2TEX:
     // renderframe.LoadFromBitmap(this->bitmap);
     std::cout << "BMP2TEX" << std::endl;
-    renderframe.LoadMem(this->bitmap.DATA());
+    //renderframe.LoadMem(this->bitmap.DATA());
     res = true;
     break;
 

@@ -36,7 +36,11 @@ if(BASE_DESKTOP)
     rendering/gl/GL_Renderer.cpp
     rendering/gl/GL_Texture.cpp
     rendering/gl/GL_VArray.cpp
-    rendering/gl/GL_Shader.cpp)
+    rendering/gl/GL_Shader.cpp
+    rendering/Renderer.cpp
+    rendering/Shader.cpp
+    rendering/VArray.cpp
+    rendering/Texture.cpp)
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
     external/glad

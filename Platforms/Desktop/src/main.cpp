@@ -241,17 +241,10 @@ int main(void) {
       break;
     }
   }
-
+  Base::Init();
   app.SetWindowSize(NImGui::Vec2i(1280, 720));
   bool updt = false;
   app.SetFullScreen(true);
-
-  Base::BitmapPrinter llj(20, 20);
-  llj.SetDecoder(Base::BITMAP2PNG2TEX);
-  llj.Clear();
-  llj.DrawRectFilled(0, 0, 20, 20, 255, 255, 255, 255);
-  llj.UpdateScreen();
-
   app.SetClearColor(NImGui::Vec4f(0.05f, 0.05f, 0.05f, 1.0f));
   Base::Gui::Init(app.GetWindowSize().x, app.GetWindowSize().y);
   Base::WorldVertex vtx[] = {
@@ -259,25 +252,27 @@ int main(void) {
       {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},
       {{0.0f, 0.5f, 0.0f}, {0, 0}, {1, 0, 0}},
   };
-  BaseShader trishader;
-  trishader.Compile(vertTri, fragTri);
-  trishader.use();
+  Base::Shader *trishader = nullptr;
+  trishader->LD7();
+  trishader->Compile(vertTri, fragTri);
+  trishader->use();
 
-  BaseVertexArray vao_;
-  vao_.Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::WorldVertex));
-  vao_.AddAttrInfo(0, 3, 0, false, sizeof(Base::WorldVertex),
+  Base::VertexArray *vao_ = 0;
+  vao_->LD7();
+  vao_->Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::WorldVertex));
+  vao_->AddAttrInfo(0, 3, 0, false, sizeof(Base::WorldVertex),
                    (void *)offsetof(Base::WorldVertex, position));
-  vao_.AddAttrInfo(1, 2, 0, false, sizeof(Base::WorldVertex),
+  vao_->AddAttrInfo(1, 2, 0, false, sizeof(Base::WorldVertex),
                    (void *)offsetof(Base::WorldVertex, texcoords));
-  vao_.AddAttrInfo(2, 3, 0, false, sizeof(Base::WorldVertex),
+  vao_->AddAttrInfo(2, 3, 0, false, sizeof(Base::WorldVertex),
                    (void *)offsetof(Base::WorldVertex, color));
-  vao_.UnBind();
-  BaseRenderer llc_renderer;
-  llc_renderer.Init(app.GetMonitorSize().x, app.GetMonitorSize().y);
-  Base::Gui::Init(app.GetMonitorSize().x, app.GetMonitorSize().y);
+  vao_->UnBind();
+  Base::Renderer *llc_renderer = 0;
+  llc_renderer->LD7();
+  llc_renderer->Init(app.GetMonitorSize().x, app.GetMonitorSize().y);
   color_t llc_quad((uint8_t)255, 255, 255, 255);
   while (app.IsRunning()) {
-    llc_renderer.BeginDraw();
+    llc_renderer->BeginDraw();
     if (prevcrash) {
       ImGui::End();
       prevcrash = false;
@@ -303,15 +298,14 @@ int main(void) {
     ImGui::Text("MouseLeft -> %d",
                 (int)app.IsMouseButtonDown(NImGui::MouseButton::Left));
     ImGui::Text("Key W -> %d", (int)app.IsKeyDown(NImGui::KeyCode::W));
-    ImGui::Image((ImTextureID)llj.GetImage().GetRegID(), ImVec2(20, 20));
     ImGui::End();
     stc.Clear();
     stc.AddLog(stolenc->GetStdout().c_str());
     ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
     stc.Draw("Console");
-    trishader.use();
-    vao_.Bind();
-    llc_renderer.DrawArrays(LLC_ARRAYSIZE(vtx));
+    trishader->use();
+    vao_->Bind();
+    llc_renderer->DrawArrays(LLC_ARRAYSIZE(vtx));
     Base::Gui::DrawQuad(0, 0, 50, 50, llc_quad);
     app.SwapBuffers();
   }

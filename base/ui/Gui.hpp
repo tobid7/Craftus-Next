@@ -1,13 +1,13 @@
 #pragma once
-#include <BaseRender.hpp>
 #include <misc/color_t.h>
+#include <Texture.hpp>
 #include <Vertex.hpp>
 
 namespace Base
 {
     namespace Gui
     {
-        extern BaseTexture LLC_Widgets;
+        extern Base::Texture *LLC_Widgets;
         
         enum ButtonFLG
         {
@@ -20,7 +20,7 @@ namespace Base
         void UpdateScreenSize(int w, int h);
         void SetUiScale(float scale = 1);
         void DrawButton(int flg, float x, float y);
-        void DrawTextureQuad(float x, float y, float u1, float v1, float u2, float v2, BaseTexture tex);
+        void DrawTextureQuad(float x, float y, float u1, float v1, float u2, float v2, Base::Texture *tex);
         void DrawQuad(float x, float y, float w, float h, color_t color);
     }
 }

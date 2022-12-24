@@ -2,6 +2,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <Shader.hpp>
+#include <VArray.hpp>
+#include <Renderer.hpp>
+
 static const char *const vertSquare = R"text(  
     #version 330 core
     layout (location = 0) in vec2 aPos;
@@ -58,22 +62,27 @@ static const char *const fragSprite = R"text(
     }  
 )text";
 
-BaseShader square_shader;
-BaseVertexArray quad_varray;
+Base::Shader *square_shader = nullptr;
+Base::VertexArray *quad_varray = nullptr;
+Base::Renderer *t_ren = nullptr;
 
 namespace Base {
 namespace Gui {
 static int llc_w;
 static int llc_h;
 static int llc_scale;
-BaseTexture LLC_Widgets;
+Base::Texture *LLC_Widgets = nullptr;
 
 void Init(int w, int h) {
   llc_w = w;
   llc_h = h;
-  LLC_Widgets.Load("res/mcpack/assets/minecraft/textures/gui/widgets.png");
-  square_shader.Compile(vertSquare, fragSquare);
-  square_shader.use();
+  square_shader->LD7();
+  quad_varray->LD7();
+  t_ren->LD7();
+  LLC_Widgets->LD7();
+  LLC_Widgets->Load("res/mcpack/assets/minecraft/textures/gui/widgets.png");
+  square_shader->Compile(vertSquare, fragSquare);
+  square_shader->use();
   UiSquare square[] = 
   {
     {{1, 0}, {1, 1, 1, 1.f}},
@@ -84,12 +93,12 @@ void Init(int w, int h) {
     {{1, 1}, {1, 1, 1, 1.f}},
     {{1, 0}, {1, 1, 1, 1.f}},
   };  
-  quad_varray.Create(&square, 6, sizeof(UiSquare));
-  quad_varray.AddAttrInfo(0, 2, 0, false, sizeof(UiSquare),
+  quad_varray->Create(&square, 6, sizeof(UiSquare));
+  quad_varray->AddAttrInfo(0, 2, 0, false, sizeof(UiSquare),
                           (void *)offsetof(UiSquare, position));
-  quad_varray.AddAttrInfo(1, 4, 0, false, sizeof(UiSquare),
+  quad_varray->AddAttrInfo(1, 4, 0, false, sizeof(UiSquare),
                           (void *)offsetof(UiSquare, color));
-  quad_varray.UnBind();
+  quad_varray->UnBind();
 }
 
 void UpdateScreenSize(int w, int h) {
@@ -110,11 +119,11 @@ void DrawButton(int flg, float x, float y) {
 }
 
 void DrawTextureQuad(float x, float y, float u1, float v1, float u2, float v2,
-                     BaseTexture tex) {}
+                     Base::Texture *tex) {}
 
 void DrawQuad(float x, float y, float w, float h, color_t color) {
-  quad_varray.Bind();
-  square_shader.use();
+  quad_varray->Bind();
+  square_shader->use();
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::translate(model, glm::vec3(glm::vec2(x, y), 0.0f));
 
@@ -123,11 +132,10 @@ void DrawQuad(float x, float y, float w, float h, color_t color) {
   glm::mat4 projection =
       glm::ortho(0.0f, static_cast<float>(llc_w), static_cast<float>(llc_h),
                  0.0f, -1.0f, 1.0f);
-  square_shader.setMat4("projection", projection);
+  square_shader->setMat4("projection", projection);
 
-  square_shader.setMat4("model", model);
-  BaseRenderer ren;
-  ren.DrawArrays(6);
+  square_shader->setMat4("model", model);
+
 }
 } // namespace Gui
 } // namespace Base
