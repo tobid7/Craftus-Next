@@ -23,12 +23,12 @@ static const char *const vertSquare = R"text(
 
 static const char *const fragSquare = R"text(
     #version 330 core
-    in vec4 iColor;
+    in vec4 oColor;
     out vec4 color;
     
     void main()
     {    
-        color = iColor;
+        color = oColor;
     }  
 )text";
 
@@ -136,6 +136,7 @@ void DrawQuad(float x, float y, float w, float h, color_t color) {
 
   square_shader->setMat4("model", model);
 
+  t_ren->DrawArrays(6);
 }
 } // namespace Gui
 } // namespace Base
