@@ -246,7 +246,7 @@ int main(void) {
   bool updt = false;
   app.SetFullScreen(true);
   app.SetClearColor(NImGui::Vec4f(0.05f, 0.05f, 0.05f, 1.0f));
-  Base::Gui::Init(app.GetWindowSize().x, app.GetWindowSize().y);
+  Base::Gui::Init(app.GetMonitorSize().x, app.GetMonitorSize().y);
   Base::WorldVertex vtx[] = {
       {{-0.5f, -0.5f, 0.0f}, {0, 0}, {0, 0, 1}},
       {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},

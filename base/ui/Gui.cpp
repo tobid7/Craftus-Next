@@ -2,9 +2,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <Renderer.hpp>
 #include <Shader.hpp>
 #include <VArray.hpp>
-#include <Renderer.hpp>
+
 
 static const char *const vertSquare = R"text(  
     #version 330 core
@@ -17,7 +18,7 @@ static const char *const vertSquare = R"text(
     void main()
     {
         oColor = aColor;
-        gl_Position = projection * model * vec4(aPos.xy, 0.0, 1.0);
+        gl_Position = projection * model * vec4(aPos, 0.0, 1.0);
     }
 )text";
 
@@ -83,21 +84,18 @@ void Init(int w, int h) {
   LLC_Widgets->Load("res/mcpack/assets/minecraft/textures/gui/widgets.png");
   square_shader->Compile(vertSquare, fragSquare);
   square_shader->use();
-  UiSquare square[] = 
-  {
-    {{1, 0}, {1, 1, 1, 1.f}},
-    {{1, 0}, {1, 1, 1, 1.f}},
-    {{0, 0}, {1, 1, 1, 1.f}},
+  UiSquare square[] = {
+      {{1, 0}, {1, 1, 1, 1.f}}, {{1, 0}, {1, 1, 1, 1.f}},
+      {{0, 0}, {1, 1, 1, 1.f}},
 
-    {{0, 1}, {1, 1, 1, 1.f}},
-    {{1, 1}, {1, 1, 1, 1.f}},
-    {{1, 0}, {1, 1, 1, 1.f}},
-  };  
+      {{0, 1}, {1, 1, 1, 1.f}}, {{1, 1}, {1, 1, 1, 1.f}},
+      {{1, 0}, {1, 1, 1, 1.f}},
+  };
   quad_varray->Create(&square, 6, sizeof(UiSquare));
   quad_varray->AddAttrInfo(0, 2, 0, false, sizeof(UiSquare),
-                          (void *)offsetof(UiSquare, position));
+                           (void *)offsetof(UiSquare, position));
   quad_varray->AddAttrInfo(1, 4, 0, false, sizeof(UiSquare),
-                          (void *)offsetof(UiSquare, color));
+                           (void *)offsetof(UiSquare, color));
   quad_varray->UnBind();
 }
 
