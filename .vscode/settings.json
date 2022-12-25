@@ -102,5 +102,5 @@
         "gamestates.h": "c"
     },
     "cmake.configureOnOpen": false,
-    "cmake.sourceDirectory": "${workspaceFolder}/Platforms/Windows"
+    "cmake.sourceDirectory": "${workspaceFolder}/external/libpicasso"
 }
