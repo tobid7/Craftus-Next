@@ -202,7 +202,8 @@ int main() {
 		u32 keysheld = hidKeysHeld(), keysdown = hidKeysDown();
 		if (keysdown & KEY_START || Save__) {
 			if (gamestate == GameState_SelectWorld){
-				gamestate = GameState_Title;}
+				gamestate = GameState_Title;
+			}
 			else if (gamestate == GameState_Playing || gamestate == GameState_Pause) {
 				releaseWorld(&chunkWorker, &savemgr, world);
                                 
@@ -213,7 +214,7 @@ int main() {
 				lastTime = svcGetSystemTick();
 			}
 
-			else if (gamestate == GameState_Options || GameState_SelectWorld)
+			else if (gamestate == GameState_Options)
 			{
 				gamestate = GameState_Title;
 			}
