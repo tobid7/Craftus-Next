@@ -7,9 +7,44 @@
 
 #include <Base.hpp>
 
+static const char *const vertShader = R"text(  
+; Example PICA200 vertex shader
 
-//#define STB_IMAGE_IMPLEMENTATION
-//#include <stb_image.h>
+; Uniforms
+.fvec projection[4]
+
+; Constants
+.constf myconst(0.0, 1.0, -1.0, 0.1)
+.constf myconst2(0.3, 0.0, 0.0, 0.0)
+.alias  zeros myconst.xxxx ; Vector full of zeros
+.alias  ones  myconst.yyyy ; Vector full of ones
+
+; Outputs
+.out outpos position
+.out outclr color
+
+; Inputs (defined as aliases for convenience)
+.alias inpos v0
+.alias inclr v1
+
+.proc main
+	; Force the w component of inpos to be 1.0
+	mov r0.xyz, inpos
+	mov r0.w,   ones
+
+	; outpos = projectionMatrix * inpos
+	dp4 outpos.x, projection[0], r0
+	dp4 outpos.y, projection[1], r0
+	dp4 outpos.z, projection[2], r0
+	dp4 outpos.w, projection[3], r0
+
+	; outclr = inclr
+	mov outclr, inclr
+
+	; We're finished
+	end
+.end
+)text";
  
 //NImGui::Timer deltaclock;
 Base::Timer frameclock;
@@ -28,6 +63,15 @@ std::string FrameRate()
     }
     return std::to_string(fps);
 }
+
+typedef struct { float position[3]; float color[3]; } vertex;
+
+static const vertex vertex_list[] =
+{
+	{{ 200.0f, 200.0f, 0.5f }, {1, 0, 0}},
+	{{ 100.0f, 40.0f, 0.5f }, {0, 1, 0}},
+	{{ 300.0f, 40.0f, 0.5f }, {0, 0, 1}},
+};
 
 //C2D_TextBuf tb;
 C3D_RenderTarget *top;
@@ -49,18 +93,28 @@ int main(void)
     //C2D_FontLoadSystem(CFG_REGION_EUR);
     top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
     double ed = tm.GetAsMs();
-    BaseTexture tex;
-    tex.Load("romfs:/loading.png");
+    Base::Texture *tex;
+    tex->LD7();
+    tex->Load("romfs:/loading.png");
     //NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
     Base::Timer delta;
     double dt = 0;
-    BaseRenderer ren;
-    ren.Init(400, 240);
-    
+    Base::Renderer *ren;
+    ren->LD7();
+    ren->Init(400, 240);
+    Base::Shader* tshader;
+    tshader->LD7();
+    tshader->Compile(vertShader, NULL);
+    tshader->use();
+    Base::UiSquare vtxlst[]
+    {
+        {{0, 1}, {1, 0, 0}},
+        {{1, 1}, {0, 1, 0}},
+        {{0, 0}, {0, 0, 1}},
+    };
+
     while(aptMainLoop())
     {
-        printf("\033[8;0HFPS: %s", FrameRate().c_str());
-        printf("\033[9;0HDT: %f", dt);
         //C2D_TextBufClear(tb);
         dt = delta.GetAsMs();
         delta.Reset();
@@ -68,8 +122,9 @@ int main(void)
         C3D_FrameBegin(1);
         C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
         C2D_SceneBegin(top);
+
         //C2D_DrawRectSolid(0, 0, 0.5f, 400, 240, C2D_Color32(255, 255, 255, 255));
-        C2D_DrawImageAt(tex.GetCtrReg(), -1, -1, 0.5f);
+        //C2D_DrawImageAt(tex->GetCtrReg(), -1, -1, 0.5f);
         //C2D_DrawImageAt(pr.GetImage().GetCtrReg(), 0, 0, 0.5f);
 
         //deltatime = deltaclock.GetAsMs();

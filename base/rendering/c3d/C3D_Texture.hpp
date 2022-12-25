@@ -8,15 +8,14 @@
 namespace Base {
 class C3D_Texture : public Texture {
 public:
-  ErrorCode Load(std::string file, int register_ = 0) override;
-  virtual ErrorCode LoadMem(std::vector<unsigned char> mem,
+  ErrorCode I_Load(std::string file, int register_ = 0) override;
+  virtual ErrorCode I_LoadMem(std::vector<unsigned char> mem,
                             int register_ = 0) override;
-  ErrorCode Bind() override;
-  virtual ErrorCode Destroy() override;
-  float GetW() override;
-  float GetH() override;
-  unsigned int GetRegID() override;
-  C2D_Image GetCtrReg();
+  ErrorCode I_Bind() override;
+  virtual ErrorCode I_Destroy() override;
+  float I_GetW() override;
+  float I_GetH() override;
+  unsigned int I_GetRegID() override;
 
 private:
   C2D_Image regid;

@@ -61,13 +61,18 @@ if(BASE_CTR)
     list(APPEND BASE_SOURCE
     #${BASE_SOURCE}
     rendering/c3d/C3D_Renderer.cpp
-    rendering/c3d/C3D_Texture.cpp)
+    rendering/c3d/C3D_Texture.cpp
+    rendering/c3d/C3D_Shader.cpp
+    rendering/c3d/C3D_Varray.cpp
+    rendering/Renderer.cpp
+    rendering/Shader.cpp
+    rendering/VArray.cpp
+    rendering/Texture.cpp)
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
     ${DEVKITPRO}/libctru/include
-    ../external/libpicasso/include
     glm
-    picasso
+    ../external/libpicasso/include
     )
     list(APPEND BASE_EXTRADEPS
     #${BASE_EXTRADEPS}

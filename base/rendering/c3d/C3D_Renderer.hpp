@@ -6,13 +6,13 @@
 namespace Base {
 class C3D_Renderer : public Renderer {
 public:
-  ErrorCode Init(int screenw, int screenh) override;
-  ErrorCode Exit() override;
-  ErrorCode Update() override;
-  ErrorCode DrawArrays(int count) override;
-  ErrorCode BeginDraw() override;
-  ErrorCode SetClearColor(color_t color) override;
-  color_t GetClearColor() override;
+  ErrorCode I_Init(int screenw, int screenh) override;
+  ErrorCode I_Exit() override;
+  ErrorCode I_Update() override;
+  ErrorCode I_DrawArrays(int count) override;
+  ErrorCode I_BeginDraw() override;
+  ErrorCode I_SetClearColor(color_t color) override;
+  color_t I_GetClearColor() override;
 
 private:
   int screen_w;

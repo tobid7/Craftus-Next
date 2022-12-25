@@ -3,7 +3,7 @@
 #include <string>
 
 namespace Base {
-ErrorCode C3D_Texture::Load(std::string file, int register_) {
+ErrorCode C3D_Texture::I_Load(std::string file, int register_) {
   reg = register_;
   int width, height, nrComponents;
   unsigned char *data =
@@ -50,7 +50,7 @@ ErrorCode C3D_Texture::Load(std::string file, int register_) {
   return 0;
 }
 
-ErrorCode C3D_Texture::LoadMem(std::vector<unsigned char> mem, int register_) {
+ErrorCode C3D_Texture::I_LoadMem(std::vector<unsigned char> mem, int register_) {
   reg = register_;
   int width, height, nrComponents;
   unsigned char *data = stbi_load_from_memory(mem.data(), mem.size(), &width,
@@ -97,20 +97,19 @@ ErrorCode C3D_Texture::LoadMem(std::vector<unsigned char> mem, int register_) {
   return 0;
 }
 
-ErrorCode C3D_Texture::Bind() {
+ErrorCode C3D_Texture::I_Bind() {
   C3D_TexBind(0 + reg, regid.tex);
   return 0;
 }
 
-ErrorCode C3D_Texture::Destroy() {
+ErrorCode C3D_Texture::I_Destroy() {
   C3D_TexDelete(regid.tex);
   regi = 0;
 }
 
-float C3D_Texture::GetW() { return size[0]; }
-float C3D_Texture::GetH() { return size[1]; }
+float C3D_Texture::I_GetW() { return size[0]; }
+float C3D_Texture::I_GetH() { return size[1]; }
 
-unsigned int C3D_Texture::GetRegID() { return regi; }
+unsigned int C3D_Texture::I_GetRegID() { return regi; }
 
-C2D_Image C3D_Texture::GetCtrReg() { return regid; }
 } // namespace Base
