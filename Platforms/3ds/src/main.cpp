@@ -113,6 +113,12 @@ int main(void)
     tri->Create(&vertex_list, vertex_list_count, sizeof(vertex));
     tri->AddAttrInfo(0, 3, 0, false, sizeof(vertex), (void*)offsetof(vertex, position));
     tri->AddAttrInfo(1, 3, 0, false, sizeof(vertex), (void*)offsetof(vertex, color));
+    // Configure the first fragment shading substage to just pass through the vertex color
+	// See https://www.opengl.org/sdk/docs/man2/xhtml/glTexEnv.xml for more insight
+	C3D_TexEnv* env = C3D_GetTexEnv(0);
+	C3D_TexEnvInit(env);
+	C3D_TexEnvSrc(env, C3D_Both, GPU_PRIMARY_COLOR, (GPU_TEVSRC)0, (GPU_TEVSRC)0);
+	C3D_TexEnvFunc(env, C3D_Both, GPU_REPLACE);
     glm::mat4 projection =
       glm::ortho(0.0f, static_cast<float>(400), static_cast<float>(240),
                  0.0f, -1.0f, 1.0f);
@@ -125,7 +131,7 @@ int main(void)
         C3D_FrameBegin(1);
         C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
         C2D_SceneBegin(top);
-        square_shader->setMat4("projection", projection);
+        tshader->setMat4("projection", projection);
         tri->Bind();
         ren->DrawArrays(vertex_list_count);
         //C2D_DrawRectSolid(0, 0, 0.5f, 400, 240, C2D_Color32(255, 255, 255, 255));

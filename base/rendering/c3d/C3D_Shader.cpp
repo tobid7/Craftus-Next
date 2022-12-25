@@ -1,6 +1,33 @@
 #include <pica.hpp>
 #include <rendering/c3d/C3D_Shader.hpp>
 
+void CopyMatrixGlmToC3d(C3D_Mtx* dst, const glm::mat4& src)
+{
+  {
+    glm::mat4 transMat = glm::transpose(src);
+
+    dst->r[0].x = transMat[0][0];
+    dst->r[0].y = transMat[0][1];
+    dst->r[0].z = transMat[0][2];
+    dst->r[0].w = transMat[0][3];
+
+    dst->r[1].x = transMat[1][0];
+    dst->r[1].y = transMat[1][1];
+    dst->r[1].z = transMat[1][2];
+    dst->r[1].w = transMat[1][3];
+
+    dst->r[2].x = transMat[2][0];
+    dst->r[2].y = transMat[2][1];
+    dst->r[2].z = transMat[2][2];
+    dst->r[2].w = transMat[2][3];
+
+    dst->r[3].x = transMat[3][0];
+    dst->r[3].y = transMat[3][1];
+    dst->r[3].z = transMat[3][2];
+    dst->r[3].w = transMat[3][3];
+}
+}
+
 namespace Base {
 void C3D_Shader::I_Compile(const char *vertexcode, const char *fragmentcode,
                            const char *geometrycode) {
@@ -41,22 +68,7 @@ void C3D_Shader::I_setMat2(const std::string &name, const glm::mat2 &mat) {}
 void C3D_Shader::I_setMat3(const std::string &name, const glm::mat3 &mat) {}
 void C3D_Shader::I_setMat4(const std::string &name, const glm::mat4 &mat) {
   C3D_Mtx matrix;
-  matrix.m[3] = mat[0];
-  matrix.m[7] = mat[1];
-  matrix.m[11] = mat[2];
-  matrix.m[15] = mat[3];
-  matrix.m[2] = mat[4];
-  matrix.m[6] = mat[5];
-  matrix.m[10] = mat[6];
-  matrix.m[14] = mat[7];
-  matrix.m[1] = mat[8];
-  matrix.m[5] = mat[9];
-  matrix.m[9] = mat[10];
-  matrix.m[13] = mat[11];
-  matrix.m[0] = mat[12];
-  matrix.m[4] = mat[13];
-  matrix.m[8] = mat[14];
-  matrix.m[12] = mat[15];
+  CopyMatrixGlmToC3d(&matrix, mat);
 
   C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER, shaderInstanceGetUniformLocation(m_shader.vertexShader, name.c_str()), &matrix);
 }
