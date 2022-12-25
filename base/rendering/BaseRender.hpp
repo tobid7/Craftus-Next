@@ -2,7 +2,7 @@
 #ifndef __BASE_BUILD__
 #define __BASE_DESKTOP__
 #endif
-#if defined(__BASE_DESKTOP__)
+#if (defined(__BASE_DESKTOP__) || defined(__BASE__NX__))
 #include <gl/GL_Renderer.hpp>
 #include <gl/GL_Texture.hpp>
 #include <gl/GL_Varray.hpp>

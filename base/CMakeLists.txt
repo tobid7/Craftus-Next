@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #Options
 option(BASE_DESKTOP "Desktop Platform" OFF)
 option(BASE_CTR "Ctr Platform" OFF)
+option(BASE_NX "Nintendo Switch Platform" OFF)
 
 set(BASE_VER "0.2.0")
 set(BASE_NM "Base-Engine")
@@ -53,6 +54,36 @@ if(BASE_DESKTOP)
     list(APPEND BASE_CFLAGS -DBASE_PLATFORM=\"${BASE_PL}\")
     list(APPEND BASE_CFLAGS -D__BASE_DESKTOP__)
 endif()
+
+if(BASE_NX)
+    message("Building for a Nintendo Switch Platform")
+    add_subdirectory(../external/glm glm)
+    
+    find_package(glad)
+    list(APPEND BASE_SOURCE
+    #${BASE_SOURCE}
+    #OpenGL Support(3.3+)
+    rendering/gl/GL_Renderer.cpp
+    rendering/gl/GL_Texture.cpp
+    rendering/gl/GL_VArray.cpp
+    rendering/gl/GL_Shader.cpp
+    rendering/Renderer.cpp
+    rendering/Shader.cpp
+    rendering/VArray.cpp
+    rendering/Texture.cpp)
+    list(APPEND BASE_EXTRAINCLUDES
+    #${BASE_EXTRAINCLUDES}
+    
+    glm)
+    list(APPEND BASE_EXTRADEPS
+    #${BASE_EXTRADEPS}
+    glm)
+    cmake_host_system_information(RESULT DK_NAME QUERY OS_NAME)
+    set(BASE_PL "Nintendo Switch -> ${DK_NAME}")
+    list(APPEND BASE_CFLAGS -DBASE_PLATFORM=\"${BASE_PL}\")
+    list(APPEND BASE_CFLAGS -D__BASE_NX__)
+endif()
+
 
 if(BASE_CTR)
     message("Building for 3ds")

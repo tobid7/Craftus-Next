@@ -1,7 +1,7 @@
 #include <gl/GL_Renderer.hpp>
 
 namespace Base {
-ErrorCode GL_Renderer::I_Init(int screenw, int screenh) {
+BaseErrorCode GL_Renderer::I_Init(int screenw, int screenh) {
   glEnable(GL_DEPTH);
   screen_h = screenh;
   screen_w = screenw;
@@ -10,16 +10,16 @@ ErrorCode GL_Renderer::I_Init(int screenw, int screenh) {
   return 0;
 }
 
-ErrorCode GL_Renderer::I_Exit() { return 0; }
+BaseErrorCode GL_Renderer::I_Exit() { return 0; }
 
-ErrorCode GL_Renderer::I_Update() { return 0; }
+BaseErrorCode GL_Renderer::I_Update() { return 0; }
 
-ErrorCode GL_Renderer::I_DrawArrays(int count) {
+BaseErrorCode GL_Renderer::I_DrawArrays(int count) {
   glDrawArrays(GL_TRIANGLES, 0, count);
   return 0;
 }
 
-ErrorCode GL_Renderer::I_BeginDraw()
+BaseErrorCode GL_Renderer::I_BeginDraw()
 {
   glViewport(0, 0, screen_w, screen_h);
   glClearColor(cl_color.r()/255, cl_color.g()/255, cl_color.b()/255, cl_color.a()/255);
@@ -27,7 +27,7 @@ ErrorCode GL_Renderer::I_BeginDraw()
   return 0;
 }
 
-ErrorCode GL_Renderer::I_SetClearColor(color_t color)
+BaseErrorCode GL_Renderer::I_SetClearColor(color_t color)
 {
   cl_color = color;
   return 0;

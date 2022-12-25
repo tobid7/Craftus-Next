@@ -4,20 +4,20 @@
 #include <string>
 #include <vector>
 
-typedef int ErrorCode;
+typedef int BaseErrorCode;
 extern std::map<int, std::string> codes;
 extern std::vector<std::string> errors;
 
 namespace Base {
-inline std::string DecodeError(ErrorCode code) { return codes.at(code); }
+inline std::string DecodeError(BaseErrorCode code) { return codes.at(code); }
 
-inline void AddError(ErrorCode code) { errors.push_back(DecodeError(code)); }
+inline void AddError(BaseErrorCode code) { errors.push_back(DecodeError(code)); }
 
-inline void PrintError(ErrorCode code) {
+inline void PrintError(BaseErrorCode code) {
   std::cout << DecodeError(code) << std::endl;
 }
 
-inline ErrorCode PrintErrors() {
+inline BaseErrorCode PrintErrors() {
   if (errors.size() < 1) {
     return 1;
   }

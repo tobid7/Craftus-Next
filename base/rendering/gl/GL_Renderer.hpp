@@ -5,12 +5,12 @@
 namespace Base {
 class GL_Renderer : public Renderer {
 public:
-  ErrorCode I_Init(int screenw, int screenh) override;
-  ErrorCode I_Exit() override;
-  ErrorCode I_Update() override;
-  ErrorCode I_DrawArrays(int count) override;
-  ErrorCode I_BeginDraw() override;
-  ErrorCode I_SetClearColor(color_t color) override;
+  BaseErrorCode I_Init(int screenw, int screenh) override;
+  BaseErrorCode I_Exit() override;
+  BaseErrorCode I_Update() override;
+  BaseErrorCode I_DrawArrays(int count) override;
+  BaseErrorCode I_BeginDraw() override;
+  BaseErrorCode I_SetClearColor(color_t color) override;
   color_t I_GetClearColor() override;
   private:
   int screen_w;

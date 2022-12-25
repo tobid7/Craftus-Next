@@ -3,7 +3,7 @@
 #include <string>
 
 namespace Base {
-ErrorCode C3D_Texture::I_Load(std::string file, int register_) {
+BaseErrorCode C3D_Texture::I_Load(std::string file, int register_) {
   reg = register_;
   int width, height, nrComponents;
   unsigned char *data =
@@ -50,7 +50,7 @@ ErrorCode C3D_Texture::I_Load(std::string file, int register_) {
   return 0;
 }
 
-ErrorCode C3D_Texture::I_LoadMem(std::vector<unsigned char> mem, int register_) {
+BaseErrorCode C3D_Texture::I_LoadMem(std::vector<unsigned char> mem, int register_) {
   reg = register_;
   int width, height, nrComponents;
   unsigned char *data = stbi_load_from_memory(mem.data(), mem.size(), &width,
@@ -97,12 +97,12 @@ ErrorCode C3D_Texture::I_LoadMem(std::vector<unsigned char> mem, int register_) 
   return 0;
 }
 
-ErrorCode C3D_Texture::I_Bind() {
+BaseErrorCode C3D_Texture::I_Bind() {
   C3D_TexBind(0 + reg, regid.tex);
   return 0;
 }
 
-ErrorCode C3D_Texture::I_Destroy() {
+BaseErrorCode C3D_Texture::I_Destroy() {
   C3D_TexDelete(regid.tex);
   regi = 0;
 }

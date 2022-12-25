@@ -131,15 +131,11 @@ int main(void)
         C3D_FrameBegin(1);
         C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
         C2D_SceneBegin(top);
+        tshader->use();
         tshader->setMat4("projection", projection);
         tri->Bind();
         ren->DrawArrays(vertex_list_count);
-        //C2D_DrawRectSolid(0, 0, 0.5f, 400, 240, C2D_Color32(255, 255, 255, 255));
-        //C2D_DrawImageAt(tex->GetCtrReg(), -1, -1, 0.5f);
-        //C2D_DrawImageAt(pr.GetImage().GetCtrReg(), 0, 0, 0.5f);
-
-        //deltatime = deltaclock.GetAsMs();
-        //deltaclock.Reset();
+        
         C3D_FrameEnd(0);
     }
 

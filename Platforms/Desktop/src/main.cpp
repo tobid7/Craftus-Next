@@ -228,7 +228,7 @@ int main(void) {
 
   stc.AdditionalFlags(ImGuiWindowFlags_NoResize);
 
-  ErrorCode code;
+  BaseErrorCode code;
   NImGui::Image testt;
   testt.LoadImage("res/loading.png");
   std::cout << Base::GetVersion() << " " << Base::GetName() << " "

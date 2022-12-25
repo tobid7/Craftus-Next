@@ -11,7 +11,7 @@ void Shader::LD7() {
     s_instance = new Base::C3D_Shader();
     break;
 #endif
-#if defined(__BASE_DESKTOP__)
+#if (defined(__BASE_DESKTOP__) || defined(__BASE__NX__))
   case OPENGL:
     s_instance = new Base::GL_Shader();
     break;
