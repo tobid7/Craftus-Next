@@ -73,6 +73,8 @@ static const vertex vertex_list[] =
 	{{ 300.0f, 40.0f, 0.5f }, {0, 0, 1}},
 };
 
+#define vertex_list_count (sizeof(vertex_list)/sizeof(vertex_list[0]))
+
 //C2D_TextBuf tb;
 C3D_RenderTarget *top;
 int main(void)
@@ -106,13 +108,14 @@ int main(void)
     tshader->LD7();
     tshader->Compile(vertShader, NULL);
     tshader->use();
-    Base::UiSquare vtxlst[]
-    {
-        {{0, 1}, {1, 0, 0}},
-        {{1, 1}, {0, 1, 0}},
-        {{0, 0}, {0, 0, 1}},
-    };
-
+    Base::VertexArray *tri;
+    tri->LD7();
+    tri->Create(&vertex_list, vertex_list_count, sizeof(vertex));
+    tri->AddAttrInfo(0, 3, 0, false, sizeof(vertex), (void*)offsetof(vertex, position));
+    tri->AddAttrInfo(1, 3, 0, false, sizeof(vertex), (void*)offsetof(vertex, color));
+    glm::mat4 projection =
+      glm::ortho(0.0f, static_cast<float>(400), static_cast<float>(240),
+                 0.0f, -1.0f, 1.0f);
     while(aptMainLoop())
     {
         //C2D_TextBufClear(tb);
@@ -122,7 +125,9 @@ int main(void)
         C3D_FrameBegin(1);
         C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
         C2D_SceneBegin(top);
-
+        square_shader->setMat4("projection", projection);
+        tri->Bind();
+        ren->DrawArrays(vertex_list_count);
         //C2D_DrawRectSolid(0, 0, 0.5f, 400, 240, C2D_Color32(255, 255, 255, 255));
         //C2D_DrawImageAt(tex->GetCtrReg(), -1, -1, 0.5f);
         //C2D_DrawImageAt(pr.GetImage().GetCtrReg(), 0, 0, 0.5f);

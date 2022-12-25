@@ -25,6 +25,35 @@
 
 #define LLC_ARRAYSIZE(_ARR) ((int)(sizeof(_ARR) / sizeof(*(_ARR))))
 
+unsigned long hex2dec(std::string hex)
+{
+    unsigned long result = 0;
+    for (int i=0; i<hex.length(); i++) {
+        if (hex[i]>=48 && hex[i]<=57)
+        {
+            result += (hex[i]-48)*pow(16,hex.length()-i-1);
+        } else if (hex[i]>=65 && hex[i]<=70) {
+            result += (hex[i]-55)*pow(16,hex.length( )-i-1);
+        } else if (hex[i]>=97 && hex[i]<=102) {
+            result += (hex[i]-87)*pow(16,hex.length()-i-1);
+        }
+    }
+    return result;
+}
+
+int CalcPMT(int numattr)
+{
+  int res;
+  std::string hexstr = "0x";
+  for (int i = numattr; i > -1; i--)
+  {
+    hexstr += std::to_string(i);
+  }
+  res = hex2dec(hexstr);
+  
+  return res;
+}
+
 ConsoleWindow stc;
 std::unique_ptr<Base::StealConsole> stolenc;
 
@@ -271,6 +300,7 @@ int main(void) {
   llc_renderer->LD7();
   llc_renderer->Init(app.GetMonitorSize().x, app.GetMonitorSize().y);
   color_t llc_quad((uint8_t)255, 255, 255, 255);
+  std::cout << CalcPMT(4-1) << std::endl;
   while (app.IsRunning()) {
     llc_renderer->BeginDraw();
     if (prevcrash) {
