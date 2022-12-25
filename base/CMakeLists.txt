@@ -44,6 +44,7 @@ if(BASE_DESKTOP)
     rendering/Texture.cpp)
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
+    external
     external/glad
     glm)
     list(APPEND BASE_EXTRADEPS
