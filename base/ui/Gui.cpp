@@ -6,7 +6,6 @@
 #include <Shader.hpp>
 #include <VArray.hpp>
 
-
 static const char *const vertSquare = R"text(  
     #version 330 core
     layout (location = 0) in vec2 aPos;
@@ -73,29 +72,39 @@ static int llc_w;
 static int llc_h;
 static int llc_scale;
 Base::Texture *LLC_Widgets = nullptr;
+Base::Texture *LLC_Background = nullptr;
+Base::Texture *LLC_Icons = nullptr;
 
 void Init(int w, int h) {
   llc_w = w;
   llc_h = h;
+  std::cout << "LLC_GUI Engine -> " << llc_w << "x" << llc_h << std::endl;
   square_shader->LD7();
   quad_varray->LD7();
   t_ren->LD7();
   LLC_Widgets->LD7();
+  LLC_Background->LD7();
+  LLC_Icons->LD7();
   LLC_Widgets->Load("res/mcpack/assets/minecraft/textures/gui/widgets.png");
-  square_shader->Compile(vertSquare, fragSquare);
+  LLC_Background->Load(
+      "res/mcpack/assets/minecraft/textures/gui/options_background.png");
+  LLC_Icons->Load("res/mcpack/assets/minecraft/textures/gui/icons.png");
+  square_shader->Compile(vertSprite, fragSprite);
   square_shader->use();
-  UiSquare square[] = {
-      {{1, 0}, {1, 1, 1, 1.f}}, {{1, 0}, {1, 1, 1, 1.f}},
-      {{0, 0}, {1, 1, 1, 1.f}},
-
-      {{0, 1}, {1, 1, 1, 1.f}}, {{1, 1}, {1, 1, 1, 1.f}},
-      {{1, 0}, {1, 1, 1, 1.f}},
+  struct SpVtx {
+    float data[4];
   };
-  quad_varray->Create(&square, 6, sizeof(UiSquare));
-  quad_varray->AddAttrInfo(0, 2, 0, false, sizeof(UiSquare),
-                           (void *)offsetof(UiSquare, position));
-  quad_varray->AddAttrInfo(1, 4, 0, false, sizeof(UiSquare),
-                           (void *)offsetof(UiSquare, color));
+  static const SpVtx vertices[] = {
+      // pos      // tex
+      {0.0f, 1.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 1.0f, 0.0f},
+      {0.0f, 0.0f, 0.0f, 0.0f},
+
+      {0.0f, 1.0f, 0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f},
+      {1.0f, 0.0f, 1.0f, 0.0f},
+  };
+  quad_varray->Create(&vertices, 6, sizeof(SpVtx));
+  quad_varray->AddAttrInfo(0, 4, 0, false, sizeof(SpVtx),
+                           (void *)offsetof(SpVtx, data));
   quad_varray->UnBind();
 }
 
@@ -117,15 +126,17 @@ void DrawButton(int flg, float x, float y) {
 }
 
 void DrawTextureQuad(float x, float y, float u1, float v1, float u2, float v2,
-                     Base::Texture *tex) {}
+                     GuiTex tex) {}
 
 void DrawQuad(float x, float y, float w, float h, color_t color) {
-  quad_varray->Bind();
   square_shader->use();
+
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::translate(model, glm::vec3(glm::vec2(x, y), 0.0f));
 
   model = glm::translate(model, glm::vec3(0.5f * (w), 0.5f * (h), 0.0f));
+  model = glm::rotate(model, glm::radians(0.f), glm::vec3(0.0f, 0.0f, 1.0f));
+  model = glm::translate(model, glm::vec3(-0.5f * (w), -0.5f * (h), 0.0f));
 
   glm::mat4 projection =
       glm::ortho(0.0f, static_cast<float>(llc_w), static_cast<float>(llc_h),
@@ -133,7 +144,9 @@ void DrawQuad(float x, float y, float w, float h, color_t color) {
   square_shader->setMat4("projection", projection);
 
   square_shader->setMat4("model", model);
-
+  LLC_Widgets->Bind();
+  quad_varray->Bind();
+  square_shader->setVec4("spriteColor", glm::vec4(1.f, 1.f, 1.f, 1.f));
   t_ren->DrawArrays(6);
 }
 } // namespace Gui

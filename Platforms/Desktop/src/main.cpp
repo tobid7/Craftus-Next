@@ -235,8 +235,7 @@ bool prevcrash = false;
 int main(void)
 {
   stolenc = std::make_unique<Base::StealConsole>();
-  NImGui::App app("Craftus-Next", NImGui::Vec2i(900, 400),
-                  NImGui::BORDERLESS | NImGui::TRANSPARENT);
+  NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
   app.SetWindowPos(NImGui::Vec2i(
       (app.GetMonitorSize().x / 2) - (app.GetWindowSize().x / 2),
       (app.GetMonitorSize().y / 2) - (app.GetWindowSize().y / 2)));
@@ -256,46 +255,12 @@ int main(void)
   ztm.Reset();
   // std::future<bool> ftt = std::async(task1, "NULL");
   // task = false;
-  while (app.IsRunning())
-  {
-    task_ = std::to_string(ztm.GetAsMs()) + "/" + std::to_string(5000);
-    ImGui::Begin("Test", NULL,
-                 ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground |
-                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs);
-    prevcrash = true;
-    ImGui::SetWindowPos(ImVec2(app.GetWindowPos().x, app.GetWindowPos().y));
-    ImGui::SetWindowSize(ImVec2(app.GetWindowSize().x, app.GetWindowSize().y));
-    ImGui::SetCursorPos(ImVec2(0, 0));
-    ImGui::Image(testt.GetTextureID(), testt.GetSize());
-    ImGui::SetCursorPos(ImVec2(37, 200));
-    ImGui::Text("Console:\n%s", stolenc->GetStdout().c_str());
-    ImGui::SetCursorPos(ImVec2(37, 375));
-    ImGui::Spinner("T", 5, 2, col);
-    ImGui::SameLine();
-    ImGui::Text("Loading -> %s", task_.c_str());
-    // ImGui::Text("Loading %c -> %s", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) &
-    // 3], "Craftus-Next");
-
-    // ImGui::BufferingBar("T", (prj/prc), ImVec2(600, 6), bg, col);
-    // ImGui::ProgressBar((prj/prc), ImVec2(600, 2));
-
-    ImGui::End();
-    prevcrash = false;
-    app.SwapBuffers();
-    if (!task || ztm.GetAsMs() > 5000)
-    {
-      initps = false;
-
-      // t1.join();
-      break;
-    }
-  }
+  
   Base::Init();
-  app.SetWindowSize(NImGui::Vec2i(1280, 720));
   bool updt = false;
-  app.SetFullScreen(true);
+  
   app.SetClearColor(NImGui::Vec4f(0.05f, 0.05f, 0.05f, 1.0f));
-  Base::Gui::Init(app.GetMonitorSize().x, app.GetMonitorSize().y);
+  Base::Gui::Init(1280, 720);
   Base::WorldVertex vtx[] = {
       {{-0.5f, -0.5f, 0.0f}, {0, 0}, {0, 0, 1}},
       {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},
@@ -318,11 +283,12 @@ int main(void)
   vao_->UnBind();
   Base::Renderer *llc_renderer = 0;
   llc_renderer->LD7();
-  llc_renderer->Init(app.GetMonitorSize().x, app.GetMonitorSize().y);
+  llc_renderer->Init(1280, 720);
   color_t llc_quad((uint8_t)255, 255, 255, 255);
   std::cout << CalcPMT(4 - 1) << std::endl;
   while (app.IsRunning())
   {
+    Base::Gui::UpdateScreenSize(app.GetWindowSize().x, app.GetWindowSize().y);
     llc_renderer->BeginDraw();
     if (prevcrash)
     {
@@ -359,7 +325,7 @@ int main(void)
     trishader->use();
     vao_->Bind();
     llc_renderer->DrawArrays(LLC_ARRAYSIZE(vtx));
-    Base::Gui::DrawQuad(0, 0, 50, 50, llc_quad);
+    Base::Gui::DrawQuad(60, 70, 256, 256, llc_quad);
     app.SwapBuffers();
   }
 

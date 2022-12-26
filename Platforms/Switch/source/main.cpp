@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <switch.h>
+#include <fstream>
 
 #include <EGL/egl.h>    // EGL library
 #include <EGL/eglext.h> // EGL extensions
@@ -138,33 +139,34 @@ static void deinitEgl()
 }
 void Log__(const char*txt)
 {
-    std::ofstream file("sdmc:/log.lgx", std::ios::app);
+    std::ofstream file("sdmc:/log.txt", std::ios::app);
     file << txt << std::endl;
     file.close();
 }
 
 int main()
 {
-    Log__((char*)__LINE__);
+    Log__("egl");
     if (!initEgl(nwindowGetDefault()))
         return EXIT_FAILURE;
-    Log__((char*)__LINE__);
+    Log__("glad");
     gladLoadGL();
-    Log__((char*)__LINE__);
+    Log__("pad");
     // Configure our supported input layout: a single player with standard controller styles
     padConfigureInput(1, HidNpadStyleSet_NpadStandard);
-    Log__((char*)__LINE__);
-    // Initialize the default gamepad (which reads handheld mode inputs as well as the first connected controller)
+    Log__("pad2");
+    // Initialize the default gamepad (which reads handheld  mode inputs as well as the first connected controller)
     PadState pad;
-    Log__((char*)__LINE__);
+    Log__("pad3");
     padInitializeDefault(&pad);
-    Log__((char*)__LINE__);
-    Base::Renderer *ren;
-    Log__((char*)__LINE__);
+    Base::Init();
+    Log__("ren");
+    Base::Renderer* ren = 0;
+    Log__("ren1");
     ren->LD7();
-    Log__((char*)__LINE__);
+    Log__("ren2");
     ren->Init(1280, 720);
-    Log__((char*)__LINE__);
+    Log__("ren3");
     Base::WorldVertex vtx[] = {
         {{-0.5f, -0.5f, 0.0f}, {0, 0}, {0, 0, 1}},
         {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},

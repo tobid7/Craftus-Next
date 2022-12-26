@@ -21,7 +21,7 @@ std::vector<std::string> errors;
 namespace Base {
 RenderApi _rnd_api;
 void Init() {
-#if (defined(__BASE_DESKTOP__) || defined(__BASE__NX__))
+#if (defined(__BASE_DESKTOP__) || defined(__BASE_NX__))
   _rnd_api = RenderApi::OPENGL;
 #elif defined(__BASE_CTR__)
   _rnd_api = RenderApi::CITRO3D;

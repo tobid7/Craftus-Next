@@ -3,8 +3,8 @@
 namespace Base {
 void GL_Shader::I_Compile(const char *vertexcode, const char *fragmentcode,
                         const char *geometrycode) {
-  std::cout << "GL_Shader Vertex Code: " << vertexcode << std::endl;
-  std::cout << "GL_Shader Fragment Code: " << fragmentcode << std::endl;
+  //std::cout << "GL_Shader Vertex Code: " << vertexcode << std::endl;
+  //std::cout << "GL_Shader Fragment Code: " << fragmentcode << std::endl;
 
   const char *vShaderCode = vertexcode;
   const char *fShaderCode = fragmentcode;

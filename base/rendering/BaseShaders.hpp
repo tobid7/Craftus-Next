@@ -3,7 +3,7 @@
 #ifndef __BASE_BUILD__
 #define __BASE_DESKTOP__
 #endif
-#if defined(__BASE_DESKTOP__)
+#if defined(__BASE_DESKTOP__) || defined(__BASE_NX__)
 static const char* const Base_vertTri = R"text(
     #version 330 core
     layout (location = 0) in vec3 aPos;

@@ -32,6 +32,8 @@
 #include <sino/sino.h>
 #include <citro3d.h>
 
+#include <misc/mem.h>
+
 bool showDebugInfo = false;
 
 bool savedcrash = false;
@@ -43,6 +45,8 @@ float dt = 0.f;
 float dt__ = 0.f;
 
 bool Save__ = false;
+
+int var_ram = 0;
 
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) {
 	for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
@@ -56,6 +60,7 @@ void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr, World* world) 
 	SaveManager_Unload(savemgr);
 }
 GameState gamestate = GameState_Title;
+
 int main() {
 	
 	//printf("gfxinit\n");
@@ -140,9 +145,15 @@ int main() {
 	float timeAccum = 0.f, fpsClock = 0.f;
 	int frameCounter = 0, fps = 0;
 	bool initBackgroundSound = true;
-
+	int cxxcnt = 0;
 	while (aptMainLoop()) 
 	{
+		cxxcnt++;
+		if(cxxcnt > 60)
+		 {
+			var_ram = check_free_ram()/1024;
+			cxxcnt = 0;
+		 }
 		if (initBackgroundSound)
 		{
 			/*initBackgroundSound = false;
@@ -156,7 +167,7 @@ int main() {
 		
 		DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps, C3D_GetProcessingTime() * 6.f,
 		C3D_GetDrawingTime() * 6.f, C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024 / 1024);
-		DebugUI_Text("Buf: %5.2f%% Lin: %dkb", C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024);
+		DebugUI_Text("Buf: %5.2f%% Lin: %dkb Ram: %dkb", C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024, var_ram);
 		DebugUI_Text("X: %f, Y: %f, Z: %f", f3_unpack(player.position));
 		DebugUI_Text("DT: %f > TDRES: %f", dt__, dt__*60);
 		

@@ -45,6 +45,9 @@ DATA		:=	data
 INCLUDES	:=	source $(BASE)
 ROMFS	:=	romfs
 
+SYSNAME		:= Nintendo Switch
+BASENAME	:= Base-Engine
+BASEVER		:= 0.2.0
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
@@ -53,9 +56,9 @@ ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
 			$(ARCH) $(DEFINES)
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -D__BASE__NX__=1
+CFLAGS	+=	$(INCLUDE) -D_GNU_SOURCE=1 -D__SWITCH__ -D__BASE_NX__
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++20 
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
