@@ -303,7 +303,7 @@ int main(void)
           (app.GetMonitorSize().y / 2) - (app.GetWindowSize().y / 2)));
       updt = true;
     }
-    // pr.UpdateScreen();
+
     app.SetVsync(vsy);
     deltatime = deltaclock.GetAsMs();
     deltaclock.Reset();
