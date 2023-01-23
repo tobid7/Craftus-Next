@@ -1,14 +1,10 @@
 #pragma once
 #include <StealConsole.hpp>
-#include <TextureMapper.hpp>
 #include <iostream>
 #include <string>
 #include <stringcheats.hpp>
 #include <ui/Gui.hpp>
-#include <Renderer.hpp>
-#include <Shader.hpp>
 #include <Texture.hpp>
-#include <VArray.hpp>
 #include <Timer.hpp>
 
 //
@@ -53,13 +49,6 @@ struct Vec3f {
   float y;
   float z;
 };
-
-enum RenderApi {
-  CITRO3D, // only supported on 3ds
-  OPENGL,  // Supported on Switch and PC
-};
-
-extern RenderApi _rnd_api;
 
 void Init();
 void Exit();

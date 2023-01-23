@@ -1,4 +1,5 @@
-#pragma once
+
+#include <stdint.h>
 
 namespace Base {
 struct WorldVertex {
@@ -7,10 +8,9 @@ struct WorldVertex {
   float color[3];
 };
 
-struct UiSquare
-{
-    float position[2];
-    float color[4];
+struct UiSquare {
+  float position[2];
+  float color[4];
 };
 
 } // namespace Base

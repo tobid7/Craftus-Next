@@ -9,7 +9,7 @@
 #include <glad/glad.h>  // glad library (OpenGL loader)
 
 #include <Base.hpp>
-#define LLC_ARRAYSIZE(_ARR) ((int)(sizeof(_ARR) / sizeof(*(_ARR))))
+#define LLC_ARRAYSIZE(x) ((int)(sizeof(x) / sizeof(*(x))))
 
 static const char *const vertTri = R"text(
     #version 330 core
@@ -137,36 +137,20 @@ static void deinitEgl()
         s_display = nullptr;
     }
 }
-void Log__(const char*txt)
-{
-    std::ofstream file("sdmc:/log.txt", std::ios::app);
-    file << txt << std::endl;
-    file.close();
-}
 
 int main()
 {
-    Log__("egl");
     if (!initEgl(nwindowGetDefault()))
         return EXIT_FAILURE;
-    Log__("glad");
     gladLoadGL();
-    Log__("pad");
     // Configure our supported input layout: a single player with standard controller styles
     padConfigureInput(1, HidNpadStyleSet_NpadStandard);
-    Log__("pad2");
     // Initialize the default gamepad (which reads handheld  mode inputs as well as the first connected controller)
     PadState pad;
-    Log__("pad3");
     padInitializeDefault(&pad);
     Base::Init();
-    Log__("ren");
-    Base::Renderer* ren = 0;
-    Log__("ren1");
-    ren->LD7();
-    Log__("ren2");
+    Base::Renderer* ren = new Base::Renderer();
     ren->Init(1280, 720);
-    Log__("ren3");
     Base::WorldVertex vtx[] = {
         {{-0.5f, -0.5f, 0.0f}, {0, 0}, {0, 0, 1}},
         {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},

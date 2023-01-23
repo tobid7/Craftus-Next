@@ -7,7 +7,6 @@
 #include <imgui_internal.h>
 
 #include <Base.hpp>
-#include <Error.hpp>
 
 #include <algorithm>
 #include <filesystem>
@@ -281,8 +280,7 @@ int main(void)
   vao_->AddAttrInfo(2, 3, 0, false, sizeof(Base::WorldVertex),
                     (void *)offsetof(Base::WorldVertex, color));
   vao_->UnBind();
-  Base::Renderer *llc_renderer = 0;
-  llc_renderer->LD7();
+  auto llc_renderer = new Base::Renderer();
   llc_renderer->Init(1280, 720);
   color_t llc_quad((uint8_t)255, 255, 255, 255);
   std::cout << CalcPMT(4 - 1) << std::endl;
