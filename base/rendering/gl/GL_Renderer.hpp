@@ -4,13 +4,15 @@
 #include <rendering/Renderer.hpp>
 #include <vector>
 
-
 namespace Base {
 class GL_Renderer : public Renderer {
+public:
+  GL_Renderer() {}
   ~GL_Renderer();
   void Init(int &vieport_width, int &vieport_height) override;
   void Render() override;
-  void AddObject(Base::Object &obj, Base::RMode mode = RMode::FLAT, int layer = 0);
+  void AddObject(Base::Object &obj, Base::RMode mode = RMode::FLAT,
+                 int layer = 0);
 
 private:
   Color clearcolor;

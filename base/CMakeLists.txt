@@ -22,7 +22,8 @@ list(APPEND BASE_CFLAGS -DBASE_VERSION=\"${BASE_VER}\" -DBASE_NAME=\"${BASE_NM}\
 set(BASE_SOURCE Base.cpp
 basegame/bitmapengine/BitmapEngine.cpp
 basegame/bitmapengine/bmpconverter.cpp
-external/lodepng.cpp StealConsole.cpp ui/Gui.cpp misc/memory.cpp)
+external/lodepng.cpp StealConsole.cpp misc/memory.cpp
+misc/Color.cpp rendering/Base_Ren_Reg.cpp)
 
 set(BASE_EXTRAINCLUDES "")
 set(BASE_EXTRADEPS "")
@@ -36,12 +37,9 @@ if(BASE_DESKTOP)
     external/glad/glad.c
     rendering/gl/GL_Renderer.cpp
     rendering/gl/GL_Texture.cpp
-    rendering/gl/GL_VArray.cpp
+    rendering/gl/GL_VertexArray.cpp
     rendering/gl/GL_Shader.cpp
-    rendering/Renderer.cpp
-    rendering/Shader.cpp
-    rendering/VArray.cpp
-    rendering/Texture.cpp)
+    )
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
     external
@@ -66,12 +64,9 @@ if(BASE_NX)
     #OpenGL Support(3.3+)
     rendering/gl/GL_Renderer.cpp
     rendering/gl/GL_Texture.cpp
-    rendering/gl/GL_VArray.cpp
+    rendering/gl/GL_VertexArray.cpp
     rendering/gl/GL_Shader.cpp
-    rendering/Renderer.cpp
-    rendering/Shader.cpp
-    rendering/VArray.cpp
-    rendering/Texture.cpp)
+    )
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
     

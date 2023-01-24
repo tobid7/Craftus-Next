@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <BaseRender.hpp>
+#include <rendering/Renderer_Def.hpp>
 #include <bmpconverter.hpp>
 
 #define UNPACK_RGBA(col) (uint8_t)(col >> 24), (col >> 16), (col >> 8), (col)

@@ -1,11 +1,12 @@
 #pragma once
 #include <StealConsole.hpp>
-#include <iostream>
-#include <string>
-#include <stringcheats.hpp>
-#include <ui/Gui.hpp>
 #include <Texture.hpp>
 #include <Timer.hpp>
+#include <iostream>
+#include <rendering/Renderer_Def.hpp>
+#include <string>
+#include <stringcheats.hpp>
+#include <misc/memory.hpp>
 
 //
 #include <glm/glm.hpp>
