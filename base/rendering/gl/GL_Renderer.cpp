@@ -15,7 +15,43 @@ void GL_Renderer::Init(int &vieport_width, int &vieport_height) {
   m_vp_h = &vieport_height;
 }
 
-void GL_Renderer::Render() {}
+void GL_Renderer::Clear() {
+  glClearColor(clearcolor.getRed() / 255, clearcolor.getGreen() / 255,
+               clearcolor.getBlue() / 255, clearcolor.getAlpha() / 255);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void GL_Renderer::Render() {
+  Clear();
+
+  if (m_DrawStack3d.size() > 0) {
+    for (const auto &entry : m_DrawStack3d) { // for every layer
+      for (const auto &robj : entry.second) { // draw every object
+        if (robj.second()) {
+          // drawcalls++;
+          robj.first->Draw();
+        }
+      }
+    }
+
+    m_DrawStack3d.clear();
+  }
+
+  if (m_DrawStack2d.size() > 0) {
+    if (m_DrawStack2d.size() > 0) {
+      for (const auto &entry : m_DrawStack2d) { // for every layer
+        for (const auto &robj : entry.second) { // draw every object
+          if (robj.second()) {
+            // drawcalls++;
+            robj.first->Draw();
+          }
+        }
+      }
+
+      m_DrawStack2d.clear();
+    }
+  }
+}
 
 void GL_Renderer::AddObject(Base::Object &obj, RMode mode, int layer) {
   if (mode == RMode::FLAT) {

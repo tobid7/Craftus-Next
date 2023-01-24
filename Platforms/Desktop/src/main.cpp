@@ -210,6 +210,39 @@ bool task1(std::string msg) {
 
 bool prevcrash = false;
 
+class Tri_ : public Base::Object {
+public:
+  Tri_() {
+    Base::WorldVertex vtx[] = {
+        {{-0.5f, -0.5f, 0.0f}, {0, 0}, {0, 0, 1}},
+        {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},
+        {{0.0f, 0.5f, 0.0f}, {0, 0}, {1, 0, 0}},
+    };
+    trishader = new BaseShader();
+    trishader->LoadCode(vertTri, fragTri);
+    trishader->use();
+
+    vao_ = new BaseVertexArray();
+    vao_->Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::WorldVertex));
+    vao_->AddAttrInfo(0, 3, 0, false, sizeof(Base::WorldVertex),
+                      (void *)offsetof(Base::WorldVertex, position));
+    vao_->AddAttrInfo(1, 2, 0, false, sizeof(Base::WorldVertex),
+                      (void *)offsetof(Base::WorldVertex, texcoords));
+    vao_->AddAttrInfo(2, 3, 0, false, sizeof(Base::WorldVertex),
+                      (void *)offsetof(Base::WorldVertex, color));
+    vao_->UnBind();
+  }
+  void Draw() override {
+    trishader->use();
+    vao_->Bind();
+    Base_drawArrays(0, 6);
+  }
+
+private:
+  BaseVertexArray *vao_;
+  BaseShader *trishader;
+};
+
 int main(void) {
   stolenc = std::make_unique<Base::StealConsole>();
   NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
@@ -240,26 +273,7 @@ int main(void) {
   renderh = app.GetWindowSize().y;
   BaseRenderer *renderer = new BaseRenderer();
   renderer->Init(renderw, renderh);
-  BaseTexture tex;
-  tex.LoadFile("res/loading.png");
-  BaseShader shader_;
-  shader_.LoadCode(vertTri, fragTri);
-
-  Base::WorldVertex vtx[] = {
-      {{-0.5f, -0.5f, 0.0f}, {0, 0}, {0, 0, 1}},
-      {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},
-      {{0.0f, 0.5f, 0.0f}, {0, 0}, {1, 0, 0}},
-  };
-
-  BaseVetexArray vao_;
-  vao_.Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::WorldVertex));
-  vao_.AddAttrInfo(0, 3, 0, false, sizeof(Base::WorldVertex),
-                   (void *)offsetof(Base::WorldVertex, position));
-  vao_.AddAttrInfo(1, 2, 0, false, sizeof(Base::WorldVertex),
-                   (void *)offsetof(Base::WorldVertex, texcoords));
-  vao_.AddAttrInfo(2, 3, 0, false, sizeof(Base::WorldVertex),
-                   (void *)offsetof(Base::WorldVertex, color));
-  vao_.UnBind();
+  Tri_ tri;
   while (app.IsRunning()) {
     // Update Size
     renderw = app.GetWindowSize().x;
@@ -299,9 +313,8 @@ int main(void) {
     ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
     stc.Draw("Console");
 
-    shader_.use();
-    vao_.Bind();
-    Base_drawArrays(0, 6);
+    renderer->AddObject(tri);
+    renderer->Render();
     app.SwapBuffers();
   }
 

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cstddef>
 /*
 A Registry of Base-Engine Rendering Functions that are Required to Render
 objects!

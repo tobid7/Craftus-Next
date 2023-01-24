@@ -15,7 +15,7 @@
 
 typedef Base::GL_Renderer BaseRenderer;
 typedef Base::GL_Texture BaseTexture;
-typedef Base::GL_VertexArray BaseVetexArray;
+typedef Base::GL_VertexArray BaseVertexArray;
 typedef Base::GL_Shader BaseShader;
 
 #elif defined(__BASE_CTR__)
