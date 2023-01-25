@@ -5,6 +5,7 @@
 #endif
 
 #include <rendering/Base_Ren_Reg.hpp>
+#include <glm/glm.hpp>
 
 #if (defined(__BASE_DESKTOP__) || defined(__BASE__NX__))
 #include <gl/GL_Renderer.hpp>

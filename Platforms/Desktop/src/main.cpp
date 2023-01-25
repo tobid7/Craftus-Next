@@ -213,29 +213,40 @@ bool prevcrash = false;
 class Tri_ : public Base::Object {
 public:
   Tri_() {
-    Base::WorldVertex vtx[] = {
-        {{-0.5f, -0.5f, 0.0f}, {0, 0}, {0, 0, 1}},
-        {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},
-        {{0.0f, 0.5f, 0.0f}, {0, 0}, {1, 0, 0}},
+    Base::UiSquare vtx[] = {
+        {{-1.f, -1.f}, {0, 0, 1, 1}},
+        {{1.f, -1.f}, {0, 1, 0, 1}},
+        {{0.0f, 1.f}, {1, 0, 0, 1}},
     };
     trishader = new BaseShader();
     trishader->LoadCode(vertTri, fragTri);
     trishader->use();
 
     vao_ = new BaseVertexArray();
-    vao_->Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::WorldVertex));
-    vao_->AddAttrInfo(0, 3, 0, false, sizeof(Base::WorldVertex),
-                      (void *)offsetof(Base::WorldVertex, position));
-    vao_->AddAttrInfo(1, 2, 0, false, sizeof(Base::WorldVertex),
-                      (void *)offsetof(Base::WorldVertex, texcoords));
-    vao_->AddAttrInfo(2, 3, 0, false, sizeof(Base::WorldVertex),
-                      (void *)offsetof(Base::WorldVertex, color));
+    vao_->Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::UiSquare));
+    vao_->AddAttrInfo(0, 2, 0, false, sizeof(Base::UiSquare),
+                      (void *)offsetof(Base::UiSquare, position));
+    vao_->AddAttrInfo(1, 4, 0, false, sizeof(Base::UiSquare),
+                      (void *)offsetof(Base::UiSquare, color));
     vao_->UnBind();
   }
   void Draw() override {
     trishader->use();
+    glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(glm::vec2(100, 100), 0.0f));
+
+    model = glm::translate(model, glm::vec3(0.5f * 90, 0.5f * 90, 0.0f));
+    // model =
+    //   glm::rotate(model, glm::radians(1.3), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::translate(model, glm::vec3(-0.5f * 90, -0.5f * 90, 0.0f));
+
+    model = glm::scale(model, glm::vec3(glm::vec2(1.f), 1.0f));
+
+    this->trishader->setMat4("projection", projection);
+    this->trishader->setMat4("model", model);
     vao_->Bind();
-    Base_drawArrays(0, 6);
+    Base_drawArrays(0, 3);
   }
 
 private:
