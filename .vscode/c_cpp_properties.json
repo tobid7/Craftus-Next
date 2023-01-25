@@ -11,7 +11,9 @@
                 "C:/devkitpro/portlibs/switch/include/**",
                 "/opt/devkitpro/portlibs/switch/include/**",
                 "/opt/devkitpro/portlibs/3ds/include/**",
-                "C:/devkitpro/portlibs/3ds/include/**"
+                "C:/devkitpro/portlibs/3ds/include/**",
+                "/usr/include/**",
+                "base/**"
             ],
             "defines": [],
             "cStandard": "gnu17",

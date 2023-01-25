@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <misc/bvec.hpp>
 /*
 A Registry of Base-Engine Rendering Functions that are Required to Render
 objects!

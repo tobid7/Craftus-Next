@@ -16,6 +16,7 @@ void GL_Renderer::Init(int &vieport_width, int &vieport_height) {
 }
 
 void GL_Renderer::Clear() {
+  glViewport(0, 0, m_vp_w[0], m_vp_h[0]);
   glClearColor(clearcolor.getRed() / 255, clearcolor.getGreen() / 255,
                clearcolor.getBlue() / 255, clearcolor.getAlpha() / 255);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -29,7 +30,7 @@ void GL_Renderer::Render() {
       for (const auto &robj : entry.second) { // draw every object
         if (robj.second()) {
           // drawcalls++;
-          robj.first->Draw();
+          robj.first->Draw(bvec2i(m_vp_w[0], m_vp_h[0]));
         }
       }
     }
@@ -43,7 +44,7 @@ void GL_Renderer::Render() {
         for (const auto &robj : entry.second) { // draw every object
           if (robj.second()) {
             // drawcalls++;
-            robj.first->Draw();
+            robj.first->Draw(bvec2i(m_vp_w[0], m_vp_h[0]));
           }
         }
       }

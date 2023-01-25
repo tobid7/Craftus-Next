@@ -12,6 +12,38 @@
 #define LLC_ARRAYSIZE(x) ((int)(sizeof(x) / sizeof(*(x))))
 
 static const char *const vertTri = R"text(
+#version 330 core
+layout (location = 0) in vec2 vertex;
+layout (location = 0) in vec2 texc;
+
+out vec2 TexCoords;
+
+uniform mat4 model;
+uniform mat4 projection;
+
+void main()
+{
+    TexCoords = texc;
+    gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
+}
+)text";
+
+static const char *const fragTri = R"text(
+
+#version 330 core
+in vec2 TexCoords;
+out vec4 color;
+
+uniform sampler2D image;
+uniform vec3 spriteColor;
+
+void main()
+{    
+    color = vec4(spriteColor, 1.0) * texture(image, TexCoords);
+}  
+)text";
+
+static const char *const vertTri2 = R"text(
     #version 330 core
     layout (location = 0) in vec3 aPos;
     layout (location = 1) in vec2 aTexcoord;
@@ -24,7 +56,7 @@ static const char *const vertTri = R"text(
     }
 )text";
 
-static const char *const fragTri = R"text(
+static const char *const fragTri2 = R"text(
     #version 330 core
     in vec4 ourColor;
     out vec4 fragColor;
@@ -137,37 +169,62 @@ static void deinitEgl() {
   }
 }
 
-class Tri_ : public Base::Object {
+class Sprite : public Base::Object
+{
 public:
-  Tri_() {
-    Base::WorldVertex vtx[] = {
-        {{-0.5f, -0.5f, 0.0f}, {0, 0}, {0, 0, 1}},
-        {{0.5f, -0.5f, 0.0f}, {0, 0}, {0, 1, 0}},
-        {{0.0f, 0.5f, 0.0f}, {0, 0}, {1, 0, 0}},
+  Sprite()
+  {
+    Base::UiSquare vtx[] = {
+        {{0.0f, 1.0f}, {0.0f, 1.0f}, {0, 0, 0, 0}},
+        {{1.0f, 0.0f}, {1.0f, 0.0f}, {0, 0, 0, 0}},
+        {{0.0f, 0.0f}, {0.0f, 0.0f}, {0, 0, 0, 0}},
+
+        {{0.0f, 1.0f}, {0.0f, 1.0f}, {0, 0, 0, 0}},
+        {{1.0f, 1.0f}, {1.0f, 1.0f}, {0, 0, 0, 0}},
+        {{1.0f, 0.0f}, {1.0f, 0.0f}, {0, 0, 0, 0}},
     };
     trishader = new BaseShader();
     trishader->LoadCode(vertTri, fragTri);
     trishader->use();
 
     vao_ = new BaseVertexArray();
-    vao_->Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::WorldVertex));
-    vao_->AddAttrInfo(0, 3, 0, false, sizeof(Base::WorldVertex),
-                      (void *)offsetof(Base::WorldVertex, position));
-    vao_->AddAttrInfo(1, 2, 0, false, sizeof(Base::WorldVertex),
-                      (void *)offsetof(Base::WorldVertex, texcoords));
-    vao_->AddAttrInfo(2, 3, 0, false, sizeof(Base::WorldVertex),
-                      (void *)offsetof(Base::WorldVertex, color));
+    vao_->Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::UiSquare));
+    vao_->AddAttrInfo(0, 2, 0, false, sizeof(Base::UiSquare),
+                      (void *)offsetof(Base::UiSquare, position));
+    vao_->AddAttrInfo(1, 2, 0, false, sizeof(Base::UiSquare),
+                      (void *)offsetof(Base::UiSquare, texcoords));
+    vao_->AddAttrInfo(2, 4, 0, false, sizeof(Base::UiSquare),
+                      (void *)offsetof(Base::UiSquare, color));
     vao_->UnBind();
   }
-  void Draw() override {
+  void Draw(bvec2i raster_box) override
+  {
     trishader->use();
+    glm::mat4 projection = glm::ortho(0.0f, (float)raster_box.x, (float)raster_box.y, 0.0f, -1.0f, 1.0f);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(glm::vec2(100, 100), 0.0f));
+
+    model = glm::translate(model, glm::vec3(0.5f * texture->GetSize().x, 0.5f * texture->GetSize().y, 0.0f));
+     model =
+       glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::translate(model, glm::vec3(-0.5f * texture->GetSize().x, -0.5f * texture->GetSize().y, 0.0f));
+
+    model = glm::scale(model, glm::vec3(texture->GetSize().x, texture->GetSize().y, 1.0f));
+
+    this->trishader->setMat4("projection", projection);
+    this->trishader->setMat4("model", model);
+    this->trishader->setVec3("spriteColor", glm::vec3(1.0f));
+    texture->Bind();
     vao_->Bind();
     Base_drawArrays(0, 6);
   }
 
+  void SetTexture(BaseTexture &tex) { texture = &tex; }
+
 private:
   BaseVertexArray *vao_;
   BaseShader *trishader;
+  BaseTexture *texture;
 };
 
 int main() {
@@ -187,7 +244,10 @@ int main() {
   int renh = 720;
 
   ren->Init(renw, renh);
-  Tri_ tri;
+  Sprite tri;
+  BaseTexture text_;
+  text_.LoadFile("romfs:/loading.png");
+  tri.SetTexture(text_);
   // Main graphics loop
   while (appletMainLoop()) {
     padUpdate(&pad);

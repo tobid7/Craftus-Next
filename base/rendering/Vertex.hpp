@@ -10,6 +10,7 @@ struct WorldVertex {
 
 struct UiSquare {
   float position[2];
+  float texcoords[2];
   float color[4];
 };
 
