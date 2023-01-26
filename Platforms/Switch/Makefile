@@ -37,7 +37,9 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   of a homebrew executable (.nro). This is intended to be used for sysmodules.
 #   NACP building is skipped as well.
 #---------------------------------------------------------------------------------
-BASE		:= ../../base ../../base/rendering ../../base/rendering/gl ../../base/ui ../../base/misc ../../base/basegame ../../base/basegame/bitmapengine
+BASE		:= ../../base ../../base/rendering ../../base/rendering/gl ../../base/ui \
+				../../base/misc ../../base/basegame ../../base/basegame/bitmapengine \
+				../../base/objects
 TARGET		:=	CraftusNext
 BUILD		:=	build
 SOURCES		:=	source $(BASE)
@@ -63,7 +65,7 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++20
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lglad -lEGL -lglapi -ldrm_nouveau -lnx
+LIBS	:= -lfreetype -lglad -lEGL -lglapi -ldrm_nouveau -lnx
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

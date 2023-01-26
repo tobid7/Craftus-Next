@@ -67,7 +67,7 @@ static const char *const fragTri2 = R"text(
 )text";
 
 #include <unistd.h>
-#define TRACE(fmt, ...)                                                        \
+#define TRACE(fmt, ...) \
   printf("%s: " fmt "\n", __PRETTY_FUNCTION__, ##__VA_ARGS__)
 
 // EGL Stuff
@@ -75,10 +75,12 @@ static EGLDisplay s_display;
 static EGLContext s_context;
 static EGLSurface s_surface;
 
-static bool initEgl(NWindow *win) {
+static bool initEgl(NWindow *win)
+{
   // Connect to the EGL default display
   s_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-  if (!s_display) {
+  if (!s_display)
+  {
     TRACE("Could not connect to display! error: %d", eglGetError());
     goto _fail0;
   }
@@ -87,7 +89,8 @@ static bool initEgl(NWindow *win) {
   eglInitialize(s_display, nullptr, nullptr);
 
   // Select OpenGL (Core) as the desired graphics API
-  if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE) {
+  if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE)
+  {
     TRACE("Could not set API! error: %d", eglGetError());
     goto _fail1;
   }
@@ -111,14 +114,16 @@ static bool initEgl(NWindow *win) {
                                                     8,
                                                     EGL_NONE};
   eglChooseConfig(s_display, framebufferAttributeList, &config, 1, &numConfigs);
-  if (numConfigs == 0) {
+  if (numConfigs == 0)
+  {
     TRACE("No config found! error: %d", eglGetError());
     goto _fail1;
   }
 
   // Create an EGL window surface
   s_surface = eglCreateWindowSurface(s_display, config, win, nullptr);
-  if (!s_surface) {
+  if (!s_surface)
+  {
     TRACE("Surface creation failed! error: %d", eglGetError());
     goto _fail1;
   }
@@ -134,7 +139,8 @@ static bool initEgl(NWindow *win) {
       EGL_NONE};
   s_context =
       eglCreateContext(s_display, config, EGL_NO_CONTEXT, contextAttributeList);
-  if (!s_context) {
+  if (!s_context)
+  {
     TRACE("Context creation failed! error: %d", eglGetError());
     goto _fail2;
   }
@@ -153,14 +159,18 @@ _fail0:
   return false;
 }
 
-static void deinitEgl() {
-  if (s_display) {
+static void deinitEgl()
+{
+  if (s_display)
+  {
     eglMakeCurrent(s_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-    if (s_context) {
+    if (s_context)
+    {
       eglDestroyContext(s_display, s_context);
       s_context = nullptr;
     }
-    if (s_surface) {
+    if (s_surface)
+    {
       eglDestroySurface(s_display, s_surface);
       s_surface = nullptr;
     }
@@ -197,16 +207,20 @@ public:
                       (void *)offsetof(Base::UiSquare, color));
     vao_->UnBind();
   }
+  void SetPos(bvec2i pos)
+  {
+    position = pos;
+  }
   void Draw(bvec2i raster_box) override
   {
     trishader->use();
     glm::mat4 projection = glm::ortho(0.0f, (float)raster_box.x, (float)raster_box.y, 0.0f, -1.0f, 1.0f);
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(glm::vec2(100, 100), 0.0f));
+    model = glm::translate(model, glm::vec3(glm::vec2(position.x, position.y), 0.0f));
 
     model = glm::translate(model, glm::vec3(0.5f * texture->GetSize().x, 0.5f * texture->GetSize().y, 0.0f));
-     model =
-       glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    model =
+        glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::translate(model, glm::vec3(-0.5f * texture->GetSize().x, -0.5f * texture->GetSize().y, 0.0f));
 
     model = glm::scale(model, glm::vec3(texture->GetSize().x, texture->GetSize().y, 1.0f));
@@ -222,14 +236,53 @@ public:
   void SetTexture(BaseTexture &tex) { texture = &tex; }
 
 private:
+  bvec2i position = bvec2i(0, 0);
   BaseVertexArray *vao_;
   BaseShader *trishader;
   BaseTexture *texture;
 };
 
-int main() {
+class Tri_ : public Base::Object
+{
+public:
+  Tri_()
+  {
+    Base::WorldVertex vtx[] = {
+        {{0.0f, 1.0f}, {0.0f, 1.0f}, {1, 0, 0}},
+        {{1.0f, 0.0f}, {1.0f, 0.0f}, {0, 1, 0}},
+        {{0.0f, 0.0f}, {0.0f, 0.0f}, {0, 0, 1}},
+    };
+    shader = new BaseShader();
+    shader->LoadCode(vertTri2, fragTri2);
+    shader->use();
+
+    varray = new BaseVertexArray();
+    varray->Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::WorldVertex));
+    varray->AddAttrInfo(0, 2, 0, false, sizeof(Base::WorldVertex),
+                        (void *)offsetof(Base::WorldVertex, position));
+    varray->AddAttrInfo(1, 2, 0, false, sizeof(Base::WorldVertex),
+                        (void *)offsetof(Base::WorldVertex, texcoords));
+    varray->AddAttrInfo(2, 3, 0, false, sizeof(Base::WorldVertex),
+                        (void *)offsetof(Base::WorldVertex, color));
+    varray->UnBind();
+  }
+  void Draw(bvec2i raster_box) override
+  {
+    shader->use();
+    varray->Bind();
+    Base_drawArrays(0, 3);
+  }
+
+private:
+  BaseVertexArray *varray;
+  BaseShader *shader;
+};
+
+int main()
+{
   if (!initEgl(nwindowGetDefault()))
     return EXIT_FAILURE;
+  romfsInit();
   gladLoadGL();
   // Configure our supported input layout: a single player with standard
   // controller styles
@@ -249,12 +302,16 @@ int main() {
   text_.LoadFile("romfs:/loading.png");
   tri.SetTexture(text_);
   // Main graphics loop
-  while (appletMainLoop()) {
+  Tri_ ltr;
+  while (appletMainLoop())
+  {
+    tri.SetPos(bvec2i(1280/2-900/2, 720/2-400/2));
     padUpdate(&pad);
     u32 kDown = padGetButtonsDown(&pad);
     if (kDown & HidNpadButton_Plus)
       break;
     ren->AddObject(tri);
+    //ren->AddObject(ltr);
     ren->Render();
 
     eglSwapBuffers(s_display, s_surface);
@@ -262,5 +319,6 @@ int main() {
 
   // Deinitialize EGL
   deinitEgl();
+  romfsExit();
   return EXIT_SUCCESS;
 }

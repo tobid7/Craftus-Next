@@ -1,4 +1,6 @@
 #include <Base.hpp>
+#define STB_TRUETYPE_IMPLEMENTATION
+#include <external/stb_truetype.h>
 
 #ifndef BASE_NAME
 #define BASE_NAME "NULL"

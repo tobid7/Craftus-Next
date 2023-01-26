@@ -23,10 +23,12 @@ set(BASE_SOURCE Base.cpp
 basegame/bitmapengine/BitmapEngine.cpp
 basegame/bitmapengine/bmpconverter.cpp
 external/lodepng.cpp StealConsole.cpp misc/memory.cpp
-misc/Color.cpp rendering/Base_Ren_Reg.cpp)
+misc/Color.cpp rendering/Base_Ren_Reg.cpp objects/Text.cpp)
 
 set(BASE_EXTRAINCLUDES "")
 set(BASE_EXTRADEPS "")
+
+add_subdirectory(../base/external/freetype freetype)
 
 if(BASE_DESKTOP)
     message("Building for a Desktop Platform")
@@ -73,6 +75,8 @@ if(BASE_NX)
     glm)
     list(APPEND BASE_EXTRADEPS
     #${BASE_EXTRADEPS}
+    glad
+    glapi
     glm)
     cmake_host_system_information(RESULT DK_NAME QUERY OS_NAME)
     set(BASE_PL "Nintendo Switch -> ${DK_NAME}")
@@ -117,8 +121,8 @@ endif()
 
 add_library(${PROJECT_NAME} ${BASE_SOURCE})
 
-target_include_directories(${PROJECT_NAME} PUBLIC . basegame basegame/bitmapengine misc rendering ${BASE_EXTRAINCLUDES})
+target_include_directories(${PROJECT_NAME} PUBLIC . freetype basegame basegame/bitmapengine misc rendering ${BASE_EXTRAINCLUDES})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC ${BASE_EXTRADEPS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${BASE_EXTRADEPS} freetype)
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${BASE_CFLAGS})

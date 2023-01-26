@@ -22,6 +22,8 @@
 #include <Console.hpp>
 #include <currentshaders.hpp>
 
+#include <objects/Text.hpp>
+
 #define LLC_ARRAYSIZE(_ARR) ((int)(sizeof(_ARR) / sizeof(*(_ARR))))
 
 unsigned long hex2dec(std::string hex)
@@ -330,6 +332,9 @@ int main(void)
   BaseTexture text_;
   text_.LoadFile("res/loading.png");
   spr.SetTexture(text_);
+
+  Base::Text textl;
+
   while (app.IsRunning())
   {
     // Update Size
@@ -373,6 +378,7 @@ int main(void)
     stc.Draw("Console");
 
     renderer->AddObject(spr);
+    renderer->AddObject(textl);
     //renderer->AddObject(logo_spr);
     renderer->Render();
     app.SwapBuffers();

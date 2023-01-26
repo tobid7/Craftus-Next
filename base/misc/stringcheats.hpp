@@ -9,7 +9,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <string>
-// #include <unistd.h>
+
 #include <vector>
 
 #ifdef _MSC_VER
@@ -48,6 +48,8 @@ inline int asprintf(char **strp, const char *format, ...) {
   va_end(ap);
   return retval;
 }
+#else
+#include <unistd.h>
 #endif
 
 namespace Base {
@@ -58,7 +60,7 @@ inline std::string ToLowerCase(std::string in) {
   return in;
 }
 
-inline std::string FormatString(std::string fmt_str, ...) {
+/*inline std::string FormatString(std::string fmt_str, ...) {
   va_list ap;
   char *fp = NULL;
   va_start(ap, fmt_str);
@@ -66,7 +68,7 @@ inline std::string FormatString(std::string fmt_str, ...) {
   va_end(ap);
   std::unique_ptr<char, decltype(free) *> formatted(fp, free);
   return std::string(formatted.get());
-}
+}*/
 
 inline bool NameIsEndingWith(const std::string &name,
                              const std::vector<std::string> &extensions) {
