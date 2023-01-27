@@ -283,6 +283,8 @@ public:
     texture->Bind();
     vao_->Bind();
     Base_drawArrays(0, 6);
+    vao_->UnBind();
+    
   }
 
   void SetTexture(BaseTexture &tex) { texture = &tex; }
@@ -333,7 +335,7 @@ int main(void)
   text_.LoadFile("res/loading.png");
   spr.SetTexture(text_);
 
-  Base::Text textl;
+  //Base::Text textl;
 
   while (app.IsRunning())
   {
@@ -378,8 +380,8 @@ int main(void)
     stc.Draw("Console");
 
     renderer->AddObject(spr);
-    renderer->AddObject(textl);
-    //renderer->AddObject(logo_spr);
+    //renderer->AddObject(textl);
+    renderer->AddObject(logo_spr);
     renderer->Render();
     app.SwapBuffers();
   }

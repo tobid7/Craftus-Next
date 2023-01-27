@@ -14,6 +14,6 @@ public:
   bvec2i GetSize() override;
   private:
   bvec2i m_size = bvec2i();
-  unsigned texture;
+  unsigned int texture;
 };
 } // namespace Base
