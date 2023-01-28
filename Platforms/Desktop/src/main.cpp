@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <thread>
-
 // #define __DESKTOP__
 #include <NImGui/NImGui.hpp>
 #include <imgui_internal.h>
