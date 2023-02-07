@@ -27,7 +27,7 @@ public:
   void setMat4(const std::string &name, const glm::mat4 &mat) const override;
 
 private:
-void checkCompileErrors(unsigned shader, std::string type);
+  void checkCompileErrors(unsigned shader, std::string type);
   unsigned ID;
 };
 } // namespace Base

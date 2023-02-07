@@ -12,7 +12,8 @@ public:
   int GetRegId() override;
   void Bind() override;
   bvec2i GetSize() override;
-  private:
+
+private:
   bvec2i m_size = bvec2i();
   unsigned int texture;
 };

@@ -3,6 +3,4 @@
 
 #include <cstdint>
 
-
-
 #endif // __WORLD_H__

@@ -6,9 +6,7 @@
 #include <vector>
 
 namespace Base {
-GL_VertexArray::~GL_VertexArray() {
-  Destroy();
-}
+GL_VertexArray::~GL_VertexArray() { Destroy(); }
 
 void GL_VertexArray::Create(const void *data, uint32_t numVertices,
                             size_t vtxsize) {

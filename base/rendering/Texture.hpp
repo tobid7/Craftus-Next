@@ -1,8 +1,8 @@
 #pragma once
 #include <misc/Color.hpp>
+#include <misc/bvec.hpp>
 #include <rendering/Vertex.hpp>
 #include <string>
-#include <misc/bvec.hpp>
 
 namespace Base {
 class Texture {

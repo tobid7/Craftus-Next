@@ -17,7 +17,8 @@ std::string StealConsole::GetStdout() {
   if (this->stolen_stdout.str().length() < 90000) {
     return this->stolen_stdout.str();
   } else {
-    return this->stolen_stdout.str().substr(stolen_stdout.str().length()-90000);
+    return this->stolen_stdout.str().substr(stolen_stdout.str().length() -
+                                            90000);
   }
   return "";
 }

@@ -1,6 +1,6 @@
 #pragma once
-#include <rendering/Renderer_Def.hpp>
 #include <map>
+#include <rendering/Renderer_Def.hpp>
 
 static const char *const vertText = R"text(
 #version 330 core
@@ -31,42 +31,38 @@ void main()
 }  
 )text";
 
-namespace Base
-{
-    class Font
-    {
-    public:
-        struct FChar
-        {
-            BaseTexture *tex;
-            bvec2i size;
-            bvec2i bearing;
-            unsigned int advance;
-        };
+namespace Base {
+class Font {
+public:
+  struct FChar {
+    BaseTexture *tex;
+    bvec2i size;
+    bvec2i bearing;
+    unsigned int advance;
+  };
 
-        Font();
-        ~Font();
-        void LoadTTF(std::string path);
-        std::map<char, FChar> GetMap() { return m_chars; }
+  Font();
+  ~Font();
+  void LoadTTF(std::string path);
+  std::map<char, FChar> GetMap() { return m_chars; }
 
-    private:
-        std::map<char, FChar> m_chars;
-    };
+private:
+  std::map<char, FChar> m_chars;
+};
 
-    class Text : public Base::Object
-    {
-    public:
-        Text();
-        ~Text();
-        void Draw(bvec2i raster_box) override;
+class Text : public Base::Object {
+public:
+  Text();
+  ~Text();
+  void Draw(bvec2i raster_box) override;
 
-    private:
-        std::string text = "Test";
-        bvec2i position = bvec2i(0, 0);
-        float scale = 24.f;
-        BaseShader *textshader;
-        BaseVertexArray *varray;
-        Base::Font *fnt;
-    };
+private:
+  std::string text = "Test";
+  bvec2i position = bvec2i(0, 0);
+  float scale = 24.f;
+  BaseShader *textshader;
+  BaseVertexArray *varray;
+  Base::Font *fnt;
+};
 
-}
+} // namespace Base

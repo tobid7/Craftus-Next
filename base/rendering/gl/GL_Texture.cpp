@@ -120,7 +120,8 @@ int GL_Texture::GetRegId() { return texture; }
 
 void GL_Texture::Bind() {
   glActiveTexture(GL_TEXTURE0 + shaderreg);
-  glBindTexture(GL_TEXTURE0 + shaderreg, texture);
+  // glBindTexture(GL_TEXTURE0 + shaderreg, texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
 }
 
 bvec2i GL_Texture::GetSize() { return m_size; }

@@ -3,10 +3,12 @@
 #include <Texture.hpp>
 #include <Timer.hpp>
 #include <iostream>
+#include <misc/memory.hpp>
 #include <rendering/Renderer_Def.hpp>
 #include <string>
 #include <stringcheats.hpp>
-#include <misc/memory.hpp>
+
+#include <objects/Sprite.hpp>
 
 //
 #include <glm/glm.hpp>

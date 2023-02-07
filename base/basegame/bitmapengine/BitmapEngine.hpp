@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-#include <rendering/Renderer_Def.hpp>
 #include <bmpconverter.hpp>
+#include <rendering/Renderer_Def.hpp>
 
 #define UNPACK_RGBA(col) (uint8_t)(col >> 24), (col >> 16), (col >> 8), (col)
 #define UNPACK_BGRA(col) (uint8_t)(col >> 8), (col >> 16), (col >> 24), (col)
@@ -45,7 +45,7 @@ public:
   bool UpdateScreen();
   void Clear(uint8_t b = 0, uint8_t g = 0, uint8_t r = 0, uint8_t a = 255);
   void ClearBlank();
-  //BaseTexture GetImage();
+  // BaseTexture GetImage();
   /// Test to Find out The Best Settings for BitmapPrinter
   void Benchmark();
   /// Setup the Benchmark
@@ -58,7 +58,7 @@ private:
   bool Decode(Decoder deccc);
   // parameter
   int frame = 0;
-  //BaseTexture renderframe;
+  // BaseTexture renderframe;
   bool isscreen = false;
   BMP bitmap = BMP(
       20, 20,

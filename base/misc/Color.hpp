@@ -22,7 +22,7 @@ public:
   uint32_t getRgba8();
   uint32_t getRgb8();
   static inline uint32_t rgba8(int t_red, int t_green, int t_blue,
-                          int t_alpha = 255) {
+                               int t_alpha = 255) {
     return ((((t_alpha)&0xFF) << 24) | (((t_blue)&0xFF) << 16) |
             (((t_green)&0xFF) << 8) | (((t_red)&0xFF) << 0));
   }

@@ -1,6 +1,8 @@
 #pragma once
 #include <misc/bvec.hpp>
 
+#define NPI_ARS(_ARR) ((int)(sizeof(_ARR) / sizeof(*(_ARR))))
+
 namespace Base {
 class Object {
 public:

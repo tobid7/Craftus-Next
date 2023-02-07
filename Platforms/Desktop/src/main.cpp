@@ -19,7 +19,6 @@
 #include <json.hpp>
 
 #include <Console.hpp>
-#include <currentshaders.hpp>
 
 #include <objects/Text.hpp>
 
@@ -213,69 +212,6 @@ bool task1(std::string msg) {
 
 bool prevcrash = false;
 
-class Sprite : public Base::Object {
-public:
-  Sprite() {
-    Base::UiSquare vtx[] = {
-        {{0.0f, 1.0f}, {0.0f, 1.0f}, {0, 0, 0, 0}},
-        {{1.0f, 0.0f}, {1.0f, 0.0f}, {0, 0, 0, 0}},
-        {{0.0f, 0.0f}, {0.0f, 0.0f}, {0, 0, 0, 0}},
-
-        {{0.0f, 1.0f}, {0.0f, 1.0f}, {0, 0, 0, 0}},
-        {{1.0f, 1.0f}, {1.0f, 1.0f}, {0, 0, 0, 0}},
-        {{1.0f, 0.0f}, {1.0f, 0.0f}, {0, 0, 0, 0}},
-    };
-    trishader = new BaseShader();
-    trishader->LoadCode(vertTri, fragTri);
-    trishader->use();
-
-    vao_ = new BaseVertexArray();
-    vao_->Create(&vtx, LLC_ARRAYSIZE(vtx), sizeof(Base::UiSquare));
-    vao_->AddAttrInfo(0, 2, 0, false, sizeof(Base::UiSquare),
-                      (void *)offsetof(Base::UiSquare, position));
-    vao_->AddAttrInfo(1, 2, 0, false, sizeof(Base::UiSquare),
-                      (void *)offsetof(Base::UiSquare, texcoords));
-    vao_->AddAttrInfo(2, 4, 0, false, sizeof(Base::UiSquare),
-                      (void *)offsetof(Base::UiSquare, color));
-    vao_->UnBind();
-  }
-  void Draw(bvec2i raster_box) override {
-    trishader->use();
-    glm::mat4 projection = glm::ortho(0.0f, (float)raster_box.x,
-                                      (float)raster_box.y, 0.0f, -1.0f, 1.0f);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(glm::vec2(100, 100), 0.0f));
-
-    model = glm::translate(model, glm::vec3(0.5f * texture->GetSize().x,
-                                            0.5f * texture->GetSize().y, 0.0f));
-    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    model =
-        glm::translate(model, glm::vec3(-0.5f * texture->GetSize().x,
-                                        -0.5f * texture->GetSize().y, 0.0f));
-
-    model = glm::scale(
-        model, glm::vec3(texture->GetSize().x, texture->GetSize().y, 1.0f));
-
-    this->trishader->setMat4("projection", projection);
-    this->trishader->setMat4("model", model);
-    this->trishader->setVec3("spriteColor", glm::vec3(1.0f));
-    texture->Bind();
-    vao_->Bind();
-    Base_drawArrays(0, 6);
-    vao_->UnBind();
-  }
-
-  void SetTexture(BaseTexture &tex) {
-    texture = new BaseTexture;
-    texture = &tex;
-  }
-
-private:
-  BaseVertexArray *vao_;
-  BaseShader *trishader;
-  BaseTexture *texture;
-};
-
 int main(void) {
   stolenc = std::make_unique<Base::StealConsole>();
   NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
@@ -315,7 +251,7 @@ int main(void) {
   text_.LoadFile("res/loading.png");
   spr.SetTexture(text_);
 
-  // Base::Text textl;
+  Base::Text textl;
 
   while (app.IsRunning()) {
     // Update Size
@@ -357,7 +293,7 @@ int main(void) {
     stc.Draw("Console");
 
     renderer->AddObject(spr);
-    // renderer->AddObject(textl);
+    renderer->AddObject(textl);
     renderer->AddObject(logo_spr);
     renderer->Render();
     app.SwapBuffers();

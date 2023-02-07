@@ -23,7 +23,6 @@
  * @{
  */
 
-
 /**
  * @name Features
  * @{
@@ -69,7 +68,6 @@
  * @}
  */
 
-
 /**
  * @name Dependencies
  * @{
@@ -98,7 +96,6 @@
 /**
  * @}
  */
-
 
 /**
  * @name System Functions
@@ -134,9 +131,9 @@
  * The default is realloc() if @ref MPACK_MALLOC has not been customized and
  * @ref MPACK_STDLIB is enabled.
  *
- * This is optional, even when @ref MPACK_MALLOC is used. If @ref MPACK_MALLOC is
- * set and @ref MPACK_REALLOC is not, @ref MPACK_MALLOC is used with a simple copy
- * to grow buffers.
+ * This is optional, even when @ref MPACK_MALLOC is used. If @ref MPACK_MALLOC
+ * is set and @ref MPACK_REALLOC is not, @ref MPACK_MALLOC is used with a simple
+ * copy to grow buffers.
  */
 #if defined(MPACK_STDLIB) && !defined(MPACK_MALLOC)
 #define MPACK_MALLOC malloc
@@ -147,7 +144,6 @@
 /**
  * @}
  */
-
 
 /**
  * @name Debugging options
@@ -208,10 +204,8 @@
  * This is enabled by default in debug builds (provided a malloc() is
  * available.)
  */
-#if !defined(MPACK_READ_TRACKING) && \
-        defined(MPACK_DEBUG) && MPACK_DEBUG && \
-        defined(MPACK_READER) && MPACK_READER && \
-        defined(MPACK_MALLOC)
+#if !defined(MPACK_READ_TRACKING) && defined(MPACK_DEBUG) && MPACK_DEBUG &&    \
+    defined(MPACK_READER) && MPACK_READER && defined(MPACK_MALLOC)
 #define MPACK_READ_TRACKING 1
 #endif
 
@@ -229,17 +223,14 @@
  * This is enabled by default in debug builds (provided a malloc() is
  * available.)
  */
-#if !defined(MPACK_WRITE_TRACKING) && \
-        defined(MPACK_DEBUG) && MPACK_DEBUG && \
-        defined(MPACK_WRITER) && MPACK_WRITER && \
-        defined(MPACK_MALLOC)
+#if !defined(MPACK_WRITE_TRACKING) && defined(MPACK_DEBUG) && MPACK_DEBUG &&   \
+    defined(MPACK_WRITER) && MPACK_WRITER && defined(MPACK_MALLOC)
 #define MPACK_WRITE_TRACKING 1
 #endif
 
 /**
  * @}
  */
-
 
 /**
  * @name Miscellaneous
@@ -322,11 +313,8 @@
  * @}
  */
 
-
-
 /**
  * @}
  */
 
 #endif
-
