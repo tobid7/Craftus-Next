@@ -13,6 +13,10 @@ struct bvec2f {
     x = ix;
     y = iy;
   }
+  bvec2f(bvec2i vc) {
+    x = vc.x;
+    y = vc.y;
+  }
   float x;
   float y;
 };

@@ -24,6 +24,43 @@
 
 #define LLC_ARRAYSIZE(_ARR) ((int)(sizeof(_ARR) / sizeof(*(_ARR))))
 
+#include <cmath>
+bool pos_chx = false;
+bool pos_chy = false;
+void MoveDvDLogo(bvec2f* pos, bvec2f screensize, bvec2f logosize, bvec2f velocity) {
+  if(pos_chx)
+  {
+    pos->x -= velocity.x;
+    
+  } else
+  {
+    pos->x += velocity.x;
+  }
+  if(pos_chy)
+  {
+    pos->y -= velocity.y;
+  }
+  else{
+  pos->y += velocity.y;}
+
+  if (pos->x <= 0 || pos->x + logosize.x >= screensize.x) {
+    pos_chx = true;
+  }
+
+  if (pos->y <= 0 || pos->y + logosize.y >= screensize.y) {
+    pos_chy = true;
+  }
+
+  if (pos->x <= 0) {
+    pos_chx = false;
+  }
+
+  if (pos->y <= 0) {
+    pos_chy = false;
+  }
+}
+
+
 unsigned long hex2dec(std::string hex) {
   unsigned long result = 0;
   for (int i = 0; i < hex.length(); i++) {
@@ -252,12 +289,14 @@ int main(void) {
   spr.SetTexture(text_);
 
   Base::Text textl;
+  bvec2f lgopos = bvec2f(0, 0);
 
   while (app.IsRunning()) {
     // Update Size
     renderw = app.GetWindowSize().x;
     renderh = app.GetWindowSize().y;
-
+    MoveDvDLogo(&lgopos, bvec2f(renderw, renderh), bvec2f(logo_spr.GetTexture()->GetSize()), bvec2f(deltatime*0.2, deltatime*0.2));
+    logo_spr.SetPosition(lgopos);
     if (prevcrash) {
       ImGui::End();
       prevcrash = false;

@@ -8,9 +8,10 @@
 
 static const char *const vertTri = R"text(
 #version 330 core
-layout (location = 0) in vec2 vertex;
-layout (location = 0) in vec2 texc;
-
+//layout (location = 0) in vec2 vertex;
+//layout (location = 1) in vec2 texc;
+in vec2 vertex;
+in vec2 texc;
 out vec2 TexCoords;
 
 uniform mat4 model;
@@ -96,6 +97,17 @@ public:
     texture = &tex;
   }
 
+  BaseTexture* GetTexture() {return texture; }
+
+  void SetPosition(bvec2f t_pos)
+  {
+    position = t_pos;
+  }
+  bvec2f GetPosition(){return position;}
+  void SetScale(bvec2f t_scale){ scale = t_scale; }
+  bvec2f GetScale(){ return scale; }
+  void SetRotation(float rotation){rot = rotation;}
+  float GetRotation() {return rot;}
 private:
   BaseVertexArray *vao_;
   BaseShader *trishader;
