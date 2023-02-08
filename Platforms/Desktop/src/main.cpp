@@ -242,8 +242,8 @@ int main(void) {
   renderh = app.GetWindowSize().y;
   BaseRenderer *renderer = new BaseRenderer();
   renderer->Init(renderw, renderh);
-  Sprite spr;
-  Sprite logo_spr;
+  Base::Sprite spr;
+  Base::Sprite logo_spr;
   BaseTexture logo_tex;
   logo_tex.LoadFile("res/icon.png");
   logo_spr.SetTexture(logo_tex);
