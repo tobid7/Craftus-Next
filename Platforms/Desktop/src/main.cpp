@@ -27,21 +27,19 @@
 #include <cmath>
 bool pos_chx = false;
 bool pos_chy = false;
-void MoveDvDLogo(bvec2f* pos, bvec2f screensize, bvec2f logosize, bvec2f velocity) {
-  if(pos_chx)
-  {
+void MoveDvDLogo(bvec2f *pos, bvec2f screensize, bvec2f logosize,
+                 bvec2f velocity) {
+  if (pos_chx) {
     pos->x -= velocity.x;
-    
-  } else
-  {
+
+  } else {
     pos->x += velocity.x;
   }
-  if(pos_chy)
-  {
+  if (pos_chy) {
     pos->y -= velocity.y;
+  } else {
+    pos->y += velocity.y;
   }
-  else{
-  pos->y += velocity.y;}
 
   if (pos->x <= 0 || pos->x + logosize.x >= screensize.x) {
     pos_chx = true;
@@ -59,7 +57,6 @@ void MoveDvDLogo(bvec2f* pos, bvec2f screensize, bvec2f logosize, bvec2f velocit
     pos_chy = false;
   }
 }
-
 
 unsigned long hex2dec(std::string hex) {
   unsigned long result = 0;
@@ -248,7 +245,7 @@ bool task1(std::string msg) {
 }
 
 bool prevcrash = false;
-
+int curreg = 0;
 int main(void) {
   stolenc = std::make_unique<Base::StealConsole>();
   NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
@@ -295,7 +292,9 @@ int main(void) {
     // Update Size
     renderw = app.GetWindowSize().x;
     renderh = app.GetWindowSize().y;
-    MoveDvDLogo(&lgopos, bvec2f(renderw, renderh), bvec2f(logo_spr.GetTexture()->GetSize()), bvec2f(deltatime*0.2, deltatime*0.2));
+    MoveDvDLogo(&lgopos, bvec2f(renderw, renderh),
+                bvec2f(logo_spr.GetTexture()->GetSize()),
+                bvec2f(deltatime * 0.2, deltatime * 0.2));
     logo_spr.SetPosition(lgopos);
     if (prevcrash) {
       ImGui::End();
@@ -325,6 +324,8 @@ int main(void) {
     ImGui::Text(
         "Allocated: %s",
         Base::string_hacks::FormatBytes(Base::Memory::GetCurrent()).c_str());
+    ImGui::InputInt("Image Reg", &curreg);
+    ImGui::Image((ImTextureID)curreg, ImVec2(100, 100));
     ImGui::End();
     stc.Clear();
     stc.AddLog(stolenc->GetStdout().c_str());

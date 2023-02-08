@@ -71,7 +71,8 @@ public:
     glm::mat4 projection = glm::ortho(0.0f, (float)raster_box.x,
                                       (float)raster_box.y, 0.0f, -1.0f, 1.0f);
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(glm::vec2(position.x, position.y), 0.0f));
+    model = glm::translate(model,
+                           glm::vec3(glm::vec2(position.x, position.y), 0.0f));
 
     model = glm::translate(model, glm::vec3(0.5f * texture->GetSize().x,
                                             0.5f * texture->GetSize().y, 0.0f));
@@ -97,17 +98,15 @@ public:
     texture = &tex;
   }
 
-  BaseTexture* GetTexture() {return texture; }
+  BaseTexture *GetTexture() { return texture; }
 
-  void SetPosition(bvec2f t_pos)
-  {
-    position = t_pos;
-  }
-  bvec2f GetPosition(){return position;}
-  void SetScale(bvec2f t_scale){ scale = t_scale; }
-  bvec2f GetScale(){ return scale; }
-  void SetRotation(float rotation){rot = rotation;}
-  float GetRotation() {return rot;}
+  void SetPosition(bvec2f t_pos) { position = t_pos; }
+  bvec2f GetPosition() { return position; }
+  void SetScale(bvec2f t_scale) { scale = t_scale; }
+  bvec2f GetScale() { return scale; }
+  void SetRotation(float rotation) { rot = rotation; }
+  float GetRotation() { return rot; }
+
 private:
   BaseVertexArray *vao_;
   BaseShader *trishader;
