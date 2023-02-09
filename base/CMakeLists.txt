@@ -88,17 +88,13 @@ endif()
 if(BASE_CTR)
     message("Building for 3ds")
     add_subdirectory(../external/glm glm)
-    add_subdirectory(../external/libpicasso picasso)
+    #add_subdirectory(../external/libpicasso picasso)
     list(APPEND BASE_SOURCE
     #${BASE_SOURCE}
     rendering/c3d/C3D_Renderer.cpp
     rendering/c3d/C3D_Texture.cpp
     rendering/c3d/C3D_Shader.cpp
-    rendering/c3d/C3D_Varray.cpp
-    rendering/Renderer.cpp
-    rendering/Shader.cpp
-    rendering/VArray.cpp
-    rendering/Texture.cpp)
+    rendering/c3d/C3D_VertexArray.cpp)
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
     ${DEVKITPRO}/libctru/include
@@ -111,7 +107,7 @@ if(BASE_CTR)
     ctru
     citro2d
     glm
-    picasso
+    #picasso
     )
     #cmake_host_system_information(RESULT DK_NAME QUERY OS_NAME)
     set(BASE_PL "Desktop -> ${CMAKE_SYSTEM_NAME}")

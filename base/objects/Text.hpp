@@ -3,12 +3,12 @@
 #include <rendering/Renderer_Def.hpp>
 
 static const char *const vertText = R"text(
-#version 120
+#version 130
 
-attribute vec2 a_position;
-attribute vec2 a_tex_coord;
+in vec2 a_position;
+in vec2 a_tex_coord;
 
-varying vec2 v_tex_coord;
+out vec2 v_tex_coord;
 
 uniform mat4 u_modelViewProj;
 
@@ -21,9 +21,9 @@ void main()
 )text";
 
 static const char *const fragText = R"text(
-#version 120
+#version 130
 
-varying vec2 v_tex_coord;
+out in v_tex_coord;
 
 uniform sampler2D u_texture;
 

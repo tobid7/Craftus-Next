@@ -27,6 +27,7 @@ void GL_VertexArray::AddAttrInfo(int index, int size, int type,
 }
 
 void GL_VertexArray::UpdateSubData(const void *data, int offs, size_t size) {
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBufferSubData(GL_ARRAY_BUFFER, offs, size, data);
 }
 

@@ -1,5 +1,6 @@
 #include <objects/Text.hpp>
 #include <external/stb_truetype.h>
+#include <external/stb_image_write.h>
 
 struct FontVertex {
     glm::vec2 position;

@@ -13,7 +13,7 @@ endmacro()
 msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
 msys_to_cmake_path("$ENV{DEVKITARM}" DEVKITARM)
 
-set(CMAKE_SYSTEM_NAME "Nintendo 3ds")
+set(CMAKE_SYSTEM_NAME "Generic")
 if(WIN32)
     set(CMAKE_C_COMPILER "C:/devkitPro/devkitARM/bin/arm-none-eabi-gcc.exe")
     set(CMAKE_CXX_COMPILER "C:/devkitPro/deckitARM/bin/arm-none-eabi-g++.exe")
