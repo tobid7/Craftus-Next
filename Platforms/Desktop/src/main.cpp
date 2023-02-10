@@ -252,7 +252,7 @@ int main(void) {
   app.SetWindowPos(NImGui::Vec2i(
       (app.GetMonitorSize().x / 2) - (app.GetWindowSize().x / 2),
       (app.GetMonitorSize().y / 2) - (app.GetWindowSize().y / 2)));
-  // app.LoadIcon("res/icon.png");
+  app.SetIcon("res/icon.png");
   const ImU32 col = ImGui::GetColorU32(ImGuiCol_ButtonHovered);
   const ImU32 bg = ImGui::GetColorU32(ImGuiCol_Button);
 

@@ -10,6 +10,3 @@
 [submodule "external/libpicasso"]
 	path = external/libpicasso
 	url = https://github.com/Tobi-D7/libpicasso
-[submodule "base/external/freetype"]
-	path = base/external/freetype
-	url = https://github.com/freetype/freetype.git

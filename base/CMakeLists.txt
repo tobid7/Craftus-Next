@@ -28,8 +28,6 @@ misc/Color.cpp rendering/Base_Ren_Reg.cpp objects/Text.cpp)
 set(BASE_EXTRAINCLUDES "")
 set(BASE_EXTRADEPS "")
 
-add_subdirectory(../base/external/freetype freetype)
-
 if(BASE_DESKTOP)
     message("Building for a Desktop Platform")
     add_subdirectory(../external/glm glm)
@@ -117,8 +115,8 @@ endif()
 
 add_library(${PROJECT_NAME} ${BASE_SOURCE})
 
-target_include_directories(${PROJECT_NAME} PUBLIC . freetype basegame basegame/bitmapengine misc rendering ${BASE_EXTRAINCLUDES})
+target_include_directories(${PROJECT_NAME} PUBLIC . basegame basegame/bitmapengine misc rendering ${BASE_EXTRAINCLUDES})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC ${BASE_EXTRADEPS} freetype)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${BASE_EXTRADEPS})
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${BASE_CFLAGS})
