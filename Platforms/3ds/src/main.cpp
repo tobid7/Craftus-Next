@@ -94,26 +94,10 @@ int main(void) {
   // C2D_FontLoadSystem(CFG_REGION_EUR);
   top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
   double ed = tm.GetAsMs();
-  Base::Texture *tex;
-  tex->LD7();
-  tex->Load("romfs:/loading.png");
-  // NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
+  
   Base::Timer delta;
   double dt = 0;
-  Base::Renderer *ren;
-  ren->LD7();
-  ren->Init(400, 240);
-  Base::Shader *tshader;
-  tshader->LD7();
-  tshader->Compile(vertShader, NULL);
-  tshader->use();
-  Base::VertexArray *tri;
-  tri->LD7();
-  tri->Create(&vertex_list, vertex_list_count, sizeof(vertex));
-  tri->AddAttrInfo(0, 3, 0, false, sizeof(vertex),
-                   (void *)offsetof(vertex, position));
-  tri->AddAttrInfo(1, 3, 0, false, sizeof(vertex),
-                   (void *)offsetof(vertex, color));
+  
   // Configure the first fragment shading substage to just pass through the
   // vertex color See https://www.opengl.org/sdk/docs/man2/xhtml/glTexEnv.xml
   // for more insight
@@ -131,10 +115,6 @@ int main(void) {
     C3D_FrameBegin(1);
     C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
     C2D_SceneBegin(top);
-    tshader->use();
-    tshader->setMat4("projection", projection);
-    tri->Bind();
-    ren->DrawArrays(vertex_list_count);
 
     C3D_FrameEnd(0);
   }

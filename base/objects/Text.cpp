@@ -1,6 +1,7 @@
 #include <objects/Text.hpp>
 #include <external/stb_truetype.h>
 #include <external/stb_image_write.h>
+#include <cstring>
 
 struct FontVertex {
     glm::vec2 position;
@@ -88,7 +89,7 @@ namespace Base
 {
     Text::Text()
     {
-        font.initFont("res/Font.ttf");
+        //font.initFont("res/Font.ttf");
     }
     
     Text::~Text()
@@ -98,6 +99,6 @@ namespace Base
     
     void Text::Draw(bvec2i raster_box)
     {
-        font.drawString(position.x, position.y, this->text.c_str());
+        //font.drawString(position.x, position.y, this->text.c_str());
     }
 }

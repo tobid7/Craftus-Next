@@ -27,6 +27,8 @@ typedef Base::GL_Shader BaseShader;
 
 typedef Base::C3D_Renderer BaseRenderer;
 typedef Base::C3D_Texture BaseTexture;
+typedef Base::C3D_VertexArray BaseVertexArray;
+typedef Base::C3D_Shader BaseShader;
 
 #else
 #include <Renderer.hpp>
