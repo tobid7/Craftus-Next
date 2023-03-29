@@ -1,3 +1,16 @@
+/*  ____            __ _                   _   _           _   
+*  / ___|_ __ __ _ / _| |_ _   _ ___      | \ | | _____  _| |_ 
+* | |   | '__/ _` | |_| __| | | / __|_____|  \| |/ _ \ \/ / __|
+* | |___| | | (_| |  _| |_| |_| \__ \_____| |\  |  __/>  <| |_ 
+*  \____|_|  \__,_|_|  \__|\__,_|___/     |_| \_|\___/_/\_\\__|
+*                                                              
+*  _   _ ____ ___      ____ _____ ______ _____             
+* | \ | |  _ \_ _|    |  _ \___  / /  _ \___  |_   ____  __
+* |  \| | |_) | |_____| | | | / / /| | | | / /\ \ / /\ \/ /
+* | |\  |  __/| |_____| |_| |/ / / | |_| |/ /  \ V /  >  < 
+* |_| \_|_|  |___|    |____//_/_/  |____//_/    \_/  /_/\_\
+* Copyright (C) 2022-2023 Tobi-D7, RSDuck, Onixiya, D7vx-Dev, NPI-D7
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <thread>
@@ -21,6 +34,8 @@
 #include <Console.hpp>
 
 #include <objects/Text.hpp>
+
+#include <app_icon.hpp>
 
 #define LLC_ARRAYSIZE(_ARR) ((int)(sizeof(_ARR) / sizeof(*(_ARR))))
 
@@ -249,10 +264,11 @@ int curreg = 0;
 int main(void) {
   stolenc = std::make_unique<Base::StealConsole>();
   NImGui::App app("Craftus-Next", NImGui::Vec2i(1280, 720));
+  ImGui::GetIO().IniFilename = nullptr;
   app.SetWindowPos(NImGui::Vec2i(
       (app.GetMonitorSize().x / 2) - (app.GetWindowSize().x / 2),
       (app.GetMonitorSize().y / 2) - (app.GetWindowSize().y / 2)));
-  app.SetIcon("res/icon.png");
+  app.SetMemIcon(D7::GetFileBuffer(app_icon, F_icon));
   const ImU32 col = ImGui::GetColorU32(ImGuiCol_ButtonHovered);
   const ImU32 bg = ImGui::GetColorU32(ImGuiCol_Button);
 

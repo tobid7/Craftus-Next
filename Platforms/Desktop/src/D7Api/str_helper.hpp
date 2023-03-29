@@ -1,16 +1,12 @@
-/*  ____            __ _                   _   _           _   
-*  / ___|_ __ __ _ / _| |_ _   _ ___      | \ | | _____  _| |_ 
-* | |   | '__/ _` | |_| __| | | / __|_____|  \| |/ _ \ \/ / __|
-* | |___| | | (_| |  _| |_| |_| \__ \_____| |\  |  __/>  <| |_ 
-*  \____|_|  \__,_|_|  \__|\__,_|___/     |_| \_|\___/_/\_\\__|
-*                                                              
-*  _   _ ____ ___      ____ _____ ______ _____             
-* | \ | |  _ \_ _|    |  _ \___  / /  _ \___  |_   ____  __
-* |  \| | |_) | |_____| | | | / / /| | | | / /\ \ / /\ \/ /
-* | |\  |  __/| |_____| |_| |/ / / | |_| |/ /  \ V /  >  < 
-* |_| \_|_|  |___|    |____//_/_/  |____//_/    \_/  /_/\_\
-* Copyright (C) 2022-2023 Tobi-D7, RSDuck, Onixiya, D7vx-Dev, NPI-D7
-*/
+/*
+ *  ____ _____                  ____
+ * |  _ \___  |_   ____  __    |  _ \  _____   __
+ * | | | | / /\ \ / /\ \/ /____| | | |/ _ \ \ / /
+ * | |_| |/ /  \ V /  >  <_____| |_| |  __/\ V /
+ * |____//_/    \_/  /_/\_\    |____/ \___| \_/
+ *
+ * Copyright (C) 2020-2023 D7vx-Dev
+ */
 #pragma once
 #include <algorithm>
 #include <cctype>
@@ -65,8 +61,8 @@ inline int asprintf(char **strp, const char *format, ...) {
 #include <unistd.h>
 #endif
 
-namespace Base {
-namespace string_hacks {
+namespace D7 {
+namespace str_helper {
 inline std::string ToLowerCase(std::string in) {
   std::transform(in.begin(), in.end(), in.begin(),
                  [](unsigned char c) { return std::tolower(c); });
@@ -136,5 +132,33 @@ inline std::string FormatBytes(size_t bytes) {
 
   return out;
 }
-} // namespace string_hacks
-} // namespace Base
+inline std::string FormatString(const char *fmt_str, ...) {
+  char *fp = nullptr;
+  va_list ap;
+
+  va_start(ap, fmt_str);
+
+#ifdef _MSC_VER
+  int len = _vscprintf(fmt_str, ap);
+  fp = (char *)malloc(len + 1);
+  vsnprintf(fp, len + 1, fmt_str, ap);
+#else
+  va_list args;
+  va_copy(args, ap);
+  int len = vsnprintf(nullptr, 0, fmt_str, args);
+  va_end(args);
+
+  fp = (char *)malloc(len + 1);
+  vsnprintf(fp, len + 1, fmt_str, ap);
+#endif
+
+  va_end(ap);
+
+  std::string formatted(fp);
+  free(fp);
+
+  return formatted;
+}
+
+} // namespace str_helper
+} // namespace D7
