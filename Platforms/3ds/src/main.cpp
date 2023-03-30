@@ -20,6 +20,8 @@
 
 #include <Base.hpp>
 
+#include <pica.hpp>
+
 static const char *const vertShader = R"text(  
 ; Example PICA200 vertex shader
 
@@ -104,6 +106,10 @@ int main(void) {
   C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
   C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
   C2D_Prepare();
+
+  int res_size; 
+  Pica::AssembleCode(vertShader, res_size);
+
   // C2D_TextBufNew(900);
   // C2D_TextBufClear(tb);
   // C2D_FontLoadSystem(CFG_REGION_EUR);

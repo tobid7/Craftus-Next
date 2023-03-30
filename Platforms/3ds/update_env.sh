@@ -9,6 +9,13 @@ cmake -S ../../../base -B ./base --toolchain /home/itc/Craftus-Next/Platforms/3d
 cmake --build base -j4
 cp -rf base/*.a ../libs/lib/
 cp -rf ../../../base/include/* ../libs/include/
+
+mkdir picasso
+cmake -S ../../../external/libpicasso -B ./picasso --toolchain /home/itc/Craftus-Next/Platforms/3ds/tools/toolchain_3ds.cmake
+cmake --build picasso -j4
+cp -rf picasso/*.a ../libs/lib/
+cp -rf ../../../external/libpicasso/include/* ../libs/include/
+
 cp -rf ../../../external/glm/glm ../libs/include/
 
 cd ..
