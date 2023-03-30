@@ -15,42 +15,10 @@
 #include <objects/Object.hpp>
 #include <rendering/Renderer_Def.hpp>
 #include <rendering/Vertex.hpp>
+#include <ShaderTable.hpp>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-
-static const char *const vertTri = R"text(
-#version 330 core
-//layout (location = 0) in vec2 vertex;
-//layout (location = 1) in vec2 texc;
-in vec2 vertex;
-in vec2 texc;
-out vec2 TexCoords;
-
-uniform mat4 model;
-uniform mat4 projection;
-
-void main()
-{
-    TexCoords = texc;
-    gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
-}
-)text";
-
-static const char *const fragTri = R"text(
-
-#version 330 core
-in vec2 TexCoords;
-out vec4 color;
-
-uniform sampler2D image;
-uniform vec3 spriteColor;
-
-void main()
-{    
-    color = vec4(spriteColor, 1.0) * texture(image, TexCoords);
-}  
-)text";
 
 namespace Base {
 class Sprite : public Base::Object {
@@ -66,7 +34,8 @@ public:
         {{1.0f, 0.0f}, {1.0f, 0.0f}, {0, 0, 0, 0}},
     };
     trishader = new BaseShader();
-    trishader->LoadCode(vertTri, fragTri);
+    auto s_sp_shader_ = Base::GetShader(SHADER_SPRITE);
+    trishader->LoadCode(s_sp_shader_.first.c_str(), s_sp_shader_.second.c_str());
     trishader->use();
 
     vao_ = new BaseVertexArray();

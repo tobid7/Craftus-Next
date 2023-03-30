@@ -120,10 +120,10 @@ inline std::string FormatBytes(size_t bytes) {
   char out[32];
 
   if (bytes == 1)
-    snprintf(out, sizeof(out), "%ld Byte", bytes);
+    snprintf(out, sizeof(out), "%d Byte", bytes);
 
   else if (bytes < 1024)
-    snprintf(out, sizeof(out), "%ld Bytes", bytes);
+    snprintf(out, sizeof(out), "%d Bytes", bytes);
 
   else if (bytes < 1024 * 1024)
     snprintf(out, sizeof(out), "%.1f KB", (float)bytes / 1024);

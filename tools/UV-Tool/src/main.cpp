@@ -41,7 +41,7 @@ void HandleMenuBar() {
 int main() {
   NImGui::App UV("Base-UV-Generator", NImGui::Vec2i(900, 400),
                  NImGui::NORESIZE);
-  UV.LoadIcon("res/icon.png");
+  UV.SetIcon("res/icon.png");
   NImGui::Image img;
   img.LoadImage("res/icon.png");
   nlohmann::json ex3;

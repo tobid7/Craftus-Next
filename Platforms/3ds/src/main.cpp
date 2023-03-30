@@ -97,6 +97,8 @@ int main(void) {
   romfsInit();
   printf("test\n");
   std::cout << Base::GetPlatform() << std::endl;
+  std::cout << Base::GetName() << std::endl;
+  std::cout << Base::GetVersion() << std::endl;
   Base::Timer tm;
 
   C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
@@ -106,7 +108,7 @@ int main(void) {
   // C2D_TextBufClear(tb);
   // C2D_FontLoadSystem(CFG_REGION_EUR);
   top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-  double ed = tm.GetAsMs();
+  //double ed = tm.GetAsMs();
   
   Base::Timer delta;
   double dt = 0;
@@ -118,8 +120,8 @@ int main(void) {
   C3D_TexEnvInit(env);
   C3D_TexEnvSrc(env, C3D_Both, GPU_PRIMARY_COLOR, (GPU_TEVSRC)0, (GPU_TEVSRC)0);
   C3D_TexEnvFunc(env, C3D_Both, GPU_REPLACE);
-  glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(400),
-                                    static_cast<float>(240), 0.0f, -1.0f, 1.0f);
+  //glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(400),
+  //                                  static_cast<float>(240), 0.0f, -1.0f, 1.0f);
   while (aptMainLoop()) {
     // C2D_TextBufClear(tb);
     dt = delta.GetAsMs();

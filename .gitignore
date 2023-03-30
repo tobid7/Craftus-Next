@@ -6,8 +6,10 @@
 *.nacp
 switch/build/*
 .vscode/*
-Platforms/Windows/build/*
-Platforms/Windows/buildmsvc/*
-Platforms/Windows/*.exe
+Platforms/Desktop/build/*
+Platforms/Desktop/buildmsvc/*
+Platforms/Desktop/*.exe
 CNE/external/glm
 build/
+Platforms/3ds/libs/*
+Platforms/3ds/build/*

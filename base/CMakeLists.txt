@@ -18,11 +18,12 @@ set(BASE_CFLAGS "-D__BASE_BUILD__")
 
 list(APPEND BASE_CFLAGS -DBASE_VERSION=\"${BASE_VER}\" -DBASE_NAME=\"${BASE_NM}\")
 
-set(BASE_SOURCE Base.cpp
-basegame/bitmapengine/BitmapEngine.cpp
-basegame/bitmapengine/bmpconverter.cpp
-external/lodepng.cpp StealConsole.cpp misc/memory.cpp
-misc/Color.cpp rendering/Base_Ren_Reg.cpp objects/Text.cpp)
+set(BASE_SOURCE source/Base.cpp
+source/BitmapEngine.cpp
+source/bmpconverter.cpp
+source/ShaderTable.cpp
+source/external/lodepng.cpp source/StealConsole.cpp source/memory.cpp
+source/Color.cpp source/Base_Ren_Reg.cpp source/Text.cpp)
 
 set(BASE_EXTRAINCLUDES "")
 set(BASE_EXTRADEPS "")
@@ -33,16 +34,16 @@ if(BASE_DESKTOP)
     list(APPEND BASE_SOURCE
     #${BASE_SOURCE}
     #OpenGL Support(3.3+)
-    external/glad/glad.c
-    rendering/gl/GL_Renderer.cpp
-    rendering/gl/GL_Texture.cpp
-    rendering/gl/GL_VertexArray.cpp
-    rendering/gl/GL_Shader.cpp
+    source/external/glad.c
+    source/GL_Renderer.cpp
+    source/GL_Texture.cpp
+    source/GL_VertexArray.cpp
+    source/GL_Shader.cpp
     )
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
-    external
-    external/glad
+    include/external
+    include/external/glad
     glm)
     list(APPEND BASE_EXTRADEPS
     #${BASE_EXTRADEPS}
@@ -59,10 +60,10 @@ if(BASE_CTR)
     #add_subdirectory(../external/libpicasso picasso)
     list(APPEND BASE_SOURCE
     #${BASE_SOURCE}
-    rendering/c3d/C3D_Renderer.cpp
-    rendering/c3d/C3D_Texture.cpp
-    rendering/c3d/C3D_Shader.cpp
-    rendering/c3d/C3D_VertexArray.cpp)
+    source/C3D_Renderer.cpp
+    source/C3D_Texture.cpp
+    source/C3D_Shader.cpp
+    source/C3D_VertexArray.cpp)
     list(APPEND BASE_EXTRAINCLUDES
     #${BASE_EXTRAINCLUDES}
     ${DEVKITPRO}/libctru/include
@@ -85,7 +86,7 @@ endif()
 
 add_library(${PROJECT_NAME} ${BASE_SOURCE})
 
-target_include_directories(${PROJECT_NAME} PUBLIC . basegame basegame/bitmapengine misc rendering ${BASE_EXTRAINCLUDES})
+target_include_directories(${PROJECT_NAME} PUBLIC include include/basegame include/basegame/bitmapengine include/misc include/rendering ${BASE_EXTRAINCLUDES})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC ${BASE_EXTRADEPS})
 
