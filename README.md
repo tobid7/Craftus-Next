@@ -1,4 +1,5 @@
 # Info
+- Currently fall back to C version and fix mem leaks
 - Currently  there are Memory leaks.
 - v0.6 will be released soon
 
@@ -8,42 +9,7 @@
 <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/Tobi-D7/Craftus-Next?style=for-the-badge" height="22">
 ### There are Dev builds available at (https://github.com/NPI-D7/nightlys/tree/master/builds/Craftus-Next) but they are unstable. They can crash or something so downloading at youre own risk.
 A more updated version of the Craftus Minecraft Clone
-# To-do-list
-- [x] Collision
-- [x] Fix o3ds
-- [ ] Day/Night
-- [ ] Multiplayer
-- [ ] Decoration (Flowers, ..)
-- [ ] Port to c++
-  - [ ] SpriteBatch (UI)
-  - [ ] Wide Screen (BSR) on 3ds
-  - [ ] Smooth lightning ([Here](https://github.com/Tobi-D7/Craftus-Next/issues/16))
-  - [ ] OpenGL
-  - [ ] Citro3d
-  - [ ] Sound
-  - [ ] 3D Renderer
-  - [ ] NImGui as Desktop Base
-  - [ ] Base-Engine
-  - [ ] Bitmap Engine (for Texture map)
-    - [ ] Alternative for 3ds (slow)
-  - [x] Use Cmake for Everything 
-- [ ] Better Terrain Gen
-- [ ] Biomes
-- [x] Trees
-- [ ] Sound/Music
-- [ ] Physics
-- [ ] Better Water
-- [ ] Fix Memory problems
-- [ ] Fix Freezes on Chunkloading on tp
-- [x] Respawn freezes cause ↑
-- [ ] Animated Textures
-- [ ] Tex Colors for blocks
-- [ ] Resourcepack Loader basen on Minecraft Java Resourcepacks
-- [ ] Shaders (Modern Systems)
-  - [ ] *Minecraft Shaders if possible
-
-
-# Original Redme
+# Original Readme
 Custom version of craftus that intends to clone minecraft 1.16.5
 
 Releases aren't going to be too common (hrr drr, changed a variable name, make a release just for it)
