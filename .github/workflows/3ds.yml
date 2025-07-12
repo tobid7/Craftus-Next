@@ -29,25 +29,24 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update
-          sudo apt-get install p7zip-full -y
-          curl -L https://github.com/Steveice10/bannertool/releases/download/1.2.0/bannertool.zip -o bannertool.zip
-          sudo 7z e bannertool.zip linux-x86_64/bannertool
-          sudo chmod +x bannertool
-          mv bannertool /usr/local/bin
-          rm bannertool.zip
-          curl -L https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.17/makerom-v0.17-ubuntu_x86_64.zip -o makerom-v0.17-ubuntu_x86_64.zip
-          sudo 7z e makerom-v0.17-ubuntu_x86_64.zip
+          sudo apt-get install p7zip-full build-essential cmake ninja-build -y
+          git clone https://github.com/npid7/bannertool.git
+          cmake -B bannertool-build bannertool
+          cmake --build bannertool-build
+          cmake --install bannertool-build
+          curl -L https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.4/makerom-v0.18.4-ubuntu_x86_64.zip -o makerom-v0.18.4-ubuntu_x86_64.zip
+          sudo 7z e makerom-v0.18.4-ubuntu_x86_64.zip
           sudo chmod +x makerom
           mv makerom /usr/local/bin
-          rm makerom-v0.17-ubuntu_x86_64.zip
+          rm makerom-v0.18.4-ubuntu_x86_64.zip
       - name: Build
         id: build
         run: |
-          cd 3ds
-          make
+          cmake -B build -G Ninja --toolchain /opt/devkitpro/cmake/3DS.cmake
+          cmake --build build
           mkdir -p ~/artifacts
-          cp Craftus-Next.3dsx ~/artifacts
-          cp Craftus-Next.cia ~/artifacts
+          cp bin/Craftus-Next.3dsx ~/artifacts
+          cp bin/Craftus-Next.cia ~/artifacts
           echo ::set-output name=commit_tag::$(git describe --abbrev=0 --tags)
           echo ::set-output name=commit_hash::$(git log --format=%h -1)
           # Webhook info
@@ -61,74 +60,75 @@ jobs:
           path: ~/artifacts/*
           name: build
 
-  publish_build:
-    runs-on: ubuntu-latest
-    name: Publish build to NPI-D7/nightlys
-    if: ${{ success() && !startsWith(github.ref, 'refs/pull') }}
-    needs: build
-    env:
-      COMMIT_TAG: ${{ needs.build.outputs.commit_tag }}
-      COMMIT_HASH: ${{ needs.build.outputs.commit_hash }}
-      AUTHOR_NAME: ${{ needs.build.outputs.author_name }}
-      COMMIT_MESSAGE: ${{ needs.build.outputs.commit_message }}
-    outputs:
-      current_date: ${{ steps.commit.outputs.current_date }}
-    steps:
-      - name: Install tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install qrencode -y
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
-      - name: Upload to ${{ github.repository }} release
-        if: ${{ startsWith(github.ref, 'refs/tags') }}
-        run: |
-          ID=$(jq --raw-output '.release.id' $GITHUB_EVENT_PATH)
-          for file in ${{ github.workspace }}/build/*; do
-            AUTH_HEADER="Authorization: token ${{ secrets.TOKEN }}"
-            CONTENT_LENGTH="Content-Length: $(stat -c%s $file)"
-            CONTENT_TYPE="Content-Type: application/7z-x-compressed"
-            UPLOAD_URL="https://uploads.github.com/repos/${{ github.repository }}/releases/$ID/assets?name=$(basename $file)"
-            curl -XPOST -H "$AUTH_HEADER" -H "$CONTENT_LENGTH" -H "$CONTENT_TYPE" --upload-file "$file" "$UPLOAD_URL"
-          done
-      - name: Commit and push to NPI-D7/nightlys
-        id: commit
-        run: |
-          CURRENT_DATE=$(date +"%Y%m%d-%H%M%S")
-          echo ::set-output name=current_date::$CURRENT_DATE
-          git config --global user.email "tobid7@outlook.de"
-          git config --global user.name "Tobi-D7"
-          git clone --depth 1 https://${{ secrets.TOKEN }}@github.com/NPI-D7/nightlys.git
-          echo hi
-          cd nightlys
-          sudo chmod +x nightlytool
-          echo running
-          ./nightlytool management/Craftus-Next.ini Craftus-Next NPI-D7 nightlys v$CURRENT_DATE $COMMIT_HASH "\\$COMMIT_SUBJECT\\$COMMIT_MESSAGE\\\\" 0 "$AUTHOR_NAME"
-          echo creating dirs
-          ls -R
-          mkdir -p builds/Craftus-Next/
-          cd builds/Craftus-Next/
-          cp ${{ github.workspace }}/build/* .
-          git stage .
-          git commit -m "Craftus-Next | $COMMIT_HASH"
-          git tag v$CURRENT_DATE
-          git push origin master v$CURRENT_DATE
-      - name: Release to idk
-        run: |
-          ls ${{ github.workspace }}/build
-          AUTH_HEADER="Authorization: token ${{ secrets.TOKEN }}"
-          CONTENT_TYPE="Content-Type: application/json"
-          API_URL="https://api.github.com/repos/NPI-D7/nightlys/releases"
-          RELEASE_INFO="{\"tag_name\": \"v${{ steps.commit.outputs.current_date }}\", \"name\": \"Craftus-Next | $COMMIT_HASH\", \"body\": \"$AUTHOR_NAME - $COMMIT_SUBJECT\\n\\n$COMMIT_MESSAGE\", \"prerelease\": true}"
-          RESPONSE=$(curl -XPOST -H "$AUTH_HEADER" -H "$CONTENT_TYPE" "$API_URL" -d "$RELEASE_INFO")
-          ID=$(echo $RESPONSE | jq --raw-output '.id')
-          for file in ${{ github.workspace }}/build/*; do
-            AUTH_HEADER="Authorization: token ${{ secrets.TOKEN }}"
-            CONTENT_LENGTH="Content-Length: $(stat -c%s $file)"
-            CONTENT_TYPE="Content-Type: application/7z-x-compressed"
-            UPLOAD_URL="https://uploads.github.com/repos/NPI-D7/nightlys/releases/$ID/assets?name=$(basename $file)"
-            curl -XPOST -H "$AUTH_HEADER" -H "$CONTENT_LENGTH" -H "$CONTENT_TYPE" --upload-file "$file" "$UPLOAD_URL"
-          done
+#  publish_build:
+#    runs-on: ubuntu-latest
+#    name: Publish build to npid7/nightlys
+#    if: ${{ success() && !startsWith(github.ref, 'refs/pull') }}
+#    needs: build
+#    env:
+#      COMMIT_TAG: ${{ needs.build.outputs.commit_tag }}
+#      COMMIT_HASH: ${{ needs.build.outputs.commit_hash }}
+#      AUTHOR_NAME: ${{ needs.build.outputs.author_name }}
+#      COMMIT_MESSAGE: ${{ needs.build.outputs.commit_message }}
+#    outputs:
+#      current_date: ${{ steps.commit.outputs.current_date }}
+#    steps:
+#      - name: Install tools
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install qrencode -y
+#      - name: Download artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: build
+#          path: build
+#      - name: Upload to ${{ github.repository }} release
+#        if: ${{ startsWith(github.ref, 'refs/tags') }}
+#        run: |
+#          ID=$(jq --raw-output '.release.id' $GITHUB_EVENT_PATH)
+#          for file in ${{ github.workspace }}/build/*; do
+#            AUTH_HEADER="Authorization: token ${{ secrets.TOKEN }}"
+#            CONTENT_LENGTH="Content-Length: $(stat -c%s $file)"
+#            CONTENT_TYPE="Content-Type: application/7z-x-compressed"
+#            UPLOAD_URL="https://uploads.github.com/repos/${{ github.repository }}/releases/$ID/assets?name=$(basename $file)"
+#            curl -XPOST -H "$AUTH_HEADER" -H "$CONTENT_LENGTH" -H "$CONTENT_TYPE" --upload-file "$file" "$UPLOAD_URL"
+#          done
+#      - name: Commit and push to npid7/nightlys
+#        id: commit
+#        run: |
+#          CURRENT_DATE=$(date +"%Y%m%d-%H%M%S")
+#          echo ::set-output name=current_date::$CURRENT_DATE
+#          git config --global user.email "tobid7@outlook.de"
+#          git config --global user.name "Tobi-D7"
+#          git clone --depth 1 https://${{ secrets.TOKEN }}@github.com/npid7/nightlys.git
+#          echo hi
+#          cd nightlys
+#          sudo chmod +x nightlytool
+#          echo running
+#          ./nightlytool management/Craftus-Next.ini Craftus-Next npid7 nightlys v$CURRENT_DATE $COMMIT_HASH "\\$COMMIT_SUBJECT\\$COMMIT_MESSAGE\\\\" 0 "$AUTHOR_NAME"
+#          echo creating dirs
+#          ls -R
+#          mkdir -p builds/Craftus-Next/
+#          cd builds/Craftus-Next/
+#          cp ${{ github.workspace }}/build/* .
+#          git stage .
+#          git commit -m "Craftus-Next | $COMMIT_HASH"
+#          git tag v$CURRENT_DATE
+#          git push origin master v$CURRENT_DATE
+#      - name: Release to idk
+#        run: |
+#          ls ${{ github.workspace }}/build
+#          AUTH_HEADER="Authorization: token ${{ secrets.TOKEN }}"
+#          CONTENT_TYPE="Content-Type: application/json"
+#          API_URL="https://api.github.com/repos/npid7/nightlys/releases"
+#          RELEASE_INFO="{\"tag_name\": \"v${{ steps.commit.outputs.current_date }}\", \"name\": \"Craftus-Next | $COMMIT_HASH\", \"body\": \"$AUTHOR_NAME - $COMMIT_SUBJECT\\n\\n$COMMIT_MESSAGE\", \"prerelease\": true}"
+#          RESPONSE=$(curl -XPOST -H "$AUTH_HEADER" -H "$CONTENT_TYPE" "$API_URL" -d "$RELEASE_INFO")
+#          ID=$(echo $RESPONSE | jq --raw-output '.id')
+#          for file in ${{ github.workspace }}/build/*; do
+#            AUTH_HEADER="Authorization: token ${{ secrets.TOKEN }}"
+#            CONTENT_LENGTH="Content-Length: $(stat -c%s $file)"
+#            CONTENT_TYPE="Content-Type: application/7z-x-compressed"
+#            UPLOAD_URL="https://uploads.github.com/repos/npid7/nightlys/releases/$ID/assets?name=$(basename $file)"
+#            curl -XPOST -H "$AUTH_HEADER" -H "$CONTENT_LENGTH" -H "$CONTENT_TYPE" --upload-file "$file" "$UPLOAD_URL"
+#          done
+#

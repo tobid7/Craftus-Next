@@ -1,15 +1,2 @@
-3ds/build/*
-*.elf
-*.3dsx
-*.cia
-*.nro
-*.nacp
-switch/build/*
-.vscode/*
-Platforms/Desktop/build/*
-Platforms/Desktop/buildmsvc/*
-Platforms/Desktop/*.exe
-CNE/external/glm
-build/
-Platforms/3ds/libs/*
-Platforms/3ds/build/*
+build
+bin
