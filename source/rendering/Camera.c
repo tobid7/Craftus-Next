@@ -17,8 +17,8 @@ void Camera_Init(Camera* cam) {
 }
 
 void Camera_Update(Camera* cam, Player* player, float iod) {
-	float fov = C3D_AngleFromDegrees(fov_);//cam->fov + C3D_AngleFromDegrees(12.f) * fovScale_;
-	Mtx_PerspStereoTilt(&cam->projection, fov, ((400.f) / (240.f)), cam->near, cam->far, iod, 1.f, false);
+	cam->fov = C3D_AngleFromDegrees(fov_);//cam->fov + C3D_AngleFromDegrees(12.f) * fovScale_;
+	Mtx_PerspStereoTilt(&cam->projection, cam->fov, ((400.f) / (240.f)), cam->near, cam->far, iod, 1.f, false);
 
 	float3 playerHead =
 	    f3_new(player->position.x, player->position.y + PLAYER_EYEHEIGHT + sinf(player->bobbing) * 0.1f + player->crouchAdd, player->position.z);

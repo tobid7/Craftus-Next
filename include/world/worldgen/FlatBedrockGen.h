@@ -7,4 +7,4 @@ typedef struct { World* world; } FlatBedrockGen;
 
 void FlatBedrockGen_Init(FlatBedrockGen* gen, World* world);
 
-void FlatBedrockGen_Generate(WorkQueue* queue, WorkerItem item, void* this);
+void FlatBedrockGen_Generate(WorkQueue* queue, WorkerItem item, void* data);

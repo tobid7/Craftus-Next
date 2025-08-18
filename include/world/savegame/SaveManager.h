@@ -23,5 +23,5 @@ void SaveManager_Deinit(SaveManager* mgr);
 void SaveManager_Load(SaveManager* mgr, char* path);
 void SaveManager_Unload(SaveManager* mgr);
 
-void SaveManager_LoadChunk(WorkQueue* queue, WorkerItem item, void* this);
-void SaveManager_SaveChunk(WorkQueue* queue, WorkerItem item, void* this);
+void SaveManager_LoadChunk(WorkQueue* queue, WorkerItem item, void* data);
+void SaveManager_SaveChunk(WorkQueue* queue, WorkerItem item, void* data);

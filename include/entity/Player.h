@@ -1,15 +1,15 @@
 ﻿#pragma once
 
+#include <gui/Inventory.h>
+#include <inventory/ItemStack.h>
+#include <misc/Raycast.h>
+#include <misc/Sound.h>
+#include <misc/VecMath.h>
 #include <stdbool.h>
 #include <world/World.h>
 
-#include <gui/Inventory.h>
-#include <inventory/ItemStack.h>
-#include <entity/Damage.h>
+#include <tme/Lgy.hpp>
 
-#include <misc/Raycast.h>
-#include <misc/VecMath.h>
-#include <misc/Sound.h>
 #include "playback/playback.h"
 
 #define PLAYER_EYEHEIGHT (1.65f)
@@ -20,45 +20,45 @@
 #define PLAYER_PLACE_REPLACE_TIMEOUT (0.2f)
 
 typedef struct {
-	float3 position;
-	float pitch, yaw;
-	float bobbing, fovAdd, crouchAdd;
-	bool grounded, jumped, sprinting, flying, crouching;
-	World* world;
+  float3 position;
+  float pitch, yaw;
+  float bobbing, fovAdd, crouchAdd;
+  bool grounded, jumped, sprinting, flying, crouching;
+  World* world;
 
-	float3 view;
+  float3 view;
 
-	bool autoJumpEnabled;
+  bool autoJumpEnabled;
 
-	float3 velocity;
-	float simStepAccum;
+  float3 velocity;
+  float simStepAccum;
 
-	float breakPlaceTimeout;
-	int hungertimer;
+  float breakPlaceTimeout;
+  int hungertimer;
 
-	int hp;
-	int armour;
-	int oxygen;
-	int hunger;
-	int difficulty;
-	float rndy;
+  int hp;
+  int armour;
+  int oxygen;
+  int hunger;
+  int difficulty;
+  float rndy;
 
-	float spawnx;
-	float spawny;
-	float spawnz;
-	int spawnset;
+  float spawnx;
+  float spawny;
+  float spawnz;
+  int spawnset;
 
-	int gamemode;
-	bool cheats;	
+  int gamemode;
+  bool cheats;
 
-	int quickSelectBarSlots;
-	int quickSelectBarSlot;
-	int inventorySite;
-	ItemStack quickSelectBar[INVENTORY_QUICKSELECT_MAXSLOTS];
+  int quickSelectBarSlots;
+  int quickSelectBarSlot;
+  int inventorySite;
+  ItemStack quickSelectBar[INVENTORY_QUICKSELECT_MAXSLOTS];
 
-	Raycast_Result viewRayCast;
-	bool blockInSight, blockInActionRange;
-	ItemStack inventory[256];
+  Raycast_Result viewRayCast;
+  bool blockInSight, blockInActionRange;
+  ItemStack inventory[256];
 } Player;
 
 void Player_Init(Player* player, World* world);

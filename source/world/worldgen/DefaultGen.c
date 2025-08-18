@@ -1,31 +1,35 @@
-#include "misc/noise.h"
-#include "world/worldgen/biomes/Biome.h"
-#include "world/worldgen/structures/Pumpkins.h"
-#include "world/worldgen/structures/TreeGen.h"
 #include <sino/sino.h>
 #include <stdio.h>
 #include <time.h>
 #include <world/worldgen/DefaultGen.h>
 
+#include "misc/noise.h"
+#include "world/worldgen/biomes/Biome.h"
+#include "world/worldgen/structures/Pumpkins.h"
+#include "world/worldgen/structures/TreeGen.h"
+
 void DefaultGen_Init(DefaultGen *gen, World *world) { gen->world = world; }
 int height = 0;
-// based off https://github.com/smealum/3dscraft/blob/master/source/generation.c
+
 void DefaultGen_Generate(WorkQueue *queue, WorkerItem item, void *this) {
-  srand(time(NULL));
-  enum Biomes biome = Biome_GetRandom();
+  // Lets actually use the this param
+  DefaultGen *gen = (DefaultGen *)this;
+  uint64_t seed = gen->world->genSettings.seed;
 
   for (int x = 0; x < CHUNK_SIZE; x++) {
     for (int z = 0; z < CHUNK_SIZE; z++) {
-
       float px = (float)(x + item.chunk->x * CHUNK_SIZE);
       float pz = (float)(z + item.chunk->z * CHUNK_SIZE);
 
+      enum Biomes biome = Biome_GetAt(px, pz, seed);
+
       const int smeasClusterSize = 8;
       const int smeasChunkHeight = 16;
-      height = (int)(sino_2d((px) / (smeasClusterSize * 4),
-                             (pz) / (smeasClusterSize * 4)) *
-                     smeasClusterSize) +
-               (smeasChunkHeight * smeasClusterSize / 2);
+      float base = sino_2d(px * 0.001f, pz * 0.001f) * 32.0f;
+      float hills = sino_2d(px * 0.01f, pz * 0.01f) * 8.0f;
+      float detail = sino_2d(px * 0.05f, pz * 0.05f) * 2.0f;
+
+      height = 60 + (int)(base + hills + detail);
 
       // for (int y = 0; y < height - 3; y++) {
       //	Chunk_SetBlock(item.chunk, x, y, z, Block_Stone);
@@ -52,16 +56,6 @@ void DefaultGen_Generate(WorkQueue *queue, WorkerItem item, void *this) {
 
       for (int bd = 0; bd < 1 + random_number(0, 3); bd++) {
         Chunk_SetBlock(item.chunk, x, bd, z, Block_Bedrock);
-      }
-
-      if (random_number(0, 800) == 1) {
-        Pumpkins_Gen(queue, item);
-      }
-      if (Biome_HasTrees(biome)) {
-        if (x == random_number(4, 16 - 4) && z == random_number(4, 16 - 4)) {
-
-          TreeGen_GenTree(queue, item, x, height, z, GetTreeType(biome));
-        }
       }
     }
   }

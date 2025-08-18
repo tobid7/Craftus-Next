@@ -24,7 +24,7 @@ Block Savanna_GetBlockD()
 }
 Block Savanna_GetBlockE()
 {
-    return Block_GrassAcacia;
+    return Block_Grass;
 }
 int Savanna_GetLevelA(int height)
 {

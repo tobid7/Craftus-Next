@@ -51,7 +51,7 @@ void ChunkWorker_AddHandler(ChunkWorker* chunkworker, WorkerItemType type, Worke
 
 void ChunkWorker_SetHandlerActive(ChunkWorker* chunkworker, WorkerItemType type, void* this, bool active) {
 	for (size_t i = 0; i < chunkworker->handler[type].length; i++) {
-		if (chunkworker->handler[type].data[i].this == this) {
+		if (chunkworker->handler[type].data[i].data == this) {
 			chunkworker->handler[type].data[i].active = active;
 			return;
 		}
@@ -82,7 +82,7 @@ void ChunkWorker_Mainloop(void* _this) {
 				for (int i = 0; i < chunkworker->handler[item.type].length; i++) {
 					if (chunkworker->handler[item.type].data[i].active)
 						chunkworker->handler[item.type].data[i].func(&chunkworker->queue, item,
-											     chunkworker->handler[item.type].data[i].this);
+											     chunkworker->handler[item.type].data[i].data);
 					svcSleepThread(7000);
 				}
 

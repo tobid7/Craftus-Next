@@ -40,6 +40,8 @@ add_subdirectory(dependencies/mpack)
 add_subdirectory(dependencies/playback)
 add_subdirectory(dependencies/sino)
 add_subdirectory(dependencies/vec)
+add_subdirectory(dependencies/palladium)
+add_subdirectory(dependencies/palladium/backends/3ds)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS} -fno-rtti -O2")
 
@@ -68,21 +70,32 @@ add_compile_options(
     -Wno-psabi
     -O2
     -save-temps
-    -Wno-declaration-missing-parameter-type
-    -Wno-implicit-function-declaration
-    -Wno-incompatible-pointer-types
-    -Wno-implicit-int
+    -Wno-unused-value
+    -Wno-unused-variable
+)
+# Optional tweaks for C only
+# Lets dont crash my terminal with c++ erros due to this flags
+add_compile_options(
+    $<$<COMPILE_LANGUAGE:C>:-Wno-declaration-missing-parameter-type>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-implicit-function-declaration>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-incompatible-pointer-types>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-implicit-int>
 )
 
 add_executable(Craftus-Next
+    source/tme/tme.cpp # TME
+    source/tme/entity/Damage.cpp
+    source/tme/Lgy.cpp
+    source/tme/gfx/Camera.cpp
+
     source/main.c
 
     source/blocks/Block.c
     source/blocks/BlockEvent.c
     source/blocks/Item.c
     source/blocks/Liquids.c
-    
-    source/entity/Damage.c
+
+    # source/entity/Damage.c
     source/entity/Player.c
     source/entity/PlayerController.c
 
@@ -146,8 +159,10 @@ target_link_libraries(Craftus-Next PUBLIC
     mpack
     sino
     vec
+    pd-3ds
+    palladium
     # playback
-    gui_asm   # Gui Shader
+    gui_asm # Gui Shader
     world_asm # World Shader
     citro3d
     ctru
@@ -156,8 +171,8 @@ target_link_libraries(Craftus-Next PUBLIC
 
 add_dependencies(Craftus-Next gui_asm world_asm)
 
-target_include_directories(Craftus-Next PUBLIC 
-${DEVKITPRO}/portlibs/3ds/include
+target_include_directories(Craftus-Next PUBLIC
+    ${DEVKITPRO}/portlibs/3ds/include
 )
 # Command to send to console (make send)
 add_custom_target(

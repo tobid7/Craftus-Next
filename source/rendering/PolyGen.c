@@ -3,6 +3,7 @@
 #include <gui/DebugUI.h>
 #include <rendering/VBOCache.h>
 #include <world/Direction.h>
+#include <rendering/TextureMap.h>
 
 #include <entity/Player.h>
 
@@ -375,7 +376,7 @@ void PolyGen_GeneratePolygons(WorkQueue* queue, WorkerItem item, void* this) {
 					WorldVertex* data = face.transparent ? transparentData : opaqueData;
 					memcpy(data, &cube_sides_lut[face.direction * 6], sizeof(WorldVertex) * 6);
 
-#define oneDivIconsPerRow (32768/8)
+#define oneDivIconsPerRow (32768/TEXTURE_MAPTILES)
 #define halfTexel (6)
 
 					uint8_t color[3];

@@ -53,13 +53,10 @@ enum { Block_Air,
 	Block_BirchPlanks,
 	Block_BirchLog,
 	Block_BirchLeaves,
-	Block_BeeNest,
-	Block_BeeNestHoney,
 	Block_Melon,
 	Block_LeavesAcacia,
 	Block_LogAcacia,
 	Block_PlanksAcacia,
-	Block_GrassAcacia,
 	Blocks_Count
 };
 

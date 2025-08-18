@@ -1,24 +1,16 @@
-#include <gui/TitleMenu.h>
-
+#include <3ds.h>
+#include <GameStates.h>
+#include <entity/Player.h>
 #include <gui/Gui.h>
+#include <gui/OptionsMenu.h>
 #include <gui/SpriteBatch.h>
-
-#include <vec/vec.h>
-
+#include <gui/TitleMenu.h>
+#include <mpack/mpack.h>
 #include <rendering/VertexFmt.h>
-
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
-#include <entity/Player.h>
-
-#include <mpack/mpack.h>
-
-#include <3ds.h>
-
-#include <GameStates.h>
-#include <gui/OptionsMenu.h>
+#include <vec/vec.h>
 
 extern bool forcequit;
 extern GameState gamestate;
@@ -34,28 +26,18 @@ static int selectedWorld = -1;
 static float max_velocity = 20.f;
 
 bool nu;
-void Title_Deinit() { /*Nothing*/
-}
+void Title_Deinit() { /*Nothing*/ }
 
 bool warning = true;
-char *lines[17] = {
+char *lines[8] = {
     "WARNING",
     "This Game is very Buggy.",
-	"Problem 1: The Game has",
-	"a Problem with memory",
-	"leaks. If the Linear",
-	"Space is below 5kb the",
-	"game will show a Crash",
-	"Message to prevent You",
-	"from loosing Your world.",
-	"This does not always",
-	"work on old3ds systems.",
-	"There are problems with",
-	"the Inventory too.",
-	"You are always able to",
-	"acess this Message by",
-	"tapping onto the Info",
-	"Button in the Main Menu.",
+    "There are still problems",
+    "with the Inventory.",
+    "You are always able to",
+    "acess this Message by",
+    "tapping onto the Info",
+    "Button in the Main Menu.",
 };
 
 void Title_Init() {}
@@ -71,14 +53,11 @@ void Title_Render() {
     }
     scroll += velocity;
     velocity *= 0.75f;
-    if (ABS(velocity) < 0.001f)
-      velocity = 0.f;
+    if (ABS(velocity) < 0.001f) velocity = 0.f;
 
     int maximumSize = CHAR_HEIGHT * 2 * 17;
-    if (scroll < -maximumSize)
-      scroll = -maximumSize;
-    if (scroll > 0)
-      scroll = 0;
+    if (scroll < -maximumSize) scroll = -maximumSize;
+    if (scroll > 0) scroll = 0;
     SpriteBatch_BindGuiTexture(GuiTexture_MenuBackground);
     for (int i = 0; i < 160 / 32 + 1; i++) {
       for (int j = 0; j < 120 / 32 + 1; j++) {
@@ -89,17 +68,16 @@ void Title_Render() {
       }
     }
     const char *line;
-    for (size_t i = 0; i < 17; i++) {
+    for (size_t i = 0; i < 8; i++) {
       int y = i * (CHAR_HEIGHT + CHAR_HEIGHT) + 10 + scroll;
       SpriteBatch_PushText(20, y, -6, INT16_MAX, true, INT_MAX, NULL, "%s",
                            lines[i], movementY);
     }
-	Gui_Offset(0, 3 * 32 + 5 + BUTTON_TEXT_PADDING);
-	Gui_BeginRowCenter(Gui_RelativeWidth(0.95f), 2);
-	if(Gui_Button(true, 1.f, "OK"))
-	{
-		warning = false;
-	}
+    Gui_Offset(0, 3 * 32 + 5 + BUTTON_TEXT_PADDING);
+    Gui_BeginRowCenter(Gui_RelativeWidth(0.95f), 2);
+    if (Gui_Button(true, 1.f, "OK")) {
+      warning = false;
+    }
   } else {
     SpriteBatch_SetScale(2);
 
@@ -123,23 +101,21 @@ void Title_Render() {
 
     Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
     options = Gui_Button(true, 1.0f, "Options");
-	Gui_EndRow();
+    Gui_EndRow();
 
-	Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
-    if(Gui_Button(true, 1.0f, "Info"))
-	{
-		warning = true;
-	}
-	Gui_EndRow();
+    Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
+    if (Gui_Button(true, 1.0f, "Info")) {
+      warning = true;
+    }
+    Gui_EndRow();
 
-    //Gui_VerticalSpace(Gui_RelativeHeight(0.4));
+    // Gui_VerticalSpace(Gui_RelativeHeight(0.4));
     Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);
     cancelled4 = Gui_Button(true, 1.0f, "Quit");
   }
 }
 
 bool Title_Update(Player player) {
-
   if (options) {
     options = false;
     Options_Init(GameState_Title);

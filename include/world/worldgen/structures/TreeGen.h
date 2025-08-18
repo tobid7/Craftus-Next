@@ -1,11 +1,6 @@
 #pragma once
 #include "world/World.h"
 
-enum Trees
-{
-    Oak,
-    Birch,
-    Acacia
-};
+enum Trees { Oak, Birch, Acacia };
 
-void TreeGen_GenTree(WorkQueue* queue, WorkerItem item, int x, int y, int z, enum Trees tree);
+void TreeGen_GenTree(World* world, int x, int y, int z, enum Trees tree);

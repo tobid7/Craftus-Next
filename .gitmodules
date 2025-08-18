@@ -1,0 +1,3 @@
+[submodule "dependencies/palladium"]
+	path = dependencies/palladium
+	url = https://dev.npid7.de/tobid7/palladium

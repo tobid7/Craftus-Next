@@ -122,7 +122,7 @@ void SpriteBatch_PushIcon(Block block, uint8_t metadata, int x, int y, int z) {
 		int16_t iconUV[2];
 		Block_GetTexture(block, i, metadata, iconUV);
 
-#define oneDivIconsPerRow (32768 / 8)
+#define oneDivIconsPerRow (32768 / TEXTURE_MAPTILES)
 #define halfTexel (6)
 
 		uint8_t color[3];
