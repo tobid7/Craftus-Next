@@ -1,6 +1,6 @@
 ; Constants
 .constf myconst(0.0, 1.0, 0.0000305185094759, 0.00392156862745)
-;.alias  zeros 	myconst.xxxx ; Vector full of zeros
+.alias  zeros 	myconst.xxxx ; Vector full of zeros
 .alias  ones  	myconst.yyyy ; Vector full of ones
 .alias	div2p15	myconst.zzzz
 .alias	div255	myconst.wwww
