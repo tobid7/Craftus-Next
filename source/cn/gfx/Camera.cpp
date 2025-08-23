@@ -1,4 +1,4 @@
-#include <cn/gfx/camera.hpp>
+#include <cn/gfx/Camera.hpp>
 
 namespace TME {
 PD::fvec3 f3crs(PD::fvec3 a, PD::fvec3 b) {
