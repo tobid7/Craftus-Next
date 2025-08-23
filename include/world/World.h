@@ -7,8 +7,10 @@
 #include <misc/Xorshift.h>
 #include <vec/vec.h>
 
+// Seems to be hardcoded
+#define VIEW_DISTANCE 3
 
-#define CHUNKCACHE_SIZE (9)
+#define CHUNKCACHE_SIZE VIEW_DISTANCE*VIEW_DISTANCE
 
 #define UNDEADCHUNKS_COUNT (2 * CHUNKCACHE_SIZE + CHUNKCACHE_SIZE * CHUNKCACHE_SIZE)
 

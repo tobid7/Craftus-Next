@@ -1,14 +1,12 @@
 #include <world/ChunkWorker.h>
 
-#include <misc/Crash.h>
-
 #include <stdio.h>
 
 void ChunkWorker_Init(ChunkWorker* chunkworker) {
 	WorkQueue_Init(&chunkworker->queue);
 
 	if (R_FAILED(APT_SetAppCpuTimeLimit(30))) {
-		Crash("Couldn't set AppCpuTimeLimit");
+		Lgy_Crash("Couldn't set AppCpuTimeLimit");
 	}
 
 	for (int i = 0; i < WorkerItemTypes_Count; i++) vec_init(&chunkworker->handler[i]);
@@ -20,7 +18,7 @@ void ChunkWorker_Init(ChunkWorker* chunkworker) {
 	chunkworker->thread =
 	    threadCreate(&ChunkWorker_Mainloop, (void*)chunkworker, CHUNKWORKER_THREAD_STACKSIZE, prio - 1, isNew3ds ? 2 : 1, false);
 	if (!chunkworker->thread) {
-		Crash("Couldn't create worker thread");
+		Lgy_Crash("Couldn't create worker thread");
 	}
 
 	chunkworker->working = false;

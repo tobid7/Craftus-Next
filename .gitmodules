@@ -1,3 +1,6 @@
 [submodule "dependencies/palladium"]
 	path = dependencies/palladium
 	url = https://dev.npid7.de/tobid7/palladium
+[submodule "dependencies/miniz"]
+	path = dependencies/miniz
+	url = https://github.com/richgel999/miniz.git

@@ -1,36 +1,43 @@
-# Info
-- Currently fall back to C version and fix mem leaks
-- Currently  there are Memory leaks.
-- v0.6 will be released soon
+# Craftus Next
 
-# Craftus-Next <img alt="GitHub milestone" src="https://img.shields.io/github/milestones/progress-percent/Tobi-D7/Craftus-Next/1?style=for-the-badge">
-[![Build Craftus-Next 3ds](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/3ds.yml/badge.svg?branch=main)](https://github.com/Tobi-D7/Craftus-Next/actions/workflows/3ds.yml) <a href="https://github.com/NPI-D7/BCSTM-Player/blob/main/LICENSE"> <img height="22" src="https://img.shields.io/badge/License-GPLv3-informational.svg?style=for-the-badge" alt="License: GPLv3"></a> <img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/m/Tobi-D7/Craftus-Next?style=for-the-badge" height="22"> 
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Tobi-D7/Craftus-Next?style=for-the-badge" height="22">
-<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/Tobi-D7/Craftus-Next?style=for-the-badge" height="22">
-### There are Dev builds available at (https://github.com/NPI-D7/nightlys/tree/master/builds/Craftus-Next) but they are unstable. They can crash or something so downloading at youre own risk.
+## Info
+
+<img alt="GitHub milestone" src="https://img.shields.io/github/milestones/progress-percent/tobid7/Craftus-Next/3?style=for-the-badge" height="22">
+<img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/tobid7/Craftus-Next/3ds.yml?branch=main&style=for-the-badge" height="22">
+<a href="https://github.com/NPI-D7/BCSTM-Player/blob/main/LICENSE"> <img height="22" src="https://img.shields.io/badge/License-GPLv3-informational.svg?style=for-the-badge" alt="License: GPLv3"></a>
+
+<img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/m/tobid7/Craftus-Next?style=for-the-badge" height="22">
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/tobid7/Craftus-Next?style=for-the-badge" height="22">
+<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/tobid7/Craftus-Next?style=for-the-badge" height="22">
+
 A more updated version of the Craftus Minecraft Clone
-# Original Readme
-Custom version of craftus that intends to clone minecraft 1.16.5
 
-Releases aren't going to be too common (hrr drr, changed a variable name, make a release just for it)
+## Build
 
-To build from source, it's like building any other 3ds homebrew app. Just run make and if you've got devkitpro setup right, it'll give you craftus.3dsx
+Result cia, 3dsx and elf can be found in bin Directory
 
-You'll need a hacked system that can load homebrew for this to run (citra is good for testing but i haven't been able to get most of the controls working there)
+### Windows
 
+On windows you need msys cmake and you need to use Ninja cause on windows palladium generates corrupted Makefiles for some unknown reason
 
-Craftus Redisigned is a modified version of Craftus Reloaded : https://github.com/RSDuck/craftus_reloaded.
+```bash
+cmake -B build -G Ninja --toolchain C:/devkitPro/cmake/3DS.cmake
+cmake --build .
+```
 
+### Linux / Mac
 
-After launching it for the first time, you can change the controls in `sd:/craftus_redesigned/options.ini`.
-You can also change the settings in `sd:/craftus_redesigned/options.ini`.
+```bash
+cmake -B build --toolchain /opt/devkitpro/cmake/3DS.cmake
+cmake --build
+```
 
 ## Controls
 
 | Category | Action | OLD 3DS | NEW 3DS |
 | ------------- | ------------- | ------------- | ------------- |
-| Blocks | Place Block | L | ZL |
-| Blocks | Break Block | R | ZR |
+| Blocks | Place Block | L | L |
+| Blocks | Break Block | R | R |
 |  |  |  |  |
 | Move | Forward | Circle Pad (Up) | Circle Pad (Up) |
 | Move | Backward | Circle Pad (Down) | Circle Pad (Down) |
@@ -44,26 +51,27 @@ You can also change the settings in `sd:/craftus_redesigned/options.ini`.
 | Camera | Left | Y | C-Stick (Left) |
 | Camera | Right | A | C-Stick (Right) |
 |  |  |  |  |
-| Inventory | Switch Block | DPad (Left) | L/DPad (Left) |
-| Inventory | Switch Block | DPad (Right) | R/DPad (Right) |
+| Inventory | Switch Block | DPad (Left) | ZL/DPad (Left) |
+| Inventory | Switch Block | DPad (Right) | ZR/DPad (Right) |
 |  |  |  |  |
 | Commands | Open Console | Select | Select |
 |  |  |  |  |
 | Menu | Back | Start | Start |
 
+## Credits
 
-# Credits
-* ag_0815 for fixing audio
-* Onixiya for his more updated version of craftus redesigned
-* People in the nintendo homebrew discord server willing to answer stupid questions
-* KosmicDev for better y spawning code
-* GamesSanti who made Craftus Redesigned
-* RSDuck who made Craftus and Craftus Reloaded
-* People who made 3DS homebrew possible
-    * Especially smea for 3dscraft which is good place for ~~stealing ideas~~ inspiration
-    * Contributors of the 3dbrew.org wiki and ctrulib
-    * Fincs for citro3d
-    * More people I forgot about, even though I extended this list multiple times
-* Tommaso Checchi, for his [culling algorithm](https://tomcc.github.io/2014/08/31/visibility-1.html), orginally developed for the use in MC PE
-* Of course all other MC devs, how could I forget them?
-* All people who worked on the libraries Craftus is depending on(see the dependencies folder)
+- tobid7: main dev, palladium
+- Onixiya:  more updated version of craftus redesigned
+- KosmicDev: better y spawning code
+- GamesSanti: Craftus Redesigned
+- RSDuck: Craftus and Craftus Reloaded
+- smea: 3dscraft, libctru
+- fincs: citro3d
+- Tommaso Checchi: [culling algorithm](https://tomcc.github.io/2014/08/31/visibility-1.html), orginally developed for the use in MC PE
+- all other MC devs
+- All people who worked on the libraries Craftus Next is depending on(see the dependencies folder)
+  - rxi: vec and ini
+  - richgel999: miniz
+  - ludocode: mpack
+  - ?: sino
+  - tobid7: palladium libraries

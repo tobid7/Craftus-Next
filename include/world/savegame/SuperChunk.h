@@ -3,6 +3,7 @@
 #include <world/Chunk.h>
 
 #include <vec/vec.h>
+#include <stdio.h>
 
 #define SUPERCHUNK_SIZE 8
 #define SUPERCHUNK_BLOCKSIZE (SUPERCHUNK_SIZE * CHUNK_SIZE)

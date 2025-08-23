@@ -1,7 +1,9 @@
-#include <tme/tme.hpp>
+#include <cn/Game.hpp>
+
+bool showDebugInfo = true;
 
 int main() {
-  TME::CoreEngine pCraftus;
-  pCraftus.Run();
-  pCraftus.~CoreEngine();
+  TME::CoreEngine craftus;
+  craftus.Run();
+  return 0;
 }

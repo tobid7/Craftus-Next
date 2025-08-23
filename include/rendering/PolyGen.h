@@ -1,10 +1,9 @@
 #pragma once
 
+#include <entity/Player.h>
+#include <rendering/VertexFmt.h>
 #include <world/WorkQueue.h>
 #include <world/World.h>
-#include <entity/Player.h>
-
-#include <rendering/VertexFmt.h>
 
 void PolyGen_Init(World* world_, Player* player_);
 void PolyGen_Deinit();

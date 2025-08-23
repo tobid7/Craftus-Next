@@ -59,7 +59,7 @@ void Cursor_Draw(int projUniform, C3D_Mtx* projectionview, World* world, int x, 
 
 	C3D_BufInfo* bufInfo = C3D_GetBufInfo();
 	BufInfo_Init(bufInfo);
-	BufInfo_Add(bufInfo, cursorVBO, sizeof(WorldVertex), 4, 0x3210);
+	BufInfo_Add(bufInfo, cursorVBO, sizeof(WorldVertex), 3, 0x210);
 
 	C3D_DrawArrays(GPU_TRIANGLES, 0, vertices);
 

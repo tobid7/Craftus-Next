@@ -79,12 +79,12 @@ void World_UnloadChunk(World* world, Chunk* chunk) {
   // -----------------------------------------------
   for (int i = 0; i < CLUSTER_PER_CHUNK; i++) {
     if (chunk->clusters[i].vertices) {
-      VBO_Free(chunk->clusters[i].vbo);
+      Lgy_Vbo_Free(chunk->clusters[i].vbo);
       chunk->clusters[i].vbo.memory = NULL;
       chunk->clusters[i].vbo.size = 0;
     }
     if (chunk->clusters[i].transparentVertices) {
-      VBO_Free(chunk->clusters[i].transparentVBO);
+      Lgy_Vbo_Free(chunk->clusters[i].transparentVBO);
       chunk->clusters[i].transparentVBO.memory = NULL;
       chunk->clusters[i].transparentVBO.size = 0;
     }

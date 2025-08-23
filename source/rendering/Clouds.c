@@ -9,12 +9,12 @@
 
 #include <stdio.h>
 
-static WorldVertex vertices[] = {{{-1, 0, -1}, {0, 0}, {255, 255, 255}, {0, 0, 0}},
-				 {{1, 0, -1}, {INT16_MAX, 0}, {255, 255, 255}, {0, 0, 0}},
-				 {{1, 0, 1}, {INT16_MAX, INT16_MAX}, {255, 255, 255}, {0, 0, 0}},
-				 {{1, 0, 1}, {INT16_MAX, INT16_MAX}, {255, 255, 255}, {0, 0, 0}},
-				 {{-1, 0, 1}, {0, INT16_MAX}, {255, 255, 255}, {0, 0, 0}},
-				 {{-1, 0, -1}, {0, 0}, {255, 255, 255}, {0, 0, 0}}};
+static WorldVertex vertices[] = {{{-1, 0, -1}, {0, 0}, {255, 255, 255}},
+				 {{1, 0, -1}, {INT16_MAX, 0}, {255, 255, 255}},
+				 {{1, 0, 1}, {INT16_MAX, INT16_MAX}, {255, 255, 255}},
+				 {{1, 0, 1}, {INT16_MAX, INT16_MAX}, {255, 255, 255}},
+				 {{-1, 0, 1}, {0, INT16_MAX}, {255, 255, 255}},
+				 {{-1, 0, -1}, {0, 0}, {255, 255, 255}}};
 
 static C3D_Tex texture;
 static WorldVertex* cloudVBO;
@@ -22,7 +22,7 @@ static WorldVertex* cloudVBO;
 #define TEXTURE_SIZE 64
 
 void Clouds_Init() {
-	uint8_t* map = (uint8_t*)malloc(TEXTURE_SIZE * TEXTURE_SIZE);
+	uint8_t* map = (uint8_t*)lgy_malloc(TEXTURE_SIZE * TEXTURE_SIZE);
 	for (int i = 0; i < TEXTURE_SIZE; i++) {
 		for (int j = 0; j < TEXTURE_SIZE; j++) {
 			float noise = sino_2d(j * 0.2f, i * 0.3f);
@@ -36,7 +36,7 @@ void Clouds_Init() {
 	C3D_TexSetWrap(&texture, GPU_REPEAT, GPU_REPEAT);
 	Texture_TileImage8(map, texture.data, TEXTURE_SIZE);
 
-	free(map);
+	lgy_free(map);
 
 	cloudVBO = linearAlloc(sizeof(vertices));
 	memcpy(cloudVBO, vertices, sizeof(vertices));
@@ -94,7 +94,7 @@ void Clouds_Render(int projUniform, C3D_Mtx* projectionview, World* world, float
 
 	C3D_BufInfo* bufInfo = C3D_GetBufInfo();
 	BufInfo_Init(bufInfo);
-	BufInfo_Add(bufInfo, cloudVBO, sizeof(WorldVertex), 4, 0x3210);
+	BufInfo_Add(bufInfo, cloudVBO, sizeof(WorldVertex), 3, 0x210);
 
 	C3D_DrawArrays(GPU_TRIANGLES, 0, 6);
 

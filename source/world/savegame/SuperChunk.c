@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <misc/Crash.h>
-
 static const int SectorSize = 2048;
 static mpack_node_data_t* nodeDataPool = NULL;
 static const int nodeDataPoolSize = 2048;
@@ -16,14 +14,14 @@ static const int fileBufferSize = sizeof(Chunk) * 2;
 static char* fileBuffer;
 
 void SuperChunk_InitPools() {
-	nodeDataPool = (mpack_node_data_t*)malloc(sizeof(mpack_node_data_t) * nodeDataPoolSize);
-	fileBuffer = malloc(fileBufferSize);  // 4kb
-	decompressBuffer = malloc(decompressBufferSize);
+	nodeDataPool = (mpack_node_data_t*)lgy_malloc(sizeof(mpack_node_data_t) * nodeDataPoolSize);
+	fileBuffer = lgy_malloc(fileBufferSize);  // 4kb
+	decompressBuffer = lgy_malloc(decompressBufferSize);
 }
 void SuperChunk_DeinitPools() {
-	free(nodeDataPool);
-	free(decompressBuffer);
-	free(fileBuffer);
+	lgy_free(nodeDataPool);
+	lgy_free(decompressBuffer);
+	lgy_free(fileBuffer);
 }
 
 void SuperChunk_Init(SuperChunk* superchunk, int x, int z) {
@@ -74,7 +72,7 @@ void SuperChunk_Init(SuperChunk* superchunk, int x, int z) {
 
 		mpack_error_t err = mpack_tree_destroy(&tree);
 		if (err != mpack_ok) {
-			Crash("MPack error %d while loading superchunk manifest %d %d", err, x, z);
+			Lgy_Crash("MPack error %d while loading superchunk manifest %d %d", err, x, z);
 		}
 	} else {
 		memset(superchunk->grid, 0x0, sizeof(superchunk->grid));
@@ -127,7 +125,7 @@ void SuperChunk_SaveIndex(SuperChunk* superchunk) {
 
 	mpack_error_t err = mpack_writer_destroy(&writer);
 	if (err != mpack_ok) {
-		Crash("Mpack error %d while saving superchunk index %d %d", err, superchunk->x, superchunk->z);
+		Lgy_Crash("Mpack error %d while saving superchunk index %d %d", err, superchunk->x, superchunk->z);
 	}
 }
 
@@ -199,7 +197,7 @@ void SuperChunk_SaveChunk(SuperChunk* superchunk, Chunk* chunk) {
 		mpack_finish_map(&writer);
 		mpack_error_t err = mpack_writer_destroy(&writer);
 		if (err != mpack_ok) {
-			Crash("MPack error %d while saving chunk(%d, %d) to superchunk", err, chunk->x, chunk->z);
+			Lgy_Crash("MPack error %d while saving chunk(%d, %d) to superchunk", err, chunk->x, chunk->z);
 		}
 
 		size_t uncompressedSize = mpack_writer_buffer_used(&writer);
@@ -214,7 +212,7 @@ void SuperChunk_SaveChunk(SuperChunk* superchunk, Chunk* chunk) {
 
 			fseek(superchunk->dataFile, address * SectorSize, SEEK_SET);
 			if (fwrite(fileBuffer, compressedSize, 1, superchunk->dataFile) != 1)
-				Crash("Couldn't write complete chunk data to file");
+				Lgy_Crash("Couldn't write complete chunk data to file");
 
 			superchunk->grid[x][z] = (ChunkInfo){address, compressedSize, uncompressedSize, blockSize, chunk->revision};
 		}
@@ -228,7 +226,7 @@ void SuperChunk_LoadChunk(SuperChunk* superchunk, Chunk* chunk) {
 	if (chunkInfo.actualSize > 0) {
 		fseek(superchunk->dataFile, chunkInfo.position * SectorSize, SEEK_SET);
 		if (fread(fileBuffer, chunkInfo.compressedSize, 1, superchunk->dataFile) != 1)
-			Crash("Read chunk data size isn't equal to the expected size");
+			Lgy_Crash("Read chunk data size isn't equal to the expected size");
 		mz_ulong uncompressedSize = decompressBufferSize;
 
 		if (uncompress((uint8_t*)decompressBuffer, &uncompressedSize, (uint8_t*)fileBuffer, chunkInfo.compressedSize) == Z_OK) {
@@ -271,7 +269,7 @@ void SuperChunk_LoadChunk(SuperChunk* superchunk, Chunk* chunk) {
 
 			mpack_error_t err = mpack_tree_destroy(&tree);
 			if (err != mpack_ok) {
-				Crash("MPack error %d while loading chunk(%d %d) from superchunk", err, chunk->x, chunk->z);
+				Lgy_Crash("MPack error %d while loading chunk(%d %d) from superchunk", err, chunk->x, chunk->z);
 			}
 
 			chunk->revision = chunkInfo.revision;

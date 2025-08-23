@@ -32,16 +32,16 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(OPUSFILE REQUIRED opusfile)
 include_directories(${OPUSFILE_INCLUDE_DIRS})
 add_definitions(${OPUSFILE_CFLAGS_OTHER})
-# Import Extras
+# Import Extras (disable warnings before)
+set_directory_properties(PROPERTIES COMPILE_OPTIONS -w)
 add_subdirectory(dependencies/ini)
-add_subdirectory(dependencies/lodepng)
 add_subdirectory(dependencies/miniz)
 add_subdirectory(dependencies/mpack)
-add_subdirectory(dependencies/playback)
 add_subdirectory(dependencies/sino)
 add_subdirectory(dependencies/vec)
 add_subdirectory(dependencies/palladium)
 add_subdirectory(dependencies/palladium/backends/3ds)
+set_directory_properties(PROPERTIES COMPILE_OPTIONS "")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS} -fno-rtti -O2")
 
@@ -73,20 +73,32 @@ add_compile_options(
     -Wno-unused-value
     -Wno-unused-variable
 )
-# Optional tweaks for C only
+# Language specific tweaks
 # Lets dont crash my terminal with c++ erros due to this flags
 add_compile_options(
+    # C
     $<$<COMPILE_LANGUAGE:C>:-Wno-declaration-missing-parameter-type>
     $<$<COMPILE_LANGUAGE:C>:-Wno-implicit-function-declaration>
     $<$<COMPILE_LANGUAGE:C>:-Wno-incompatible-pointer-types>
     $<$<COMPILE_LANGUAGE:C>:-Wno-implicit-int>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-unused-but-set-variable>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-uninitialized>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-parentheses>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-unused-function> # miniz
+    # CXX
+    $<$<COMPILE_LANGUAGE:CXX>:-Wno-delete-incomplete>
 )
 
 add_executable(Craftus-Next
-    source/tme/tme.cpp # TME
-    source/tme/entity/Damage.cpp
-    source/tme/Lgy.cpp
-    source/tme/gfx/Camera.cpp
+    source/cn/Game.cpp # TME
+    source/cn/entity/Damage.cpp
+    source/cn/Lgy.cpp
+    source/cn/gfx/Camera.cpp
+    source/cn/gfx/TexLoader.cpp
+    source/cn/misc/Collision.cpp
+    source/cn/misc/Crash.cpp
+    source/cn/misc/Fs.cpp
+    source/cn/misc/Memory.cpp
 
     source/main.c
 
@@ -95,7 +107,6 @@ add_executable(Craftus-Next
     source/blocks/Item.c
     source/blocks/Liquids.c
 
-    # source/entity/Damage.c
     source/entity/Player.c
     source/entity/PlayerController.c
 
@@ -113,7 +124,6 @@ add_executable(Craftus-Next
 
     source/misc/Collision.c
     source/misc/CommandLine.c
-    source/misc/Crash.c
     source/misc/noise.c
     source/misc/Raycast.c
     source/misc/Sound.c
@@ -125,7 +135,6 @@ add_executable(Craftus-Next
     source/rendering/PolyGen.c
     source/rendering/Renderer.c
     source/rendering/TextureMap.c
-    source/rendering/VBOCache.c
     source/rendering/VertexFmt.c
     source/rendering/WorldRenderer.c
 
@@ -155,7 +164,6 @@ target_include_directories(Craftus-Next PUBLIC include)
 target_link_libraries(Craftus-Next PUBLIC
     ini
     miniz
-    lodepng
     mpack
     sino
     vec
@@ -167,6 +175,7 @@ target_link_libraries(Craftus-Next PUBLIC
     citro3d
     ctru
     m
+    z
 )
 
 add_dependencies(Craftus-Next gui_asm world_asm)

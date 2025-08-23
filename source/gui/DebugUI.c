@@ -17,17 +17,17 @@ static int currentStatusLine = 0;
 
 void DebugUI_Init() {
 	for (int i = 0; i < LOG_LINES; i++) {
-		logLines[i] = malloc(LOG_LINE_LENGTH);
+		logLines[i] = lgy_malloc(LOG_LINE_LENGTH);
 		memset(logLines[i], 0x0, LOG_LINE_LENGTH);
 	}
 	for (int i = 0; i < STATUS_LINES; i++) {
-		statusLines[i] = malloc(STATUS_LINE_LENGTH);
+		statusLines[i] = lgy_malloc(STATUS_LINE_LENGTH);
 		memset(statusLines[i], 0x0, STATUS_LINE_LENGTH);
 	}
 }
 void DebugUI_Deinit() {
-	for (int i = 0; i < LOG_LINES; i++) free(logLines[i]);
-	for (int i = 0; i < STATUS_LINES; i++) free(statusLines[i]);
+	for (int i = 0; i < LOG_LINES; i++) lgy_free(logLines[i]);
+	for (int i = 0; i < STATUS_LINES; i++) lgy_free(statusLines[i]);
 }
 
 void DebugUI_Text(const char* text, ...) {

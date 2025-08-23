@@ -32,14 +32,14 @@ static vec_t(WorldInfo) worlds;
 void WorldSelect_ScanWorlds() {
 	vec_clear(&worlds);
 
-	DIR* directory = opendir("sdmc:/Craftus-Next/saves");
+	DIR* directory = opendir("sdmc:/3ds/CraftusNext/saves");
 
 	char buffer[512];
 
 	struct dirent* entry;
 
 	while ((entry = readdir(directory))) {
-		sprintf(buffer, "sdmc:/Craftus-Next/saves/%s/level.mp", entry->d_name);
+		sprintf(buffer, "sdmc:/3ds/CraftusNext/saves/%s/level.mp", entry->d_name);
 		if (access(buffer, F_OK) != -1) {
 			mpack_tree_t tree;
 			mpack_tree_init_file(&tree, buffer, 0);
@@ -218,7 +218,7 @@ void WorldSelect_Render() {
 
 		/*Gui_Offset(0, 60);
 		Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 3);
-		/*Gui_Label(0.45f, true, INT16_MAX, false, "Difficulty:");
+		Gui_Label(0.45f, true, INT16_MAX, false, "Difficulty:");
 		Gui_Space(0.1f);
 		if (Gui_Button(true, 0.45f, "%s", diffstr[diffz])) {
 			diffz++;
@@ -319,7 +319,7 @@ bool WorldSelect_Update(char* out_worldpath, char* out_name, WorldGenType* world
 	if (confirmed_deletion) {
 		confirmed_deletion = false;
 		char buffer[512];
-		sprintf(buffer, "sdmc:/Craftus-Next/saves/%s", worlds.data[selectedWorld].path);
+		sprintf(buffer, "sdmc:/3ds/CraftusNext/saves/%s", worlds.data[selectedWorld].path);
 		delete_folder(buffer);
 
 		WorldSelect_ScanWorlds();

@@ -8,9 +8,7 @@
 #include <stdbool.h>
 #include <world/World.h>
 
-#include <tme/Lgy.hpp>
-
-#include "playback/playback.h"
+#include <cn/Lgy.hpp>
 
 #define PLAYER_EYEHEIGHT (1.65f)
 #define PLAYER_HEIGHT (1.8f)

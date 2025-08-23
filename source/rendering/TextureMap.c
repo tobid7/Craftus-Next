@@ -1,71 +1,21 @@
 #include <3ds.h>
 #include <citro3d.h>
-#include <malloc.h>
-#include <misc/Crash.h>
 #include <rendering/TextureMap.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <tme/Lgy.hpp>
-
-#include "lodepng/lodepng.h"
-
-int NmipmapLevels = 2;
+#include <cn/Lgy.hpp>
 
 void tileImage32(u32* src, u8* dst, int sizex, int sizez);
 
+/**
+ * Use LegacyLoader
+ */
 void Texture_Load(C3D_Tex* result, char* filename) {
-  uint32_t* image = NULL;
-  unsigned int width = 0, height = 0;
-  uint32_t error =
-      lodepng_decode32_file((uint8_t**)&image, &width, &height, filename);
-  if (error == 0 && image != NULL) {
-    uint32_t* imgInLinRam =
-        (uint32_t*)linearAlloc(width * height * sizeof(uint32_t));
-
-    if (width < 64 || height < 64) {
-      for (int j = 0; j < height; j++)
-        for (int i = 0; i < width; i++) {
-          image[i + j * width] = __builtin_bswap32(image[i + j * width]);
-        }
-    } else {
-      for (int i = 0; i < width * height; i++) {
-        /*uint8_t r = ((image[i] << 0) & 0xff) >> 4;
-        uint8_t g = ((image[i] << 8) & 0xff) >> 4;
-        uint8_t b = ((image[i] << 16) & 0xff) >> 4;
-        uint8_t a = ((image[i] << 24) & 0xff) >> 4;
-        imgInLinRam[i] = r | (g << 4) | (b << 8) | (a << 12);*/
-        imgInLinRam[i] = __builtin_bswap32(image[i]);
-      }
-    }
-
-    C3D_TexInitVRAM(result, width, height, GPU_RGBA8);
-
-    if (width < 64 || height < 64)
-      tileImage32(image, (u8*)imgInLinRam, width, height);
-
-    GSPGPU_FlushDataCache(imgInLinRam, width * height * sizeof(uint32_t));
-    free(image);
-
-    if (width < 64 || height < 64) {
-      C3D_SyncTextureCopy(imgInLinRam, 0, result->data, 0,
-                          width * height * sizeof(uint32_t), 8);
-    } else {
-      C3D_SyncDisplayTransfer(
-          (uint32_t*)imgInLinRam, GX_BUFFER_DIM(width, height), result->data,
-          GX_BUFFER_DIM(width, height),
-          (GX_TRANSFER_FLIP_VERT(1) | GX_TRANSFER_OUT_TILED(1) |
-           GX_TRANSFER_RAW_COPY(0) |
-           GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8) |
-           GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGBA8) |
-           GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO)));
-    }
-
-    linearFree(imgInLinRam);
-  } else {
-    Crash("Failed to load texture %s\n", filename);
-  }
+  size_t l, w, h;
+  void* data = Lgy_LoadImg2BufRGBA(filename, &l, &w, &h, true);
+  Lgy_LoadTexRGBA(result, data, l, w, h);
 }
 
 // Grabbed from Citra Emulator (citra/src/video_core/utils.h)
@@ -136,9 +86,7 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
   int locX = 0;
   int locY = 0;
 
-  Log("TextureMapInit %s\n", files);
-
-  const int mipmapLevels = NmipmapLevels;
+  const int mipmapLevels = cn_options.MipMapLvl;
   const int maxSize = 4 * TEXTURE_MAPSIZE * TEXTURE_MAPSIZE;
 
   uint32_t* buffer = (uint32_t*)linearAlloc(maxSize);
@@ -149,10 +97,10 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
   int c = 0;
   while (filename != NULL && c < (TEXTURE_MAPTILES * TEXTURE_MAPTILES) &&
          filei < num_files) {
-    uint32_t *image, w, h;
-    uint32_t error = lodepng_decode32_file((uint8_t**)&image, &w, &h, filename);
-    if (w == TEXTURE_TILESIZE && h == TEXTURE_TILESIZE && image != NULL &&
-        !error) {
+    uint32_t* image = NULL;
+    size_t l, w, h;
+    image = (uint32_t*)Lgy_LoadImg2BufRGBA(filename, &l, &w, &h, false);
+    if (w == TEXTURE_TILESIZE && h == TEXTURE_TILESIZE && image != NULL) {
       for (int x = 0; x < TEXTURE_TILESIZE; x++) {
         for (int y = 0; y < TEXTURE_TILESIZE; y++) {
           buffer[(locX + x) + ((y + locY) * TEXTURE_MAPSIZE)] =
@@ -166,10 +114,10 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
       icon->u = 256 * locX;
       icon->v = 256 * locY;
 
-      Log("Stiched texture %s(hash: %u) at %d, %d\n", filename,
-          icon->textureHash, locX, locY);
-      Log("Texture UV %s(hash: %u) at %d, %d\n", filename, icon->textureHash,
-          icon->u, icon->v);
+      Lgy_Log("Stiched texture %s(hash: %u) at %d, %d\n", filename,
+              icon->textureHash, locX, locY);
+      Lgy_Log("Texture UV %s(hash: %u) at %d, %d\n", filename,
+              icon->textureHash, icon->u, icon->v);
 
       locX += TEXTURE_TILESIZE;
       if (locX == TEXTURE_MAPSIZE) {
@@ -177,10 +125,10 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
         locX = 0;
       }
     } else {
-      Log("Image size(%d, %d) doesn't match or ptr null(internal error)\n'", w,
-          h);
+      Lgy_Log("Image size(%d, %d) doesn't match or ptr null(internal error)\n'",
+              w, h);
     }
-    free(image);
+    Lgy_DeleteImgBuf(image);
     filename = files[++filei];
     c++;
   }
@@ -190,7 +138,7 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
           &map->texture, NULL,
           (C3D_TexInitParams){TEXTURE_MAPSIZE, TEXTURE_MAPSIZE, mipmapLevels,
                               GPU_RGBA8, GPU_TEX_2D, true}))
-    Log("Couldn't alloc texture memory\n");
+    Lgy_Log("Couldn't alloc texture memory\n");
   C3D_TexSetFilter(&map->texture, GPU_NEAREST, GPU_NEAREST);
 
   C3D_SyncDisplayTransfer(

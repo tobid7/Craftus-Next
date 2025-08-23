@@ -3,7 +3,7 @@
 #include <blocks/Block.h>
 
 #include <misc/Xorshift.h>
-#include <rendering/VBOCache.h>
+#include <cn/Lgy.hpp>
 
 #include <stdbool.h>
 #include <stdint.h>

@@ -11,7 +11,6 @@
 #include <gui/PauseMenu.h>
 #include <gui/TitleMenu.h>
 #include <gui/WorldSelect.h>
-#include <misc/Crash.h>
 #include <misc/mem.h>
 #include <rendering/PolyGen.h>
 #include <rendering/Renderer.h>
@@ -30,18 +29,12 @@
 #include <world/worldgen/SuperFlatGen.h>
 
 bool showDebugInfo = false;
-
 bool savedcrash = false;
-
 bool forcequit;
-
 float dt = 0.f;
-
 float dt__ = 0.f;
-
 bool Save__ = false;
-
-int var_ram = 0;
+extern int clusters_drawn;
 
 void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr,
                   World* world) {
@@ -58,12 +51,14 @@ void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr,
 GameState gamestate = GameState_Title;
 
 int main() {
-  srand(time(0));
+  Lgy_InitCxxExceptionScreen();
   gfxInitDefault();
   osSetSpeedupEnable(true);
-  struct playbackInfo_t soundg;
   gfxSet3D(true);
   romfsInit();
+  Lgy_Splash();
+  Lgy_InitFS();
+  Lgy_GameOptionsInit();
   SuperFlatGen flatGen;
   SmeaGen smeaGen;
   FlatBedrockGen bdgen;
@@ -86,7 +81,7 @@ int main() {
   ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen,
                          (WorkerFuncObj){&DefaultGen_Generate, &dgen, true});
   sino_init();
-  World* world = (World*)malloc(sizeof(World));
+  World* world = (World*)lgy_malloc(sizeof(World));
   Player player;
   PlayerController playerCtrl;
   Player_Init(&player, world);
@@ -111,58 +106,30 @@ int main() {
   uint64_t lastTime = svcGetSystemTick();
   float timeAccum = 0.f, fpsClock = 0.f;
   int frameCounter = 0, fps = 0;
-  bool initBackgroundSound = true;
   int cxxcnt = 0;
   while (aptMainLoop()) {
-    cxxcnt++;
-    if (cxxcnt > 60) {
-      var_ram = check_free_ram() / 1024;
-      cxxcnt = 0;
-    }
-    if (initBackgroundSound) {
-      /*initBackgroundSound = false;
-      BackgroundSound.background = true;
-      char *soundfile = "romfs:/assets/sound/music/1.opus";
-      BackgroundSound.path[0] = '\0';
-      strncat(BackgroundSound.path, soundfile, sizeof(BackgroundSound.path) -
-      1); playopus(&BackgroundSound);*/
-      // changeFile("romfs:/assets/sound/music/Minecraft.ogg", &soundg);
-    }
-
+    DebugUI_Text("Craftus %s", CRAFTUS_VERSION_STR);
     DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps,
                  C3D_GetProcessingTime() * 6.f, C3D_GetDrawingTime() * 6.f,
                  C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024 / 1024);
-    DebugUI_Text("Buf: %5.2f%% Lin: %dkb Ram: %dkb",
-                 C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024,
-                 var_ram);
-    DebugUI_Text("X: %f, Y: %f, Z: %f", f3_unpack(player.position));
-    DebugUI_Text("DT: %f > TDRES: %f", dt__, dt__ * 60);
-
-    if (linearSpaceFree() <= 5242880) {
-      // Crash("Not enough Memory!");
-      if (!savedcrash) {
-        releaseWorld(&chunkWorker, &savemgr, world);
-        savedcrash = true;
-      }
-      Crash_Init("Out of Memory!");
-      gamestate = GameState_Crash;
-    }
-
-    DebugUI_Text("HP: %i", player.hp);
-    DebugUI_Text("Size of freeChunks: %d",
-                 (sizeof(vec_t(Chunk*)) +
-                  (sizeof(vec_t(Chunk*)) * world->freeChunks.length)));
-    DebugUI_Text("Size of superchunks: %d",
-                 (sizeof(vec_t(Chunk)) +
-                  (sizeof(vec_t(Chunk)) * savemgr.superchunks.length)));
-
-    // DebugUI_Text("velocity: %f rndy: %f",player.velocity.y,player.rndy);
-    // DebugUI_Text("Time: %i Cause: %c",dmg->time,dmg->cause);
-    // DebugUI_Text("SX: %f SY: %f SZ:
-    // %f",player->spawnx,player->spawny,player->spawnz); DebugUI_Text("Hunger:
-    // %i Hungertimer: %i",player.hunger,player.hungertimer);
-    // DebugUI_Text("Gamemode: %i",player.gamemode);
-    // DebugUI_Text("quickbar %i",player.quickSelectBarSlot);
+    DebugUI_Text("Buf: %5.2f%% Lin: %.2fmb", C3D_GetCmdBufUsage() * 100.f,
+                 (float)linearSpaceFree() / 1024.f / 1024.f);
+    // Cluster Info and View Distance
+    DebugUI_Text("C %d/%d D %d", clusters_drawn,
+                 CHUNKCACHE_SIZE * CHUNKCACHE_SIZE * 16, VIEW_DISTANCE);
+    DebugUI_Text("E %d/%d", 0, 0);  // Entitys
+    // Player Position
+    DebugUI_Text("XYZ: %.3f / %.3f / %.3f", f3_unpack(player.position));
+    DebugUI_Text("Block: %d %d %d", (int)FastFloor(player.position.x),
+                 (int)FastFloor(player.position.y),
+                 (int)FastFloor(player.position.z));
+    DebugUI_Text("Chunk: %d %d %d in %d %d %d",
+                 WorldToLocalCoord(player.position.x),
+                 WorldToLocalCoord(player.position.y),
+                 WorldToLocalCoord(player.position.z),
+                 WorldToChunkCoord(player.position.x),
+                 WorldToChunkCoord(player.position.y),
+                 WorldToChunkCoord(player.position.z));
 
     Renderer_Render();
 
@@ -189,11 +156,8 @@ int main() {
       } else if (gamestate == GameState_Playing ||
                  gamestate == GameState_Pause) {
         releaseWorld(&chunkWorker, &savemgr, world);
-
         gamestate = GameState_SelectWorld;
-
         WorldSelect_ScanWorlds();
-
         lastTime = svcGetSystemTick();
       }
 
@@ -207,13 +171,10 @@ int main() {
 
     circlePosition circlePos;
     hidCircleRead(&circlePos);
-
     circlePosition cstickPos;
     hidCstickRead(&cstickPos);
-
     touchPosition touchPos;
     hidTouchRead(&touchPos);
-
     InputData inputData = (InputData){keysheld,     keysdown,     hidKeysUp(),
                                       circlePos.dx, circlePos.dy, touchPos.px,
                                       touchPos.py,  cstickPos.dx, cstickPos.dy};
@@ -221,12 +182,10 @@ int main() {
     if (gamestate == GameState_Playing) {
       while (timeAccum >= 1.f / 20.f) {
         World_Tick(world);
-
         timeAccum -= 1.f / 20.f;
       }
 
       PlayerController_Update(&playerCtrl, inputData, dt);
-
       World_UpdateChunkCache(world,
                              WorldToChunkCoord(FastFloor(player.position.x)),
                              WorldToChunkCoord(FastFloor(player.position.z)));
@@ -238,9 +197,7 @@ int main() {
       if (WorldSelect_Update(path, name, &worldType, &newWorld, player)) {
         strcpy(world->name, name);
         world->genSettings.type = worldType;
-
         SaveManager_Load(&savemgr, path);
-
         ChunkWorker_SetHandlerActive(
             &chunkWorker, WorkerItemType_BaseGen, &flatGen,
             world->genSettings.type == WorldGen_SuperFlat);
@@ -289,12 +246,8 @@ int main() {
         lastTime = svcGetSystemTick();  // fix timing
       }
     } else if (gamestate == GameState_Options) {
-      /////////////////////////////////////////////////////////////////
       if (Options_Update(player)) {
-        // Renderer_Update(&player, &world);
-        // gamestate = GameState_Title;
       }
-      /////////////////////////////////////////////////////////////////
     } else if (gamestate == GameState_Crash) {
       if (Crash_Update(player)) {
         break;
@@ -312,6 +265,8 @@ int main() {
     Gui_InputData(inputData);
   }
 
+  Lgy_GameOptionsSave();
+
   if (gamestate == GameState_Playing) {
     releaseWorld(&chunkWorker, &savemgr, world);
   }
@@ -320,31 +275,7 @@ int main() {
 
   SuperChunk_DeinitPools();
 
-  free(world);
-
-  /*if (BackgroundSound.threaid != NULL)
-  {
-          DoQuit(0);
-          threadJoin(BackgroundSound.threaid, 50000);
-          threadFree(BackgroundSound.threaid);
-          if (BackgroundSound.opusFile)
-          {
-                  op_free(BackgroundSound.opusFile);
-          }
-          audioExit(0);
-
-  }
-  if (PlayerSound.threaid != NULL)
-  {
-          DoQuit(1);
-          threadJoin(PlayerSound.threaid, 50000);
-          threadFree(PlayerSound.threaid);
-          if (PlayerSound.opusFile)
-          {
-                  op_free(PlayerSound.opusFile);
-          }
-          audioExit(1);
-  }*/
+  lgy_free(world);
 
   ndspExit();
   sino_exit();

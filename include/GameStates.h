@@ -2,4 +2,4 @@
 
 typedef enum { GameState_SelectWorld, GameState_Playing, GameState_Options, GameState_Crash, GameState_Title, GameState_Death, GameState_Pause } GameState;
 
-#define CRAFTUS_VERSION_STR "0.7.0-dev"
+#define CRAFTUS_VERSION_STR "0.7.1-dev"

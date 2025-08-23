@@ -18,11 +18,10 @@
 .alias in_xyz		v0
 .alias in_uv 		v1
 .alias in_rgb		v2
-.alias in_fxyz		v3
 
 .entry vmain
 .proc vmain
-	mul r0.xyz, div255, in_fxyz.xyz
+	mov r0.xyz, zeros
 	add r0.xyz, in_xyz.xyz, r0.xyz
 	mov r0.w, ones
 
