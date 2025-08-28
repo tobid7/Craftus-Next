@@ -1,4 +1,3 @@
-#include <gui/DebugUI.h>
 #include <gui/FontLoader.h>
 #include <gui/SpriteBatch.h>
 #include <rendering/TextureMap.h>
@@ -33,10 +32,11 @@ static int screenWidth = 0, screenHeight = 0;
 static int guiScale = 2;
 
 void SpriteBatch_Init(int projUniform_) {
-  vec_init(&cmdList);
+  /*vec_init(&cmdList);
 
-  vertexList[0] = linearAlloc(sizeof(GuiVertex) * (1024 * 4));
-  vertexList[1] = linearAlloc(sizeof(GuiVertex) * 2 * (4096 + 1024));
+  vertexList[0] = Lgy_LinearAlloc(sizeof(GuiVertex) * (1024 * 4), MemType_Vbo);
+  vertexList[1] = Lgy_LinearAlloc(sizeof(GuiVertex) * 2 * (4096 + 1024),
+  MemType_Vbo);
 
   projUniform = projUniform_;
 
@@ -56,24 +56,24 @@ void SpriteBatch_Init(int projUniform_) {
 
   Mtx_Identity(&iconModelMtx);
   Mtx_RotateY(&iconModelMtx, M_PI / 4.f, false);
-  Mtx_RotateX(&iconModelMtx, M_PI / 6.f, false);
+  Mtx_RotateX(&iconModelMtx, M_PI / 6.f, false);*/
 }
 void SpriteBatch_Deinit() {
-  vec_deinit(&cmdList);
-  linearFree(vertexList[0]);
-  linearFree(vertexList[1]);
+  /*vec_deinit(&cmdList);
+  Lgy_LinearFree(vertexList[0]);
+  Lgy_LinearFree(vertexList[1]);
 
   C3D_TexDelete(&font->texture);
   lgy_free(font);
 
   C3D_TexDelete(&whiteTex);
   C3D_TexDelete(&widgetsTex);
-  C3D_TexDelete(&menuBackgroundTex);
+  C3D_TexDelete(&menuBackgroundTex);*/
 }
 
 void SpriteBatch_BindTexture(C3D_Tex* texture) { currentTexture = texture; }
 void SpriteBatch_BindGuiTexture(GuiTexture texture) {
-  switch (texture) {
+  /*switch (texture) {
     case GuiTexture_Blank:
       currentTexture = &whiteTex;
       break;
@@ -94,7 +94,7 @@ void SpriteBatch_BindGuiTexture(GuiTexture texture) {
       break;
     default:
       break;
-  }
+  }*/
 }
 
 void SpriteBatch_PushSingleColorQuad(int x, int y, int z, int w, int h,
@@ -108,65 +108,65 @@ void SpriteBatch_PushQuad(int x, int y, int z, int w, int h, int rx, int ry,
 }
 void SpriteBatch_PushQuadColor(int x, int y, int z, int w, int h, int rx,
                                int ry, int rw, int rh, int16_t color) {
-  vec_push(&cmdList,
+  /*vec_push(&cmdList,
            ((Sprite){z, currentTexture, x * guiScale, y * guiScale,
                      (x + w) * guiScale, y * guiScale, x * guiScale,
                      (y + h) * guiScale, (x + w) * guiScale, (y + h) * guiScale,
-                     rx, ry, rx + rw, ry + rh, color}));
+                     rx, ry, rx + rw, ry + rh, color}));*/
 }
 
 static float rot = 0.f;
 extern const WorldVertex cube_sides_lut[6 * 6];
 void SpriteBatch_PushIcon(Block block, uint8_t metadata, int x, int y, int z) {
-  WorldVertex vertices[6 * 6];
-  memcpy(vertices, cube_sides_lut, sizeof(cube_sides_lut));
-  for (int i = 0; i < 6; i++) {
-    if (i != Direction_Top && i != Direction_South && i != Direction_West)
-      continue;
-    int16_t iconUV[2];
-    Block_GetTexture(block, i, metadata, iconUV);
+  /* WorldVertex vertices[6 * 6];
+   memcpy(vertices, cube_sides_lut, sizeof(cube_sides_lut));
+   for (int i = 0; i < 6; i++) {
+     if (i != Direction_Top && i != Direction_South && i != Direction_West)
+       continue;
+     int16_t iconUV[2];
+     Block_GetTexture(block, i, metadata, iconUV);
 
-#define oneDivIconsPerRow (32768 / TEXTURE_MAPTILES)
-#define halfTexel (6)
+ #define oneDivIconsPerRow (32768 / TEXTURE_MAPTILES)
+ #define halfTexel (6)
 
-    uint8_t color[3];
-    Block_GetColor(block, metadata, i, color);
+     uint8_t color[3];
+     Block_GetColor(block, metadata, i, color);
 
-    for (int j = 0; j < 5; j++) {
-      int k = i * 6 + j;
-      C3D_FVec p = FVec3_New((float)vertices[k].xyz[0] - 0.5f,
-                             (float)vertices[k].xyz[1] - 0.5f,
-                             (float)vertices[k].xyz[2] - 0.5f);
-      C3D_FVec v = Mtx_MultiplyFVec3(&iconModelMtx, p);
-      vertices[k].xyz[0] =
-          FastFloor(v.x * 20.f * guiScale) + (x + 16) * guiScale;
-      vertices[k].xyz[1] = -FastFloor(v.y * 20.f * guiScale) +
-                           (y + 16) * guiScale;  // invertieren auf der Y-Achse
-    }
+     for (int j = 0; j < 5; j++) {
+       int k = i * 6 + j;
+       C3D_FVec p = FVec3_New((float)vertices[k].xyz[0] - 0.5f,
+                              (float)vertices[k].xyz[1] - 0.5f,
+                              (float)vertices[k].xyz[2] - 0.5f);
+       C3D_FVec v = Mtx_MultiplyFVec3(&iconModelMtx, p);
+       vertices[k].xyz[0] =
+           FastFloor(v.x * 20.f * guiScale) + (x + 16) * guiScale;
+       vertices[k].xyz[1] = -FastFloor(v.y * 20.f * guiScale) +
+                            (y + 16) * guiScale;  // invertieren auf der Y-Achse
+     }
 
-    WorldVertex bottomLeft = vertices[i * 6 + 0];
-    WorldVertex bottomRight = vertices[i * 6 + 1];
-    WorldVertex topRight = vertices[i * 6 + 2];
-    WorldVertex topLeft = vertices[i * 6 + 4];
+     WorldVertex bottomLeft = vertices[i * 6 + 0];
+     WorldVertex bottomRight = vertices[i * 6 + 1];
+     WorldVertex topRight = vertices[i * 6 + 2];
+     WorldVertex topLeft = vertices[i * 6 + 4];
 
-    C3D_Tex* texture = Block_GetTextureMap();
+     C3D_Tex* texture = Block_GetTextureMap();
 
-    int16_t color16 = SHADER_RGB(color[0] >> 3, color[1] >> 3, color[2] >> 3);
-    if (i == Direction_South)
-      color16 = SHADER_RGB_DARKEN(color16, 14);
-    else if (i == Direction_West)
-      color16 = SHADER_RGB_DARKEN(color16, 10);
+     int16_t color16 = SHADER_RGB(color[0] >> 3, color[1] >> 3, color[2] >> 3);
+     if (i == Direction_South)
+       color16 = SHADER_RGB_DARKEN(color16, 14);
+     else if (i == Direction_West)
+       color16 = SHADER_RGB_DARKEN(color16, 10);
 
-#define unpackP(x) (x).xyz[0], (x).xyz[1]
-    vec_push(&cmdList,
-             ((Sprite){z, texture, unpackP(topLeft), unpackP(topRight),
-                       unpackP(bottomLeft), unpackP(bottomRight),
-                       iconUV[0] / 256, iconUV[1] / 256 + TEXTURE_TILESIZE,
-                       iconUV[0] / 256 + TEXTURE_TILESIZE, iconUV[1] / 256,
-                       color16}));
+ #define unpackP(x) (x).xyz[0], (x).xyz[1]
+     vec_push(&cmdList,
+              ((Sprite){z, texture, unpackP(topLeft), unpackP(topRight),
+                        unpackP(bottomLeft), unpackP(bottomRight),
+                        iconUV[0] / 256, iconUV[1] / 256 + TEXTURE_TILESIZE,
+                        iconUV[0] / 256 + TEXTURE_TILESIZE, iconUV[1] / 256,
+                        color16}));
 
-#undef unpackP
-  }
+ #undef unpackP
+   }*/
 }
 
 int SpriteBatch_PushText(int x, int y, int z, int16_t color, bool shadow,
@@ -184,7 +184,7 @@ static char __str_buf[512];
 int SpriteBatch_PushTextVargs(int x, int y, int z, int16_t color, bool shadow,
                               int wrap, int* ySize, const char* fmt,
                               va_list arg) {
-  SpriteBatch_BindTexture(&font->texture);
+  /*SpriteBatch_BindTexture(&font->texture);
 #define _CHAR_WIDTH 8
 #define TAB_SIZE 4
 
@@ -244,8 +244,11 @@ int SpriteBatch_PushTextVargs(int x, int y, int z, int16_t color, bool shadow,
   if (ySize != NULL) *ySize = offsetY + CHAR_HEIGHT;
   if (len >= 512) {
     lgy_free(buffer);
+  }*/
+  if (ySize) {
+    *ySize = 2;
   }
-  return maxWidth;
+  return 1;  // maxWidth;
 }
 
 int SpriteBatch_CalcTextWidth(const char* text, ...) {
@@ -258,7 +261,7 @@ int SpriteBatch_CalcTextWidth(const char* text, ...) {
 }
 
 int SpriteBatch_CalcTextWidthVargs(const char* text, va_list args) {
-  char fmtedText[256];
+  /*char fmtedText[256];
   vsprintf(fmtedText, text, args);
 
   char* it = fmtedText;
@@ -274,8 +277,8 @@ int SpriteBatch_CalcTextWidthVargs(const char* text, va_list args) {
   }
 
   maxLength = MAX(maxLength, length);
-
-  return maxLength;
+*/
+  return 1;  // maxLength;
 }
 
 static int compareDrawCommands(const void* a, const void* b) {
@@ -298,7 +301,7 @@ void SpriteBatch_StartFrame(int width, int height) {
 }
 
 void SpriteBatch_Render(gfxScreen_t screen) {
-  rot += M_PI / 60.f;
+  /*rot += M_PI / 60.f;
   vec_sort(&cmdList, &compareDrawCommands);
 
   C3D_Mtx projMtx;
@@ -357,5 +360,5 @@ void SpriteBatch_Render(gfxScreen_t screen) {
   C3D_DepthTest(true, GPU_GREATER, GPU_WRITE_ALL);
 
   currentTexture = NULL;
-  guiScale = 2;
+  guiScale = 2;*/
 }

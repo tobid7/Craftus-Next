@@ -1,7 +1,6 @@
 #include <entity/Player.h>
 #include <misc/Collision.h>
 #include <misc/Sound.h>
-#include <gui/DebugUI.h>
 
 void Player_Init(Player* player, World* world) {
   player->position = f3_new(0.f, 0.f, 0.f);
@@ -54,8 +53,6 @@ void Player_Init(Player* player, World* world) {
     player->inventory[l++] = (ItemStack){Block_Bedrock, 0, 1};
     player->inventory[l++] = (ItemStack){Block_Gravel, 0, 1};
     player->inventory[l++] = (ItemStack){Block_Coarse, 0, 1};
-    player->inventory[l++] = (ItemStack){Block_Door_Top, 0, 1};
-    player->inventory[l++] = (ItemStack){Block_Door_Bottom, 0, 1};
     player->inventory[l++] = (ItemStack){Block_Snow_Grass, 0, 1};
     player->inventory[l++] = (ItemStack){Block_Snow, 0, 1};
     player->inventory[l++] = (ItemStack){Block_Obsidian, 0, 1};
@@ -92,7 +89,6 @@ void Player_Init(Player* player, World* world) {
     for (int i = 0; i < INVENTORY_QUICKSELECT_MAXSLOTS; i++)
       player->quickSelectBar[i] = (ItemStack){Block_Air, 0, 0};
   }
-  extern bool showDebugInfo;
 
   player->autoJumpEnabled = true;
 }
@@ -105,12 +101,12 @@ void Player_Respawn(Player* player, Damage* dmg) {
       Lgy_Log("Begin spset0\n");
       if (dmg->cause == NULL) {
         Lgy_Log("Cause is NULL\n");
-        DebugUI_Log("Player died");
+        Lgy_DebugUI_Log("Player died");
       } else {
         Lgy_Log("Cause is: %s\n", dmg->cause);
-        DebugUI_Log("Died by %s", dmg->cause);
+        Lgy_DebugUI_Log("Died by %s", dmg->cause);
       }
-      DebugUI_Log("No spawn was set");
+      Lgy_DebugUI_Log("No spawn was set");
 
       player->position.x = 0.0;
       World* world = player->world;
@@ -132,10 +128,10 @@ void Player_Respawn(Player* player, Damage* dmg) {
       // Error Happens here
       /*if (dmg->cause==NULL){
               Log("No Cause\n");
-              DebugUI_Log("Player died");
+              Lgy_DebugUI_Log("Player died");
       } else {
               Log("Cause is: %s\n", dmg->cause);
-              DebugUI_Log("Died by %s",dmg->cause);
+              Lgy_DebugUI_Log("Died by %s",dmg->cause);
       }*/
       player->position.x = player->spawnx;
       World* world = player->world;
@@ -159,7 +155,7 @@ void Player_Respawn(Player* player, Damage* dmg) {
     // dmg->cause=NULL;
   } else {
     Lgy_Log("lol ur world is gone iksdeh\n");
-    DebugUI_Log("lol ur world is gone");
+    Lgy_DebugUI_Log("lol ur world is gone");
     /*char buffer[512];
     sprintf(buffer, "sdmc:/craftus_redesigned/saves/%s",
     worlds.data[selectedWorld].path); delete_folder(buffer);*/
@@ -192,7 +188,7 @@ void Player_Update(Player* player, Damage* dmg) {
     // Fire damage
     if (World_GetBlock(player->world, f3_unpack(player
                                                     ->position)) == Block_Lava /*||World_GetBlock(player->world,f3_unpack(player->position)) == Block_Fire*/) {
-      DebugUI_Log("ur burning lol");
+      Lgy_DebugUI_Log("ur burning lol");
       Lgy_OvertimeDamage("fire", 10, player);
     }
     // Hunger

@@ -2,16 +2,20 @@
 
 #include <3ds.h>
 
+#include <cn/misc/Memory.hpp>
+
 namespace TME {
 class VboBlock {
  public:
   VboBlock() {}
   VboBlock(const VboBlock&) = delete;
   VboBlock& operator=(const VboBlock&) = delete;
-  VboBlock(size_t size) : pSize(size) { pData = linearAlloc(size); }
+  VboBlock(size_t size) : pSize(size) {
+    pData = CN::MemMgr::NewLinLgy(size, CN::MemMgr::Type_Vbo);
+  }
   ~VboBlock() {
     if (pData) {
-      linearFree(pData);
+      CN::MemMgr::DeleteLin(pData);
       pSize = 0;
     }
   }

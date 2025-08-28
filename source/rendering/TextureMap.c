@@ -89,8 +89,7 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
   const int mipmapLevels = cn_options.MipMapLvl;
   const int maxSize = 4 * TEXTURE_MAPSIZE * TEXTURE_MAPSIZE;
 
-  uint32_t* buffer = (uint32_t*)linearAlloc(maxSize);
-  for (int i = 0; i < maxSize; i++) buffer[i] = 0x000000FF;
+  uint32_t* buffer = (uint32_t*)Lgy_LinearAlloc(maxSize, MemType_Tex);
 
   int filei = 0;
   const char* filename = files[filei];
@@ -111,13 +110,10 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
 
       Texture_MapIcon* icon = &map->icons[c];
       icon->textureHash = Lgy_FastHash(filename);
-      icon->u = 256 * locX;
-      icon->v = 256 * locY;
 
-      Lgy_Log("Stiched texture %s(hash: %u) at %d, %d\n", filename,
-              icon->textureHash, locX, locY);
-      Lgy_Log("Texture UV %s(hash: %u) at %d, %d\n", filename,
-              icon->textureHash, icon->u, icon->v);
+      const int mod = UV_PRECISION / TEXTURE_MAPSIZE;
+      icon->u = locX * mod;
+      icon->v = locY * mod;
 
       locX += TEXTURE_TILESIZE;
       if (locX == TEXTURE_MAPSIZE) {
@@ -152,7 +148,7 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
   int size = TEXTURE_MAPSIZE / 2;
   ptrdiff_t offset = TEXTURE_MAPSIZE * TEXTURE_MAPSIZE;
 
-  u32* tiledImage = linearAlloc(size * size * 4);
+  u32* tiledImage = Lgy_LinearAlloc(size * size * 4, MemType_Tex);
 
   for (int i = 0; i < mipmapLevels; i++) {
     downscaleImage((u8*)buffer, size);
@@ -169,8 +165,8 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
     size /= 2;
   }
 
-  linearFree(tiledImage);
-  linearFree(buffer);
+  Lgy_LinearFree(tiledImage);
+  Lgy_LinearFree(buffer);
 }
 
 Texture_MapIcon Texture_MapGetIcon(Texture_Map* map, char* filename) {

@@ -28,7 +28,7 @@ static float max_velocity = 20.f;
 bool nu;
 void Title_Deinit() { /*Nothing*/ }
 
-bool warning = true;
+bool warning = false;
 char *lines[8] = {
     "WARNING",
     "This Game is very Buggy.",
@@ -44,7 +44,7 @@ void Title_Init() {}
 
 void Title_Render() {
   if (warning) {
-    SpriteBatch_SetScale(2);
+    Lgy_DynScale(2);
     int movementX = 0, movementY = 0;
     Gui_GetCursorMovement(&movementX, &movementY);
     if (Gui_IsCursorInside(0, 0, 160, 2 * 32)) {
@@ -79,17 +79,17 @@ void Title_Render() {
       warning = false;
     }
   } else {
-    SpriteBatch_SetScale(2);
+    Lgy_DynScale(2);
 
-    SpriteBatch_BindGuiTexture(GuiTexture_MenuBackground);
-    for (int i = 0; i < 160 / 32 + 1; i++) {
-      for (int j = 0; j < 120 / 32 + 1; j++) {
-        bool overlay = false;
-        SpriteBatch_PushQuadColor(i * 32, j * 32, overlay ? -4 : -10, 32, 32, 0,
-                                  0, 32, 32,
-                                  overlay ? INT16_MAX : SHADER_RGB(12, 12, 12));
-      }
-    }
+    // SpriteBatch_BindGuiTexture(GuiTexture_MenuBackground);
+    // for (int i = 0; i < 160 / 32 + 1; i++) {
+    //   for (int j = 0; j < 120 / 32 + 1; j++) {
+    //     bool overlay = false;
+    //     SpriteBatch_PushQuadColor(i * 32, j * 32, overlay ? -4 : -10, 32, 32, 0,
+    //                               0, 32, 32,
+    //                               overlay ? INT16_MAX : SHADER_RGB(12, 12, 12));
+    //   }
+    // }
 
     Gui_Offset(0, 10);
     Gui_BeginRowCenter(Gui_RelativeWidth(0.9f), 1);

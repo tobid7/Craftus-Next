@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <blocks/BlockEvents.h>
-#include <gui/DebugUI.h>
 #include <limits.h>
 #include <stdint.h>
 #include <string.h>

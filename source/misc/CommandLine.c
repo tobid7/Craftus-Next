@@ -3,7 +3,6 @@
 
 #include <3ds.h>
 
-#include <gui/DebugUI.h>
 #include <mpack/mpack.h>
 
 #include <stdio.h>
@@ -32,21 +31,21 @@ void CommandLine_Execute(World* world, Player* player, const char* text) {
 				player->position.x = x;
 				player->position.y = y + 1;
 				player->position.z = z;
-				DebugUI_Log("Teleported to %f, %f %f", x, y, z);
+				Lgy_DebugUI_Log("Teleported to %f, %f %f", x, y, z);
 			}
 		}
 		//int playerid;
 		if (length == 2 && text[1] == 'k') {
 			player->hp=0;
-			DebugUI_Log("Killed player");
+			Lgy_DebugUI_Log("Killed player");
 		}
 		int hp;
 		if (sscanf(&text[1],"hp %i",&hp)) {
 			if (hp>0&&hp<21){
 				player->hp=hp;
-				DebugUI_Log("Set player hp to %i", hp);
+				Lgy_DebugUI_Log("Set player hp to %i", hp);
 			} else {
-				DebugUI_Log("Cannot set hp to %i",hp);
+				Lgy_DebugUI_Log("Cannot set hp to %i",hp);
 			}
 		}
 		float sx,sy,sz;
@@ -63,19 +62,19 @@ void CommandLine_Execute(World* world, Player* player, const char* text) {
 			mpack_write_float(&writer,player->spawnz);
 			mpack_write_cstr(&writer, "ss");
 			mpack_write_int(&writer,player->spawnset);
-			DebugUI_Log("Set spawn to %f, %f %f", sx, sy, sz);
+			Lgy_DebugUI_Log("Set spawn to %f, %f %f", sx, sy, sz);
 			if (err != mpack_ok) {
-				DebugUI_Log("Mpack error %d while saving world manifest", err);
-				DebugUI_Log("Save file possibly corrupted, don't hit me plz");
+				Lgy_DebugUI_Log("Mpack error %d while saving world manifest", err);
+				Lgy_DebugUI_Log("Save file possibly corrupted, don't hit me plz");
 			}
 		}
 		int gm;
 		if (sscanf(&text[1],"gm %i",&gm)) {
 			if (gm>0&&gm<5){
 				player->gamemode=gm;
-				DebugUI_Log("Set gamemode to %i", gm);
+				Lgy_DebugUI_Log("Set gamemode to %i", gm);
 			} else {
-				DebugUI_Log("Cannot set gamemode to %i",gm);
+				Lgy_DebugUI_Log("Cannot set gamemode to %i",gm);
 			}
 
 		}
@@ -83,9 +82,9 @@ void CommandLine_Execute(World* world, Player* player, const char* text) {
 		if (sscanf(&text[1],"hunger %i",&hunger)) {
 			if (hunger>0&&hunger<5){
 				player->hunger=hunger;
-				DebugUI_Log("Set hunger to %i", hunger);
+				Lgy_DebugUI_Log("Set hunger to %i", hunger);
 			} else {
-				DebugUI_Log("Cannot set hunger to %i",hunger);
+				Lgy_DebugUI_Log("Cannot set hunger to %i",hunger);
 			}
 
 		}
@@ -93,16 +92,16 @@ void CommandLine_Execute(World* world, Player* player, const char* text) {
 		if (sscanf(&text[1],"diff %i",&diff)) {
 			if (diff>0&&diff<6) {
 				player->difficulty=diff;
-				DebugUI_Log("Set difficulty to %i", diff);
+				Lgy_DebugUI_Log("Set difficulty to %i", diff);
 			} else {
-				DebugUI_Log("Cannot set difficulty to %i",diff);
+				Lgy_DebugUI_Log("Cannot set difficulty to %i",diff);
 			}
 		}
 		/*int bx, by, bz; 					idfk how to get it to read strings as arguments, compiler isn't liking it
 		char block;
 		if (sscanf(&text[1], "sb %i %i %i", &bx, &by, &bz) == 3 &&) {
 			World_SetBlock(player->world, bx,by,bz, block);
-			DebugUI_Log("Block at %f, %f %f is now %c", bx, by, bz,block);
+			Lgy_DebugUI_Log("Block at %f, %f %f is now %c", bx, by, bz,block);
 		}*/
 		
 	}

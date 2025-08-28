@@ -1,16 +1,38 @@
+#include <cn/ConstIDs.hpp>
 #include <cn/Game.hpp>
 #include <cn/Lgy.hpp>
 #include <cn/entity/Damage.hpp>
+#include <cn/gfx/Renderer.hpp>
 #include <cn/gfx/TexLoader.hpp>
+#include <cn/gui/DebugUI.hpp>
 #include <cn/misc/Crash.hpp>
 #include <cn/misc/Fs.hpp>
 #include <cn/misc/Memory.hpp>
+#include <cn/misc/ResourceMgr.hpp>
+#include <cn/misc/TaskMgr.hpp>
+#include <cstdarg>
+#include <cstdio>
 #include <palladium>
+#include <pd-3ds.hpp>
 
 extern "C" {
 #include <entity/Player.h>
+#include <rendering/TextureMap.h>
+#include <rendering/WorldRenderer.h>
 
 GameOptions cn_options;
+extern bool showDebugInfo;
+extern WorldVertex cube_sides_lut[];
+
+constexpr int numTiles = UV_PRECISION / TEXTURE_MAPTILES;
+
+static PD::Li::Font::Ref font = nullptr;
+static PD::Li::DrawList::Ref list = nullptr;
+static std::map<u32, PD::Li::Texture::Ref> texlist;
+static PD::UI7::Context::Ref ui7 = nullptr;
+static float dyn__ = 1.f;
+static C3D_Mtx iconMdl;
+static CN::DebugUI pDebug;
 
 void Lgy_OvertimeDamage(const char* cause, int time, void* plr) {
   TME::OvertimeDamage(cause, time, (Player*)plr);
@@ -173,5 +195,253 @@ void* Lgy_DebugMalloc(size_t size, const char* f, int l) {
 
 void Lgy_DebugFree(void* ptr, const char* f, int l) {
   CN::Memory::Delete(ptr, f, l);
+}
+
+void Lgy_Render2D() {
+  // list->Clear();
+  // list->DrawRectFilled(0, PD::fvec2(320, 240), 0xffffffff);
+  // list->SetFont(font);
+  // list->DrawTextEx(5, "Hello World!\nCraftus v0.7.1-dev\nA Minecraft Clone",
+  //                  0xffff00ff, LiTextFlags_Shaddow);
+  // PD::Gfx::SetViewPort(PD::ivec2(320, 240));
+  // PD::Gfx::NewFrame();
+  // PD::Gfx::RenderDrawData(list->pDrawList);
+}
+
+void Lgy_InitPalladium() {
+  PD::Init();
+  // font = PD::Li::Font::New();
+  CN::ResourceMgr::Load("romfs:/fonts/Miracode.ttf", CN::RCID::FontTTF);
+  list = PD::Li::DrawList::New();
+  ui7 = PD::UI7::Context::New();
+  ui7->AddViewPort("bot", PD::ivec4(0, 0, 320, 240));
+  ui7->UseViewPort("bot");
+  ui7->pIO->Font = CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont);
+  // font->LoadTTF("romfs:/fonts/Miracode.ttf", 64);
+  // Lgy Icons
+  Mtx_Identity(&iconMdl);
+  Mtx_RotateY(&iconMdl, M_PI / 4.f, false);
+  Mtx_RotateX(&iconMdl, M_PI / 6.f, false);
+}
+
+u32 Lgy_LoadTexture(const char* path) {
+  u32 id = PD::Strings::FastHash(path);
+  PD::Image::Ref img = PD::Image::New();
+  img->Load(path);
+  auto tex =
+      PD::Gfx::LoadTex(img->pBuffer, img->pWidth, img->pHeight,
+                       PD::Li::Texture::RGBA32, PD::Li::Texture::NEAREST);
+  texlist[id] = tex;
+  return id;
+}
+
+void Lgy_GetTextureBounds(u32 texid, int* x, int* y) {
+  auto t = texlist.find(texid);
+  if (t == texlist.end()) {
+    *x = 0;
+    *y = 0;
+    return;
+  }
+  *x = t->second->Size.x;
+  *y = t->second->Size.y;
+}
+
+void Lgy_DrawTexElement(u32 texid, int x, int y, int w, int h, int cx, int cy,
+                        int cw, int ch) {
+  if (!texlist.count(texid)) {
+    return;
+  }
+  auto subtex = PD::Li::Texture::New();
+  subtex->CopyFrom(texlist[texid]);
+  subtex->UV = PD::fvec4(static_cast<float>(cx) / subtex->Size.x,
+                         1.f - static_cast<float>(cy) / subtex->Size.y,
+                         static_cast<float>(cx + cw) / subtex->Size.x,
+                         1.f - static_cast<float>(cy + ch) / subtex->Size.y);
+  subtex->Size.x = cw;
+  subtex->Size.y = ch;
+  list->DrawTexture(subtex);
+  list->DrawRectFilled(PD::fvec2(x, y), PD::fvec2(w * dyn__, h * dyn__),
+                       0xffffffff);
+  list->DrawSolid();
+}
+
+void Lgy_DrawText(int x, int y, bool shaddow, const char* text, ...) {
+  va_list args;
+  va_start(args, text);
+
+  char buffer[1024];
+  vsnprintf(buffer, sizeof(buffer), text, args);
+
+  va_end(args);
+  list->SetFontScale(0.7f * dyn__);
+  list->DrawTextEx(PD::fvec2(x, y), buffer, 0xffffffff, shaddow ? 4 : 0);
+}
+
+void Lgy_StartFrame(int w, int h) {
+  list->Clear();
+  list->SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
+}
+
+void Lgy_Render(int w, int h) {
+  PD::Gfx::SetViewPort(PD::ivec2(w, h));
+  PD::Gfx::RenderDrawData(list->pDrawList);
+}
+
+void Lgy_Finish2D() { PD::Gfx::NewFrame(); }
+
+void Lgy_DynScale(float scale) {
+  dyn__ = scale;
+  if (dyn__ == 0.0f) {
+    dyn__ = 1.f;
+  }
+}
+
+u32 ui_Cfg =
+    UI7MenuFlags_NoCollapse | UI7MenuFlags_NoMove | UI7MenuFlags_NoResize;
+
+void Lgy_HandleUI(void* gs_ptr) {
+  GameState* gs = (GameState*)gs_ptr;
+  if (*gs == GameState_Title) {
+    if (ui7->BeginMenu("Title", ui_Cfg)) {
+      auto m = ui7->pCurrent;
+      if (m->Button("Singleplayer")) {
+        *gs = GameState_SelectWorld;
+      }
+      if (m->Button("Options")) {
+        *gs = GameState_Options;
+      }
+      ui7->EndMenu();
+    }
+  } else if (*gs == GameState_SelectWorld) {
+    if (ui7->BeginMenu("World Select", ui_Cfg)) {
+      auto m = ui7->pCurrent;
+      m->Label("Hello UI7");
+      ui7->EndMenu();
+    }
+  } else if (*gs == GameState_Options) {
+    if (ui7->BeginMenu("Options", ui_Cfg)) {
+      auto m = ui7->pCurrent;
+      m->SeparatorText("Graphics");
+      m->DragData("MipMap Levels", &cn_options.MipMapLvl, 1, 0, 4);
+      m->DragData("Fov", &cn_options.Fov, 1, 30.f, 110.f);
+      m->Checkbox("Render Clouds", cn_options.Clouds);
+      m->Checkbox("Render Hand", cn_options.Hand);
+      m->Checkbox("View Bobbing", cn_options.ViewBobbing);
+      if (m->Button("back")) {
+        *gs = GameState_Title;
+      }
+      ui7->EndMenu();
+    }
+  } else if (*gs == GameState_Playing) {
+    if (ui7->BeginMenu("Game", ui_Cfg)) {
+      auto m = ui7->pCurrent;
+      float env_size_mb = (float)envGetLinearHeapSize() / 1024.f / 1024.f;
+      float space_mb = (float)linearSpaceFree() / 1024.f / 1024.f;
+      size_t allocs = 0;
+      m->Label(std::format("Linear Ram {:.2f}mb/{:.2f}mb",
+                           env_size_mb - space_mb, env_size_mb));
+      /**
+       * Using a variable that gets set while getting another
+       * probably not the way how to do things correct
+       * but i dont care for this c based engine...
+       */
+      m->Label(std::format(
+          "Vbo: {:.2f} Allocations: {}",
+          (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Vbo, true, &allocs) /
+              1024.f / 1024.f,
+          allocs));
+      m->Label(std::format(
+          "Tex: {:.2f} Allocations: {}",
+          (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Tex, true, &allocs) /
+              1024.f,
+          allocs));
+      m->Label(std::format(
+          "Snd: {:.2f} Allocations: {}",
+          (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Snd, true, &allocs) /
+              1024.f,
+          allocs));
+      m->Label(std::format(
+          "Unk: {:.2f} Allocations: {}",
+          (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Unk, true, &allocs) /
+              1024.f,
+          allocs));
+      m->Checkbox("Debug (F3)", showDebugInfo);
+      ui7->EndMenu();
+    }
+  }
+  ui7->Update();
+  list->Merge(ui7->GetDrawData());
+}
+
+void Lgy_UpdateInput() { PD::Hid::Update(); }
+
+void* Lgy_LinearAlloc(size_t size, MemType type) {
+  return CN::MemMgr::NewLinLgy(size, (CN::MemMgr::Type)type);
+}
+void Lgy_LinearFree(void* mem) { CN::MemMgr::DeleteLin(mem); }
+
+void RcLoadAsync(void* d) {
+  const std::string rcp_ = "romfs:/assets/textures/gui/";
+  CN::ResourceMgr::Load(rcp_ + "title/craftus.png", CN::RCID::Texture);
+  CN::ResourceMgr::Load(rcp_ + "icons.png", CN::RCID::Texture);
+  CN::ResourceMgr::Load(rcp_ + "options_background.png", CN::RCID::Texture);
+  CN::ResourceMgr::Load(rcp_ + "widgets.png", CN::RCID::Texture);
+  CN::ResourceMgr::Load("romfs:/assets/textures/entity/tobid7vx.png",
+                        CN::RCID::Texture);
+}
+
+CN::TaskMgr::Task __task;
+
+void Lgy_InitRenderStage(void* world, void* gs, void* player, void* cw) {
+  CN::TaskMgr::Init();
+  TME::Renderer::Init();
+  TME::Renderer::pDebug = &pDebug;
+  Lgy_InitPalladium();
+  PolyGen_Init((World*)world, (Player*)player);
+  WorldRenderer_Init((Player*)player, (World*)world, &((ChunkWorker*)cw)->queue,
+                     TME::Renderer::uLocProj);
+  Block_Init();
+  C3D_CullFace(GPU_CULL_BACK_CCW);
+  auto t = CN::TaskMgr::CreateTask(0);
+  t->Func = RcLoadAsync;
+  CN::TaskMgr::PushTask(t);
+  // __task.Func = RcLoadAsync;
+  // __task.Prio = 0;
+  // CN::TaskMgr::PushTask(&__task);
+  RcLoadAsync(0);
+}
+
+void Lgy_ExitRenderStage() {
+  Block_Deinit();
+  WorldRenderer_Deinit();
+  PolyGen_Deinit();
+  TME::Renderer::Deinit();
+  // CN::TaskMgr::Deinit();
+}
+
+void Lgy_Render_(void* world, void* gs) {
+  TME::Renderer::Render((World*)world, (GameState*)gs);
+}
+
+void Lgy_LoadResourcesAsync(void* queue, int item, void* data) {}
+
+void Lgy_DebugUI_Text(const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  char buffer[256];
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  pDebug.Line(std::string(buffer));
+}
+
+void Lgy_DebugUI_Log(const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  char buffer[256];
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  pDebug.Log(std::string(buffer));
 }
 }

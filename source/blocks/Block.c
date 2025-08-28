@@ -9,21 +9,21 @@ static Texture_Map textureMap;
 
 #define TEXTURE_FILES                                                          \
   A(stone, "stone.png"), A(dirt, "dirt.png"),                                  \
-      A(cobblestone, "cobblestone.png"), A(grass_side, "grass_side.png"),      \
-      A(grass_top, "grass_top.png"), A(stonebrick, "stonebrick.png"),          \
-      A(sand, "sand.png"), A(oaklog_side, "log_oak.png"),                      \
-      A(oaklog_top, "log_oak_top.png"), A(leaves_oak, "leaves_oak.png"),       \
-      A(glass, "glass.png"), A(brick, "brick.png"),                            \
-      A(oakplanks, "planks_oak.png"), A(wool, "wool.png"),                     \
+      A(cobblestone, "cobblestone.png"),                                       \
+      A(grass_side, "grass_block_side.png"),                                   \
+      A(grass_top, "grass_block_top.png"), A(stonebrick, "stone_bricks.png"),  \
+      A(sand, "sand.png"), A(oaklog_side, "oak_log.png"),                      \
+      A(oaklog_top, "oak_log_top.png"), A(leaves_oak, "oak_leaves.png"),       \
+      A(glass, "glass.png"), A(brick, "bricks.png"),                           \
+      A(oakplanks, "oak_planks.png"), A(wool, "white_wool.png"),               \
       A(bedrock, "bedrock.png"), A(gravel, "gravel.png"),                      \
-      A(coarse, "coarse_dirt.png"), A(door_top, "door_top.png"),               \
-      A(door_bottom, "door_bottom.png"),                                       \
-      A(snow_grass_side, "snow_grass_side.png"), A(snow, "snow.png"),          \
-      A(obsidian, "obsidian.png"), A(sandstone_side, "sandstone_side.png"),    \
+      A(coarse, "coarse_dirt.png"),                                            \
+      A(snow_grass_side, "grass_block_snow.png"), A(snow, "snow.png"),         \
+      A(obsidian, "obsidian.png"), A(sandstone_side, "sandstone.png"),         \
       A(sandstone_top, "sandstone_top.png"),                                   \
       A(sandstone_bottom, "sandstone_bottom.png"),                             \
       A(netherrack, "netherrack.png"), A(smooth_stone, "smooth_stone.png"),    \
-      A(lava, "lava.png"), A(water, "water.png"),                              \
+      A(lava, "lava_still.png"), A(water, "water_overlay.png"),                \
       A(grass_path_side, "grass_path_side.png"),                               \
       A(grass_path_top, "grass_path_top.png"),                                 \
       A(crafting_table_side, "crafting_table_side.png"),                       \
@@ -39,16 +39,16 @@ static Texture_Map textureMap;
       A(furnace_top, "furnace_top.png"), A(mycelium_top, "mycelium_top.png"),  \
       A(mycelium_side, "mycelium_side.png"),                                   \
       A(pumpkin_side, "pumpkin_side.png"), A(pumpkin_top, "pumpkin_top.png"),  \
-      A(pumpkin_face_off, "pumpkin_face_off.png"),                             \
-      A(pumpkin_face_on, "pumpkin_face_on.png"),                               \
-      A(birch_planks, "planks_birch.png"), A(birch_log_side, "log_birch.png"), \
-      A(birch_log_top, "log_birch_top.png"),                                   \
-      A(birch_leaves, "leaves_birch.png"),                                     \
-      A(melon_side, "melon_side.png"), A(melon_top, "melon_top.png"),          \
-      A(leaves_acacia_opaque, "leaves_acacia.png"),                            \
-      A(log_acacia_side, "log_acacia.png"),                                    \
-      A(log_acacia_top, "log_acacia_top.png"),                                 \
-      A(planks_acacia, "planks_acacia.png")
+      A(pumpkin_face_off, "carved_pumpkin.png"),                               \
+      A(pumpkin_face_on, "jack_o_lantern.png"),                                \
+      A(birch_planks, "birch_planks.png"), A(birch_log_side, "birch_log.png"), \
+      A(birch_log_top, "birch_log_top.png"),                                   \
+      A(birch_leaves, "birch_leaves.png"), A(melon_side, "melon_side.png"),    \
+      A(melon_top, "melon_top.png"),                                           \
+      A(leaves_acacia_opaque, "acacia_leaves.png"),                            \
+      A(log_acacia_side, "acacia_log.png"),                                    \
+      A(log_acacia_top, "acacia_log_top.png"),                                 \
+      A(planks_acacia, "acacia_planks.png")
 
 #define A(i, n) PPRX n
 const char* block_texture_files[] = {TEXTURE_FILES};
@@ -72,8 +72,6 @@ static struct {
   Texture_MapIcon bedrock;
   Texture_MapIcon gravel;
   Texture_MapIcon coarse;
-  Texture_MapIcon door_top;
-  Texture_MapIcon door_bottom;
   Texture_MapIcon snow_grass_side;
   Texture_MapIcon snow;
   Texture_MapIcon obsidian;
@@ -298,12 +296,6 @@ void Block_GetTexture(Block block, Direction direction, uint8_t metadata,
     case Block_Coarse:
       i = icon.coarse;
       break;
-    case Block_Door_Top:
-      i = icon.door_top;
-      break;
-    case Block_Door_Bottom:
-      i = icon.door_bottom;
-      break;
     case Block_Snow_Grass:
       switch (direction) {
         case Direction_Top:
@@ -468,22 +460,21 @@ void Block_GetColor(Block block, uint8_t metadata, Direction direction,
 }
 
 bool Block_Opaque(Block block, uint8_t metadata) {
-  return block != Block_Air && block != Block_Glass &&
-         block != Block_Door_Top && block != Block_Door_Bottom &&
-         block != Block_Water && block != Block_Lava && block != Block_Leaves &&
+  return block != Block_Air && block != Block_Glass && block != Block_Water &&
+         block != Block_Lava && block != Block_Leaves &&
          block != Block_LeavesAcacia && block != Block_BirchLeaves;
 }
 
 const char* BlockNames[Blocks_Count] = {
-    "Air",          "Stone",          "Dirt",          "Grass",
-    "Cobblestone",  "Sand",           "Log",           "Leaves",
-    "Glass",        "Stone Bricks",   "Bricks",        "Planks",
-    "Wool",         "Bedrock",        "Gravel",        "Water",
-    "Coarse",       "Door_Top",       "Door_Bottom",   "Snow_Grass",
-    "Snow",         "Obsidian",       "Netherrack",    "Sandstone",
-    "Smooth_Stone", "Crafting_Table", "Grass_Path",    "Water",
-    "Lava",         "Iron_Ore",       "Iron_Block",    "Coal_Ore",
-    "Coal_Block",   "Diamond_Ore",    "Diamond_Block", "Gold_Ore",
-    "Gold_Block",   "Emerald_Ore",    "Emerald_Block", "Furnace",
-    "Mycel",        "Pumpkin",        "CutPumpkin",    "PumpkinLamp",
-    "BirchLog",     "BirchPlanks",    "Melon"};
+    "Air",           "Stone",        "Dirt",         "Grass",
+    "Cobblestone",   "Sand",         "Log",          "Leaves",
+    "Glass",         "Stone Bricks", "Bricks",       "Planks",
+    "Wool",          "Bedrock",      "Gravel",       "Water",
+    "Coarse",        "Snow_Grass",   "Snow",         "Obsidian",
+    "Netherrack",    "Sandstone",    "Smooth_Stone", "Crafting_Table",
+    "Grass_Path",    "Water",        "Lava",         "Iron_Ore",
+    "Iron_Block",    "Coal_Ore",     "Coal_Block",   "Diamond_Ore",
+    "Diamond_Block", "Gold_Ore",     "Gold_Block",   "Emerald_Ore",
+    "Emerald_Block", "Furnace",      "Mycel",        "Pumpkin",
+    "CutPumpkin",    "PumpkinLamp",  "BirchLog",     "BirchPlanks",
+    "Melon"};

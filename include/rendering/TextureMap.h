@@ -5,7 +5,8 @@
 
 void Texture_Load(C3D_Tex* result, char* filename);
 
-#define TEXTURE_MAPSIZE 128
+#define UV_PRECISION 32768
+#define TEXTURE_MAPSIZE 512
 #define TEXTURE_TILESIZE 16
 #define TEXTURE_MAPTILES (TEXTURE_MAPSIZE / TEXTURE_TILESIZE)
 

@@ -1,6 +1,5 @@
 #include <GameStates.h>
 #include <entity/PlayerController.h>
-#include <gui/DebugUI.h>
 #include <ini/ini.h>
 #include <misc/CommandLine.h>
 #include <misc/NumberUtils.h>

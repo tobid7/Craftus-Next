@@ -2,6 +2,7 @@
 #include <cn/misc/Memory.hpp>
 
 namespace CN {
+std::unordered_map<uintptr_t, MemMgr::Data> MemMgr::pAllocations;
 namespace Memory {
 constexpr PD::u32 memsig = 0x7747feed;
 void* New(size_t size, const std::string& file, int line) {

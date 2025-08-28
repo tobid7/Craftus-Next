@@ -7,7 +7,6 @@ extern "C" {
 #include <entity/PlayerController.h>
 #include <gui/CrashMenu.h>
 #include <gui/DeathMenu.h>
-#include <gui/DebugUI.h>
 #include <gui/Gui.h>
 #include <gui/Inventory.h>
 #include <gui/OptionsMenu.h>
@@ -16,7 +15,6 @@ extern "C" {
 #include <gui/TitleMenu.h>
 #include <gui/WorldSelect.h>
 #include <rendering/PolyGen.h>
-#include <rendering/Renderer.h>
 #include <sino/sino.h>
 #include <world/ChunkWorker.h>
 #include <world/World.h>

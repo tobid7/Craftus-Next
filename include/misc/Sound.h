@@ -1,5 +1,5 @@
 #pragma once
-#include <opus/opusfile.h>
+/*#include <opus/opusfile.h>
 
 typedef struct{
 	char path[128];
@@ -8,4 +8,4 @@ typedef struct{
 	OggOpusFile *opusFile;
 }Sound;
 
-void playopus(Sound*);
+void playopus(Sound*);*/

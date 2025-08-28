@@ -1,5 +1,5 @@
-#include <palladium>
 #include <cn/Game.hpp>
+#include <palladium>
 
 namespace TME {
 void catch_the_stuff() {
@@ -41,8 +41,7 @@ CoreEngine::CoreEngine() {
   FlatBedrockGen_Init(&pBedrockFlat, pWorld);
   DefaultGen_Init(&pDefault, pWorld);
   SmeaGen_Init(&pSmea, pWorld);
-  Renderer_Init(pWorld, &pPlayer, &pChunkWorker.queue, &pGamestate);
-  DebugUI_Init();
+
   WorldSelect_Init();
   Options_Init(GameState_Title);
   SuperChunk_InitPools();
@@ -63,9 +62,8 @@ CoreEngine::~CoreEngine() {
   ndspExit();
   sino_exit();
   WorldSelect_Deinit();
-  DebugUI_Deinit();
   ChunkWorker_Deinit(&pChunkWorker);
-  Renderer_Deinit();
+
   delete pWorld;
   romfsExit();
   gfxExit();
@@ -103,7 +101,7 @@ void CoreEngine::pUpdateInput() {
   Gui_InputData(inp);
 }
 
-void CoreEngine::pUpdateGfx() { Renderer_Render(); }
+void CoreEngine::pUpdateGfx() {}
 
 void CoreEngine::pUpdateTimings() {
   pDelta = pDeltaClock.GetSeconds() * 1000.f;

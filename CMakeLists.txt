@@ -28,10 +28,10 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin) # Link bin to source dir
 
 # `$(PREFIX)pkg-config opusfile --cflags` part of the makefile
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(OPUSFILE REQUIRED opusfile)
-include_directories(${OPUSFILE_INCLUDE_DIRS})
-add_definitions(${OPUSFILE_CFLAGS_OTHER})
+#find_package(PkgConfig REQUIRED)
+#pkg_check_modules(OPUSFILE REQUIRED opusfile)
+#include_directories(${OPUSFILE_INCLUDE_DIRS})
+#add_definitions(${OPUSFILE_CFLAGS_OTHER})
 # Import Extras (disable warnings before)
 set_directory_properties(PROPERTIES COMPILE_OPTIONS -w)
 add_subdirectory(dependencies/ini)
@@ -63,7 +63,6 @@ execute_process(
 )
 
 dkp_add_embedded_binary_library(world_asm ${CMAKE_BINARY_DIR}/world.shbin)
-dkp_add_embedded_binary_library(gui_asm ${CMAKE_BINARY_DIR}/gui.shbin)
 
 add_compile_options(
     -Wall
@@ -93,12 +92,17 @@ add_executable(Craftus-Next
     source/cn/Game.cpp # TME
     source/cn/entity/Damage.cpp
     source/cn/Lgy.cpp
+    source/cn/Tasks.cpp
     source/cn/gfx/Camera.cpp
     source/cn/gfx/TexLoader.cpp
+    source/cn/gfx/Renderer.cpp
     source/cn/misc/Collision.cpp
     source/cn/misc/Crash.cpp
     source/cn/misc/Fs.cpp
     source/cn/misc/Memory.cpp
+    source/cn/misc/ResourceMgr.cpp
+    source/cn/misc/TaskMgr.cpp
+    source/cn/gui/DebugUI.cpp
 
     source/main.c
 
@@ -112,7 +116,6 @@ add_executable(Craftus-Next
 
     source/gui/CrashMenu.c
     source/gui/DeathMenu.c
-    source/gui/DebugUI.c
     source/gui/FontLoader.c
     source/gui/Gui.c
     source/gui/Inventory.c
@@ -133,7 +136,6 @@ add_executable(Craftus-Next
     source/rendering/Cursor.c
     source/rendering/Hand.c
     source/rendering/PolyGen.c
-    source/rendering/Renderer.c
     source/rendering/TextureMap.c
     source/rendering/VertexFmt.c
     source/rendering/WorldRenderer.c
@@ -170,7 +172,6 @@ target_link_libraries(Craftus-Next PUBLIC
     pd-3ds
     palladium
     # playback
-    gui_asm # Gui Shader
     world_asm # World Shader
     citro3d
     ctru
@@ -178,7 +179,7 @@ target_link_libraries(Craftus-Next PUBLIC
     z
 )
 
-add_dependencies(Craftus-Next gui_asm world_asm)
+add_dependencies(Craftus-Next world_asm)
 
 target_include_directories(Craftus-Next PUBLIC
     ${DEVKITPRO}/portlibs/3ds/include
@@ -229,7 +230,7 @@ add_custom_command(
     -DAPP_ROMFS="${APP_ROMFS}"
     -major 1 -minor 0 -micro 0
     -DAPP_VERSION_MAJOR=1
-    DEPENDS ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.elf ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.smdh
+    DEPENDS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.elf ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.smdh
     COMMENT "Creating Cia file..."
     VERBATIM
 )
@@ -239,5 +240,5 @@ add_custom_target(make_banner ALL
 )
 
 add_custom_target(make_cia ALL
-    DEPENDS ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.bnr ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.elf ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.cia
+    DEPENDS ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.bnr ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.elf ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.cia
 )

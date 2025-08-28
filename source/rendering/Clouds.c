@@ -38,13 +38,13 @@ void Clouds_Init() {
 
 	lgy_free(map);
 
-	cloudVBO = linearAlloc(sizeof(vertices));
+	cloudVBO = Lgy_LinearAlloc(sizeof(vertices), MemType_Vbo);
 	memcpy(cloudVBO, vertices, sizeof(vertices));
 }
 
 void Clouds_Deinit() {
 	C3D_TexDelete(&texture);
-	linearFree(cloudVBO);
+	Lgy_LinearFree(cloudVBO);
 }
 
 void Clouds_Render(int projUniform, C3D_Mtx* projectionview, World* world, float tx, float tz) {

@@ -1,6 +1,5 @@
 #include <3ds.h>
 #include <entity/Player.h>
-#include <gui/DebugUI.h>
 #include <gui/Gui.h>
 #include <gui/OptionsMenu.h>
 #include <gui/SpriteBatch.h>
@@ -190,7 +189,7 @@ bool Options_Update(Player player) {
     if (reload) {
       Block_Deinit();
       Block_Init();
-      DebugUI_Log("Reloaded Blocks!");
+      Lgy_DebugUI_Log("Reloaded Blocks!");
       reload = false;
     }
     cancelled2 = false;

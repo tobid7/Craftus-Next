@@ -10,6 +10,12 @@ class ItemStack {
     pBlock = 0;
     pMeta = 0;
   }
+  
+  ItemStack(PD::u16 b, PD::u8 m, PD::u8 n) {
+    pAmount = n;
+    pBlock = b;
+    pMeta = m;
+  }
 
   bool Empty() const { return !pAmount; }
   void Transfer(ItemStack* dst) {

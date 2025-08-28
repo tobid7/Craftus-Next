@@ -13,12 +13,11 @@ static C3D_Tex SkinTexture;
 extern const WorldVertex cube_sides_lut[6 * 6];
 
 void Hand_Init() {
-	handVBO = linearAlloc(sizeof(cube_sides_lut));
-	
-	Texture_Load(&SkinTexture, "romfs:/assets/textures/entity/player.png");
+	handVBO = Lgy_LinearAlloc(sizeof(cube_sides_lut), MemType_Vbo);
+	Texture_Load(&SkinTexture, "romfs:/assets/textures/entity/tobid7vx.png");
 }
 void Hand_Deinit() {
-	linearFree(handVBO);
+	Lgy_LinearFree(handVBO);
 	C3D_TexDelete(&SkinTexture);
 }
 
@@ -38,7 +37,6 @@ void Hand_Draw(int projUniform, C3D_Mtx* projection, ItemStack stack, Player* pl
 	}
 	if (stack.amount == 0) Mtx_RotateZ(&model, DEG_TO_RAD * 40.f, true);
 	Mtx_Scale(&model, 0.28f, 0.28f, stack.amount == 0 ? 0.8f : 0.28f);
-
 	Mtx_Multiply(&pm, projection, &model);
 
 	C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER, projUniform, &pm);
@@ -51,7 +49,7 @@ void Hand_Draw(int projUniform, C3D_Mtx* projection, ItemStack stack, Player* pl
 			Block_GetTexture(stack.block, i, stack.meta, iconUV);
 			Block_GetColor(stack.block, stack.meta, i, color);
 
-#define oneDivIconsPerRow (32768 / 8)
+#define oneDivIconsPerRow (32768 / TEXTURE_MAPTILES)
 #define halfTexel (6)
 
 			for (int j = 0; j < 6; j++) {
@@ -82,8 +80,8 @@ void Hand_Draw(int projUniform, C3D_Mtx* projection, ItemStack stack, Player* pl
 			}
 			for (int j = 0; j < 6; j++) {
 				int idx = i * 6 + j;
-#define toTexCoord(x, tw) (int16_t)(((float)(x) / (float)(tw)) * (float)(1 << 15))
-				const int16_t uvLookUp[6][4] = {
+#define toTexCoord(x, tw) (float)(((float)(x) / (float)(tw)) * (float)(1 << 15))
+				const float uvLookUp[6][4] = {
 				    {toTexCoord(48, 64), toTexCoord(52, 64), toTexCoord(20, 64), toTexCoord(32, 64)},  // west = inside
 				    {toTexCoord(40, 64), toTexCoord(44, 64), toTexCoord(20, 64), toTexCoord(32, 64)},  // east = outside
 				    {toTexCoord(52, 64), toTexCoord(56, 64), toTexCoord(20, 64), toTexCoord(32, 64)},  // bottom = back

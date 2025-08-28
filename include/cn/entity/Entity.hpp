@@ -13,14 +13,14 @@ class Entity {
   Entity() {}
   ~Entity() {}
 
+  bool IsOnGround() const { return pOnGround; }
+  bool IsJumping() const { return pJumping; }
+
   PD::fvec3 pPos;
   PD::fvec2 pRot;
   bool pOnGround;
   bool pJumping;
-  // Only player variables (maybe get moved)
-  bool pSprinting;
-  bool pFlying;
-  bool pCrouching;
+
   PD::fvec3 pView;
   /** Maybe move to Physics */
   PD::fvec3 pVelocity;

@@ -1,5 +1,4 @@
 #include <dirent.h>
-#include <gui/DebugUI.h>
 #include <mpack/mpack.h>
 #include <string.h>
 #include <unistd.h>
@@ -158,7 +157,7 @@ void SaveManager_Unload(SaveManager* mgr) {
   vec_clear(&mgr->superchunks);
 }
 
-static SuperChunk* fetchSuperChunk(SaveManager* mgr, int x, int z) {
+SuperChunk* fetchSuperChunk(SaveManager* mgr, int x, int z) {
   for (int i = 0; i < mgr->superchunks.length; i++) {
     if (mgr->superchunks.data[i]->x == x && mgr->superchunks.data[i]->z == z) {
       return mgr->superchunks.data[i];

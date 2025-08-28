@@ -1,6 +1,5 @@
 #include <blocks/Block.h>
 #include <citro3d.h>
-#include <gui/DebugUI.h>
 #include <rendering/Clouds.h>
 #include <rendering/Cursor.h>
 #include <rendering/Hand.h>
@@ -122,8 +121,7 @@ static void renderWorld() {
 
       C3D_BufInfo bufInfo;
       BufInfo_Init(&bufInfo);
-      BufInfo_Add(&bufInfo, cluster->vbo.memory, sizeof(WorldVertex), 3,
-                  0x210);
+      BufInfo_Add(&bufInfo, cluster->vbo.memory, sizeof(WorldVertex), 3, 0x210);
       C3D_SetBufInfo(&bufInfo);
       C3D_DrawArrays(GPU_TRIANGLES, 0, cluster->vertices);
 
@@ -152,7 +150,8 @@ static void renderWorld() {
                                   newY * CHUNK_SIZE + CHUNK_SIZE / 2,
                                   newZ * CHUNK_SIZE + CHUNK_SIZE / 2),
                            playerPos);
-      if (f3_dot(dist, dist) > ((float)VIEW_DISTANCE * CHUNK_SIZE) * ((float)VIEW_DISTANCE * CHUNK_SIZE)) {
+      if (f3_dot(dist, dist) > ((float)VIEW_DISTANCE * CHUNK_SIZE) *
+                                   ((float)VIEW_DISTANCE * CHUNK_SIZE)) {
         continue;
       }
 
@@ -215,8 +214,8 @@ static void renderWorld() {
   C3D_AlphaTest(false, GPU_GREATER, 0);
 
   clusters_drawn = clustersDrawn;
-  DebugUI_Text("Rendered %d vertices", polysTotal);
-  DebugUI_Text(
+  Lgy_DebugUI_Text("Rendered %d vertices", polysTotal);
+  Lgy_DebugUI_Text(
       "T: %u P: %u %d",
       world->chunkCache[CHUNKCACHE_SIZE / 2][CHUNKCACHE_SIZE / 2]->tasksRunning,
       world->chunkCache[CHUNKCACHE_SIZE / 2][CHUNKCACHE_SIZE / 2]->genProgress,
@@ -241,17 +240,17 @@ void WorldRenderer_Render(float iod) {
     C3D_Mtx p;
     Mtx_PerspStereoTilt(&p, C3D_AngleFromDegrees(60.f), ((400.f) / (240.f)),
                         camera.near, camera.far, iod, 1.f, false);
+    // disable depth test to not clip into the blocks
+    // but need still need to find a way to not clip
+    // into the cursor (but changing order results in white hand ??? df)
+    C3D_DepthTest(false, GPU_GREATER, GPU_WRITE_ALL);
     Hand_Draw(projectionUniform, &p,
               player->quickSelectBar[player->quickSelectBarSlot], player);
+    C3D_DepthTest(true, GPU_GREATER, GPU_WRITE_ALL);
   }
 
   if (player->blockInActionRange)
     Cursor_Draw(projectionUniform, &camera.vp, world, player->viewRayCast.x,
                 player->viewRayCast.y, player->viewRayCast.z,
                 player->viewRayCast.direction);
-}
-
-void WorldRenderer_Update(Player* player_, World* world_) {
-  player = player_;
-  world = world_;
 }

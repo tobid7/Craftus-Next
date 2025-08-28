@@ -1,6 +1,5 @@
 #include <rendering/PolyGen.h>
 
-#include <gui/DebugUI.h>
 #include <cn/Lgy.hpp>
 #include <world/Direction.h>
 #include <rendering/TextureMap.h>
@@ -158,8 +157,8 @@ void PolyGen_Deinit() {
 
 void PolyGen_Harvest() {
 	if (LightLock_TryLock(&updateLock) == 0) {
-		DebugUI_Text("VBOUpdates %d", vboUpdates.length);
-		DebugUI_Text("FloodFillQueue %d", (sizeof(vec_t(QueueElement)) + (sizeof(vec_t(QueueElement)) * floodfill_queue.length)));
+		Lgy_DebugUI_Text("VBOUpdates %d", vboUpdates.length);
+		Lgy_DebugUI_Text("FloodFillQueue %d", (sizeof(vec_t(QueueElement)) + (sizeof(vec_t(QueueElement)) * floodfill_queue.length)));
 		if (vboUpdates.length > 0) {
 			if (vboUpdates.data[0].delay++ > 2)
 				while (vboUpdates.length > 0) {

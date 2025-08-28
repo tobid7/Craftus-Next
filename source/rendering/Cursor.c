@@ -9,7 +9,7 @@ static WorldVertex* cursorVBO;
 extern const WorldVertex cube_sides_lut[6 * 6];
 
 void Cursor_Init() {
-	cursorVBO = linearAlloc(sizeof(cube_sides_lut));
+	cursorVBO = Lgy_LinearAlloc(sizeof(cube_sides_lut), MemType_Vbo);
 	memcpy(cursorVBO, cube_sides_lut, sizeof(cube_sides_lut));
 
 	for (int i = 0; i < 6 * 6; i++) {
@@ -19,7 +19,7 @@ void Cursor_Init() {
 	}
 }
 
-void Cursor_Deinit() { linearFree(cursorVBO); }
+void Cursor_Deinit() { Lgy_LinearFree(cursorVBO); }
 
 void Cursor_Draw(int projUniform, C3D_Mtx* projectionview, World* world, int x, int y, int z, Direction highlight) {
 	C3D_Mtx model;

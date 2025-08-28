@@ -65,6 +65,7 @@ cmake --build
 - KosmicDev: better y spawning code
 - GamesSanti: Craftus Redesigned
 - RSDuck: Craftus and Craftus Reloaded
+- XSSheep/Nova_Wostra: [Pixel Perfection](https://www.curseforge.com/minecraft/texture-packs/pixel-perfection-legacy/files/3493328) Texture Pack (Source of the Textures) CC-BY_RSA
 - smea: 3dscraft, libctru
 - fincs: citro3d
 - Tommaso Checchi: [culling algorithm](https://tomcc.github.io/2014/08/31/visibility-1.html), orginally developed for the use in MC PE

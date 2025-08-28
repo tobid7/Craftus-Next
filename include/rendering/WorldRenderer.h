@@ -10,4 +10,3 @@ void WorldRenderer_Init(Player* player_, World* world_, WorkQueue* workqueue_, i
 void WorldRenderer_Deinit();
 
 void WorldRenderer_Render(float iod);
-void WorldRenderer_Update(Player* player_, World* world_);

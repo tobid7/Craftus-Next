@@ -10,7 +10,7 @@ void FontLoader_Init(Font* font, const char* filename) {
   image = (uint32_t*)Lgy_LoadImg2BufRGBA(filename, &l, &width, &height, false);
   if (image != NULL) {
     uint16_t* imgInLinRam =
-        (uint16_t*)linearAlloc(width * height * sizeof(uint16_t));
+        (uint16_t*)Lgy_LinearAlloc(width * height * sizeof(uint16_t), MemType_Tex);
     for (int i = 0; i < width * height; i++) {
       uint16_t r = (image[i] & 0xff) >> 3;
       uint16_t g = ((image[i] >> 8) & 0xff) >> 3;
@@ -50,7 +50,7 @@ void FontLoader_Init(Font* font, const char* filename) {
          GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB5A1) |
          GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO)));
 
-    linearFree(imgInLinRam);
+    Lgy_LinearFree(imgInLinRam);
   } else {
     Lgy_Crash("Failed to load font %s\n", filename);
   }

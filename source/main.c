@@ -5,7 +5,6 @@
 #include <entity/PlayerController.h>
 #include <gui/CrashMenu.h>
 #include <gui/DeathMenu.h>
-#include <gui/DebugUI.h>
 #include <gui/Gui.h>
 #include <gui/OptionsMenu.h>
 #include <gui/PauseMenu.h>
@@ -13,7 +12,6 @@
 #include <gui/WorldSelect.h>
 #include <misc/mem.h>
 #include <rendering/PolyGen.h>
-#include <rendering/Renderer.h>
 #include <sino/sino.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -28,7 +26,7 @@
 #include <world/worldgen/SmeaGen.h>
 #include <world/worldgen/SuperFlatGen.h>
 
-bool showDebugInfo = false;
+bool showDebugInfo = true;
 bool savedcrash = false;
 bool forcequit;
 float dt = 0.f;
@@ -48,7 +46,56 @@ void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr,
 
   SaveManager_Unload(savemgr);
 }
-GameState gamestate = GameState_Title;
+GameState gamestate = GameState_Playing;
+
+void LoadWorld(World* world, Player* player, ChunkWorker* chunkWorker,
+               u64* lastTime, FlatBedrockGen* bdgen, SmeaGen* smeaGen,
+               SuperFlatGen* flatGen, DefaultGen* dgen, SaveManager* savemgr) {
+  strcpy(world->name, "TestWelt3");
+  world->genSettings.type = WorldGen_Default;
+  SaveManager_Load(savemgr, "sdmc:/3ds/CraftusNext/saves/TestWelt3");
+  ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, flatGen,
+                               world->genSettings.type == WorldGen_SuperFlat);
+  ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, smeaGen,
+                               world->genSettings.type == WorldGen_Smea);
+  ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, bdgen,
+                               world->genSettings.type == WorldGen_FlatBedrock);
+  ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, dgen,
+                               world->genSettings.type == WorldGen_Default);
+
+  world->cacheTranslationX = WorldToChunkCoord(FastFloor(player->position.x));
+  world->cacheTranslationZ = WorldToChunkCoord(FastFloor(player->position.z));
+  for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
+    for (int j = 0; j < CHUNKCACHE_SIZE; j++) {
+      world->chunkCache[i][j] = World_LoadChunk(
+          world, i - CHUNKCACHE_SIZE / 2 + world->cacheTranslationX,
+          j - CHUNKCACHE_SIZE / 2 + world->cacheTranslationZ);
+    }
+  }
+
+  for (int i = 0; i < 3; i++) {
+    while (chunkWorker->working || chunkWorker->queue.queue.length > 0) {
+      svcSleepThread(50000000);  // 1 Tick
+    }
+    World_Tick(world);
+  }
+
+  if (true) {
+    int highestblock = 0;
+    for (int x = -1; x < 1; x++) {
+      for (int z = -1; z < 1; z++) {
+        int height = World_GetHeight(world, x, z);
+        if (height > highestblock) highestblock = height;
+      }
+    }
+    player->hunger = 20;
+    player->hp = 20;
+    player->position.y = (float)highestblock + 0.2f;
+    player->position.y = 65;
+  }
+  gamestate = GameState_Playing;
+  *lastTime = svcGetSystemTick();  // fix timing
+}
 
 int main() {
   Lgy_InitCxxExceptionScreen();
@@ -90,8 +137,7 @@ int main() {
   FlatBedrockGen_Init(&bdgen, world);
   DefaultGen_Init(&dgen, world);
   SmeaGen_Init(&smeaGen, world);
-  Renderer_Init(world, &player, &chunkWorker.queue, &gamestate);
-  DebugUI_Init();
+  Lgy_InitRenderStage(world, &gamestate, &player, &chunkWorker);
   WorldSelect_Init();
   Options_Init(GameState_Title);
   World_Init(world, &chunkWorker.queue);
@@ -107,31 +153,37 @@ int main() {
   float timeAccum = 0.f, fpsClock = 0.f;
   int frameCounter = 0, fps = 0;
   int cxxcnt = 0;
+  if (gamestate == GameState_Playing) {
+    LoadWorld(world, &player, &chunkWorker, &lastTime, &bdgen, &smeaGen,
+              &flatGen, &dgen, &savemgr);
+  }
   while (aptMainLoop()) {
-    DebugUI_Text("Craftus %s", CRAFTUS_VERSION_STR);
-    DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps,
+    Lgy_UpdateInput();
+    Lgy_DebugUI_Text("Craftus %s", CRAFTUS_VERSION_STR);
+    Lgy_DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps,
                  C3D_GetProcessingTime() * 6.f, C3D_GetDrawingTime() * 6.f,
                  C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024 / 1024);
-    DebugUI_Text("Buf: %5.2f%% Lin: %.2fmb", C3D_GetCmdBufUsage() * 100.f,
+    Lgy_DebugUI_Text("Buf: %5.2f%% Lin: %.2fmb", C3D_GetCmdBufUsage() * 100.f,
                  (float)linearSpaceFree() / 1024.f / 1024.f);
-    // Cluster Info and View Distance
-    DebugUI_Text("C %d/%d D %d", clusters_drawn,
-                 CHUNKCACHE_SIZE * CHUNKCACHE_SIZE * 16, VIEW_DISTANCE);
-    DebugUI_Text("E %d/%d", 0, 0);  // Entitys
-    // Player Position
-    DebugUI_Text("XYZ: %.3f / %.3f / %.3f", f3_unpack(player.position));
-    DebugUI_Text("Block: %d %d %d", (int)FastFloor(player.position.x),
-                 (int)FastFloor(player.position.y),
-                 (int)FastFloor(player.position.z));
-    DebugUI_Text("Chunk: %d %d %d in %d %d %d",
-                 WorldToLocalCoord(player.position.x),
-                 WorldToLocalCoord(player.position.y),
-                 WorldToLocalCoord(player.position.z),
-                 WorldToChunkCoord(player.position.x),
-                 WorldToChunkCoord(player.position.y),
-                 WorldToChunkCoord(player.position.z));
-
-    Renderer_Render();
+    if (gamestate == GameState_Playing || gamestate == GameState_Pause) {
+      // Cluster Info and View Distance
+      Lgy_DebugUI_Text("C %d/%d D %d", clusters_drawn,
+                   CHUNKCACHE_SIZE * CHUNKCACHE_SIZE * 16, VIEW_DISTANCE);
+      Lgy_DebugUI_Text("E %d/%d", 0, 0);  // Entitys
+      // Player Position
+      Lgy_DebugUI_Text("XYZ: %.3f / %.3f / %.3f", f3_unpack(player.position));
+      Lgy_DebugUI_Text("Block: %d %d %d", (int)FastFloor(player.position.x),
+                   (int)FastFloor(player.position.y),
+                   (int)FastFloor(player.position.z));
+      Lgy_DebugUI_Text("Chunk: %d %d %d in %d %d %d",
+                   WorldToLocalCoord(player.position.x),
+                   WorldToLocalCoord(player.position.y),
+                   WorldToLocalCoord(player.position.z),
+                   WorldToChunkCoord(player.position.x),
+                   WorldToChunkCoord(player.position.y),
+                   WorldToChunkCoord(player.position.z));
+    }
+    Lgy_Render_(world, &gamestate);
 
     uint64_t currentTime = svcGetSystemTick();
     dt = ((float)(currentTime / (float)TICKS_PER_MSEC) -
@@ -148,7 +200,6 @@ int main() {
       fpsClock = 0.f;
     }
 
-    hidScanInput();
     u32 keysheld = hidKeysHeld(), keysdown = hidKeysDown();
     if (keysdown & KEY_START || Save__) {
       if (gamestate == GameState_SelectWorld) {
@@ -280,9 +331,8 @@ int main() {
   ndspExit();
   sino_exit();
   WorldSelect_Deinit();
-  DebugUI_Deinit();
   ChunkWorker_Deinit(&chunkWorker);
-  Renderer_Deinit();
+  Lgy_ExitRenderStage();
   romfsExit();
   gfxExit();
   return 0;
