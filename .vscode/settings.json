@@ -101,7 +101,16 @@
         "xutility": "cpp",
         "gamestates.h": "c",
         "unordered_set": "cpp",
-        "damage.h": "c"
+        "damage.h": "c",
+        "biome.h": "c",
+        "playercontroller.h": "c",
+        "renderer.h": "c",
+        "titlemenu.h": "c",
+        "set": "cpp",
+        "stack": "cpp",
+        "player.h": "c",
+        "block.h": "c",
+        "chunkworker.h": "c"
     },
     "cmake.configureOnOpen": false,
     "cmake.sourceDirectory": "${workspaceFolder}/external/libpicasso"

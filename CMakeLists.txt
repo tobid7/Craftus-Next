@@ -43,19 +43,16 @@ add_subdirectory(dependencies/palladium)
 add_subdirectory(dependencies/palladium/backends/3ds)
 set_directory_properties(PROPERTIES COMPILE_OPTIONS "")
 
+pd_git_get_hash(CN_COMMIT)
+pd_git_get_branch(CN_BRANCH)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS} -fno-rtti -O2")
 
 find_program(PICASSO NAMES picasso REQUIRED)
 find_program(MAKEROM NAMES makerom REQUIRED)
 find_program(BANNERTOOL NAMES bannertool REQUIRED)
-set(GUI_SHBIN "${CMAKE_BINARY_DIR}/gui.shbin")
 set(WORLD_SHBIN "${CMAKE_BINARY_DIR}/world.shbin")
 # Need to build shaders during config stage :(
-execute_process(
-    COMMAND ${PICASSO} -o ${GUI_SHBIN} ${CMAKE_SOURCE_DIR}/source/rendering/gui.v.pica
-    RESULT_VARIABLE GUI_RESULT
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
 execute_process(
     COMMAND ${PICASSO} -o ${WORLD_SHBIN} ${CMAKE_SOURCE_DIR}/source/rendering/world.v.pica
     RESULT_VARIABLE WORLD_RESULT
@@ -89,7 +86,7 @@ add_compile_options(
 )
 
 add_executable(Craftus-Next
-    source/cn/Game.cpp # TME
+    source/cn/Game.cpp
     source/cn/entity/Damage.cpp
     source/cn/Lgy.cpp
     source/cn/Tasks.cpp
@@ -103,8 +100,11 @@ add_executable(Craftus-Next
     source/cn/misc/ResourceMgr.cpp
     source/cn/misc/TaskMgr.cpp
     source/cn/gui/DebugUI.cpp
+    source/cn/gui/Gui.cpp
+    source/cn/gui/menus/Title.cpp
+    source/cn/gui/menus/Options.cpp
 
-    source/main.c
+    source/main.cpp
 
     source/blocks/Block.c
     source/blocks/BlockEvent.c
@@ -127,7 +127,6 @@ add_executable(Craftus-Next
 
     source/misc/Collision.c
     source/misc/CommandLine.c
-    source/misc/noise.c
     source/misc/Raycast.c
     source/misc/Sound.c
 
@@ -142,16 +141,6 @@ add_executable(Craftus-Next
 
     source/world/savegame/SaveManager.c
     source/world/savegame/SuperChunk.c
-    source/world/worldgen/biomes/Biome.c
-    source/world/worldgen/biomes/Desert.c
-    source/world/worldgen/biomes/Forest.c
-    source/world/worldgen/biomes/Plains.c
-    source/world/worldgen/biomes/Savanna.c
-    source/world/worldgen/structures/AcaciaTree.c
-    source/world/worldgen/structures/BirchTree.c
-    source/world/worldgen/structures/OakTree.c
-    source/world/worldgen/structures/Pumpkins.c
-    source/world/worldgen/structures/TreeGen.c
     source/world/worldgen/DefaultGen.c
     source/world/worldgen/FlatBedrock.c
     source/world/worldgen/SmeaGen.c
@@ -177,6 +166,11 @@ target_link_libraries(Craftus-Next PUBLIC
     ctru
     m
     z
+)
+
+target_compile_definitions(Craftus-Next PUBLIC
+    -DCN_COMMIT="${CN_COMMIT}"
+    -DCN_BRANCH="${CN_BRANCH}"
 )
 
 add_dependencies(Craftus-Next world_asm)

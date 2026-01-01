@@ -393,22 +393,20 @@ void RcLoadAsync(void* d) {
 CN::TaskMgr::Task __task;
 
 void Lgy_InitRenderStage(void* world, void* gs, void* player, void* cw) {
-  CN::TaskMgr::Init();
+  // CN::TaskMgr::Init();
   TME::Renderer::Init();
   TME::Renderer::pDebug = &pDebug;
-  Lgy_InitPalladium();
   PolyGen_Init((World*)world, (Player*)player);
   WorldRenderer_Init((Player*)player, (World*)world, &((ChunkWorker*)cw)->queue,
                      TME::Renderer::uLocProj);
   Block_Init();
   C3D_CullFace(GPU_CULL_BACK_CCW);
-  auto t = CN::TaskMgr::CreateTask(0);
-  t->Func = RcLoadAsync;
-  CN::TaskMgr::PushTask(t);
+  // auto t = CN::TaskMgr::CreateTask(0);
+  // t->Func = RcLoadAsync;
+  // CN::TaskMgr::PushTask(t);
   // __task.Func = RcLoadAsync;
   // __task.Prio = 0;
   // CN::TaskMgr::PushTask(&__task);
-  RcLoadAsync(0);
 }
 
 void Lgy_ExitRenderStage() {

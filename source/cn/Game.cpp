@@ -50,6 +50,8 @@ CoreEngine::CoreEngine() {
   pInitChunkWorker();
   sino_init();
   pGamestate = GameState_Playing;
+  Lgy_InitRenderStage(pWorld, &pGamestate, &pPlayer, &pChunkWorker);
+  pDeltaClock = PD::Timer::New();
 }
 
 CoreEngine::~CoreEngine() {
@@ -70,7 +72,7 @@ CoreEngine::~CoreEngine() {
 }
 
 void CoreEngine::Run() {
-  pDeltaClock.Reset();
+  pDeltaClock->Reset();
   while (aptMainLoop()) {
     if (pKill) {
       break;
@@ -104,8 +106,8 @@ void CoreEngine::pUpdateInput() {
 void CoreEngine::pUpdateGfx() {}
 
 void CoreEngine::pUpdateTimings() {
-  pDelta = pDeltaClock.GetSeconds() * 1000.f;
-  pDeltaClock.Reset();
+  pDelta = pDeltaClock->GetSeconds() * 1000.f;
+  pDeltaClock->Reset();
   if (pGamestate == GameState_Playing) {
     pAccum += pDelta;
     if (pAccum > 0.05) {  // 1 / 20 -> 20 tiks

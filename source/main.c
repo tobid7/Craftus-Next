@@ -51,9 +51,9 @@ GameState gamestate = GameState_Playing;
 void LoadWorld(World* world, Player* player, ChunkWorker* chunkWorker,
                u64* lastTime, FlatBedrockGen* bdgen, SmeaGen* smeaGen,
                SuperFlatGen* flatGen, DefaultGen* dgen, SaveManager* savemgr) {
-  strcpy(world->name, "TestWelt3");
+  strcpy(world->name, "TestWelt4");
   world->genSettings.type = WorldGen_Default;
-  SaveManager_Load(savemgr, "sdmc:/3ds/CraftusNext/saves/TestWelt3");
+  SaveManager_Load(savemgr, "sdmc:/3ds/CraftusNext/saves/TestWelt4");
   ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, flatGen,
                                world->genSettings.type == WorldGen_SuperFlat);
   ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, smeaGen,
@@ -91,7 +91,8 @@ void LoadWorld(World* world, Player* player, ChunkWorker* chunkWorker,
     player->hunger = 20;
     player->hp = 20;
     player->position.y = (float)highestblock + 0.2f;
-    player->position.y = 65;
+    player->position.y = 80;
+    player->flying = true;
   }
   gamestate = GameState_Playing;
   *lastTime = svcGetSystemTick();  // fix timing
@@ -159,29 +160,38 @@ int main() {
   }
   while (aptMainLoop()) {
     Lgy_UpdateInput();
-    Lgy_DebugUI_Text("Craftus %s", CRAFTUS_VERSION_STR);
+    /** As stupid as possible... */
+    const char *extra = "", *extra2 = "";
+#ifdef CN_COMMIT
+    extra = " " CN_COMMIT;
+#endif
+#ifdef CN_BRANCH
+    extra2 = " " CN_BRANCH;
+#endif
+    Lgy_DebugUI_Text("Craftus %s%s%s", CRAFTUS_VERSION_STR, extra, extra2);
     Lgy_DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps,
-                 C3D_GetProcessingTime() * 6.f, C3D_GetDrawingTime() * 6.f,
-                 C3D_GetCmdBufUsage() * 100.f, linearSpaceFree() / 1024 / 1024);
+                     C3D_GetProcessingTime() * 6.f, C3D_GetDrawingTime() * 6.f,
+                     C3D_GetCmdBufUsage() * 100.f,
+                     linearSpaceFree() / 1024 / 1024);
     Lgy_DebugUI_Text("Buf: %5.2f%% Lin: %.2fmb", C3D_GetCmdBufUsage() * 100.f,
-                 (float)linearSpaceFree() / 1024.f / 1024.f);
+                     (float)linearSpaceFree() / 1024.f / 1024.f);
     if (gamestate == GameState_Playing || gamestate == GameState_Pause) {
       // Cluster Info and View Distance
       Lgy_DebugUI_Text("C %d/%d D %d", clusters_drawn,
-                   CHUNKCACHE_SIZE * CHUNKCACHE_SIZE * 16, VIEW_DISTANCE);
-      Lgy_DebugUI_Text("E %d/%d", 0, 0);  // Entitys
+                       CHUNKCACHE_SIZE * CHUNKCACHE_SIZE * 16, VIEW_DISTANCE);
+      // Lgy_DebugUI_Text("E %d/%d", 0, 0);  // Entitys
       // Player Position
       Lgy_DebugUI_Text("XYZ: %.3f / %.3f / %.3f", f3_unpack(player.position));
       Lgy_DebugUI_Text("Block: %d %d %d", (int)FastFloor(player.position.x),
-                   (int)FastFloor(player.position.y),
-                   (int)FastFloor(player.position.z));
+                       (int)FastFloor(player.position.y),
+                       (int)FastFloor(player.position.z));
       Lgy_DebugUI_Text("Chunk: %d %d %d in %d %d %d",
-                   WorldToLocalCoord(player.position.x),
-                   WorldToLocalCoord(player.position.y),
-                   WorldToLocalCoord(player.position.z),
-                   WorldToChunkCoord(player.position.x),
-                   WorldToChunkCoord(player.position.y),
-                   WorldToChunkCoord(player.position.z));
+                       WorldToLocalCoord(player.position.x),
+                       WorldToLocalCoord(player.position.y),
+                       WorldToLocalCoord(player.position.z),
+                       WorldToChunkCoord(player.position.x),
+                       WorldToChunkCoord(player.position.y),
+                       WorldToChunkCoord(player.position.z));
     }
     Lgy_Render_(world, &gamestate);
 

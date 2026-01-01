@@ -1,5 +1,7 @@
 #include <cn/ConstIDs.hpp>
 #include <cn/gfx/Renderer.hpp>
+#include <cn/gui/Gui.hpp>
+#include <cn/gui/menus/Menus.hpp>
 #include <cn/misc/TaskMgr.hpp>
 
 #include "world_shbin.h"
@@ -72,12 +74,20 @@ PD::fvec3 Mtx4xFvec3(const PD::Mat4& m, const PD::fvec3& v) {
 }
 
 extern bool showDebugInfo;
+extern "C" void RcLoadAsync(void* d);
 
 constexpr u32 DISPLAY_TRANSFER_FLAGS =
     GX_TRANSFER_FLIP_VERT(0) | GX_TRANSFER_OUT_TILED(0) |
     GX_TRANSFER_RAW_COPY(0) | GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8) |
     GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB8) |
     GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO);
+
+struct SceneChange {
+  TME::Menu::Ref Menu = nullptr;
+  TME::Menu::Ref From = nullptr;
+};
+
+SceneChange pSceneMgr;
 
 namespace TME {
 PD::Mat4 Renderer::pIconMtx;
@@ -111,14 +121,20 @@ void Renderer::Init() {
   AttrInfo_AddLoader(&pAttrWorld, 0, GPU_SHORT, 3);
   AttrInfo_AddLoader(&pAttrWorld, 1, GPU_SHORT, 2);
   AttrInfo_AddLoader(&pAttrWorld, 2, GPU_UNSIGNED_BYTE, 3);
-  pDL = PD::Li::DrawList::New();
   pIconMtx = PD::Mat4::Identity();
   pIconMtx *= PD::Mat4::RotateX(M_PI / 6.f);
   pIconMtx *= PD::Mat4::RotateY(M_PI / 4.f);
   pTmpTex = PD::Li::Texture::New();
+
+  Lgy_InitPalladium();
+  pDL = PD::Li::DrawList::New();
+  RcLoadAsync(nullptr);
+  pSceneMgr.Menu = TME::TitleMenu::New();
 }
 
 void Renderer::Deinit() {
+  pSceneMgr.Menu.reset();
+  pSceneMgr.From.reset();
   shaderProgramFree(&pWorldShader);
   DVLB_Free(pWorldDVLB);
   C3D_Fini();
@@ -136,10 +152,8 @@ void Renderer::UseShader() {
 }
 
 void Renderer::Render2D(PD::ivec2 size) {
-  C3D_DepthTest(false, GPU_GREATER, GPU_WRITE_ALL);
   PD::Gfx::SetViewPort(size);
   PD::Gfx::RenderDrawData(pDL->pDrawList);
-  C3D_DepthTest(true, GPU_GREATER, GPU_WRITE_ALL);
 }
 
 void Renderer::StartFrame() {
@@ -164,11 +178,10 @@ void Renderer::Render(World* world, GameState* s) {
   StartFrame();
   UseShader();
   PolyGen_Harvest();
-  C3D_DepthTest(true, GPU_GREATER, GPU_WRITE_ALL);
   pDebug->Line(
       std::format("UI Vtx/Idx: {}/{}", pDL->pNumVertices, pDL->pNumIndices));
   for (int i = 0; i < 2; i++) {
-    Clear(pTop[0], 0x0006070cff);
+    Clear(pTop[0], 0x90d9ffff);
     DrawOn(pTop[i]);
     UseShader();
     Start2D();
@@ -176,7 +189,7 @@ void Renderer::Render(World* world, GameState* s) {
       C3D_TexBind(0, (C3D_Tex*)Block_GetTextureMap());
       WorldRenderer_Render(!i ? -iod : iod);
       DrawTexElement(CN::ResourceMgr::GetTex(CN::RC::GuiIcons),
-                     PD::fvec2(192, 112), 16, PD::fvec4(0, 0, 16, 16));
+                     PD::fvec2(200 - 12, 120 - 12), 24, GuiIcon_Crosshair);
       if (showDebugInfo && pDebug) {
         pDebug->DrawInto(pDL);
       }
@@ -190,53 +203,62 @@ void Renderer::Render(World* world, GameState* s) {
   Clear(pBot, 0x00000000);
   DrawOn(pBot);
   Start2D();
-  pDL->Layer = 0;
-  pDL->DrawTexture(CN::ResourceMgr::GetTex(CN::RC::GuiBG));
-  for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 8; j++) {
-      pDL->DrawRectFilled(PD::fvec2(i * 32, j * 32), 32, 0xffffffff);
-    }
-  }
+  pDL->Layer(0);
   // Bar     : 182x22
   // Optimal : 314x38
   // Using normal %2 maths didnt work or i am stupid idk
-  bool color = false;
-  for (int i = 0; i < 8; i++) {
-    for (int j = 0; j < 5; j++) {
-      pDL->Layer = 1;
-      pDL->DrawRectFilled(PD::fvec2(20 + i * 34, 10 + j * 34),
-                          PD::fvec2(34, 34), color ? 0xff333333 : 0xff222222);
-      pDL->Layer = 2;
-      DrawIcon((Block)j * 8 + i + 1, 0, PD::fvec2(20 + i * 34, 10 + j * 34));
-      color = !color;
+  // bool color = false;
+  // for (int i = 0; i < 8; i++) {
+  //   for (int j = 0; j < 5; j++) {
+  //     pDL->Layer = 1;
+  //     pDL->DrawRectFilled(PD::fvec2(24 + i * 34, 15 + j * 34),
+  //                         PD::fvec2(34, 34), color ? 0xff333333 :
+  //                         0xff222222);
+  //     pDL->Layer = 2;
+  //     DrawIcon((Block)j * 8 + i + 1, 0, PD::fvec2(24 + i * 34, 15 + j * 34));
+  //     color = !color;
+  //   }
+  //   // color = !color;
+  // }
+  // pDL->Layer = 1;
+  // DrawTexElement(CN::ResourceMgr::GetTex(CN::RC::GuiWidgets), PD::fvec2(3,
+  // 201),
+  //                PD::fvec2(314, 38), PD::fvec4(0, 0, 182, 22));
+  // pDL->Layer = 3;
+  // DrawTexElement(CN::ResourceMgr::GetTex(CN::RC::GuiWidgets), PD::fvec2(2,
+  // 200),
+  //                PD::fvec2(40, 40), PD::fvec4(0, 22, 24, 24));
+  // pDL->Layer = 2;
+  // DrawIcon(Block_Grass, 0, PD::fvec2(4, 202));
+  // pDL->Layer = 4;
+  // pDL->DrawTextEx(PD::fvec2(34, 220), "64", 0xffffffff,
+  //                 LiTextFlags_AlignRight | LiTextFlags_Shaddow);
+  pSceneMgr.Menu->Update();
+  pDL->Merge(pSceneMgr.Menu->GetDrawList());
+  if (pSceneMgr.Menu->ShouldGoBack()) {
+    pSceneMgr.Menu->pGoBack = false;
+    if (pSceneMgr.From) {
+      pSceneMgr.Menu = pSceneMgr.From;
     }
-    // color = !color;
+  } else if (pSceneMgr.Menu->ShouldGoTo()) {
+    pSceneMgr.From = pSceneMgr.Menu;
+    pSceneMgr.Menu = pSceneMgr.Menu->ShouldGoTo();
+    pSceneMgr.Menu->pGoTo = nullptr;
   }
-  pDL->Layer = 1;
-  DrawTexElement(CN::ResourceMgr::GetTex(CN::RC::GuiWidgets), PD::fvec2(3, 201),
-                 PD::fvec2(314, 38), PD::fvec4(0, 0, 182, 22));
-  pDL->Layer = 3;
-  DrawTexElement(CN::ResourceMgr::GetTex(CN::RC::GuiWidgets), PD::fvec2(2, 200),
-                 PD::fvec2(40, 40), PD::fvec4(0, 22, 24, 24));
-  pDL->Layer = 2;
-  DrawIcon(Block_Grass, 0, PD::fvec2(4, 202));
-  pDL->Layer = 4;
-  pDL->DrawTextEx(PD::fvec2(34, 220), "64", 0xffffffff,
-                  LiTextFlags_AlignRight | LiTextFlags_Shaddow);
   PD::TT::Beg("2db");
   // Optimizing the renderbuffer gives us ~1.4 - 1.6 ms less render time
   OptimizeUiList(pDL);
   Render2D(PD::fvec2(320, 240));
   PD::TT::End("2db");
   EndFrame();
-  if (pDebug) {
+  /*if (pDebug) {
     pDebug->Line("Top UI: " +
                  PD::Strings::FormatNanos(
                      PD::OS::GetTraceRef("2dt")->GetProtocol()->GetAverage()));
     pDebug->Line("Bot UI: " +
                  PD::Strings::FormatNanos(
                      PD::OS::GetTraceRef("2db")->GetProtocol()->GetAverage()));
-  }
+  }*/
 }
 
 void Renderer::DrawOn(C3D_RenderTarget* t) { C3D_FrameDrawOn(t); }

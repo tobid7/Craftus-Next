@@ -53,7 +53,7 @@ class CoreEngine {
 
   /** Core Components */
   bool pKill = false;
-  PD::Timer pDeltaClock;
+  PD::Timer::Ref pDeltaClock;
   float pDelta = 0.f;
   float pAccum = 0.f;
   GameState pGamestate = GameState_Title;

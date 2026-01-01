@@ -3,13 +3,21 @@
 #include <time.h>
 #include <world/worldgen/DefaultGen.h>
 
-#include "misc/noise.h"
-#include "world/worldgen/biomes/Biome.h"
-#include "world/worldgen/structures/Pumpkins.h"
-#include "world/worldgen/structures/TreeGen.h"
-
 void DefaultGen_Init(DefaultGen *gen, World *world) { gen->world = world; }
 int height = 0;
+
+/** Lets keep it small for nows */
+Block Biome_GetBlock(int y, int max_y) {
+  Block ret = Block_Air;
+  if (y == max_y - 1) {
+    ret = Block_Grass;
+  } else if (y > max_y - 4 && y < max_y - 1) {
+    ret = Block_Dirt;
+  } else if (y > 0) {
+    ret = Block_Stone;
+  }
+  return ret;
+}
 
 void DefaultGen_Generate(WorkQueue *queue, WorkerItem item, void *this) {
   // Lets actually use the this param
@@ -21,8 +29,6 @@ void DefaultGen_Generate(WorkQueue *queue, WorkerItem item, void *this) {
       float px = (float)(x + item.chunk->x * CHUNK_SIZE);
       float pz = (float)(z + item.chunk->z * CHUNK_SIZE);
 
-      enum Biomes biome = Biome_GetAt(px, pz, seed);
-
       const int smeasClusterSize = 8;
       const int smeasChunkHeight = 16;
       float base = sino_2d(px * 0.001f, pz * 0.001f) * 32.0f;
@@ -30,28 +36,8 @@ void DefaultGen_Generate(WorkQueue *queue, WorkerItem item, void *this) {
       float detail = sino_2d(px * 0.05f, pz * 0.05f) * 2.0f;
 
       height = 60 + (int)(base + hills + detail);
-
-      // for (int y = 0; y < height - 3; y++) {
-      //	Chunk_SetBlock(item.chunk, x, y, z, Block_Stone);
-      // }
-      for (int y = 0; y < Biome_GetLevelInt(A, biome, height); y++) {
-        Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(A, biome));
-      }
-      for (int y = Biome_GetLevelInt(A, biome, height);
-           y < Biome_GetLevelInt(B, biome, height); y++) {
-        Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(B, biome));
-      }
-      for (int y = Biome_GetLevelInt(B, biome, height);
-           y < Biome_GetLevelInt(C, biome, height); y++) {
-        Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(C, biome));
-      }
-      for (int y = Biome_GetLevelInt(C, biome, height);
-           y < Biome_GetLevelInt(D, biome, height); y++) {
-        Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(D, biome));
-      }
-      for (int y = Biome_GetLevelInt(D, biome, height);
-           y < Biome_GetLevelInt(E, biome, height); y++) {
-        Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(E, biome));
+      for (int y = 0; y < height; y++) {
+        Chunk_SetBlock(item.chunk, x, y, z, Biome_GetBlock(y, height));
       }
 
       for (int bd = 0; bd < 1 + random_number(0, 3); bd++) {
