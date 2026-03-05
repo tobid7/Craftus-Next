@@ -5,7 +5,7 @@
 namespace TME {
 class OptionsMenu : public Menu {
  public:
-  OptionsMenu() {}
+  OptionsMenu(PD::Context& ctx) : Menu(ctx) {}
   ~OptionsMenu() {}
   PD_SHARED(OptionsMenu)
 

@@ -1,7 +1,12 @@
 #pragma once
 
+#ifdef __3DS__
 #include <3ds.h>
 #include <citro3d.h>
+#else
+struct C3D_FVec {};
+struct C3D_Mtx {};
+#endif
 
 extern "C" {
 #include <entity/Player.h>

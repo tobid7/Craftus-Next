@@ -1,4 +1,6 @@
+#ifdef __3DS__
 #include <3ds.h>
+#endif
 
 #include <cn/gfx/TexLoader.hpp>
 
@@ -21,6 +23,7 @@ void LoadTexRGBA(C3D_Tex* ret, const std::vector<unsigned char>& pixels,
   if (w > 1024 || h > 1024) {
     return;
   }
+#ifdef __3DS__
   int bpp = 4;  // GetBPP(type);
   PD::ivec2 tex_size(w, h);
   // Pow2
@@ -68,6 +71,7 @@ void LoadTexRGBA(C3D_Tex* ret, const std::vector<unsigned char>& pixels,
 
   ret->border = 0x00000000;
   C3D_TexSetWrap(ret, GPU_REPEAT, GPU_REPEAT);
+#endif
 }
 TextureMap::TextureMap() {
   pImg = PD::Image::New();

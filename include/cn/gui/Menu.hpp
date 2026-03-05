@@ -5,7 +5,7 @@
 namespace TME {
 class Menu {
  public:
-  Menu() {}
+  Menu(PD::Context& ctx) : pGui(ctx, PD::fvec2(320, 240)) {}
   ~Menu() {}
   PD_SHARED(Menu)
 
@@ -15,8 +15,8 @@ class Menu {
   PD::Li::DrawList::Ref GetDrawList() { return pGui.GetDrawList(); }
   bool ShouldGoBack() const { return pGoBack; }
   Ref ShouldGoTo() { return pGoTo; }
-  
-  Gui pGui = Gui(PD::fvec2(320, 240));
+
+  Gui pGui;
   bool pGoBack = false;
   Ref pGoTo = nullptr;
 };

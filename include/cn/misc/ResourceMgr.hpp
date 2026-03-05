@@ -60,6 +60,7 @@ class ResourceMgr {
   static PD::u32 Load(const std::string& path, RCID::Type type = RCID::Invalid);
   static void LoadAsync(const std::string& path,
                         RCID::Type type = RCID::Invalid);
+  static void SetContext(PD::Context& ctx) { pCtx = &ctx; }
 
   static Resource* Get(const PD::u32& id) {
     if (pResources.count(id)) {
@@ -87,6 +88,7 @@ class ResourceMgr {
   }
 
   static std::unordered_map<PD::u32, Resource> pResources;
+  static PD::Context* pCtx;
   // static std::vector<RcTask> pTasks;
 };
 }  // namespace CN

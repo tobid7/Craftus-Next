@@ -104,7 +104,7 @@ add_executable(Craftus-Next
     source/cn/gui/menus/Title.cpp
     source/cn/gui/menus/Options.cpp
 
-    source/main.cpp
+    source/main.c
 
     source/blocks/Block.c
     source/blocks/BlockEvent.c

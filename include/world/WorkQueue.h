@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef __3DS__
 #include <3ds.h>
 #include <misc/Xorshift.h>
 #include <stdbool.h>
@@ -23,7 +24,7 @@ typedef struct {
 
 typedef struct {
   vec_t(WorkerItem) queue;
-
+  
   LightEvent itemAddedEvent;
   LightLock listInUse;
 } WorkQueue;
@@ -42,6 +43,8 @@ inline void WorkQueue_AddItem(WorkQueue* queue, WorkerItem item) {
   LightLock_Lock(&queue->listInUse);
   vec_push(&queue->queue, item);
   LightLock_Unlock(&queue->listInUse);
-
+  
   LightEvent_Signal(&queue->itemAddedEvent);
 }
+
+#endif

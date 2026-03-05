@@ -2,19 +2,26 @@
 
 namespace CN {
 TaskMgr::TaskMgrData TaskMgr::pData;
+#ifdef __3DS__
 Thread TaskMgr::pThread;
-
+#endif
 void TaskMgr::Init() {
+#ifdef __3DS__
   s32 prio = 0;
   bool n3ds = false;
   svcGetThreadPriority(&prio, CUR_THREAD_HANDLE);
   APT_CheckNew3DS(&n3ds);
   pThread = threadCreate(MainLoop, 0, 16 * 1024, prio - 1, 1 + n3ds, false);
+#else
+
+#endif
 }
 
 void TaskMgr::Deinit() {
+#ifdef __3DS__
   threadJoin(pThread, UINT64_MAX);
   threadFree(pThread);
+#endif
   pData.pQueue.clear();
   for (auto& it : pData.pTasks) {
     delete it.second;
@@ -25,7 +32,9 @@ void TaskMgr::MainLoop(void* data) {
   auto td = (TaskMgrData*)data;
   while (!td->Kill) {
     if (!td->pQueue.size()) {
+#ifdef __3DS__
       svcSleepThread(0x10000);
+#endif
       continue;
     }
     td->pQueue[0]->Active = true;

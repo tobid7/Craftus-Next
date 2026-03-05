@@ -33,6 +33,7 @@ static PD::UI7::Context::Ref ui7 = nullptr;
 static float dyn__ = 1.f;
 static C3D_Mtx iconMdl;
 static CN::DebugUI pDebug;
+static PD::Context pd_ctx;
 
 void Lgy_OvertimeDamage(const char* cause, int time, void* plr) {
   TME::OvertimeDamage(cause, time, (Player*)plr);
@@ -203,17 +204,20 @@ void Lgy_Render2D() {
   // list->SetFont(font);
   // list->DrawTextEx(5, "Hello World!\nCraftus v0.7.1-dev\nA Minecraft Clone",
   //                  0xffff00ff, LiTextFlags_Shaddow);
-  // PD::Gfx::SetViewPort(PD::ivec2(320, 240));
-  // PD::Gfx::NewFrame();
-  // PD::Gfx::RenderDrawData(list->pDrawList);
+  // pd_ctx.Gfx()->SetViewPort(PD::ivec2(320, 240));
+  // pd_ctx.Gfx()->NewFrame();
+  // pd_ctx.Gfx()->RenderDrawData(list->pDrawList);
 }
 
 void Lgy_InitPalladium() {
-  PD::Init();
+  pd_ctx.UseGfxDriver<PD::GfxC3D>(nullptr);
+  pd_ctx.UseHidDriver<PD::Hid3DS>(nullptr);
+  pd_ctx.Gfx()->Init();
   // font = PD::Li::Font::New();
+  CN::ResourceMgr::SetContext(pd_ctx);
   CN::ResourceMgr::Load("romfs:/fonts/Miracode.ttf", CN::RCID::FontTTF);
-  list = PD::Li::DrawList::New();
-  ui7 = PD::UI7::Context::New();
+  list = PD::Li::DrawList::New(pd_ctx);
+  ui7 = PD::UI7::Context::New(pd_ctx);
   ui7->AddViewPort("bot", PD::ivec4(0, 0, 320, 240));
   ui7->UseViewPort("bot");
   ui7->pIO->Font = CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont);
@@ -229,8 +233,8 @@ u32 Lgy_LoadTexture(const char* path) {
   PD::Image::Ref img = PD::Image::New();
   img->Load(path);
   auto tex =
-      PD::Gfx::LoadTex(img->pBuffer, img->pWidth, img->pHeight,
-                       PD::Li::Texture::RGBA32, PD::Li::Texture::NEAREST);
+      pd_ctx.Gfx()->LoadTex(img->pBuffer, img->pWidth, img->pHeight,
+                            PD::Li::Texture::RGBA32, PD::Li::Texture::NEAREST);
   texlist[id] = tex;
   return id;
 }
@@ -283,11 +287,11 @@ void Lgy_StartFrame(int w, int h) {
 }
 
 void Lgy_Render(int w, int h) {
-  PD::Gfx::SetViewPort(PD::ivec2(w, h));
-  PD::Gfx::RenderDrawData(list->pDrawList);
+  pd_ctx.Gfx()->SetViewPort(PD::ivec2(w, h));
+  pd_ctx.Gfx()->RenderDrawData(list->Data());
 }
 
-void Lgy_Finish2D() { PD::Gfx::NewFrame(); }
+void Lgy_Finish2D() { pd_ctx.Gfx()->NewFrame(); }
 
 void Lgy_DynScale(float scale) {
   dyn__ = scale;
@@ -373,7 +377,7 @@ void Lgy_HandleUI(void* gs_ptr) {
   list->Merge(ui7->GetDrawData());
 }
 
-void Lgy_UpdateInput() { PD::Hid::Update(); }
+void Lgy_UpdateInput() { pd_ctx.Hid()->Update(); }
 
 void* Lgy_LinearAlloc(size_t size, MemType type) {
   return CN::MemMgr::NewLinLgy(size, (CN::MemMgr::Type)type);
@@ -394,7 +398,7 @@ CN::TaskMgr::Task __task;
 
 void Lgy_InitRenderStage(void* world, void* gs, void* player, void* cw) {
   // CN::TaskMgr::Init();
-  TME::Renderer::Init();
+  TME::Renderer::Init(&pd_ctx);
   TME::Renderer::pDebug = &pDebug;
   PolyGen_Init((World*)world, (Player*)player);
   WorldRenderer_Init((Player*)player, (World*)world, &((ChunkWorker*)cw)->queue,

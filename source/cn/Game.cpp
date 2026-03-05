@@ -51,7 +51,7 @@ CoreEngine::CoreEngine() {
   sino_init();
   pGamestate = GameState_Playing;
   Lgy_InitRenderStage(pWorld, &pGamestate, &pPlayer, &pChunkWorker);
-  pDeltaClock = PD::Timer::New();
+  pDeltaClock = PD::Timer::New(*pCtx.Os());
 }
 
 CoreEngine::~CoreEngine() {

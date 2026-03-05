@@ -33,7 +33,7 @@ class Gui {
     PD::fvec4 Pad;
     PD::u32 Dir = 0;
   };
-  Gui(PD::fvec2 size = 0);
+  Gui(PD::Context& ctx, PD::fvec2 size = 0);
   ~Gui() {}
 
   void Start();
@@ -64,5 +64,6 @@ class Gui {
 
   PD::Li::Texture::Ref pTexWidgets = nullptr;
   PD::Li::Texture::Ref pTexIcons = nullptr;
+  PD::Context& ctx;
 };
 }  // namespace TME

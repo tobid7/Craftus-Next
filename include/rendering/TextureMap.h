@@ -1,6 +1,10 @@
 #pragma once
 
+#ifdef __3DS__
 #include <c3d/texture.h>
+#else
+struct C3D_Tex;
+#endif
 #include <stdint.h>
 
 void Texture_Load(C3D_Tex* result, char* filename);

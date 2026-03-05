@@ -100,8 +100,10 @@ DVLB_s* Renderer::pWorldDVLB;
 shaderProgram_s Renderer::pWorldShader;
 int Renderer::uLocProj = 0;
 CN::DebugUI* Renderer::pDebug = nullptr;
+PD::Context::Ref Renderer::pCtx;
 
-void Renderer::Init() {
+void Renderer::Init(PD::Context::Ref ctx) {
+  pCtx = ctx;
   C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
   pTop[0] = C3D_RenderTargetCreate(240, 400, GPU_RB_RGBA8, GPU_RB_DEPTH16);
   pTop[1] = C3D_RenderTargetCreate(240, 400, GPU_RB_RGBA8, GPU_RB_DEPTH16);
@@ -127,9 +129,9 @@ void Renderer::Init() {
   pTmpTex = PD::Li::Texture::New();
 
   Lgy_InitPalladium();
-  pDL = PD::Li::DrawList::New();
+  pDL = PD::Li::DrawList::New(*pCtx);
   RcLoadAsync(nullptr);
-  pSceneMgr.Menu = TME::TitleMenu::New();
+  pSceneMgr.Menu = TME::TitleMenu::New(*pCtx);
 }
 
 void Renderer::Deinit() {
@@ -152,23 +154,17 @@ void Renderer::UseShader() {
 }
 
 void Renderer::Render2D(PD::ivec2 size) {
-  PD::Gfx::SetViewPort(size);
-  PD::Gfx::RenderDrawData(pDL->pDrawList);
+  pCtx->Gfx()->SetViewPort(size);
+  pCtx->Gfx()->RenderDrawData(pDL->Data());
 }
 
 void Renderer::StartFrame() {
   C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-  PD::Gfx::NewFrame();
+  pCtx->Gfx()->NewFrame();
 }
 
 void Renderer::OptimizeUiList(PD::Li::DrawList::Ref list) {
-  std::sort(list->pDrawList.begin(), list->pDrawList.end(),
-            [](PD::Li::Command::Ref& a, PD::Li::Command::Ref& b) {
-              if (a->Layer == b->Layer) {
-                return a->Tex < b->Tex;
-              }
-              return a->Layer < b->Layer;
-            });
+  list->pPool.Sort();
 }
 
 void Renderer::EndFrame() { C3D_FrameEnd(0); }
@@ -195,10 +191,10 @@ void Renderer::Render(World* world, GameState* s) {
       }
     } else {
     }
-    PD::TT::Beg("2dt");
+    // PD::TT::Beg("2dt");
     OptimizeUiList(pDL);
     Render2D(PD::fvec2(400, 240));
-    PD::TT::End("2dt");
+    // PD::TT::End("2dt");
   }
   Clear(pBot, 0x00000000);
   DrawOn(pBot);
@@ -241,15 +237,16 @@ void Renderer::Render(World* world, GameState* s) {
       pSceneMgr.Menu = pSceneMgr.From;
     }
   } else if (pSceneMgr.Menu->ShouldGoTo()) {
+    auto tmp = pSceneMgr.Menu->ShouldGoTo();
     pSceneMgr.From = pSceneMgr.Menu;
-    pSceneMgr.Menu = pSceneMgr.Menu->ShouldGoTo();
     pSceneMgr.Menu->pGoTo = nullptr;
+    pSceneMgr.Menu = tmp;
   }
-  PD::TT::Beg("2db");
+  // PD::TT::Beg("2db");
   // Optimizing the renderbuffer gives us ~1.4 - 1.6 ms less render time
   OptimizeUiList(pDL);
   Render2D(PD::fvec2(320, 240));
-  PD::TT::End("2db");
+  // PD::TT::End("2db");
   EndFrame();
   /*if (pDebug) {
     pDebug->Line("Top UI: " +
@@ -311,6 +308,8 @@ void Renderer::DrawIcon(uint8_t b, uint8_t m, PD::fvec2 pos) {
     Block_GetTexture(b, (Direction)i, m, iconUV);
     Block_GetColor(b, m, (Direction)i, color);
 
+    auto cmd = pDL->GetNewCmd();
+    cmd->Tex = blocktex->Address;
     for (int j = 0; j < 5; j++) {
       int k = i * 6 + j;
       PD::fvec3 p = PD::fvec3(vtx[k].xyz - 0.5f);
@@ -342,15 +341,12 @@ void Renderer::DrawIcon(uint8_t b, uint8_t m, PD::fvec2 pos) {
                   (float)(iconUV[1] + numTiles) / (float)UV_PRECISION,
                   (float)(iconUV[0] + numTiles) / (float)UV_PRECISION,
                   (float)iconUV[1] / (float)UV_PRECISION);
-    auto cmd = pDL->PreGenerateCmd();
-    cmd->Tex = blocktex;
     cmd->AddIdx(0).AddIdx(1).AddIdx(2);
     cmd->AddIdx(0).AddIdx(2).AddIdx(3);
     cmd->AddVtx(PD::Li::Vertex(br, uvs.BotRight(), clr32));
     cmd->AddVtx(PD::Li::Vertex(tr, uvs.TopRight(), clr32));
     cmd->AddVtx(PD::Li::Vertex(tl, uvs.TopLeft(), clr32));
     cmd->AddVtx(PD::Li::Vertex(bl, uvs.BotLeft(), clr32));
-    pDL->AddCommand(std::move(cmd));
   }
 }
 }  // namespace TME
