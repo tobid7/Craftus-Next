@@ -13,6 +13,7 @@ using u16 = unsigned short;
 using u32 = unsigned int;
 using u64 = unsigned long long;
 struct C3D_Tex {};
+struct C3D_FVec{};
 #endif
 #include <string.h>
 
@@ -56,6 +57,8 @@ typedef enum {
   MemType_Tex,
   MemType_Snd,
 } MemType;
+
+typedef uintptr_t LgyCam;
 
 extern GameOptions cn_options;
 
@@ -119,6 +122,15 @@ void Lgy_Render_(void* world, void* gs);
 void Lgy_LoadResourcesAsync(void* queue, int item, void* data);
 void Lgy_DebugUI_Text(const char* fmt, ...);
 void Lgy_DebugUI_Log(const char* fmt, ...);
+void Lgy_CameraInit(LgyCam* cam);
+void Lgy_CameraUpdate(LgyCam cam, void* player, float iod);
+bool Lgy_CameraIsPointVisible(LgyCam cam, C3D_FVec point);
+bool Lgy_CameraIsAABBVisible(LgyCam cam, C3D_FVec orgin, C3D_FVec size);
+float Lgy_CameraGetNear(LgyCam cam);
+float Lgy_CameraGetFar(LgyCam cam);
+C3D_Mtx* Lgy_CameraGetVp(LgyCam cam);
 #ifdef __cplusplus
 }
 #endif
+
+#define LgyLog(x, ...) Lgy_Log("[%s:%d:%s]-Lgy: " x, __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)

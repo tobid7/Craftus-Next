@@ -6,6 +6,6 @@ extern "C" {
 #include <entity/Player.h>
 }
 
-namespace TME {
+namespace CN {
 void OvertimeDamage(const std::string& cause, int time, Player* plr);
 }

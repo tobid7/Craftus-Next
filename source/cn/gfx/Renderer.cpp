@@ -83,13 +83,13 @@ constexpr u32 DISPLAY_TRANSFER_FLAGS =
     GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO);
 
 struct SceneChange {
-  TME::Menu::Ref Menu = nullptr;
-  TME::Menu::Ref From = nullptr;
+  CN::Menu::Ref Menu = nullptr;
+  CN::Menu::Ref From = nullptr;
 };
 
 SceneChange pSceneMgr;
 
-namespace TME {
+namespace CN {
 PD::Mat4 Renderer::pIconMtx;
 PD::Li::DrawList::Ref Renderer::pDL;
 PD::Li::Texture::Ref Renderer::pTmpTex;
@@ -131,7 +131,7 @@ void Renderer::Init(PD::Context::Ref ctx) {
   Lgy_InitPalladium();
   pDL = PD::Li::DrawList::New(*pCtx);
   RcLoadAsync(nullptr);
-  pSceneMgr.Menu = TME::TitleMenu::New(*pCtx);
+  pSceneMgr.Menu = CN::TitleMenu::New(*pCtx);
 }
 
 void Renderer::Deinit() {
@@ -349,4 +349,4 @@ void Renderer::DrawIcon(uint8_t b, uint8_t m, PD::fvec2 pos) {
     cmd->AddVtx(PD::Li::Vertex(bl, uvs.BotLeft(), clr32));
   }
 }
-}  // namespace TME
+}  // namespace CN

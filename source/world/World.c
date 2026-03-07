@@ -8,6 +8,7 @@
 extern float dt__;
 
 void World_Init(World* world, WorkQueue* workqueue) {
+  LgyLog("World_Init");
   strcpy(world->name, "TestWelt");
 
   world->workqueue = workqueue;

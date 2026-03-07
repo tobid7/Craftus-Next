@@ -2,6 +2,7 @@
 #include <cn/Game.hpp>
 #include <cn/Lgy.hpp>
 #include <cn/entity/Damage.hpp>
+#include <cn/gfx/Camera.hpp>
 #include <cn/gfx/Renderer.hpp>
 #include <cn/gfx/TexLoader.hpp>
 #include <cn/gui/DebugUI.hpp>
@@ -36,7 +37,7 @@ static CN::DebugUI pDebug;
 static PD::Context pd_ctx;
 
 void Lgy_OvertimeDamage(const char* cause, int time, void* plr) {
-  TME::OvertimeDamage(cause, time, (Player*)plr);
+  CN::OvertimeDamage(cause, time, (Player*)plr);
 }
 
 u32 Lgy_FastHash(const char* str) { return (u32)PD::Strings::FastHash(str); }
@@ -44,7 +45,7 @@ u32 Lgy_FastHash(const char* str) { return (u32)PD::Strings::FastHash(str); }
 void* Lgy_LoadImg2BufRGBA(const char* path, size_t* len, size_t* w, size_t* h,
                           bool flip) {
   size_t tw, th;
-  auto ret = TME::LoadImage2RGBA(path, tw, th, flip);
+  auto ret = CN::LoadImage2RGBA(path, tw, th, flip);
   *w = tw;
   *h = th;
   *len = ret.size();
@@ -56,11 +57,11 @@ void* Lgy_LoadImg2BufRGBA(const char* path, size_t* len, size_t* w, size_t* h,
 void Lgy_DeleteImgBuf(void* mem) { delete[] mem; }
 
 void Lgy_LoadTexRGBA(C3D_Tex* ret, void* data, size_t len, size_t w, size_t h) {
-  TME::LoadTexRGBA(ret, std::vector<PD::u8>((PD::u8*)data, (PD::u8*)data + len),
-                   w, h);
+  CN::LoadTexRGBA(ret, std::vector<PD::u8>((PD::u8*)data, (PD::u8*)data + len),
+                  w, h);
 }
 
-void Lgy_InitFS() { TME::InitFS(); }
+void Lgy_InitFS() { CN::InitFS(); }
 
 void Lgy_Log(const char* fmt, ...) {
   va_list args;
@@ -71,7 +72,7 @@ void Lgy_Log(const char* fmt, ...) {
 
   va_end(args);
 
-  TME::Log(std::string(buffer));
+  CN::Log(buffer);
 }
 
 void Lgy_Crash(const char* reason, ...) {
@@ -83,13 +84,13 @@ void Lgy_Crash(const char* reason, ...) {
 
   va_end(args);
 
-  TME::Crash(std::string(buffer));
+  CN::Crash(std::string(buffer));
 }
 
-void Lgy_InitCxxExceptionScreen() { TME::InitExceptionCallback(); }
+void Lgy_InitCxxExceptionScreen() { CN::InitExceptionCallback(); }
 
 VBO_Block Lgy_Vbo_Alloc(size_t size) {
-  auto b = TME::VboCache::New(size);
+  auto b = CN::VboCache::New(size);
   return (VBO_Block){b->pSize, b->pData, b};
 }
 
@@ -102,13 +103,13 @@ VBO_Block Lgy_Vbo_Alloc(size_t size) {
  */
 void Lgy_Vbo_Free(VBO_Block block) {
   if (block.cxx_addr && block.memory != nullptr) {
-    auto b = (TME::VboBlock*)block.cxx_addr;
+    auto b = (CN::VboBlock*)block.cxx_addr;
     if (b->pData != block.memory || (u32)b->pData < 0x1000) {
       throw std::runtime_error("Found sus memory block! b " +
                                std::to_string((u32)b->pData) + " m " +
                                std::to_string((u32)block.memory));
     }
-    TME::VboCache::Delete(b);
+    CN::VboCache::Delete(b);
     block.cxx_addr = nullptr;
     block.memory = nullptr;
     block.size = 0;
@@ -397,12 +398,13 @@ void RcLoadAsync(void* d) {
 CN::TaskMgr::Task __task;
 
 void Lgy_InitRenderStage(void* world, void* gs, void* player, void* cw) {
+  LOG("Lgy_InitRenderStage");
   // CN::TaskMgr::Init();
-  TME::Renderer::Init(&pd_ctx);
-  TME::Renderer::pDebug = &pDebug;
+  CN::Renderer::Init(&pd_ctx);
+  CN::Renderer::pDebug = &pDebug;
   PolyGen_Init((World*)world, (Player*)player);
   WorldRenderer_Init((Player*)player, (World*)world, &((ChunkWorker*)cw)->queue,
-                     TME::Renderer::uLocProj);
+                     CN::Renderer::uLocProj);
   Block_Init();
   C3D_CullFace(GPU_CULL_BACK_CCW);
   // auto t = CN::TaskMgr::CreateTask(0);
@@ -417,12 +419,12 @@ void Lgy_ExitRenderStage() {
   Block_Deinit();
   WorldRenderer_Deinit();
   PolyGen_Deinit();
-  TME::Renderer::Deinit();
+  CN::Renderer::Deinit();
   // CN::TaskMgr::Deinit();
 }
 
 void Lgy_Render_(void* world, void* gs) {
-  TME::Renderer::Render((World*)world, (GameState*)gs);
+  CN::Renderer::Render((World*)world, (GameState*)gs);
 }
 
 void Lgy_LoadResourcesAsync(void* queue, int item, void* data) {}
@@ -445,5 +447,40 @@ void Lgy_DebugUI_Log(const char* fmt, ...) {
   va_end(args);
 
   pDebug.Log(std::string(buffer));
+}
+
+void Lgy_CameraInit(LgyCam* cam) {
+  CN::Camera* camptr = new CN::Camera();
+  *cam = (LgyCam)camptr;
+}
+
+void Lgy_CameraUpdate(LgyCam cam, void* player, float iod) {
+  CN::Camera* c = (CN::Camera*)cam;
+  c->Update((Player*)player, iod);
+}
+
+bool Lgy_CameraIsPointVisible(LgyCam cam, C3D_FVec point) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return c->IsPointVisible(point);
+}
+
+bool Lgy_CameraIsAABBVisible(LgyCam cam, C3D_FVec orgin, C3D_FVec size) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return c->IsAABBVisible(orgin, size);
+}
+
+float Lgy_CameraGetNear(LgyCam cam) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return c->pNear;
+}
+
+float Lgy_CameraGetFar(LgyCam cam) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return c->pFar;
+}
+
+C3D_Mtx* Lgy_CameraGetVp(LgyCam cam) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return &c->pVp;
 }
 }

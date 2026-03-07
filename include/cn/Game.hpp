@@ -36,7 +36,7 @@ extern "C" {
  * Engine
  */
 
-namespace TME {
+namespace CN {
 void InitExceptionCallback();
 class CoreEngine {
  public:
@@ -69,4 +69,4 @@ class CoreEngine {
   DefaultGen pDefault;
   PD::Context pCtx;
 };
-}  // namespace TME
+}  // namespace CN

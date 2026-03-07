@@ -1,3 +1,3 @@
 #include <cn/misc/Block.hpp>
 
-namespace TME {}
+namespace CN {}

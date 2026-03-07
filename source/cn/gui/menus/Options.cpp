@@ -5,7 +5,7 @@ extern "C" {
 #include <GameStates.h>
 }
 
-namespace TME {
+namespace CN {
 void OptionsMenu::Update() {
   pGui.Start();
   pGui.DrawBg();
@@ -46,4 +46,4 @@ void OptionsMenu::Update() {
     }
   }
 }
-}  // namespace TME
+}  // namespace CN

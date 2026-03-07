@@ -2,10 +2,10 @@
 
 #include <palladium>
 
-namespace TME {
-    class Object {
-        public:
-        Object() {}
-        ~Object() {}
-    };
-}
+namespace CN {
+class Object {
+ public:
+  Object() {}
+  ~Object() {}
+};
+}  // namespace CN

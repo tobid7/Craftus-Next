@@ -2,7 +2,7 @@
 
 #include <palladium>
 
-namespace TME {
+namespace CN {
 class ItemStack {
  public:
   ItemStack() {
@@ -10,7 +10,7 @@ class ItemStack {
     pBlock = 0;
     pMeta = 0;
   }
-  
+
   ItemStack(PD::u16 b, PD::u8 m, PD::u8 n) {
     pAmount = n;
     pBlock = b;
@@ -35,4 +35,4 @@ class ItemStack {
   PD::u8 pMeta;
   PD::u8 pAmount;
 };
-}  // namespace TME
+}  // namespace CN

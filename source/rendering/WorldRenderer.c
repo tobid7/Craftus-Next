@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <cn/Lgy.hpp>
+
 int sky_time = 0;
 
 #define pack_rgba(r, g, b, a) (u32)(r << 24 | g << 16 | b << 8 | a)
@@ -20,7 +22,7 @@ static World* world;
 
 static WorkQueue* workqueue;
 
-static Camera camera;
+static LgyCam camera;
 
 static int projectionUniform;
 
@@ -48,6 +50,7 @@ static C3D_FogLut fogLut;
 
 void WorldRenderer_Init(Player* player_, World* world_, WorkQueue* workqueue_,
                         int projectionUniform_) {
+  LgyLog("WorldRenderer_Init");
   world = world_;
   player = player_;
   projectionUniform = projectionUniform_;
@@ -56,7 +59,7 @@ void WorldRenderer_Init(Player* player_, World* world_, WorkQueue* workqueue_,
   vec_init(&renderingQueue);
   vec_init(&transparentClusters);
 
-  Camera_Init(&camera);
+  Lgy_CameraInit(&camera);
 
   Cursor_Init();
   Hand_Init();
@@ -163,7 +166,7 @@ static void renderWorld() {
 
       C3D_FVec chunkPosition =
           FVec3_New(newX * CHUNK_SIZE, newY * CHUNK_SIZE, newZ * CHUNK_SIZE);
-      if (!Camera_IsAABBVisible(&camera, chunkPosition,
+      if (!Lgy_CameraIsAABBVisible(camera, chunkPosition,
                                 FVec3_New(CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE)))
         continue;
 
@@ -224,22 +227,22 @@ static void renderWorld() {
 }
 
 void WorldRenderer_Render(float iod) {
-  Camera_Update(&camera, player, iod);
+  Lgy_CameraUpdate(camera, player, iod);
 
   C3D_TexBind(0, Block_GetTextureMap());
 
-  C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER, projectionUniform, &camera.vp);
+  C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER, projectionUniform, Lgy_CameraGetVp(camera));
 
   renderWorld();
 
   if (cn_options.Clouds)
-    Clouds_Render(projectionUniform, &camera.vp, world, player->position.x,
+    Clouds_Render(projectionUniform, Lgy_CameraGetVp(camera), world, player->position.x,
                   player->position.z);
   C3D_TexBind(0, Block_GetTextureMap());  // Rebind Blocks Tex for Hand
   if (cn_options.Hand) {
     C3D_Mtx p;
     Mtx_PerspStereoTilt(&p, C3D_AngleFromDegrees(60.f), ((400.f) / (240.f)),
-                        camera.near, camera.far, iod, 1.f, false);
+                        Lgy_CameraGetNear(camera), Lgy_CameraGetFar(camera), iod, 1.f, false);
     // disable depth test to not clip into the blocks
     // but need still need to find a way to not clip
     // into the cursor (but changing order results in white hand ??? df)
@@ -250,7 +253,7 @@ void WorldRenderer_Render(float iod) {
   }
 
   if (player->blockInActionRange)
-    Cursor_Draw(projectionUniform, &camera.vp, world, player->viewRayCast.x,
+    Cursor_Draw(projectionUniform, Lgy_CameraGetVp(camera), world, player->viewRayCast.x,
                 player->viewRayCast.y, player->viewRayCast.z,
                 player->viewRayCast.direction);
 }

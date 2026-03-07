@@ -1,4 +1,5 @@
 #include <cn/Game.hpp>
+#include <cn/misc/Crash.hpp>
 
 bool showDebugInfo = true;
 
@@ -6,7 +7,9 @@ bool showDebugInfo = true;
 GameState gamestate = GameState_Playing;
 
 int main() {
-  TME::CoreEngine craftus;
+  LOG("Creating Core Engine");
+  CN::CoreEngine craftus;
+  LOG("Running Core Engine");
   craftus.Run();
 
   return 0;

@@ -147,6 +147,7 @@ static inline bool WasKeyPressed(KeyCombo combo, PlatformAgnosticInput* input) {
 }
 
 void PlayerController_Init(PlayerController* ctrl, Player* player) {
+  LgyLog("PlayerController_Init");
   ctrl->breakPlaceTimeout = 0.f;
   ctrl->player = player;
 

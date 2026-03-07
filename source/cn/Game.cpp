@@ -1,7 +1,15 @@
-#include <cn/Game.hpp>
-#include <palladium>
+extern "C" {
+#include <rendering/WorldRenderer.h>
+}
 
-namespace TME {
+#include <cn/Game.hpp>
+#include <cn/gfx/Renderer.hpp>
+#include <cn/misc/Crash.hpp>
+#include <cn/misc/Fs.hpp>
+#include <palladium>
+#include <pd-3ds.hpp>
+
+namespace CN {
 void catch_the_stuff() {
   gfxInitDefault();
   consoleInit(GFX_TOP, nullptr);
@@ -26,6 +34,8 @@ void InitExceptionCallback() { std::set_terminate(catch_the_stuff); }
 
 CoreEngine::CoreEngine() {
   InitExceptionCallback();
+  InitFS();
+  LOG("CoreEngine::CoreEngine");
   // Init 3ds base
   gfxInitDefault();
   osSetSpeedupEnable(true);
@@ -45,16 +55,26 @@ CoreEngine::CoreEngine() {
   WorldSelect_Init();
   Options_Init(GameState_Title);
   SuperChunk_InitPools();
-  SaveManager_InitFileSystem();
+  // SaveManager_InitFileSystem();
   SaveManager_Init(&pSaveMgr, &pPlayer);
   pInitChunkWorker();
   sino_init();
   pGamestate = GameState_Playing;
-  Lgy_InitRenderStage(pWorld, &pGamestate, &pPlayer, &pChunkWorker);
+  CN::Renderer::Init(&pCtx);
+  CN::Renderer::pDebug = new DebugUI();
+  PolyGen_Init(pWorld, &pPlayer);
+  WorldRenderer_Init(&pPlayer, pWorld, &pChunkWorker.queue,
+                     CN::Renderer::uLocProj);
+  Block_Init();
+  C3D_CullFace(GPU_CULL_BACK_CCW);
+  pCtx.UseGfxDriver<PD::GfxC3D>(nullptr);
+  pCtx.UseHidDriver<PD::Hid3DS>(nullptr);
+  pCtx.Gfx()->Init();
   pDeltaClock = PD::Timer::New(*pCtx.Os());
 }
 
 CoreEngine::~CoreEngine() {
+  LOG("CoreEngine::~CoreEngine");
   if (pGamestate == GameState_Playing) {
     pUnloadWorld();
   }
@@ -72,6 +92,7 @@ CoreEngine::~CoreEngine() {
 }
 
 void CoreEngine::Run() {
+  LOG("CoreEngine::Run");
   pDeltaClock->Reset();
   while (aptMainLoop()) {
     if (pKill) {
@@ -83,6 +104,7 @@ void CoreEngine::Run() {
 }
 
 void CoreEngine::pUpdateInput() {
+  LOG("Updating Input");
   hidScanInput();
   circlePosition circlePos;
   hidCircleRead(&circlePos);
@@ -103,7 +125,7 @@ void CoreEngine::pUpdateInput() {
   Gui_InputData(inp);
 }
 
-void CoreEngine::pUpdateGfx() {}
+void CoreEngine::pUpdateGfx() { LOG("Updating Gfx"); }
 
 void CoreEngine::pUpdateTimings() {
   pDelta = pDeltaClock->GetSeconds() * 1000.f;
@@ -118,6 +140,7 @@ void CoreEngine::pUpdateTimings() {
 }
 
 void CoreEngine::pInitChunkWorker() {
+  LgyLog("CoreEngine::pInitChunkWorker");
   // PolyGen
   ChunkWorker_AddHandler(
       &pChunkWorker, WorkerItemType_PolyGen,
@@ -153,4 +176,4 @@ void CoreEngine::pUnloadWorld() {
   World_Reset(pWorld);
   SaveManager_Unload(&pSaveMgr);
 }
-}  // namespace TME
+}  // namespace CN

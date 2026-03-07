@@ -2,7 +2,7 @@
 
 #include <palladium>
 
-namespace TME {
+namespace CN {
 class CollisionBox {
  public:
   CollisionBox() {}
@@ -27,4 +27,4 @@ class CollisionBox {
   PD::fvec3 pMin;
   PD::fvec3 pMax;
 };
-}  // namespace TME
+}  // namespace CN

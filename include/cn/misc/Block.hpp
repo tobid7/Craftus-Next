@@ -1,9 +1,9 @@
 #pragma once
 
-#include <palladium>
 #include <cn/gfx/texloader.hpp>
+#include <palladium>
 
-namespace TME {
+namespace CN {
 class Block {
  public:
   constexpr Block() : pGravity(false), pBlockID(0) {}
@@ -14,4 +14,4 @@ class Block {
   bool pGravity;
   PD::u16 pBlockID;
 };
-}  // namespace TME
+}  // namespace CN

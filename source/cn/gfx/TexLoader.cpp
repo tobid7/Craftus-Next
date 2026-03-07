@@ -4,7 +4,7 @@
 
 #include <cn/gfx/TexLoader.hpp>
 
-namespace TME {
+namespace CN {
 std::vector<PD::u8> LoadImage2RGBA(const std::string& path, size_t& w,
                                    size_t& h, bool flip) {
   PD::Image::Ref img = PD::Image::New();
@@ -123,4 +123,4 @@ void TextureMap::AppendFile(const std::string& path) {
 void TextureMap::Bake() {
   LoadTexRGBA(&pTex, pImg->pBuffer, pImg->pWidth, pImg->pHeight);
 }
-}  // namespace TME
+}  // namespace CN

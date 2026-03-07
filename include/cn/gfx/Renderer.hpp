@@ -13,7 +13,7 @@ extern "C" {
 #include <world/World.h>
 }
 
-namespace TME {
+namespace CN {
 class Renderer {
  public:
   Renderer() = default;
@@ -48,4 +48,4 @@ class Renderer {
   static CN::DebugUI* pDebug;
   static PD::Context::Ref pCtx;
 };
-}  // namespace TME
+}  // namespace CN

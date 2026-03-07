@@ -17,7 +17,7 @@
  *   (Layer 4 da die blockIcons auch nen Layer brauchen)
  */
 
-namespace TME {
+namespace CN {
 Gui::Gui(PD::Context& ctx, PD::fvec2 size) : ctx(ctx), pSize(size) {
   pPad = PD::fvec2(5.f / size.x, 5.f / size.y);
   pTexIcons = CN::ResourceMgr::GetTex(CN::RC::GuiIcons);
@@ -166,4 +166,4 @@ void Gui::pAlignPos(PD::u32 a, PD::fvec2& pos, PD::fvec2 size) {
     }
   }
 }
-}  // namespace TME
+}  // namespace CN

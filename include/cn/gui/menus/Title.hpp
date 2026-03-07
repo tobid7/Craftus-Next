@@ -2,7 +2,7 @@
 
 #include <cn/gui/Menu.hpp>
 
-namespace TME {
+namespace CN {
 class TitleMenu : public Menu {
  public:
   TitleMenu(PD::Context& ctx) : Menu(ctx) {}
@@ -11,4 +11,4 @@ class TitleMenu : public Menu {
 
   void Update() override;
 };
-}  // namespace TME
+}  // namespace CN

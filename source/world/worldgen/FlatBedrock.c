@@ -1,7 +1,9 @@
 #include <misc/NumberUtils.h>
 #include <world/worldgen/FlatBedrockGen.h>
 
-void FlatBedrockGen_Init(FlatBedrockGen* gen, World* world) {}
+void FlatBedrockGen_Init(FlatBedrockGen* gen, World* world) {
+  LgyLog("FlatBedrockGen_Init");
+}
 
 void FlatBedrockGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
   for (int y = 0; y < 5; y++) {

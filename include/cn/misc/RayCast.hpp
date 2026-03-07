@@ -1,9 +1,9 @@
 #pragma once
 
-#include <palladium>
 #include <cn/misc/Direction.hpp>
+#include <palladium>
 
-namespace TME {
+namespace CN {
 class Raycast {
  public:
   Raycast() {}
@@ -15,4 +15,4 @@ class Raycast {
   float pDistSq;
   Direction pDir;
 };
-}  // namespace TME
+}  // namespace CN

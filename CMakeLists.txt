@@ -130,7 +130,6 @@ add_executable(Craftus-Next
     source/misc/Raycast.c
     source/misc/Sound.c
 
-    source/rendering/Camera.c
     source/rendering/Clouds.c
     source/rendering/Cursor.c
     source/rendering/Hand.c
@@ -151,8 +150,8 @@ add_executable(Craftus-Next
     source/world/WorkQueue.c
     source/world/World.c
 )
-target_include_directories(Craftus-Next PUBLIC include)
-target_link_libraries(Craftus-Next PUBLIC
+target_include_directories(Craftus-Next PRIVATE include)
+target_link_libraries(Craftus-Next PRIVATE
     ini
     miniz
     mpack
@@ -168,7 +167,11 @@ target_link_libraries(Craftus-Next PUBLIC
     z
 )
 
-target_compile_definitions(Craftus-Next PUBLIC
+target_compile_options(Craftus-Next PRIVATE
+    -fmacro-prefix-map=${CMAKE_SOURCE_DIR}/=
+)
+
+target_compile_definitions(Craftus-Next PRIVATE
     -DCN_COMMIT="${CN_COMMIT}"
     -DCN_BRANCH="${CN_BRANCH}"
 )

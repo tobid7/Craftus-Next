@@ -29,6 +29,7 @@ static float velocity = 0.f;
 static float max_velocity = 20.f;
 
 void Options_Init(GameState from_) {
+  LgyLog("Options_Init");
   if (from_ == GameState_Pause) frompause = true;
   from = from_;
 }

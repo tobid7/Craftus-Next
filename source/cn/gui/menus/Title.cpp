@@ -4,7 +4,7 @@ extern "C" {
 #include <GameStates.h>
 }
 
-namespace TME {
+namespace CN {
 void TitleMenu::Update() {
   pGui.Start();
   pGui.DrawBg();
@@ -26,4 +26,4 @@ void TitleMenu::Update() {
   pGui.Align(Gui::Align_Right | Gui::Align_Bot);
   pGui.Label("tobid7");
 }
-}  // namespace TME
+}  // namespace CN

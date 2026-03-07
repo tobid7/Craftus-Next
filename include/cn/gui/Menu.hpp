@@ -2,7 +2,7 @@
 
 #include <cn/gui/Gui.hpp>
 
-namespace TME {
+namespace CN {
 class Menu {
  public:
   Menu(PD::Context& ctx) : pGui(ctx, PD::fvec2(320, 240)) {}
@@ -20,4 +20,4 @@ class Menu {
   bool pGoBack = false;
   Ref pGoTo = nullptr;
 };
-}  // namespace TME
+}  // namespace CN

@@ -4,7 +4,7 @@
 #include <cn/misc/ItemStack.hpp>
 
 namespace CN {
-class Player : public TME::Entity {
+class Player : public CN::Entity {
  public:
   Player();
   ~Player();
@@ -12,6 +12,6 @@ class Player : public TME::Entity {
   bool pSprinting;
   bool pFlying;
   bool pCrouching;
-  TME::ItemStack pInventory[9 * 4];
+  CN::ItemStack pInventory[9 * 4];
 };
 }  // namespace CN

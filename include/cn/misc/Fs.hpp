@@ -2,6 +2,6 @@
 
 #include <palladium>
 
-namespace TME {
+namespace CN {
 void InitFS();
 }

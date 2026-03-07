@@ -13,7 +13,7 @@ extern "C" {
 }
 #include <palladium>
 
-namespace TME {
+namespace CN {
 /**
  * Do we need this ?
  * IDK
@@ -57,8 +57,8 @@ class Camera {
   C3D_FVec pFrustumPlanes[FrustumPlanes_Count];
   PD::fvec3 pFrustumCorners[FrustumCorners_Count];
 
-  float pNear;
-  float pFar;
-  float pFov;
+  float pNear = 0.f;
+  float pFar = 0.f;
+  float pFov = 0.f;
 };
-}  // namespace TME
+}  // namespace CN
