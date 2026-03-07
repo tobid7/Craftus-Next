@@ -114,14 +114,14 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
       const int mod = UV_PRECISION / TEXTURE_MAPSIZE;
       icon->u = locX * mod;
       icon->v = locY * mod;
-
+      LgyLog("Loaded %s as 0x%08X", filename, icon->textureHash);
       locX += TEXTURE_TILESIZE;
       if (locX == TEXTURE_MAPSIZE) {
         locY += TEXTURE_TILESIZE;
         locX = 0;
       }
     } else {
-      Lgy_Log("Image size(%d, %d) doesn't match or ptr null(internal error)\n'",
+      LgyLog("Image size(%d, %d) doesn't match or ptr null(internal error)\n'",
               w, h);
     }
     Lgy_DeleteImgBuf(image);
@@ -134,7 +134,7 @@ void Texture_MapInit(Texture_Map* map, const char** files, int num_files) {
           &map->texture, NULL,
           (C3D_TexInitParams){TEXTURE_MAPSIZE, TEXTURE_MAPSIZE, mipmapLevels,
                               GPU_RGBA8, GPU_TEX_2D, true}))
-    Lgy_Log("Couldn't alloc texture memory\n");
+    LgyLog("Couldn't alloc texture memory\n");
   C3D_TexSetFilter(&map->texture, GPU_NEAREST, GPU_NEAREST);
 
   C3D_SyncDisplayTransfer(

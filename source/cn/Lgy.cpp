@@ -2,6 +2,7 @@
 #include <cn/Game.hpp>
 #include <cn/Lgy.hpp>
 #include <cn/entity/Damage.hpp>
+#include <cn/gfx/Camera.hpp>
 #include <cn/gfx/Renderer.hpp>
 #include <cn/gfx/TexLoader.hpp>
 #include <cn/gui/DebugUI.hpp>
@@ -33,9 +34,10 @@ static PD::UI7::Context::Ref ui7 = nullptr;
 static float dyn__ = 1.f;
 static C3D_Mtx iconMdl;
 static CN::DebugUI pDebug;
+static PD::Context pd_ctx;
 
 void Lgy_OvertimeDamage(const char* cause, int time, void* plr) {
-  TME::OvertimeDamage(cause, time, (Player*)plr);
+  CN::OvertimeDamage(cause, time, (Player*)plr);
 }
 
 u32 Lgy_FastHash(const char* str) { return (u32)PD::Strings::FastHash(str); }
@@ -43,7 +45,7 @@ u32 Lgy_FastHash(const char* str) { return (u32)PD::Strings::FastHash(str); }
 void* Lgy_LoadImg2BufRGBA(const char* path, size_t* len, size_t* w, size_t* h,
                           bool flip) {
   size_t tw, th;
-  auto ret = TME::LoadImage2RGBA(path, tw, th, flip);
+  auto ret = CN::LoadImage2RGBA(path, tw, th, flip);
   *w = tw;
   *h = th;
   *len = ret.size();
@@ -55,11 +57,11 @@ void* Lgy_LoadImg2BufRGBA(const char* path, size_t* len, size_t* w, size_t* h,
 void Lgy_DeleteImgBuf(void* mem) { delete[] mem; }
 
 void Lgy_LoadTexRGBA(C3D_Tex* ret, void* data, size_t len, size_t w, size_t h) {
-  TME::LoadTexRGBA(ret, std::vector<PD::u8>((PD::u8*)data, (PD::u8*)data + len),
-                   w, h);
+  CN::LoadTexRGBA(ret, std::vector<PD::u8>((PD::u8*)data, (PD::u8*)data + len),
+                  w, h);
 }
 
-void Lgy_InitFS() { TME::InitFS(); }
+void Lgy_InitFS() { CN::InitFS(); }
 
 void Lgy_Log(const char* fmt, ...) {
   va_list args;
@@ -70,7 +72,7 @@ void Lgy_Log(const char* fmt, ...) {
 
   va_end(args);
 
-  TME::Log(std::string(buffer));
+  CN::Log(buffer);
 }
 
 void Lgy_Crash(const char* reason, ...) {
@@ -82,13 +84,13 @@ void Lgy_Crash(const char* reason, ...) {
 
   va_end(args);
 
-  TME::Crash(std::string(buffer));
+  CN::Crash(std::string(buffer));
 }
 
-void Lgy_InitCxxExceptionScreen() { TME::InitExceptionCallback(); }
+void Lgy_InitCxxExceptionScreen() { CN::InitExceptionCallback(); }
 
 VBO_Block Lgy_Vbo_Alloc(size_t size) {
-  auto b = TME::VboCache::New(size);
+  auto b = CN::VboCache::New(size);
   return (VBO_Block){b->pSize, b->pData, b};
 }
 
@@ -101,13 +103,13 @@ VBO_Block Lgy_Vbo_Alloc(size_t size) {
  */
 void Lgy_Vbo_Free(VBO_Block block) {
   if (block.cxx_addr && block.memory != nullptr) {
-    auto b = (TME::VboBlock*)block.cxx_addr;
+    auto b = (CN::VboBlock*)block.cxx_addr;
     if (b->pData != block.memory || (u32)b->pData < 0x1000) {
       throw std::runtime_error("Found sus memory block! b " +
                                std::to_string((u32)b->pData) + " m " +
                                std::to_string((u32)block.memory));
     }
-    TME::VboCache::Delete(b);
+    CN::VboCache::Delete(b);
     block.cxx_addr = nullptr;
     block.memory = nullptr;
     block.size = 0;
@@ -203,17 +205,20 @@ void Lgy_Render2D() {
   // list->SetFont(font);
   // list->DrawTextEx(5, "Hello World!\nCraftus v0.7.1-dev\nA Minecraft Clone",
   //                  0xffff00ff, LiTextFlags_Shaddow);
-  // PD::Gfx::SetViewPort(PD::ivec2(320, 240));
-  // PD::Gfx::NewFrame();
-  // PD::Gfx::RenderDrawData(list->pDrawList);
+  // pd_ctx.Gfx()->SetViewPort(PD::ivec2(320, 240));
+  // pd_ctx.Gfx()->NewFrame();
+  // pd_ctx.Gfx()->RenderDrawData(list->pDrawList);
 }
 
 void Lgy_InitPalladium() {
-  PD::Init();
+  pd_ctx.UseGfxDriver<PD::GfxC3D>(nullptr);
+  pd_ctx.UseHidDriver<PD::Hid3DS>(nullptr);
+  pd_ctx.Gfx()->Init();
   // font = PD::Li::Font::New();
+  CN::ResourceMgr::SetContext(pd_ctx);
   CN::ResourceMgr::Load("romfs:/fonts/Miracode.ttf", CN::RCID::FontTTF);
-  list = PD::Li::DrawList::New();
-  ui7 = PD::UI7::Context::New();
+  list = PD::Li::DrawList::New(pd_ctx);
+  ui7 = PD::UI7::Context::New(pd_ctx);
   ui7->AddViewPort("bot", PD::ivec4(0, 0, 320, 240));
   ui7->UseViewPort("bot");
   ui7->pIO->Font = CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont);
@@ -229,8 +234,8 @@ u32 Lgy_LoadTexture(const char* path) {
   PD::Image::Ref img = PD::Image::New();
   img->Load(path);
   auto tex =
-      PD::Gfx::LoadTex(img->pBuffer, img->pWidth, img->pHeight,
-                       PD::Li::Texture::RGBA32, PD::Li::Texture::NEAREST);
+      pd_ctx.Gfx()->LoadTex(img->pBuffer, img->pWidth, img->pHeight,
+                            PD::Li::Texture::RGBA32, PD::Li::Texture::NEAREST);
   texlist[id] = tex;
   return id;
 }
@@ -283,11 +288,11 @@ void Lgy_StartFrame(int w, int h) {
 }
 
 void Lgy_Render(int w, int h) {
-  PD::Gfx::SetViewPort(PD::ivec2(w, h));
-  PD::Gfx::RenderDrawData(list->pDrawList);
+  pd_ctx.Gfx()->SetViewPort(PD::ivec2(w, h));
+  pd_ctx.Gfx()->RenderDrawData(list->Data());
 }
 
-void Lgy_Finish2D() { PD::Gfx::NewFrame(); }
+void Lgy_Finish2D() { pd_ctx.Gfx()->NewFrame(); }
 
 void Lgy_DynScale(float scale) {
   dyn__ = scale;
@@ -373,7 +378,7 @@ void Lgy_HandleUI(void* gs_ptr) {
   list->Merge(ui7->GetDrawData());
 }
 
-void Lgy_UpdateInput() { PD::Hid::Update(); }
+void Lgy_UpdateInput() { pd_ctx.Hid()->Update(); }
 
 void* Lgy_LinearAlloc(size_t size, MemType type) {
   return CN::MemMgr::NewLinLgy(size, (CN::MemMgr::Type)type);
@@ -393,12 +398,13 @@ void RcLoadAsync(void* d) {
 CN::TaskMgr::Task __task;
 
 void Lgy_InitRenderStage(void* world, void* gs, void* player, void* cw) {
+  LOG("Lgy_InitRenderStage");
   // CN::TaskMgr::Init();
-  TME::Renderer::Init();
-  TME::Renderer::pDebug = &pDebug;
+  CN::Renderer::Init(&pd_ctx);
+  CN::Renderer::pDebug = &pDebug;
   PolyGen_Init((World*)world, (Player*)player);
   WorldRenderer_Init((Player*)player, (World*)world, &((ChunkWorker*)cw)->queue,
-                     TME::Renderer::uLocProj);
+                     CN::Renderer::uLocProj);
   Block_Init();
   C3D_CullFace(GPU_CULL_BACK_CCW);
   // auto t = CN::TaskMgr::CreateTask(0);
@@ -413,12 +419,12 @@ void Lgy_ExitRenderStage() {
   Block_Deinit();
   WorldRenderer_Deinit();
   PolyGen_Deinit();
-  TME::Renderer::Deinit();
+  CN::Renderer::Deinit();
   // CN::TaskMgr::Deinit();
 }
 
 void Lgy_Render_(void* world, void* gs) {
-  TME::Renderer::Render((World*)world, (GameState*)gs);
+  CN::Renderer::Render((World*)world, (GameState*)gs);
 }
 
 void Lgy_LoadResourcesAsync(void* queue, int item, void* data) {}
@@ -441,5 +447,40 @@ void Lgy_DebugUI_Log(const char* fmt, ...) {
   va_end(args);
 
   pDebug.Log(std::string(buffer));
+}
+
+void Lgy_CameraInit(LgyCam* cam) {
+  CN::Camera* camptr = new CN::Camera();
+  *cam = (LgyCam)camptr;
+}
+
+void Lgy_CameraUpdate(LgyCam cam, void* player, float iod) {
+  CN::Camera* c = (CN::Camera*)cam;
+  c->Update((Player*)player, iod);
+}
+
+bool Lgy_CameraIsPointVisible(LgyCam cam, C3D_FVec point) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return c->IsPointVisible(point);
+}
+
+bool Lgy_CameraIsAABBVisible(LgyCam cam, C3D_FVec orgin, C3D_FVec size) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return c->IsAABBVisible(orgin, size);
+}
+
+float Lgy_CameraGetNear(LgyCam cam) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return c->pNear;
+}
+
+float Lgy_CameraGetFar(LgyCam cam) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return c->pFar;
+}
+
+C3D_Mtx* Lgy_CameraGetVp(LgyCam cam) {
+  CN::Camera* c = (CN::Camera*)cam;
+  return &c->pVp;
 }
 }

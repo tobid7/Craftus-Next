@@ -2,10 +2,10 @@
 
 #include <cn/gui/Menu.hpp>
 
-namespace TME {
+namespace CN {
 class OptionsMenu : public Menu {
  public:
-  OptionsMenu() {}
+  OptionsMenu(PD::Context& ctx) : Menu(ctx) {}
   ~OptionsMenu() {}
   PD_SHARED(OptionsMenu)
 
@@ -13,4 +13,4 @@ class OptionsMenu : public Menu {
 
   int pState = 0;
 };
-}  // namespace TME
+}  // namespace CN

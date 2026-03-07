@@ -2,7 +2,7 @@
 
 #include <palladium>
 
-namespace TME {
+namespace CN {
 /**
  * Entity class contains generic data
  * that maybe all entitys use.
@@ -30,4 +30,4 @@ class Entity {
   PD::u8 pArmor;
   PD::u8 pOxygen;
 };
-}  // namespace TME
+}  // namespace CN

@@ -17,12 +17,12 @@
  *   (Layer 4 da die blockIcons auch nen Layer brauchen)
  */
 
-namespace TME {
-Gui::Gui(PD::fvec2 size) : pSize(size) {
+namespace CN {
+Gui::Gui(PD::Context& ctx, PD::fvec2 size) : ctx(ctx), pSize(size) {
   pPad = PD::fvec2(5.f / size.x, 5.f / size.y);
   pTexIcons = CN::ResourceMgr::GetTex(CN::RC::GuiIcons);
   pTexWidgets = CN::ResourceMgr::GetTex(CN::RC::GuiWidgets);
-  pGui = PD::Li::DrawList::New();
+  pGui = PD::Li::DrawList::New(ctx);
   pGui->SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
   pGui->SetFontScale(0.6);
 }
@@ -52,7 +52,7 @@ bool Gui::Button(const std::string& str, bool disabled) {
   pPos.y += size.y + pPad.y;
   pAlignPos(pAlignment, pos, size);
   if (!disabled &&
-      PD::Li::Renderer::InBox(PD::Hid::MousePos(),
+      PD::Li::Renderer::InBox(ctx.Hid()->MousePos(),
                               PD::fvec4(p2Screen(pos), p2Screen(size)))) {
     pTexElem(pTexWidgets, p2Screen(pos), p2Screen(size),
              GuiWidget_ButtonActive);
@@ -60,8 +60,8 @@ bool Gui::Button(const std::string& str, bool disabled) {
     pTexElem(pTexWidgets, p2Screen(pos), p2Screen(size),
              disabled ? GuiWidget_ButtonDead : GuiWidget_Button);
   }
-  if (PD::Hid::IsUp(PD::Hid::Key::Touch) &&
-      PD::Li::Renderer::InBox(PD::Hid::MousePosLast(),
+  if (ctx.Hid()->IsUp(ctx.Hid()->Key::Touch) &&
+      PD::Li::Renderer::InBox(ctx.Hid()->MousePosLast(),
                               PD::fvec4(p2Screen(pos), p2Screen(size)))) {
     ret = true;
   }
@@ -166,4 +166,4 @@ void Gui::pAlignPos(PD::u32 a, PD::fvec2& pos, PD::fvec2 size) {
     }
   }
 }
-}  // namespace TME
+}  // namespace CN

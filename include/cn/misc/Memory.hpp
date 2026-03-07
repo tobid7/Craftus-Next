@@ -1,6 +1,8 @@
 #pragma once
 
+#ifdef __3DS__
 #include <3ds.h>
+#endif
 
 #include <palladium>
 
@@ -58,14 +60,22 @@ class MemMgr {
   }
 
   static void* NewLinLgy(size_t size, Type t = Type_Unk) {
+#ifdef __3DS__
     void* ret = linearAlloc(size);
+#else
+    void* ret = malloc(size);
+#endif
     pAllocations[(uintptr_t)ret] = Data((uintptr_t)ret, size, true, t);
     return ret;
   }
 
   template <typename T>
   static void DeleteLin(T* mem) {
+#ifdef __3DS__
     linearFree((void*)mem);
+#else
+    free((void*)mem);
+#endif
     pAllocations.erase((uintptr_t)mem);
   }
 

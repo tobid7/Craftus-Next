@@ -1,7 +1,9 @@
 #include <sino/sino.h>
 #include <world/worldgen/SmeaGen.h>
 
-void SmeaGen_Init(SmeaGen* gen, World* world) { gen->world = world; }
+void SmeaGen_Init(SmeaGen* gen, World* world) { 
+  LgyLog("SmeaGen_Init");
+  gen->world = world; }
 
 // based off https://github.com/smealum/3dscraft/blob/master/source/generation.c
 void SmeaGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {

@@ -3,6 +3,7 @@
 #include <misc/Sound.h>
 
 void Player_Init(Player* player, World* world) {
+  LgyLog("Player_Init");
   player->position = f3_new(0.f, 0.f, 0.f);
 
   player->bobbing = 0.f;
@@ -94,37 +95,37 @@ void Player_Init(Player* player, World* world) {
 }
 
 void Player_Respawn(Player* player, Damage* dmg) {
-  Lgy_Log("Starting Respawn\n");
+  LgyLog("Starting Respawn");
   if (player->difficulty != 4) {
-    Lgy_Log("Diff isn't 4\n");
+    LgyLog("Diff isn't 4");
     if (player->spawnset = 0) {
-      Lgy_Log("Begin spset0\n");
+      LgyLog("Begin spset0");
       if (dmg->cause == NULL) {
-        Lgy_Log("Cause is NULL\n");
+        LgyLog("Cause is NULL");
         Lgy_DebugUI_Log("Player died");
       } else {
-        Lgy_Log("Cause is: %s\n", dmg->cause);
+        LgyLog("Cause is: %s", dmg->cause);
         Lgy_DebugUI_Log("Died by %s", dmg->cause);
       }
       Lgy_DebugUI_Log("No spawn was set");
 
       player->position.x = 0.0;
       World* world = player->world;
-      Lgy_Log("Set X pos and get world\n");
+      LgyLog("Set X pos and get world");
       int spawnY = 1;
-      Lgy_Log("Get Heighest block on Player spawn\n");
+      LgyLog("Get Heighest block on Player spawn");
       while (World_GetBlock(world, player->spawnx, spawnY, player->spawnz) !=
              Block_Air)
         spawnY++;
 
-      Lgy_Log("Offset Stuff\n");
+      LgyLog("Offset Stuff");
       bool shouldOffset = world->genSettings.type != WorldGen_SuperFlat;
       player->position.y = shouldOffset ? spawnY + 1 : spawnY;
       player->position.z = 0.0;
       player->gamemode = 0;
     }
     if (player->spawnset = 1) {
-      Lgy_Log("Spawnset is 1\n");
+      LgyLog("Spawnset is 1");
       // Error Happens here
       /*if (dmg->cause==NULL){
               Log("No Cause\n");
@@ -135,26 +136,26 @@ void Player_Respawn(Player* player, Damage* dmg) {
       }*/
       player->position.x = player->spawnx;
       World* world = player->world;
-      Lgy_Log("set Pos and Get world\n");
+      LgyLog("set Pos and Get world");
       int spawnY = 1;
-      Lgy_Log("Get heightest block\n");
+      LgyLog("Get heightest block");
       while (World_GetBlock(world, player->spawnx, spawnY, player->spawnz) !=
              Block_Air)
         spawnY++;
-      Lgy_Log("Offset STuff\n");
+      LgyLog("Offset Stuff");
       bool shouldOffset = world->genSettings.type != WorldGen_SuperFlat;
       player->position.y = shouldOffset ? spawnY + 1 : spawnY;
       player->position.z = player->spawnz;
       player->gamemode = 0;
     }
-    Lgy_Log("Set HP\n");
+    LgyLog("Set HP");
     player->hp = 20;
     player->hunger = 20;
-    Lgy_Log("Set Cause to NULL\n");
+    LgyLog("Set Cause to NULL");
     // Next Error
     // dmg->cause=NULL;
   } else {
-    Lgy_Log("lol ur world is gone iksdeh\n");
+    LgyLog("lol ur world is gone iksdeh");
     Lgy_DebugUI_Log("lol ur world is gone");
     /*char buffer[512];
     sprintf(buffer, "sdmc:/craftus_redesigned/saves/%s",

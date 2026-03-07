@@ -26,9 +26,9 @@ extern "C" {
 #include <world/worldgen/SuperFlatGen.h>
 }
 
-#include <palladium>
 #include <cn/gfx/VboCache.hpp>
 #include <cn/gfx/Vertex.hpp>
+#include <palladium>
 
 /**
  * The
@@ -36,7 +36,7 @@ extern "C" {
  * Engine
  */
 
-namespace TME {
+namespace CN {
 void InitExceptionCallback();
 class CoreEngine {
  public:
@@ -67,5 +67,6 @@ class CoreEngine {
   SmeaGen pSmea;
   FlatBedrockGen pBedrockFlat;
   DefaultGen pDefault;
+  PD::Context pCtx;
 };
-}  // namespace TME
+}  // namespace CN

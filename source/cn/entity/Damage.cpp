@@ -1,6 +1,6 @@
 #include <cn/entity/Damage.hpp>
 
-namespace TME {
+namespace CN {
 void OvertimeDamage(const std::string& cause, int time, Player* plr) {
   if (!plr || time <= 0) {
     return;
@@ -12,4 +12,4 @@ void OvertimeDamage(const std::string& cause, int time, Player* plr) {
     }
   }
 }
-}  // namespace TME
+}  // namespace CN

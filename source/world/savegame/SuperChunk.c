@@ -13,6 +13,7 @@ static const int fileBufferSize = sizeof(Chunk) * 2;
 static char* fileBuffer;
 
 void SuperChunk_InitPools() {
+  LgyLog("SuperChunk_InitPools");
   nodeDataPool = (mpack_node_data_t*)lgy_malloc(sizeof(mpack_node_data_t) *
                                                 nodeDataPoolSize);
   fileBuffer = lgy_malloc(fileBufferSize);  // 4kb

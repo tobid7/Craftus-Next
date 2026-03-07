@@ -5,7 +5,7 @@ extern "C" {
 #include <GameStates.h>
 }
 
-namespace TME {
+namespace CN {
 void OptionsMenu::Update() {
   pGui.Start();
   pGui.DrawBg();
@@ -24,7 +24,7 @@ void OptionsMenu::Update() {
     pGui.Button("Licenses", true);
   } else if (state == 1) {
     static float v;
-    pGui.GuiSlider("Fov 60", cn_options.Fov);
+    pGui.GuiSlider("Fov ", cn_options.Fov);
     pGui.GuiSlider("MipMaps 2", v);
     if (pGui.Button("Clouds " +
                     std::string(cn_options.Clouds ? "true" : "false"))) {
@@ -46,4 +46,4 @@ void OptionsMenu::Update() {
     }
   }
 }
-}  // namespace TME
+}  // namespace CN

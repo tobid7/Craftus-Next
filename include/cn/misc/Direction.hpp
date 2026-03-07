@@ -2,7 +2,7 @@
 
 #include <palladium>
 
-namespace TME {
+namespace CN {
 class Direction {
  public:
   enum Axis {
@@ -76,7 +76,7 @@ class Direction {
 
   Dir pDir = Invalid;
 };
-}  // namespace TME
+}  // namespace CN
 
 typedef enum {
   Direction_West,

@@ -1,6 +1,30 @@
 #include <cn/gfx/Camera.hpp>
 
-namespace TME {
+enum FrustumPlanes {
+  Frustum_Near = 0,
+  Frustum_Right,
+  Frustum_Left,
+  Frustum_Top,
+  Frustum_Bottom,
+  Frustum_Far,
+
+  FrustumPlanes_Count
+};
+
+enum FrustumCorners {
+  Frustum_NearBottomLeft = 0,
+  Frustum_NearBottomRight,
+  Frustum_NearTopLeft,
+  Frustum_NearTopRight,
+  Frustum_FarBottomLeft,
+  Frustum_FarBottomRight,
+  Frustum_FarTopLeft,
+  Frustum_FarTopRight,
+
+  FrustumCorners_Count
+};
+
+namespace CN {
 PD::fvec3 f3crs(PD::fvec3 a, PD::fvec3 b) {
   return PD::fvec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z,
                    a.x * b.y - a.y * b.x);
@@ -135,4 +159,4 @@ bool Camera::IsAABBVisible(C3D_FVec orgin, C3D_FVec size) {
 
   return true;
 }
-}  // namespace TME
+}  // namespace CN

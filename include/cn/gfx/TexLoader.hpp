@@ -4,7 +4,7 @@
 
 #include <palladium>  // pd-image, pd-core
 
-namespace TME {
+namespace CN {
 std::vector<PD::u8> LoadImage2RGBA(const std::string& path, size_t& w,
                                    size_t& h, bool flip = true);
 void LoadTexRGBA(C3D_Tex* ret, const std::vector<unsigned char>& pixels,
@@ -54,4 +54,4 @@ class TextureMap {
   // Image buffer for copiyng files into
   PD::Image::Ref pImg;
 };
-}  // namespace TME
+}  // namespace CN

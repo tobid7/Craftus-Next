@@ -9,6 +9,7 @@
 void SaveManager_InitFileSystem() { /** Outdated */ }
 
 void SaveManager_Init(SaveManager* mgr, Player* player) {
+  LgyLog("SaveManager_Init");
   mgr->player = player;
   mgr->world = player->world;
 

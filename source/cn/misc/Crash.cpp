@@ -1,11 +1,15 @@
 #include <cn/misc/Crash.hpp>
 
-namespace TME {
+namespace CN {
+std::ofstream log;
+bool logFailed = false;
 void Log(const std::string& text) {
-  std::fstream off("sdmc:/3ds/CraftusNext/logs/log.txt",
-                   std::ios::out | std::ios::app);
-  off << text << std::endl;
-  off.close();
+  if (logFailed) return;
+  if (!log.is_open()) {
+    log.open("sdmc:/3ds/CraftusNext/logs/log.txt");
+    logFailed = !log.is_open();
+  }
+  log << text << std::endl;
 }
 
 void Crash(const std::string& reason) {
@@ -15,4 +19,4 @@ void Crash(const std::string& reason) {
   off.close();
   throw(std::runtime_error(reason));
 }
-}  // namespace TME
+}  // namespace CN

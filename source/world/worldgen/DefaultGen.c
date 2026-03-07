@@ -3,7 +3,9 @@
 #include <time.h>
 #include <world/worldgen/DefaultGen.h>
 
-void DefaultGen_Init(DefaultGen *gen, World *world) { gen->world = world; }
+void DefaultGen_Init(DefaultGen *gen, World *world) { 
+  LgyLog("DefaultGen_Init");
+  gen->world = world; }
 int height = 0;
 
 /** Lets keep it small for nows */

@@ -2,13 +2,13 @@
 
 #include <cn/gui/Menu.hpp>
 
-namespace TME {
+namespace CN {
 class TitleMenu : public Menu {
  public:
-  TitleMenu() {}
+  TitleMenu(PD::Context& ctx) : Menu(ctx) {}
   ~TitleMenu() {}
   PD_SHARED(TitleMenu);
 
   void Update() override;
 };
-}  // namespace TME
+}  // namespace CN

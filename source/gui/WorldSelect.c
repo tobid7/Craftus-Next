@@ -90,6 +90,7 @@ static void delete_folder(const char* path) {
 }
 
 void WorldSelect_Init() {
+	LgyLog("WorldSelect_Init");
 	vec_init(&worlds);
 
 	WorldSelect_ScanWorlds();

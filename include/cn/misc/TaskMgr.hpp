@@ -1,7 +1,8 @@
 #pragma once
 
+#ifdef __3DS__
 #include <3ds.h>
-
+#endif
 #include <palladium>
 
 namespace CN {
@@ -29,8 +30,9 @@ class TaskMgr {
   static Task* CreateTask(PD::u32 id, std::function<void(void*)> f = nullptr);
 
   static void MainLoop(void* data);
-
+#ifdef __3DS__
   static Thread pThread;
+#endif
   static TaskMgrData pData;
 };
 }  // namespace CN

@@ -17,7 +17,7 @@ constexpr PD::fvec4 GuiIcon_HeartEmpty(16, 0, 9, 9);
 constexpr PD::fvec4 GuiIcon_HeartFull(52, 0, 9, 9);
 constexpr PD::fvec4 GuiIcon_HeartHalf(61, 0, 9, 9);
 
-namespace TME {
+namespace CN {
 class Gui {
  public:
   enum Align_ {
@@ -33,7 +33,7 @@ class Gui {
     PD::fvec4 Pad;
     PD::u32 Dir = 0;
   };
-  Gui(PD::fvec2 size = 0);
+  Gui(PD::Context& ctx, PD::fvec2 size = 0);
   ~Gui() {}
 
   void Start();
@@ -56,6 +56,8 @@ class Gui {
 
   PD::Li::DrawList::Ref pGui = nullptr;
 
+  PD::Context& ctx;
+
   PD::fvec2 pSize;
   PD::fvec2 pPos;
   PD::fvec2 pPad;
@@ -65,4 +67,4 @@ class Gui {
   PD::Li::Texture::Ref pTexWidgets = nullptr;
   PD::Li::Texture::Ref pTexIcons = nullptr;
 };
-}  // namespace TME
+}  // namespace CN

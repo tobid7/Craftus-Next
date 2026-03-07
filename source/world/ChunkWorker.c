@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <world/ChunkWorker.h>
+#include <cn/Lgy.hpp>
 
 void ChunkWorker_Init(ChunkWorker* chunkworker) {
+  LgyLog("ChunkWorker_Init");
   WorkQueue_Init(&chunkworker->queue);
 
   if (R_FAILED(APT_SetAppCpuTimeLimit(30))) {

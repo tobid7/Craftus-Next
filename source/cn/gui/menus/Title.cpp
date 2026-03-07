@@ -4,7 +4,7 @@ extern "C" {
 #include <GameStates.h>
 }
 
-namespace TME {
+namespace CN {
 void TitleMenu::Update() {
   pGui.Start();
   pGui.DrawBg();
@@ -13,7 +13,7 @@ void TitleMenu::Update() {
   pGui.Button("Singleplayer");
   pGui.Button("Multiplayer", true);
   if (pGui.Button("Options")) {
-    GoTo(OptionsMenu::New());
+    GoTo(OptionsMenu::New(pGui.ctx));
   }
   pGui.Button("Exit");
   pGui.SetPos(PD::fvec2(0, 0));
@@ -26,4 +26,4 @@ void TitleMenu::Update() {
   pGui.Align(Gui::Align_Right | Gui::Align_Bot);
   pGui.Label("tobid7");
 }
-}  // namespace TME
+}  // namespace CN

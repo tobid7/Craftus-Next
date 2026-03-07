@@ -1,6 +1,6 @@
 #include <cn/misc/Collision.hpp>
 
-namespace TME {
+namespace CN {
 bool CollisionBox::Intersect(const CollisionBox& other, int ignore,
                              PD::fvec3& ncoll, float& dcoll, int& fcoll) {
   // the normal of each face.
@@ -51,4 +51,4 @@ bool CollisionBox::Intersect(const CollisionBox& other, int ignore,
   return true;
 }
 
-}  // namespace TME
+}  // namespace CN

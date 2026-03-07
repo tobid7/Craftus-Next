@@ -117,6 +117,7 @@ static vec_t(QueueElement) floodfill_queue;
 static LightLock updateLock;
 
 void PolyGen_Init(World* world_, Player* player_) {
+  LgyLog("PolyGen_Init");
   world = world_;
   player = player_;
 

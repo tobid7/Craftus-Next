@@ -1,6 +1,7 @@
 #include <blocks/Block.h>
 #include <rendering/TextureMap.h>
 #include <rendering/VertexFmt.h>
+#include <cn/Lgy.hpp>
 
 static Texture_Map textureMap;
 
@@ -118,6 +119,7 @@ static struct {
 } icon;
 
 void Block_Init() {
+  LgyLog("Block_Init");
   Texture_MapInit(&textureMap, block_texture_files,
                   sizeof(block_texture_files) / sizeof(block_texture_files[0]));
 #define A(i, n) icon.i = Texture_MapGetIcon(&textureMap, PPRX n)

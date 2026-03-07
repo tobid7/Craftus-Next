@@ -1,7 +1,9 @@
 #pragma once
 
+#ifdef __3DS__
 #include <3ds.h>
 #include <citro3d.h>
+#endif
 
 #include <cn/gfx/Camera.hpp>
 #include <cn/gui/DebugUI.hpp>
@@ -11,13 +13,13 @@ extern "C" {
 #include <world/World.h>
 }
 
-namespace TME {
+namespace CN {
 class Renderer {
  public:
   Renderer() = default;
   ~Renderer() = default;
 
-  static void Init();
+  static void Init(PD::Context::Ref ctx);
   static void Deinit();
   static void UseShader();
   static void StartFrame();
@@ -44,5 +46,6 @@ class Renderer {
   static shaderProgram_s pWorldShader;
   static int uLocProj;
   static CN::DebugUI* pDebug;
+  static PD::Context::Ref pCtx;
 };
-}  // namespace TME
+}  // namespace CN

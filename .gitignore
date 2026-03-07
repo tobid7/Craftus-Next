@@ -2,3 +2,4 @@ build
 bin
 compile_commands.json
 .vscode/settings.json
+msvcbuild

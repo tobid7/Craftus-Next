@@ -4,7 +4,7 @@
 
 #include <cn/misc/Memory.hpp>
 
-namespace TME {
+namespace CN {
 class VboBlock {
  public:
   VboBlock() {}
@@ -33,4 +33,4 @@ class VboCache {
   static VboBlock* New(size_t size) { return new VboBlock(size); }
   static void Delete(VboBlock* block) { delete block; }
 };
-}  // namespace TME
+}  // namespace CN

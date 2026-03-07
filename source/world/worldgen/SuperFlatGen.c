@@ -1,7 +1,9 @@
 #include <misc/NumberUtils.h>
 #include <world/worldgen/SuperFlatGen.h>
 
-void SuperFlatGen_Init(SuperFlatGen* gen, World* world) {}
+void SuperFlatGen_Init(SuperFlatGen* gen, World* world) {
+  LgyLog("SuperFlatGen_Init");
+}
 
 void SuperFlatGen_Generate(WorkQueue* queue, WorkerItem item, void* this) {
   srand(time(NULL));

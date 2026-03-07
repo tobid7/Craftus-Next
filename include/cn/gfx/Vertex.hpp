@@ -2,7 +2,7 @@
 
 #include <3ds.h>
 
-namespace TME {
+namespace CN {
 // Lets use floats inestead
 struct WorldVertex {
   float xyz[3];
@@ -14,4 +14,4 @@ struct GuiVertex {
   float xyz[3];
   float uvc[3];
 };
-}  // namespace TME
+}  // namespace CN
