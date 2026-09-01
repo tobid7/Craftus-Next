@@ -13,7 +13,7 @@ void TitleMenu::Update() {
   pGui.Button("Singleplayer");
   pGui.Button("Multiplayer", true);
   if (pGui.Button("Options")) {
-    GoTo(OptionsMenu::New(pGui.ctx));
+    GoTo(new OptionsMenu());
   }
   pGui.Button("Exit");
   pGui.SetPos(PD::fvec2(0, 0));

@@ -18,14 +18,14 @@ void DebugUI::Log(const std::string& l) {
   // wtf idnk how to handle that yet
 }
 
-void DebugUI::DrawInto(PD::Li::DrawList::Ref list) {
-  list->SetFontScale(0.56f);  // scale used in Lgy Engine
+void DebugUI::DrawInto(PD::Li::Drawlist& list) {
+  list.SetFontscale(0.4f);  // scale used in Lgy Engine
   for (int i = 0; i < pInfoSlot; i++) {
-    list->DrawTextEx(PD::fvec2(0, i * 10), pInfoLines[i], 0xffffffff,
-                     LiTextFlags_Shaddow);
+    list.DrawTextEx(PD::fvec2(0, i * 10), pInfoLines[i].c_str(), 0xffffffff,
+                    LiTextFlags_Shaddow);
     pInfoLines[i] = "";
   }
-  list->SetFontScale(0.7f);
+  list.SetFontscale(0.7f);
   pInfoSlot = 0;
 }
 }  // namespace CN

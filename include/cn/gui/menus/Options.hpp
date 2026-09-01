@@ -5,9 +5,8 @@
 namespace CN {
 class OptionsMenu : public Menu {
  public:
-  OptionsMenu(PD::Context& ctx) : Menu(ctx) {}
+  OptionsMenu() : Menu() {}
   ~OptionsMenu() {}
-  PD_SHARED(OptionsMenu)
 
   void Update() override;
 

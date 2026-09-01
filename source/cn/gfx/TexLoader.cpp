@@ -7,15 +7,15 @@
 namespace CN {
 std::vector<PD::u8> LoadImage2RGBA(const std::string& path, size_t& w,
                                    size_t& h, bool flip) {
-  PD::Image::Ref img = PD::Image::New();
-  img->Load(path);
-  img->Convert(img, img->RGBA);
+  PD::Image img;
+  img.Load(path);
+  img.Convert(PD::Image::Format::RGBA);
   if (flip) {
-    img->FlipVertical();
+    img.Flip(false, true);
   }
-  w = img->pWidth;
-  h = img->pHeight;
-  return img->pBuffer;
+  w = img.Width();
+  h = img.Height();
+  return img.data();
 }
 
 void LoadTexRGBA(C3D_Tex* ret, const std::vector<unsigned char>& pixels,
@@ -27,12 +27,12 @@ void LoadTexRGBA(C3D_Tex* ret, const std::vector<unsigned char>& pixels,
   int bpp = 4;  // GetBPP(type);
   PD::ivec2 tex_size(w, h);
   // Pow2
-  if (!PD::BitUtil::IsSingleBit(w)) {
-    tex_size.x = PD::BitUtil::GetPow2((unsigned int)w);
-  }
-  if (!PD::BitUtil::IsSingleBit(h)) {
-    tex_size.y = PD::BitUtil::GetPow2((unsigned int)h);
-  }
+  // if (!PD::BitUtil::IsSingleBit(w)) {
+  //   tex_size.x = PD::BitUtil::GetPow2((unsigned int)w);
+  // }
+  // if (!PD::BitUtil::IsSingleBit(h)) {
+  //   tex_size.y = PD::BitUtil::GetPow2((unsigned int)h);
+  // }
   // pSize = PD::ivec2(w, h);
   // res->UV = fvec4(0.f, 1.f, ((float)w / (float)tex_size.x),
   //                 1.0 - ((float)h / (float)tex_size.y));
@@ -74,11 +74,10 @@ void LoadTexRGBA(C3D_Tex* ret, const std::vector<unsigned char>& pixels,
 #endif
 }
 TextureMap::TextureMap() {
-  pImg = PD::Image::New();
-  pImg->pWidth = pSize;
-  pImg->pHeight = pSize;
-  pImg->pFmt = pImg->RGBA;
-  pImg->pBuffer.resize(pImg->pWidth * pImg->pHeight * 4);
+  // pImg.Width() = pSize;
+  // pImg.Height() = pSize;
+  // pImg.pFmt = pImg.RGBA;
+  // pImg..resize(pImg.Width() * pImg.Height() * 4);
 }
 
 TextureMap::~TextureMap() {}
@@ -96,31 +95,31 @@ void TextureMap::AppendFile(const std::string& path) {
   icon.pUv.y = pYoff / pSize;
   icon.pUv.z = (pXoff + 16) / pSize;
   icon.pUv.w = (pYoff + 16) / pSize;
-  PD::Image::Ref img = PD::Image::New();
-  img->Load(path);
-  if (img->pWidth != 16 || img->pHeight != 16) {
+  PD::Image img;
+  img.Load(path);
+  if (img.Width() != 16 || img.Height() != 16) {
     return;
   }
-  img->Convert(img, img->RGBA);
-  for (int x = 0; x < img->pWidth; x++) {
-    for (int y = 0; y < img->pHeight; y++) {
-      int src = (y * img->pWidth + x) * 4;
-      int dst = ((pYoff + y) * pImg->pWidth + (pXoff + x)) * 4;
-      pImg->pBuffer[dst] = img->pBuffer[src];
-      pImg->pBuffer[dst + 1] = img->pBuffer[src + 1];
-      pImg->pBuffer[dst + 2] = img->pBuffer[src + 2];
-      pImg->pBuffer[dst + 3] = img->pBuffer[src + 3];
+  img.Convert(PD::Image::Format::RGBA);
+  for (int x = 0; x < img.Width(); x++) {
+    for (int y = 0; y < img.Height(); y++) {
+      int src = (y * img.Width() + x) * 4;
+      int dst = ((pYoff + y) * pImg.Width() + (pXoff + x)) * 4;
+      pImg.data()[dst] = img.data()[src];
+      pImg.data()[dst + 1] = img.data()[src + 1];
+      pImg.data()[dst + 2] = img.data()[src + 2];
+      pImg.data()[dst + 3] = img.data()[src + 3];
     }
   }
-  pXoff += img->pWidth;
-  if (pXoff + img->pWidth > pImg->pWidth) {
+  pXoff += img.Width();
+  if (pXoff + img.Width() > pImg.Width()) {
     pXoff = 0;
-    pYoff += img->pHeight;
+    pYoff += img.Height();
   }
   pIcons[icon.pHash] = icon;
 }
 
 void TextureMap::Bake() {
-  LoadTexRGBA(&pTex, pImg->pBuffer, pImg->pWidth, pImg->pHeight);
+  LoadTexRGBA(&pTex, pImg.data(), pImg.Width(), pImg.Height());
 }
 }  // namespace CN

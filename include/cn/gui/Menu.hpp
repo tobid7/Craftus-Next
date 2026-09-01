@@ -5,19 +5,18 @@
 namespace CN {
 class Menu {
  public:
-  Menu(PD::Context& ctx) : pGui(ctx, PD::fvec2(320, 240)) {}
+  Menu() : pGui(PD::fvec2(320, 240)) {}
   ~Menu() {}
-  PD_SHARED(Menu)
 
   virtual void Update() {}
   void GoBack() { pGoBack = true; }
-  void GoTo(Ref menu) { pGoTo = menu; }
-  PD::Li::DrawList::Ref GetDrawList() { return pGui.GetDrawList(); }
+  void GoTo(Menu* menu) { pGoTo = menu; }
+  PD::Li::Drawlist& GetDrawList() { return pGui.GetDrawList(); }
   bool ShouldGoBack() const { return pGoBack; }
-  Ref ShouldGoTo() { return pGoTo; }
+  Menu* ShouldGoTo() { return pGoTo; }
 
   Gui pGui;
   bool pGoBack = false;
-  Ref pGoTo = nullptr;
+  Menu* pGoTo = nullptr;
 };
 }  // namespace CN

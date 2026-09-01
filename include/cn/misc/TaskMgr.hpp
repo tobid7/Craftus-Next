@@ -3,6 +3,7 @@
 #ifdef __3DS__
 #include <3ds.h>
 #endif
+#include <functional>
 #include <palladium>
 
 namespace CN {

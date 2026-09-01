@@ -52,6 +52,6 @@ class TextureMap {
   MapIcon pInvalid;
   std::unordered_map<PD::u32, MapIcon> pIcons;
   // Image buffer for copiyng files into
-  PD::Image::Ref pImg;
+  PD::Image pImg;
 };
 }  // namespace CN

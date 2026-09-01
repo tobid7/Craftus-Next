@@ -1,4 +1,5 @@
 #include <cn/misc/TaskMgr.hpp>
+#include <functional>
 
 namespace CN {
 TaskMgr::TaskMgrData TaskMgr::pData;

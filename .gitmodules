@@ -4,3 +4,6 @@
 [submodule "dependencies/miniz"]
 	path = dependencies/miniz
 	url = https://github.com/richgel999/miniz.git
+[submodule "dependencies/json"]
+	path = dependencies/json
+	url = https://github.com/nlohmann/json.git

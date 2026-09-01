@@ -19,7 +19,7 @@ class Renderer {
   Renderer() = default;
   ~Renderer() = default;
 
-  static void Init(PD::Context::Ref ctx);
+  static void Init();
   static void Deinit();
   static void UseShader();
   static void StartFrame();
@@ -31,14 +31,14 @@ class Renderer {
   /** 2D funcs */
   static void Start2D();
   static void Render2D(PD::ivec2 size);
-  static void DrawTexElement(PD::Li::Texture::Ref tex, PD::fvec2 pos,
-                             PD::fvec2 size, PD::fvec4 cut);
+  static void DrawTexElement(PD::Li::Texture tex, PD::fvec2 pos, PD::fvec2 size,
+                             PD::fvec4 cut);
   static void DrawIcon(uint8_t b, uint8_t m, PD::fvec2 pos);
-  static void OptimizeUiList(PD::Li::DrawList::Ref list);
+  static void OptimizeUiList(PD::Li::Drawlist& list);
 
   static PD::Mat4 pIconMtx;
-  static PD::Li::DrawList::Ref pDL;
-  static PD::Li::Texture::Ref pTmpTex;
+  static PD::Li::Drawlist pDL;
+  static PD::Li::Texture pTmpTex;
   static C3D_RenderTarget* pTop[2];
   static C3D_RenderTarget* pBot;
   static C3D_AttrInfo pAttrWorld;
@@ -46,6 +46,5 @@ class Renderer {
   static shaderProgram_s pWorldShader;
   static int uLocProj;
   static CN::DebugUI* pDebug;
-  static PD::Context::Ref pCtx;
 };
 }  // namespace CN

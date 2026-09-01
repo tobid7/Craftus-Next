@@ -83,16 +83,16 @@ constexpr u32 DISPLAY_TRANSFER_FLAGS =
     GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO);
 
 struct SceneChange {
-  CN::Menu::Ref Menu = nullptr;
-  CN::Menu::Ref From = nullptr;
+  CN::Menu* Menu = nullptr;
+  CN::Menu* From = nullptr;
 };
 
 SceneChange pSceneMgr;
 
 namespace CN {
 PD::Mat4 Renderer::pIconMtx;
-PD::Li::DrawList::Ref Renderer::pDL;
-PD::Li::Texture::Ref Renderer::pTmpTex;
+PD::Li::Drawlist Renderer::pDL;
+PD::Li::Texture Renderer::pTmpTex;
 C3D_RenderTarget* Renderer::pTop[2];
 C3D_RenderTarget* Renderer::pBot;
 C3D_AttrInfo Renderer::pAttrWorld;
@@ -100,10 +100,8 @@ DVLB_s* Renderer::pWorldDVLB;
 shaderProgram_s Renderer::pWorldShader;
 int Renderer::uLocProj = 0;
 CN::DebugUI* Renderer::pDebug = nullptr;
-PD::Context::Ref Renderer::pCtx;
 
-void Renderer::Init(PD::Context::Ref ctx) {
-  pCtx = ctx;
+void Renderer::Init() {
   C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
   pTop[0] = C3D_RenderTargetCreate(240, 400, GPU_RB_RGBA8, GPU_RB_DEPTH16);
   pTop[1] = C3D_RenderTargetCreate(240, 400, GPU_RB_RGBA8, GPU_RB_DEPTH16);
@@ -126,17 +124,15 @@ void Renderer::Init(PD::Context::Ref ctx) {
   pIconMtx = PD::Mat4::Identity();
   pIconMtx *= PD::Mat4::RotateX(M_PI / 6.f);
   pIconMtx *= PD::Mat4::RotateY(M_PI / 4.f);
-  pTmpTex = PD::Li::Texture::New();
 
   Lgy_InitPalladium();
-  pDL = PD::Li::DrawList::New(*pCtx);
   RcLoadAsync(nullptr);
-  pSceneMgr.Menu = CN::TitleMenu::New(*pCtx);
+  pSceneMgr.Menu = new CN::TitleMenu();
 }
 
 void Renderer::Deinit() {
-  pSceneMgr.Menu.reset();
-  pSceneMgr.From.reset();
+  // pSceneMgr.Menu.reset();
+  // pSceneMgr.From.reset();
   shaderProgramFree(&pWorldShader);
   DVLB_Free(pWorldDVLB);
   C3D_Fini();
@@ -154,17 +150,18 @@ void Renderer::UseShader() {
 }
 
 void Renderer::Render2D(PD::ivec2 size) {
-  pCtx->Gfx()->SetViewPort(size);
-  pCtx->Gfx()->RenderDrawData(pDL->Data());
+  PD::Gfx::SetViewPort(size);
+  PD::Gfx::Draw(pDL.Data());
 }
 
 void Renderer::StartFrame() {
   C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-  pCtx->Gfx()->NewFrame();
+  PD::Gfx::Reset();
+  PD::Li::ResetPools();
 }
 
-void Renderer::OptimizeUiList(PD::Li::DrawList::Ref list) {
-  list->pPool.Sort();
+void Renderer::OptimizeUiList(PD::Li::Drawlist& list) {
+  // list->pPool.Sort();
 }
 
 void Renderer::EndFrame() { C3D_FrameEnd(0); }
@@ -174,8 +171,8 @@ void Renderer::Render(World* world, GameState* s) {
   StartFrame();
   UseShader();
   PolyGen_Harvest();
-  pDebug->Line(
-      std::format("UI Vtx/Idx: {}/{}", pDL->pNumVertices, pDL->pNumIndices));
+  /*pDebug->Line(
+      std::format("UI Vtx/Idx: {}/{}", pDL.pNumVertices, pDL.pNumIndices));*/
   for (int i = 0; i < 2; i++) {
     Clear(pTop[0], 0x90d9ffff);
     DrawOn(pTop[i]);
@@ -184,7 +181,7 @@ void Renderer::Render(World* world, GameState* s) {
     if (*s == GameState_Playing || *s == GameState_Pause) {
       C3D_TexBind(0, (C3D_Tex*)Block_GetTextureMap());
       WorldRenderer_Render(!i ? -iod : iod);
-      DrawTexElement(CN::ResourceMgr::GetTex(CN::RC::GuiIcons),
+      DrawTexElement(*CN::ResourceMgr::GetTex(CN::RC::GuiIcons),
                      PD::fvec2(200 - 12, 120 - 12), 24, GuiIcon_Crosshair);
       if (showDebugInfo && pDebug) {
         pDebug->DrawInto(pDL);
@@ -199,38 +196,38 @@ void Renderer::Render(World* world, GameState* s) {
   Clear(pBot, 0x00000000);
   DrawOn(pBot);
   Start2D();
-  pDL->Layer(0);
+  // pDL.Layer(0);
   // Bar     : 182x22
   // Optimal : 314x38
   // Using normal %2 maths didnt work or i am stupid idk
   // bool color = false;
   // for (int i = 0; i < 8; i++) {
   //   for (int j = 0; j < 5; j++) {
-  //     pDL->Layer = 1;
-  //     pDL->DrawRectFilled(PD::fvec2(24 + i * 34, 15 + j * 34),
+  //     pDL.Layer = 1;
+  //     pDL.DrawRectFilled(PD::fvec2(24 + i * 34, 15 + j * 34),
   //                         PD::fvec2(34, 34), color ? 0xff333333 :
   //                         0xff222222);
-  //     pDL->Layer = 2;
+  //     pDL.Layer = 2;
   //     DrawIcon((Block)j * 8 + i + 1, 0, PD::fvec2(24 + i * 34, 15 + j * 34));
   //     color = !color;
   //   }
   //   // color = !color;
   // }
-  // pDL->Layer = 1;
+  // pDL.Layer = 1;
   // DrawTexElement(CN::ResourceMgr::GetTex(CN::RC::GuiWidgets), PD::fvec2(3,
   // 201),
   //                PD::fvec2(314, 38), PD::fvec4(0, 0, 182, 22));
-  // pDL->Layer = 3;
+  // pDL.Layer = 3;
   // DrawTexElement(CN::ResourceMgr::GetTex(CN::RC::GuiWidgets), PD::fvec2(2,
   // 200),
   //                PD::fvec2(40, 40), PD::fvec4(0, 22, 24, 24));
-  // pDL->Layer = 2;
+  // pDL.Layer = 2;
   // DrawIcon(Block_Grass, 0, PD::fvec2(4, 202));
-  // pDL->Layer = 4;
-  // pDL->DrawTextEx(PD::fvec2(34, 220), "64", 0xffffffff,
+  // pDL.Layer = 4;
+  // pDL.DrawTextEx(PD::fvec2(34, 220), "64", 0xffffffff,
   //                 LiTextFlags_AlignRight | LiTextFlags_Shaddow);
   pSceneMgr.Menu->Update();
-  pDL->Merge(pSceneMgr.Menu->GetDrawList());
+  pDL.Merge(pSceneMgr.Menu->GetDrawList());
   if (pSceneMgr.Menu->ShouldGoBack()) {
     pSceneMgr.Menu->pGoBack = false;
     if (pSceneMgr.From) {
@@ -264,27 +261,26 @@ void Renderer::Clear(C3D_RenderTarget* t, u32 clr) {
   C3D_RenderTargetClear(t, C3D_CLEAR_ALL, clr, 0);
 }
 
-void Renderer::DrawTexElement(PD::Li::Texture::Ref tex, PD::fvec2 pos,
+void Renderer::DrawTexElement(PD::Li::Texture tex, PD::fvec2 pos,
                               PD::fvec2 size, PD::fvec4 cut) {
-  auto ttex = PD::Li::Texture::New();
-  ttex->CopyFrom(tex);
-  ttex->UV = PD::fvec4(static_cast<float>(cut.x) / ttex->Size.x,
-                       1.f - static_cast<float>(cut.y) / ttex->Size.y,
-                       static_cast<float>(cut.x + cut.z) / ttex->Size.x,
-                       1.f - static_cast<float>(cut.y + cut.w) / ttex->Size.y);
-  ttex->Size.x = cut.z;
-  ttex->Size.y = cut.w;
-  pDL->DrawTexture(ttex);
-  pDL->DrawRectFilled(pos, size, 0xffffffff);
-  pDL->DrawSolid();
+  PD::Li::Texture ttex = tex;
+  ttex.SetUV(
+      PD::fvec4(static_cast<float>(cut.x) / ttex.GetSize().x,
+                1.f - static_cast<float>(cut.y) / ttex.GetSize().y,
+                static_cast<float>(cut.x + cut.z) / ttex.GetSize().x,
+                1.f - static_cast<float>(cut.y + cut.w) / ttex.GetSize().y));
+  ttex.SetSize(cut.z, cut.w);
+  pDL.BindTexture(ttex);
+  pDL.DrawRectFilled(pos, size, 0xffffffff);
+  pDL.UnbindTexture();
 }
 
 void Renderer::Start2D() {
-  pDL->Clear();
-  pDL->SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
+  pDL.Clear();
+  pDL.SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
 }
 
-PD::Li::Texture::Ref blocktex = nullptr;
+PD::Li::Texture blocktex;
 void Renderer::DrawIcon(uint8_t b, uint8_t m, PD::fvec2 pos) {
   // Lets draw a Block icon in Palladium
   // Texture(TexAddress addr, ivec2 size, Li::Rect uv = fvec4(0.f,
@@ -296,9 +292,10 @@ void Renderer::DrawIcon(uint8_t b, uint8_t m, PD::fvec2 pos) {
    * per frame for drawing 40 icons on screen (if combined with
    * OptimizeUiList).
    */
-  if (!blocktex) {
-    auto tex = (PD::Li::TexAddress)Block_GetTextureMap();
-    blocktex = PD::Li::Texture::New(tex, TEXTURE_MAPSIZE, PD::fvec4(0));
+  if (!blocktex.GetID()) {
+    blocktex.SetID((PD::TextureID)Block_GetTextureMap());
+    blocktex.SetSize(TEXTURE_MAPSIZE);
+    blocktex.SetUV(PD::fvec4(0, 1, 1, 0));
   }
   for (int i = 0; i < 6; i++) {
     if (i != Direction_Top && i != Direction_South && i != Direction_West)
@@ -308,8 +305,8 @@ void Renderer::DrawIcon(uint8_t b, uint8_t m, PD::fvec2 pos) {
     Block_GetTexture(b, (Direction)i, m, iconUV);
     Block_GetColor(b, m, (Direction)i, color);
 
-    auto cmd = pDL->GetNewCmd();
-    cmd->Tex = blocktex->Address;
+    auto& cmd = pDL.NewCommand();
+    cmd.Tex = blocktex.GetID();
     for (int j = 0; j < 5; j++) {
       int k = i * 6 + j;
       PD::fvec3 p = PD::fvec3(vtx[k].xyz - 0.5f);
@@ -341,12 +338,12 @@ void Renderer::DrawIcon(uint8_t b, uint8_t m, PD::fvec2 pos) {
                   (float)(iconUV[1] + numTiles) / (float)UV_PRECISION,
                   (float)(iconUV[0] + numTiles) / (float)UV_PRECISION,
                   (float)iconUV[1] / (float)UV_PRECISION);
-    cmd->AddIdx(0).AddIdx(1).AddIdx(2);
-    cmd->AddIdx(0).AddIdx(2).AddIdx(3);
-    cmd->AddVtx(PD::Li::Vertex(br, uvs.BotRight(), clr32));
-    cmd->AddVtx(PD::Li::Vertex(tr, uvs.TopRight(), clr32));
-    cmd->AddVtx(PD::Li::Vertex(tl, uvs.TopLeft(), clr32));
-    cmd->AddVtx(PD::Li::Vertex(bl, uvs.BotLeft(), clr32));
+    cmd.Add(0).Add(1).Add(2);
+    cmd.Add(0).Add(2).Add(3);
+    cmd.Add(PD::Li::Vertex(br, uvs.BotRight(), clr32));
+    cmd.Add(PD::Li::Vertex(tr, uvs.TopRight(), clr32));
+    cmd.Add(PD::Li::Vertex(tl, uvs.TopLeft(), clr32));
+    cmd.Add(PD::Li::Vertex(bl, uvs.BotLeft(), clr32));
   }
 }
 }  // namespace CN

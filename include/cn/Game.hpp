@@ -53,7 +53,7 @@ class CoreEngine {
 
   /** Core Components */
   bool pKill = false;
-  PD::Timer::Ref pDeltaClock;
+  PD::Timer pDeltaClock;
   float pDelta = 0.f;
   float pAccum = 0.f;
   GameState pGamestate = GameState_Title;
@@ -67,6 +67,5 @@ class CoreEngine {
   SmeaGen pSmea;
   FlatBedrockGen pBedrockFlat;
   DefaultGen pDefault;
-  PD::Context pCtx;
 };
 }  // namespace CN

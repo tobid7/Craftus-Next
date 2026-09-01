@@ -44,7 +44,7 @@ class ResourceMgr {
  public:
   struct Resource {
     PD::u32 ID = 0;  // Just to be sure
-    std::shared_ptr<void> Ptr = nullptr;
+    void* Ptr = nullptr;
     void* RawPtr = 0;
   };
   ResourceMgr() = default;
@@ -60,7 +60,7 @@ class ResourceMgr {
   static PD::u32 Load(const std::string& path, RCID::Type type = RCID::Invalid);
   static void LoadAsync(const std::string& path,
                         RCID::Type type = RCID::Invalid);
-  static void SetContext(PD::Context& ctx) { pCtx = &ctx; }
+  // static void SetContext(PD::Context& ctx) { pCtx = &ctx; }
 
   static Resource* Get(const PD::u32& id) {
     if (pResources.count(id)) {
@@ -69,26 +69,26 @@ class ResourceMgr {
     return nullptr;
   }
 
-  static PD::Li::Font::Ref GetFontTTF(PD::u32 id) {
+  static PD::Li::Font* GetFontTTF(PD::u32 id) {
     /** Modern c++ is best thing ever created */
     auto rc = Get(id);
     if (rc && RCID(rc->ID).pType == RCID::FontTTF) {
-      return std::static_pointer_cast<PD::Li::Font>(rc->Ptr);
+      return reinterpret_cast<PD::Li::Font*>(rc->Ptr);
     }
     return nullptr;
   }
 
-  static PD::Li::Texture::Ref GetTex(PD::u32 id) {
+  static PD::Li::Texture* GetTex(PD::u32 id) {
     /** Modern c++ is best thing ever created */
     auto rc = Get(id);
     if (rc && RCID(rc->ID).pType == RCID::Texture) {
-      return std::static_pointer_cast<PD::Li::Texture>(rc->Ptr);
+      return reinterpret_cast<PD::Li::Texture*>(rc->Ptr);
     }
     return nullptr;
   }
 
   static std::unordered_map<PD::u32, Resource> pResources;
-  static PD::Context* pCtx;
+  // static PD::Context* pCtx;
   // static std::vector<RcTask> pTasks;
 };
 }  // namespace CN

@@ -5,9 +5,8 @@
 namespace CN {
 class TitleMenu : public Menu {
  public:
-  TitleMenu(PD::Context& ctx) : Menu(ctx) {}
+  TitleMenu() : Menu() {}
   ~TitleMenu() {}
-  PD_SHARED(TitleMenu);
 
   void Update() override;
 };

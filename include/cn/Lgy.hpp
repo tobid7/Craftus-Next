@@ -129,6 +129,7 @@ bool Lgy_CameraIsAABBVisible(LgyCam cam, C3D_FVec orgin, C3D_FVec size);
 float Lgy_CameraGetNear(LgyCam cam);
 float Lgy_CameraGetFar(LgyCam cam);
 C3D_Mtx* Lgy_CameraGetVp(LgyCam cam);
+void Lgy_DebugRamLine();
 #ifdef __cplusplus
 }
 #endif

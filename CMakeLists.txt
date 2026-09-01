@@ -39,8 +39,8 @@ add_subdirectory(dependencies/miniz)
 add_subdirectory(dependencies/mpack)
 add_subdirectory(dependencies/sino)
 add_subdirectory(dependencies/vec)
+add_subdirectory(dependencies/json)
 add_subdirectory(dependencies/palladium)
-add_subdirectory(dependencies/palladium/backends/3ds)
 set_directory_properties(PROPERTIES COMPILE_OPTIONS "")
 
 pd_git_get_hash(CN_COMMIT)
@@ -157,8 +157,9 @@ target_link_libraries(Craftus-Next PRIVATE
     mpack
     sino
     vec
-    pd-3ds
+    pd-system
     palladium
+    nlohmann_json
     # playback
     world_asm # World Shader
     citro3d

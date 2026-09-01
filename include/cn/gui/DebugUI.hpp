@@ -10,7 +10,7 @@ class DebugUI {
 
   void Line(const std::string& l);
   void Log(const std::string& l);
-  void DrawInto(PD::Li::DrawList::Ref list);
+  void DrawInto(PD::Li::Drawlist& list);
 
   std::array<std::string, 15> pInfoLines;
   std::array<std::string, 20> pLogLines;

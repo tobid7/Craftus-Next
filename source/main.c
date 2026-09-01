@@ -175,6 +175,7 @@ int main() {
                      linearSpaceFree() / 1024 / 1024);
     Lgy_DebugUI_Text("Buf: %5.2f%% Lin: %.2fmb", C3D_GetCmdBufUsage() * 100.f,
                      (float)linearSpaceFree() / 1024.f / 1024.f);
+    Lgy_DebugRamLine();
     if (gamestate == GameState_Playing || gamestate == GameState_Pause) {
       // Cluster Info and View Distance
       Lgy_DebugUI_Text("C %d/%d D %d", clusters_drawn,

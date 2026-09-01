@@ -1,4 +1,5 @@
 #include <cn/misc/Fs.hpp>
+#include <filesystem>
 
 namespace CN {
 void InitFS() {

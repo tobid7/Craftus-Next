@@ -1,6 +1,7 @@
 #pragma once
 
 #include <palladium>
+#include <string>
 
 constexpr PD::fvec4 GuiWidget_ButtonDead(0, 46, 200, 20);
 constexpr PD::fvec4 GuiWidget_Button(0, 66, 200, 20);
@@ -33,7 +34,7 @@ class Gui {
     PD::fvec4 Pad;
     PD::u32 Dir = 0;
   };
-  Gui(PD::Context& ctx, PD::fvec2 size = 0);
+  Gui(PD::fvec2 size = 0);
   ~Gui() {}
 
   void Start();
@@ -45,18 +46,15 @@ class Gui {
   void SetPos(PD::fvec2 pos) { pPos = pos; }
   void Align(PD::u32 alignment) { pAlignment = alignment; }
   void DirPadding(PD::u32 dir, float pad);
-  PD::Li::DrawList::Ref GetDrawList() { return pGui; }
+  PD::Li::Drawlist& GetDrawList() { return pGui; }
 
-  void pTexElem(PD::Li::Texture::Ref tex, PD::fvec2 p, PD::fvec2 s,
-                PD::fvec4 c);
+  void pTexElem(PD::Li::Texture tex, PD::fvec2 p, PD::fvec2 s, PD::fvec4 c);
 
   void pAlignPos(PD::u32 a, PD::fvec2& pos, PD::fvec2 size);
   void pNorm(PD::fvec2& v) { v /= pSize; }
   PD::fvec2 p2Screen(const PD::fvec2& v) { return v * pSize; }
 
-  PD::Li::DrawList::Ref pGui = nullptr;
-
-  PD::Context& ctx;
+  PD::Li::Drawlist pGui;
 
   PD::fvec2 pSize;
   PD::fvec2 pPos;
@@ -64,7 +62,7 @@ class Gui {
   ObjPadding pObjPad;
   PD::u32 pAlignment = Align_Left | Align_Top;
 
-  PD::Li::Texture::Ref pTexWidgets = nullptr;
-  PD::Li::Texture::Ref pTexIcons = nullptr;
+  PD::Li::Texture pTexWidgets;
+  PD::Li::Texture pTexIcons;
 };
 }  // namespace CN

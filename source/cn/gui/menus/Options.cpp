@@ -1,9 +1,14 @@
 #include <cn/Lgy.hpp>
 #include <cn/gui/menus/Options.hpp>
+#include <cn/gfx/Camera.hpp>
+
+#include <citro3d.h>
 
 extern "C" {
 #include <GameStates.h>
 }
+
+extern LgyCam camera;
 
 namespace CN {
 void OptionsMenu::Update() {
@@ -24,7 +29,10 @@ void OptionsMenu::Update() {
     pGui.Button("Licenses", true);
   } else if (state == 1) {
     static float v;
-    pGui.GuiSlider("Fov ", cn_options.Fov);
+    auto cam = (CN::Camera*)camera;
+    float fov = C3D_Angle(cam->pFov);
+    pGui.GuiSlider("Fov ", fov);
+    cam->pFov = C3D_AngleFromDegrees(fov);
     pGui.GuiSlider("MipMaps 2", v);
     if (pGui.Button("Clouds " +
                     std::string(cn_options.Clouds ? "true" : "false"))) {

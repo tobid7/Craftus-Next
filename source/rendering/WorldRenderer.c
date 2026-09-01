@@ -22,7 +22,7 @@ static World* world;
 
 static WorkQueue* workqueue;
 
-static LgyCam camera;
+LgyCam camera;
 
 static int projectionUniform;
 

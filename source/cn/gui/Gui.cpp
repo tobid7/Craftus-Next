@@ -18,13 +18,12 @@
  */
 
 namespace CN {
-Gui::Gui(PD::Context& ctx, PD::fvec2 size) : ctx(ctx), pSize(size) {
+Gui::Gui(PD::fvec2 size) : pSize(size) {
   pPad = PD::fvec2(5.f / size.x, 5.f / size.y);
-  pTexIcons = CN::ResourceMgr::GetTex(CN::RC::GuiIcons);
-  pTexWidgets = CN::ResourceMgr::GetTex(CN::RC::GuiWidgets);
-  pGui = PD::Li::DrawList::New(ctx);
-  pGui->SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
-  pGui->SetFontScale(0.6);
+  pTexIcons = *CN::ResourceMgr::GetTex(CN::RC::GuiIcons);
+  pTexWidgets = *CN::ResourceMgr::GetTex(CN::RC::GuiWidgets);
+  pGui.SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
+  pGui.SetFontscale(0.6);
 }
 
 void Gui::Start() {
@@ -34,26 +33,26 @@ void Gui::Start() {
 }
 
 void Gui::DrawBg() {
-  pGui->Layer(0);
-  pGui->DrawTexture(CN::ResourceMgr::GetTex(CN::RC::GuiBG));
+  // pGui.Layer(0);
+  pGui.BindTexture(*CN::ResourceMgr::GetTex(CN::RC::GuiBG));
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 8; j++) {
-      pGui->DrawRectFilled(PD::fvec2(i * 32, j * 32), 32, 0xffffffff);
+      pGui.DrawRectFilled(PD::fvec2(i * 32, j * 32), 32, 0xffffffff);
     }
   }
 }
 
 bool Gui::Button(const std::string& str, bool disabled) {
   bool ret = false;
-  pGui->Layer(3);
+  // pGui.Layer(3);
   PD::fvec2 pos = pPos;
   PD::fvec2 size(200 * 1.3, 20 * 1.3);
   pNorm(size);
   pPos.y += size.y + pPad.y;
   pAlignPos(pAlignment, pos, size);
-  if (!disabled &&
-      PD::Li::Renderer::InBox(ctx.Hid()->MousePos(),
-                              PD::fvec4(p2Screen(pos), p2Screen(size)))) {
+  /*if (!disabled &&
+      PD::Li::Math::InBounds(ctx.Hid()->MousePos(),
+                             PD::fvec4(p2Screen(pos), p2Screen(size)))) {
     pTexElem(pTexWidgets, p2Screen(pos), p2Screen(size),
              GuiWidget_ButtonActive);
   } else {
@@ -61,15 +60,15 @@ bool Gui::Button(const std::string& str, bool disabled) {
              disabled ? GuiWidget_ButtonDead : GuiWidget_Button);
   }
   if (ctx.Hid()->IsUp(ctx.Hid()->Key::Touch) &&
-      PD::Li::Renderer::InBox(ctx.Hid()->MousePosLast(),
-                              PD::fvec4(p2Screen(pos), p2Screen(size)))) {
+      PD::Li::Math::InBounds(ctx.Hid()->MousePosLast(),
+                             PD::fvec4(p2Screen(pos), p2Screen(size)))) {
     ret = true;
-  }
-  pGui->Layer(4);
-  pGui->SetFontScale(0.6 * 1.3);
-  pGui->DrawTextEx(p2Screen(pos) + PD::fvec2(0, -1), str, 0xffffffff,
-                   LiTextFlags_AlignMid | LiTextFlags_Shaddow, p2Screen(size));
-  pGui->SetFontScale(0.6);
+  }*/
+  // pGui.Layer(4);
+  pGui.SetFontscale(0.6 * 1.3);
+  pGui.DrawTextEx(p2Screen(pos) + PD::fvec2(0, -1), str.c_str(), 0xffffffff,
+                  LiTextFlags_AlignMid | LiTextFlags_Shaddow, p2Screen(size));
+  pGui.SetFontscale(0.6);
   return ret;
 }
 
@@ -78,32 +77,39 @@ bool Gui::Label(const std::string& str, bool selectable) {
   // Draw on Same layer as buttons
   // cause this way we can handle all text in a single drawcall ;)
   PD::fvec2 pos = pPos;
-  PD::fvec2 size = pGui->pCurrentFont->GetTextBounds(str, pGui->pFontScale);
+  PD::fvec2 size;  //= pGui.GetText(str, pGui.pFontScale);
   pNorm(size);
   pAlignPos(pAlignment, pos, size);
   pPos.y += size.y + pPad.y;
-  pGui->Layer(4);
-  pGui->DrawTextEx(p2Screen(pos), str, 0xffffffff, LiTextFlags_Shaddow);
+  // pGui.Layer(4);
+  pGui.DrawTextEx(p2Screen(pos), str.c_str(), 0xffffffff, LiTextFlags_Shaddow);
   return ret;
 }
 
 void Gui::GuiSlider(const std::string& str, float& v) {
-  pGui->Layer(3);
+  // pGui.Layer(3);
   PD::fvec2 pos = pPos;
   PD::fvec2 size(200 * 1.3, 20 * 1.3);
   pNorm(size);
   pPos.y += size.y + pPad.y;
+  /*if (PD::Li::Renderer::InBox(ctx.Hid()->MousePos(),
+                               PD::fvec4(p2Screen(pos), p2Screen(size))) &&
+       ctx.Hid()->IsHeld(PD::Hid::Key::Touch)) {
+     float t = (ctx.Hid()->MousePosLast().x - pos.x) / size.x;
+     v = std::clamp(t, 30.f, 110.f);
+   }*/
   pAlignPos(pAlignment, pos, size);
   pTexElem(pTexWidgets, p2Screen(pos), p2Screen(size), GuiWidget_ButtonDead);
-  pTexElem(pTexWidgets, p2Screen(pos) + PD::fvec2(50, 0),
+  pTexElem(pTexWidgets, p2Screen(pos + PD::fvec2((v / 110.f) * size.x, 0)),
            PD::fvec2(6, 20) * 1.3, GuiWidget_SDL);
-  pTexElem(pTexWidgets, p2Screen(pos) + PD::fvec2(60, 0),
+  pTexElem(pTexWidgets, p2Screen(pos + PD::fvec2((v / 110.f) * size.x + 10, 0)),
            PD::fvec2(6, 20) * 1.3, GuiWidget_SDR);
-  pGui->Layer(4);
-  pGui->SetFontScale(0.6 * 1.3);
-  pGui->DrawTextEx(p2Screen(pos) + PD::fvec2(0, -1), str, 0xffffffff,
-                   LiTextFlags_AlignMid | LiTextFlags_Shaddow, p2Screen(size));
-  pGui->SetFontScale(0.6);
+  // pGui.Layer(4);
+  pGui.SetFontscale(0.6 * 1.3);
+  pGui.DrawTextEx(p2Screen(pos) + PD::fvec2(0, -1),
+                  std::format("{}: {:.2f}", str, v).c_str(), 0xffffffff,
+                  LiTextFlags_AlignMid | LiTextFlags_Shaddow, p2Screen(size));
+  pGui.SetFontscale(0.6);
 }
 
 void Gui::DirPadding(PD::u32 dir, float pad) {
@@ -125,19 +131,16 @@ void Gui::DirPadding(PD::u32 dir, float pad) {
   }
 }
 
-void Gui::pTexElem(PD::Li::Texture::Ref tex, PD::fvec2 p, PD::fvec2 s,
-                   PD::fvec4 c) {
-  auto ttex = PD::Li::Texture::New();
-  ttex->CopyFrom(tex);
-  ttex->UV = PD::fvec4(static_cast<float>(c.x) / ttex->Size.x,
-                       1.f - static_cast<float>(c.y) / ttex->Size.y,
-                       static_cast<float>(c.x + c.z) / ttex->Size.x,
-                       1.f - static_cast<float>(c.y + c.w) / ttex->Size.y);
-  ttex->Size.x = c.z;
-  ttex->Size.y = c.w;
-  pGui->DrawTexture(ttex);
-  pGui->DrawRectFilled(p, s, 0xffffffff);
-  pGui->DrawSolid();
+void Gui::pTexElem(PD::Li::Texture tex, PD::fvec2 p, PD::fvec2 s, PD::fvec4 c) {
+  PD::Li::Texture ttex = tex;
+  ttex.SetUV(PD::fvec4(static_cast<float>(c.x) / ttex.GetSize().x,
+                       1.f - static_cast<float>(c.y) / ttex.GetSize().y,
+                       static_cast<float>(c.x + c.z) / ttex.GetSize().x,
+                       1.f - static_cast<float>(c.y + c.w) / ttex.GetSize().y));
+  ttex.SetSize(c.z, c.w);
+  pGui.BindTexture(ttex);
+  pGui.DrawRectFilled(p, s, 0xffffffff);
+  pGui.UnbindTexture();
 }
 
 void Gui::pAlignPos(PD::u32 a, PD::fvec2& pos, PD::fvec2 size) {

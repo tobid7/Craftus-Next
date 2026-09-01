@@ -6,8 +6,9 @@ extern "C" {
 #include <cn/gfx/Renderer.hpp>
 #include <cn/misc/Crash.hpp>
 #include <cn/misc/Fs.hpp>
+#include <iostream>
 #include <palladium>
-#include <pd-3ds.hpp>
+#include <pdsystem>
 
 namespace CN {
 void catch_the_stuff() {
@@ -60,17 +61,17 @@ CoreEngine::CoreEngine() {
   pInitChunkWorker();
   sino_init();
   pGamestate = GameState_Playing;
-  CN::Renderer::Init(&pCtx);
+  CN::Renderer::Init();
   CN::Renderer::pDebug = new DebugUI();
   PolyGen_Init(pWorld, &pPlayer);
   WorldRenderer_Init(&pPlayer, pWorld, &pChunkWorker.queue,
                      CN::Renderer::uLocProj);
   Block_Init();
   C3D_CullFace(GPU_CULL_BACK_CCW);
-  pCtx.UseGfxDriver<PD::GfxC3D>(nullptr);
-  pCtx.UseHidDriver<PD::Hid3DS>(nullptr);
-  pCtx.Gfx()->Init();
-  pDeltaClock = PD::Timer::New(*pCtx.Os());
+  PD::Gfx::UseDriver<PD::GfxCitro3D>();
+  PD::Hid::UseDriver<PD::HidDriver>();
+  PD::Os::UseDriver<PD::OsDriver>();
+  PD::Gfx::Init();
 }
 
 CoreEngine::~CoreEngine() {
@@ -93,7 +94,7 @@ CoreEngine::~CoreEngine() {
 
 void CoreEngine::Run() {
   LOG("CoreEngine::Run");
-  pDeltaClock->Reset();
+  pDeltaClock.Reset();
   while (aptMainLoop()) {
     if (pKill) {
       break;
@@ -128,8 +129,8 @@ void CoreEngine::pUpdateInput() {
 void CoreEngine::pUpdateGfx() { LOG("Updating Gfx"); }
 
 void CoreEngine::pUpdateTimings() {
-  pDelta = pDeltaClock->GetSeconds() * 1000.f;
-  pDeltaClock->Reset();
+  pDelta = pDeltaClock.GetSeconds() * 1000.f;
+  pDeltaClock.Reset();
   if (pGamestate == GameState_Playing) {
     pAccum += pDelta;
     if (pAccum > 0.05) {  // 1 / 20 -> 20 tiks

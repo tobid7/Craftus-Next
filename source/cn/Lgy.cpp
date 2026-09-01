@@ -13,8 +13,10 @@
 #include <cn/misc/TaskMgr.hpp>
 #include <cstdarg>
 #include <cstdio>
+#include <map>
+#include <nlohmann/json.hpp>
 #include <palladium>
-#include <pd-3ds.hpp>
+#include <pdsystem>
 
 extern "C" {
 #include <entity/Player.h>
@@ -27,14 +29,13 @@ extern WorldVertex cube_sides_lut[];
 
 constexpr int numTiles = UV_PRECISION / TEXTURE_MAPTILES;
 
-static PD::Li::Font::Ref font = nullptr;
-static PD::Li::DrawList::Ref list = nullptr;
-static std::map<u32, PD::Li::Texture::Ref> texlist;
-static PD::UI7::Context::Ref ui7 = nullptr;
+static PD::Li::Font font;
+static PD::Li::Drawlist list;
+static std::map<u32, PD::Li::Texture> texlist;
+// static PD::UI7::Context ui7 = nullptr;
 static float dyn__ = 1.f;
 static C3D_Mtx iconMdl;
 static CN::DebugUI pDebug;
-static PD::Context pd_ctx;
 
 void Lgy_OvertimeDamage(const char* cause, int time, void* plr) {
   CN::OvertimeDamage(cause, time, (Player*)plr);
@@ -155,22 +156,22 @@ void Lgy_GameOptionsSave() {
 }
 
 void Lgy_Splash() {
-  PD::Image::Ref img = PD::Image::New();
-  img->Load("romfs:/splash.png");
-  img->FlipVertical();
-  PD::Image::Convert(img, img->RGB);
-  u16 w, h;
-  u8* fb = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, &w, &h);
-  for (int i = 0; i < 240; i++) {
-    for (int j = 0; j < 400; j++) {
-      int src = (i * 400 + j) * 3;
-      int dst = (j * 240 + i) * 3;
-      fb[dst + 0] = img->pBuffer[src + 2];
-      fb[dst + 1] = img->pBuffer[src + 1];
-      fb[dst + 2] = img->pBuffer[src + 0];
-    }
-  }
-  gfxSwapBuffers();
+  // PD::Image img;
+  // img.Load("romfs:/splash.png");
+  // img.FlipVertical();
+  // PD::Image::Convert(img, img->RGB);
+  // u16 w, h;
+  // u8* fb = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, &w, &h);
+  // for (int i = 0; i < 240; i++) {
+  //   for (int j = 0; j < 400; j++) {
+  //     int src = (i * 400 + j) * 3;
+  //     int dst = (j * 240 + i) * 3;
+  //     fb[dst + 0] = img->pBuffer[src + 2];
+  //     fb[dst + 1] = img->pBuffer[src + 1];
+  //     fb[dst + 2] = img->pBuffer[src + 0];
+  //   }
+  // }
+  // gfxSwapBuffers();
 }
 
 char* Lgy_File2Str(const char* path, size_t* lines) {
@@ -200,28 +201,28 @@ void Lgy_DebugFree(void* ptr, const char* f, int l) {
 }
 
 void Lgy_Render2D() {
-  // list->Clear();
-  // list->DrawRectFilled(0, PD::fvec2(320, 240), 0xffffffff);
-  // list->SetFont(font);
-  // list->DrawTextEx(5, "Hello World!\nCraftus v0.7.1-dev\nA Minecraft Clone",
+  // list.Clear();
+  // list.DrawRectFilled(0, PD::fvec2(320, 240), 0xffffffff);
+  // list.SetFont(font);
+  // list.DrawTextEx(5, "Hello World!\nCraftus v0.7.1-dev\nA Minecraft Clone",
   //                  0xffff00ff, LiTextFlags_Shaddow);
-  // pd_ctx.Gfx()->SetViewPort(PD::ivec2(320, 240));
-  // pd_ctx.Gfx()->NewFrame();
-  // pd_ctx.Gfx()->RenderDrawData(list->pDrawList);
+  // PD::Gfx::SetViewPort(PD::ivec2(320, 240));
+  // PD::Gfx::NewFrame();
+  // PD::Gfx::RenderDrawData(list.pDrawList);
 }
 
 void Lgy_InitPalladium() {
-  pd_ctx.UseGfxDriver<PD::GfxC3D>(nullptr);
-  pd_ctx.UseHidDriver<PD::Hid3DS>(nullptr);
-  pd_ctx.Gfx()->Init();
+  PD::Gfx::UseDriver<PD::GfxCitro3D>();
+  PD::Hid::UseDriver<PD::HidDriver>();
+  PD::Os::UseDriver<PD::OsDriver>();
+  PD::Gfx::Init();
   // font = PD::Li::Font::New();
-  CN::ResourceMgr::SetContext(pd_ctx);
+  // CN::ResourceMgr::SetContext(pd_ctx);
   CN::ResourceMgr::Load("romfs:/fonts/Miracode.ttf", CN::RCID::FontTTF);
-  list = PD::Li::DrawList::New(pd_ctx);
-  ui7 = PD::UI7::Context::New(pd_ctx);
+  /*ui7 = PD::UI7::Context::New(pd_ctx);
   ui7->AddViewPort("bot", PD::ivec4(0, 0, 320, 240));
   ui7->UseViewPort("bot");
-  ui7->pIO->Font = CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont);
+  ui7->pIO->Font = CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont);*/
   // font->LoadTTF("romfs:/fonts/Miracode.ttf", 64);
   // Lgy Icons
   Mtx_Identity(&iconMdl);
@@ -231,11 +232,11 @@ void Lgy_InitPalladium() {
 
 u32 Lgy_LoadTexture(const char* path) {
   u32 id = PD::Strings::FastHash(path);
-  PD::Image::Ref img = PD::Image::New();
-  img->Load(path);
-  auto tex =
-      pd_ctx.Gfx()->LoadTex(img->pBuffer, img->pWidth, img->pHeight,
-                            PD::Li::Texture::RGBA32, PD::Li::Texture::NEAREST);
+  PD::Image img;
+  img.Load(path);
+  auto tex = PD::Gfx::LoadTexture(img.data(), img.Width(), img.Height(),
+                                  PD::TextureFormat::RGBA32,
+                                  PD::TextureFilter::Nearest);
   texlist[id] = tex;
   return id;
 }
@@ -247,8 +248,8 @@ void Lgy_GetTextureBounds(u32 texid, int* x, int* y) {
     *y = 0;
     return;
   }
-  *x = t->second->Size.x;
-  *y = t->second->Size.y;
+  *x = t->second.GetSize().x;
+  *y = t->second.GetSize().y;
 }
 
 void Lgy_DrawTexElement(u32 texid, int x, int y, int w, int h, int cx, int cy,
@@ -256,18 +257,18 @@ void Lgy_DrawTexElement(u32 texid, int x, int y, int w, int h, int cx, int cy,
   if (!texlist.count(texid)) {
     return;
   }
-  auto subtex = PD::Li::Texture::New();
-  subtex->CopyFrom(texlist[texid]);
-  subtex->UV = PD::fvec4(static_cast<float>(cx) / subtex->Size.x,
-                         1.f - static_cast<float>(cy) / subtex->Size.y,
-                         static_cast<float>(cx + cw) / subtex->Size.x,
-                         1.f - static_cast<float>(cy + ch) / subtex->Size.y);
-  subtex->Size.x = cw;
-  subtex->Size.y = ch;
-  list->DrawTexture(subtex);
-  list->DrawRectFilled(PD::fvec2(x, y), PD::fvec2(w * dyn__, h * dyn__),
-                       0xffffffff);
-  list->DrawSolid();
+  PD::Li::Texture subtex;
+  // subtex.CopyFrom(texlist[texid]);
+  subtex.SetUV(
+      PD::fvec4(static_cast<float>(cx) / subtex.GetSize().x,
+                1.f - static_cast<float>(cy) / subtex.GetSize().y,
+                static_cast<float>(cx + cw) / subtex.GetSize().x,
+                1.f - static_cast<float>(cy + ch) / subtex.GetSize().y));
+  subtex.SetSize(cw, ch);
+  list.BindTexture(subtex);
+  list.DrawRectFilled(PD::fvec2(x, y), PD::fvec2(w * dyn__, h * dyn__),
+                      0xffffffff);
+  list.UnbindTexture();
 }
 
 void Lgy_DrawText(int x, int y, bool shaddow, const char* text, ...) {
@@ -278,21 +279,24 @@ void Lgy_DrawText(int x, int y, bool shaddow, const char* text, ...) {
   vsnprintf(buffer, sizeof(buffer), text, args);
 
   va_end(args);
-  list->SetFontScale(0.7f * dyn__);
-  list->DrawTextEx(PD::fvec2(x, y), buffer, 0xffffffff, shaddow ? 4 : 0);
+  list.SetFontscale(0.7f * dyn__);
+  list.DrawTextEx(PD::fvec2(x, y), buffer, 0xffffffff, shaddow ? 4 : 0);
 }
 
 void Lgy_StartFrame(int w, int h) {
-  list->Clear();
-  list->SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
+  list.Clear();
+  list.SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
 }
 
 void Lgy_Render(int w, int h) {
-  pd_ctx.Gfx()->SetViewPort(PD::ivec2(w, h));
-  pd_ctx.Gfx()->RenderDrawData(list->Data());
+  PD::Gfx::SetViewPort(w, h);
+  PD::Gfx::Draw(list.Data());
 }
 
-void Lgy_Finish2D() { pd_ctx.Gfx()->NewFrame(); }
+void Lgy_Finish2D() {
+  PD::Gfx::Reset();
+  PD::Li::ResetPools();
+}
 
 void Lgy_DynScale(float scale) {
   dyn__ = scale;
@@ -301,11 +305,11 @@ void Lgy_DynScale(float scale) {
   }
 }
 
-u32 ui_Cfg =
-    UI7MenuFlags_NoCollapse | UI7MenuFlags_NoMove | UI7MenuFlags_NoResize;
+/*u32 ui_Cfg =
+    UI7MenuFlags_NoCollapse | UI7MenuFlags_NoMove | UI7MenuFlags_NoResize;*/
 
 void Lgy_HandleUI(void* gs_ptr) {
-  GameState* gs = (GameState*)gs_ptr;
+  /*GameState* gs = (GameState*)gs_ptr;
   if (*gs == GameState_Title) {
     if (ui7->BeginMenu("Title", ui_Cfg)) {
       auto m = ui7->pCurrent;
@@ -350,35 +354,33 @@ void Lgy_HandleUI(void* gs_ptr) {
        * probably not the way how to do things correct
        * but i dont care for this c based engine...
        */
-      m->Label(std::format(
-          "Vbo: {:.2f} Allocations: {}",
-          (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Vbo, true, &allocs) /
-              1024.f / 1024.f,
-          allocs));
-      m->Label(std::format(
-          "Tex: {:.2f} Allocations: {}",
-          (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Tex, true, &allocs) /
-              1024.f,
-          allocs));
-      m->Label(std::format(
-          "Snd: {:.2f} Allocations: {}",
-          (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Snd, true, &allocs) /
-              1024.f,
-          allocs));
-      m->Label(std::format(
-          "Unk: {:.2f} Allocations: {}",
-          (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Unk, true, &allocs) /
-              1024.f,
-          allocs));
-      m->Checkbox("Debug (F3)", showDebugInfo);
-      ui7->EndMenu();
-    }
-  }
-  ui7->Update();
-  list->Merge(ui7->GetDrawData());
+  //   m->Label(std::format(
+  //      "Vbo: {:.2f} Allocations: {}",
+  //       (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Vbo, true, &allocs) /
+  //       1024.f /
+  //           1024.f,
+  //       allocs));
+  //   m->Label(std::format(
+  //       "Tex: {:.2f} Allocations: {}",
+  //       (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Tex, true, &allocs) /
+  //       1024.f, allocs));
+  //   m->Label(std::format(
+  //       "Snd: {:.2f} Allocations: {}",
+  //       (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Snd, true, &allocs) /
+  //       1024.f, allocs));
+  //   m->Label(std::format(
+  //       "Unk: {:.2f} Allocations: {}",
+  //       (float)CN::MemMgr::CountOf(CN::MemMgr::Type_Unk, true, &allocs) /
+  //       1024.f, allocs));
+  //   m->Checkbox("Debug (F3)", showDebugInfo);
+  //   ui7->EndMenu();
+  // }
+  // }
+  // ui7->Update();
+  // list.Merge(ui7->GetDrawData());
 }
 
-void Lgy_UpdateInput() { pd_ctx.Hid()->Update(); }
+void Lgy_UpdateInput() { PD::Hid::Update(); }
 
 void* Lgy_LinearAlloc(size_t size, MemType type) {
   return CN::MemMgr::NewLinLgy(size, (CN::MemMgr::Type)type);
@@ -400,7 +402,7 @@ CN::TaskMgr::Task __task;
 void Lgy_InitRenderStage(void* world, void* gs, void* player, void* cw) {
   LOG("Lgy_InitRenderStage");
   // CN::TaskMgr::Init();
-  CN::Renderer::Init(&pd_ctx);
+  CN::Renderer::Init();
   CN::Renderer::pDebug = &pDebug;
   PolyGen_Init((World*)world, (Player*)player);
   WorldRenderer_Init((Player*)player, (World*)world, &((ChunkWorker*)cw)->queue,
@@ -482,5 +484,12 @@ float Lgy_CameraGetFar(LgyCam cam) {
 C3D_Mtx* Lgy_CameraGetVp(LgyCam cam) {
   CN::Camera* c = (CN::Camera*)cam;
   return &c->pVp;
+}
+
+void Lgy_DebugRamLine() {
+  Lgy_DebugUI_Text(
+      "Heap: %s/%s",
+      PD::Strings::FormatBytes(osGetMemRegionUsed(MEMREGION_ALL)).c_str(),
+      PD::Strings::FormatBytes(osGetMemRegionSize(MEMREGION_ALL)).c_str());
 }
 }
