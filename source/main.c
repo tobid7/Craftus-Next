@@ -34,8 +34,8 @@ float dt__ = 0.f;
 bool Save__ = false;
 extern int clusters_drawn;
 
-void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr,
-                  World* world) {
+void releaseWorld(ChunkWorker *chunkWorker, SaveManager *savemgr,
+                  World *world) {
   for (int i = 0; i < CHUNKCACHE_SIZE; i++) {
     for (int j = 0; j < CHUNKCACHE_SIZE; j++) {
       World_UnloadChunk(world, world->chunkCache[i][j]);
@@ -48,9 +48,9 @@ void releaseWorld(ChunkWorker* chunkWorker, SaveManager* savemgr,
 }
 GameState gamestate = GameState_Playing;
 
-void LoadWorld(World* world, Player* player, ChunkWorker* chunkWorker,
-               u64* lastTime, FlatBedrockGen* bdgen, SmeaGen* smeaGen,
-               SuperFlatGen* flatGen, DefaultGen* dgen, SaveManager* savemgr) {
+void LoadWorld(World *world, Player *player, ChunkWorker *chunkWorker,
+               u64 *lastTime, FlatBedrockGen *bdgen, SmeaGen *smeaGen,
+               SuperFlatGen *flatGen, DefaultGen *dgen, SaveManager *savemgr) {
   strcpy(world->name, "TestWelt4");
   world->genSettings.type = WorldGen_Default;
   SaveManager_Load(savemgr, "sdmc:/3ds/CraftusNext/saves/TestWelt4");
@@ -75,7 +75,7 @@ void LoadWorld(World* world, Player* player, ChunkWorker* chunkWorker,
 
   for (int i = 0; i < 3; i++) {
     while (chunkWorker->working || chunkWorker->queue.queue.length > 0) {
-      svcSleepThread(50000000);  // 1 Tick
+      svcSleepThread(50000000); // 1 Tick
     }
     World_Tick(world);
   }
@@ -85,7 +85,8 @@ void LoadWorld(World* world, Player* player, ChunkWorker* chunkWorker,
     for (int x = -1; x < 1; x++) {
       for (int z = -1; z < 1; z++) {
         int height = World_GetHeight(world, x, z);
-        if (height > highestblock) highestblock = height;
+        if (height > highestblock)
+          highestblock = height;
       }
     }
     player->hunger = 20;
@@ -95,7 +96,7 @@ void LoadWorld(World* world, Player* player, ChunkWorker* chunkWorker,
     player->flying = true;
   }
   gamestate = GameState_Playing;
-  *lastTime = svcGetSystemTick();  // fix timing
+  *lastTime = svcGetSystemTick(); // fix timing
 }
 
 int main() {
@@ -129,7 +130,7 @@ int main() {
   ChunkWorker_AddHandler(&chunkWorker, WorkerItemType_BaseGen,
                          (WorkerFuncObj){&DefaultGen_Generate, &dgen, true});
   sino_init();
-  World* world = (World*)lgy_malloc(sizeof(World));
+  World *world = (World *)lgy_malloc(sizeof(World));
   Player player;
   PlayerController playerCtrl;
   Player_Init(&player, world);
@@ -160,15 +161,10 @@ int main() {
   }
   while (aptMainLoop()) {
     Lgy_UpdateInput();
-    /** As stupid as possible... */
-    const char *extra = "", *extra2 = "";
-#ifdef CN_COMMIT
-    extra = " " CN_COMMIT;
-#endif
-#ifdef CN_BRANCH
-    extra2 = " " CN_BRANCH;
-#endif
-    Lgy_DebugUI_Text("Craftus %s%s%s", CRAFTUS_VERSION_STR, extra, extra2);
+    Lgy_DebugUI_Text("Craftus Next %s - %s", CRAFTUS_VERSION_STR, CN_COMMIT);
+// #ifdef CN_BRANCH
+//     Lgy_DebugUI_Text("Branch: %s", CN_BRANCH);
+// #endif
     Lgy_DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps,
                      C3D_GetProcessingTime() * 6.f, C3D_GetDrawingTime() * 6.f,
                      C3D_GetCmdBufUsage() * 100.f,
@@ -229,7 +225,8 @@ int main() {
       Save__ = false;
     }
 
-    if (forcequit) break;
+    if (forcequit)
+      break;
 
     circlePosition circlePos;
     hidCircleRead(&circlePos);
@@ -287,7 +284,7 @@ int main() {
 
         for (int i = 0; i < 3; i++) {
           while (chunkWorker.working || chunkWorker.queue.queue.length > 0) {
-            svcSleepThread(50000000);  // 1 Tick
+            svcSleepThread(50000000); // 1 Tick
           }
           World_Tick(world);
         }
@@ -297,7 +294,8 @@ int main() {
           for (int x = -1; x < 1; x++) {
             for (int z = -1; z < 1; z++) {
               int height = World_GetHeight(world, x, z);
-              if (height > highestblock) highestblock = height;
+              if (height > highestblock)
+                highestblock = height;
             }
           }
           player.hunger = 20;
@@ -305,7 +303,7 @@ int main() {
           player.position.y = (float)highestblock + 0.2f;
         }
         gamestate = GameState_Playing;
-        lastTime = svcGetSystemTick();  // fix timing
+        lastTime = svcGetSystemTick(); // fix timing
       }
     } else if (gamestate == GameState_Options) {
       if (Options_Update(player)) {

@@ -156,22 +156,22 @@ void Lgy_GameOptionsSave() {
 }
 
 void Lgy_Splash() {
-  // PD::Image img;
-  // img.Load("romfs:/splash.png");
-  // img.FlipVertical();
-  // PD::Image::Convert(img, img->RGB);
-  // u16 w, h;
-  // u8* fb = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, &w, &h);
-  // for (int i = 0; i < 240; i++) {
-  //   for (int j = 0; j < 400; j++) {
-  //     int src = (i * 400 + j) * 3;
-  //     int dst = (j * 240 + i) * 3;
-  //     fb[dst + 0] = img->pBuffer[src + 2];
-  //     fb[dst + 1] = img->pBuffer[src + 1];
-  //     fb[dst + 2] = img->pBuffer[src + 0];
-  //   }
-  // }
-  // gfxSwapBuffers();
+  PD::Image img;
+  img.Load("romfs:/splash.png");
+  img.Flip(false, true);
+  img.Convert(PD::Image::Format::RGB);
+  u16 w, h;
+  u8* fb = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, &w, &h);
+  for (int i = 0; i < 240; i++) {
+    for (int j = 0; j < 400; j++) {
+      int src = (i * 400 + j) * 3;
+      int dst = (j * 240 + i) * 3;
+      fb[dst + 0] = img.data()[src + 2];
+      fb[dst + 1] = img.data()[src + 1];
+      fb[dst + 2] = img.data()[src + 0];
+    }
+  }
+  gfxSwapBuffers();
 }
 
 char* Lgy_File2Str(const char* path, size_t* lines) {

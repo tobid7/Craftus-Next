@@ -156,7 +156,9 @@ void Renderer::Render2D(PD::ivec2 size) {
 
 void Renderer::StartFrame() {
   C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+  PD::TT::Beg("Renderer::Frame");
   PD::Gfx::Reset();
+  PD::TT::Scope st("PD::Li::ResetPools");
   PD::Li::ResetPools();
 }
 
@@ -164,7 +166,10 @@ void Renderer::OptimizeUiList(PD::Li::Drawlist& list) {
   // list->pPool.Sort();
 }
 
-void Renderer::EndFrame() { C3D_FrameEnd(0); }
+void Renderer::EndFrame() {
+  PD::TT::End("Renderer::Frame");
+  C3D_FrameEnd(0);
+}
 
 void Renderer::Render(World* world, GameState* s) {
   float iod = osGet3DSliderState() * PLAYER_HALFEYEDIFF;
@@ -190,6 +195,25 @@ void Renderer::Render(World* world, GameState* s) {
     }
     // PD::TT::Beg("2dt");
     OptimizeUiList(pDL);
+    pDL.SetFontscale(0.4f);
+    pDL.DrawText(
+        PD::fvec2(5, 130),
+        std::format(
+            "PD::Li::ResetPools: {}\nRenderer::Frame: {}\nRenderer::Start2D: "
+            "{}\nBottom UI: {}\nDebugUI::Draw: {}",
+            PD::Strings::FormatNanos(
+                PD::TT::GetTraceRef("PD::Li::ResetPools").GetLastDiff()),
+            PD::Strings::FormatNanos(
+                PD::TT::GetTraceRef("Renderer::Frame").GetLastDiff()),
+            PD::Strings::FormatNanos(
+                PD::TT::GetTraceRef("Renderer::Start2D").GetLastDiff()),
+            PD::Strings::FormatNanos(
+                PD::TT::GetTraceRef("Bottom UI").GetLastDiff()),
+            PD::Strings::FormatNanos(
+                PD::TT::GetTraceRef("DebugUI::Draw").GetLastDiff()))
+            .c_str(),
+        "#ffff00");
+    pDL.SetFontscale(0.7f);
     Render2D(PD::fvec2(400, 240));
     // PD::TT::End("2dt");
   }
@@ -226,6 +250,7 @@ void Renderer::Render(World* world, GameState* s) {
   // pDL.Layer = 4;
   // pDL.DrawTextEx(PD::fvec2(34, 220), "64", 0xffffffff,
   //                 LiTextFlags_AlignRight | LiTextFlags_Shaddow);
+  PD::TT::Beg("Bottom UI");
   pSceneMgr.Menu->Update();
   pDL.Merge(pSceneMgr.Menu->GetDrawList());
   if (pSceneMgr.Menu->ShouldGoBack()) {
@@ -243,6 +268,7 @@ void Renderer::Render(World* world, GameState* s) {
   // Optimizing the renderbuffer gives us ~1.4 - 1.6 ms less render time
   OptimizeUiList(pDL);
   Render2D(PD::fvec2(320, 240));
+  PD::TT::End("Bottom UI");
   // PD::TT::End("2db");
   EndFrame();
   /*if (pDebug) {
@@ -276,8 +302,10 @@ void Renderer::DrawTexElement(PD::Li::Texture tex, PD::fvec2 pos,
 }
 
 void Renderer::Start2D() {
+  PD::TT::Scope st("Renderer::Start2D");
   pDL.Clear();
   pDL.SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
+  pDL.SetFontscale(0.7f);
 }
 
 PD::Li::Texture blocktex;

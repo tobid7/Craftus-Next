@@ -19,6 +19,7 @@ void DebugUI::Log(const std::string& l) {
 }
 
 void DebugUI::DrawInto(PD::Li::Drawlist& list) {
+  PD::TT::Scope st("DebugUI::Draw");
   list.SetFontscale(0.4f);  // scale used in Lgy Engine
   for (int i = 0; i < pInfoSlot; i++) {
     list.DrawTextEx(PD::fvec2(0, i * 10), pInfoLines[i].c_str(), 0xffffffff,
