@@ -219,6 +219,9 @@ void Lgy_InitPalladium() {
   // font = PD::Li::Font::New();
   // CN::ResourceMgr::SetContext(pd_ctx);
   CN::ResourceMgr::Load("romfs:/fonts/Miracode.ttf", CN::RCID::FontTTF);
+  auto font = new PD::Li::Font();
+  font->LoadTTF("romfs:/fonts/Miracode.ttf", 12);
+  CN::ResourceMgr::Push(CN::RC::MiracodeFontDebug, font);
   /*ui7 = PD::UI7::Context::New(pd_ctx);
   ui7->AddViewPort("bot", PD::ivec4(0, 0, 320, 240));
   ui7->UseViewPort("bot");
@@ -293,10 +296,7 @@ void Lgy_Render(int w, int h) {
   PD::Gfx::Draw(list.Data());
 }
 
-void Lgy_Finish2D() {
-  PD::Gfx::Reset();
-  PD::Li::ResetPools();
-}
+void Lgy_Finish2D() { PD::Gfx::Reset(); }
 
 void Lgy_DynScale(float scale) {
   dyn__ = scale;
@@ -492,4 +492,8 @@ void Lgy_DebugRamLine() {
       PD::Strings::FormatBytes(osGetMemRegionUsed(MEMREGION_ALL)).c_str(),
       PD::Strings::FormatBytes(osGetMemRegionSize(MEMREGION_ALL)).c_str());
 }
+
+void Lgy_TraceBeg(const char* name) { PD::TT::Beg(name); }
+
+void Lgy_TraceEnd(const char* name) { PD::TT::End(name); }
 }

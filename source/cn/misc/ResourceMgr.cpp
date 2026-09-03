@@ -38,10 +38,17 @@ PD::u32 ResourceMgr::Load(const std::string& path, RCID::Type type) {
     rc.Ptr = tex;
   } else if (type == RCID::FontTTF) {
     PD::Li::Font* font = new PD::Li::Font();
-    font->LoadTTF(path);
+    font->LoadTTF(path, 32);
     rc.Ptr = font;
   }
   pResources[rc.ID] = rc;
   return ret;
+}
+
+void ResourceMgr::Push(PD::u32 id, void* rc, RCID::Type type) {
+  Resource _rc;
+  _rc.ID = id;
+  _rc.Ptr = rc;
+  pResources[_rc.ID] = _rc;
 }
 }  // namespace CN

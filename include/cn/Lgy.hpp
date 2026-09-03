@@ -13,7 +13,7 @@ using u16 = unsigned short;
 using u32 = unsigned int;
 using u64 = unsigned long long;
 struct C3D_Tex {};
-struct C3D_FVec{};
+struct C3D_FVec {};
 #endif
 #include <string.h>
 
@@ -130,8 +130,11 @@ float Lgy_CameraGetNear(LgyCam cam);
 float Lgy_CameraGetFar(LgyCam cam);
 C3D_Mtx* Lgy_CameraGetVp(LgyCam cam);
 void Lgy_DebugRamLine();
+void Lgy_TraceBeg(const char* name);
+void Lgy_TraceEnd(const char* name);
 #ifdef __cplusplus
 }
 #endif
 
-#define LgyLog(x, ...) Lgy_Log("[%s:%d:%s]-Lgy: " x, __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
+#define LgyLog(x, ...) \
+  Lgy_Log("[%s:%d:%s]-Lgy: " x, __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)

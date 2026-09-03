@@ -17,24 +17,24 @@ int sky_time = 0;
 
 u32 skycol = 0x90d9ffff;
 
-static Player* player;
-static World* world;
+static Player *player;
+static World *world;
 
-static WorkQueue* workqueue;
+static WorkQueue *workqueue;
 
 LgyCam camera;
 
 static int projectionUniform;
 
 typedef struct {
-  Cluster* cluster;
-  Chunk* chunk;
+  Cluster *cluster;
+  Chunk *chunk;
   Direction enteredFrom;
 } RenderStep;
 
 typedef struct {
-  Cluster* cluster;
-  Chunk* chunk;
+  Cluster *cluster;
+  Chunk *chunk;
 } TransparentRender;
 
 static vec_t(RenderStep) renderingQueue;
@@ -44,11 +44,11 @@ static vec_t(TransparentRender) transparentClusters;
 
 static C3D_FogLut fogLut;
 
-#define clusterWasRendered(x, y, z)                                        \
-  chunkRendered[x - (world->cacheTranslationX - (CHUNKCACHE_SIZE / 2))][y] \
+#define clusterWasRendered(x, y, z)                                            \
+  chunkRendered[x - (world->cacheTranslationX - (CHUNKCACHE_SIZE / 2))][y]     \
                [z - (world->cacheTranslationZ - (CHUNKCACHE_SIZE / 2))]
 
-void WorldRenderer_Init(Player* player_, World* world_, WorkQueue* workqueue_,
+void WorldRenderer_Init(Player *player_, World *world_, WorkQueue *workqueue_,
                         int projectionUniform_) {
   LgyLog("WorldRenderer_Init");
   world = world_;
@@ -71,8 +71,10 @@ void WorldRenderer_Init(Player* player_, World* world_, WorkQueue* workqueue_,
       val = 0.0f;
     else if (i == 1)
       val = 0.9f;
-    if (i < 128) data[i] = val;
-    if (i > 0) data[i + 127] = val - data[i - 1];
+    if (i < 128)
+      data[i] = val;
+    if (i > 0)
+      data[i + 127] = val - data[i - 1];
   }
   FogLut_FromArray(&fogLut, data);
   C3D_FogGasMode(GPU_FOG, GPU_PLAIN_DENSITY, false);
@@ -105,7 +107,7 @@ static void renderWorld() {
 
   int pY = CLAMP(WorldToChunkCoord(FastFloor(player->position.y)), 0,
                  CLUSTER_PER_CHUNK - 1);
-  Chunk* pChunk =
+  Chunk *pChunk =
       World_GetChunk(world, WorldToChunkCoord(FastFloor(player->position.x)),
                      WorldToChunkCoord(FastFloor(player->position.z)));
   vec_push(&renderingQueue,
@@ -116,8 +118,8 @@ static void renderWorld() {
 
   while (renderingQueue.length > 0) {
     RenderStep step = vec_pop(&renderingQueue);
-    Chunk* chunk = step.chunk;
-    Cluster* cluster = step.cluster;
+    Chunk *chunk = step.chunk;
+    Cluster *cluster = step.cluster;
 
     if (cluster->vertices > 0 && cluster->vbo.size) {
       clusterWasRendered(chunk->x, cluster->y, chunk->z) |= 2;
@@ -139,7 +141,7 @@ static void renderWorld() {
 
     for (int i = 0; i < 6; i++) {
       Direction dir = i;
-      const int* offset = DirectionToOffset[dir];
+      const int *offset = DirectionToOffset[dir];
 
       int newX = chunk->x + offset[0], newY = cluster->y + offset[1],
           newZ = chunk->z + offset[2];
@@ -158,7 +160,8 @@ static void renderWorld() {
         continue;
       }
 
-      if (clusterWasRendered(newX, newY, newZ) & 1) continue;
+      if (clusterWasRendered(newX, newY, newZ) & 1)
+        continue;
 
       if (!ChunkCanBeSeenThrough(cluster->seeThrough, step.enteredFrom, i) &&
           step.enteredFrom != Direction_Invalid)
@@ -166,22 +169,24 @@ static void renderWorld() {
 
       C3D_FVec chunkPosition =
           FVec3_New(newX * CHUNK_SIZE, newY * CHUNK_SIZE, newZ * CHUNK_SIZE);
-      if (!Lgy_CameraIsAABBVisible(camera, chunkPosition,
-                                FVec3_New(CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE)))
+      if (!Lgy_CameraIsAABBVisible(
+              camera, chunkPosition,
+              FVec3_New(CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE)))
         continue;
 
       clusterWasRendered(newX, newY, newZ) |= 1;
 
-      Chunk* newChunk = World_GetChunk(world, newX, newZ);
+      Chunk *newChunk = World_GetChunk(world, newX, newZ);
       RenderStep nextStep = (RenderStep){&newChunk->clusters[newY], newChunk,
                                          DirectionOpposite[dir]};
-      if (newChunk) vec_push(&renderingQueue, nextStep);
+      if (newChunk)
+        vec_push(&renderingQueue, nextStep);
     }
   }
 
   for (int x = 1; x < CHUNKCACHE_SIZE - 1; x++) {
     for (int z = 1; z < CHUNKCACHE_SIZE - 1; z++) {
-      Chunk* chunk = world->chunkCache[x][z];
+      Chunk *chunk = world->chunkCache[x][z];
 
       if ((chunk->revision != chunk->displayRevision ||
            chunk->forceVBOUpdate) &&
@@ -203,7 +208,7 @@ static void renderWorld() {
   C3D_AlphaTest(true, GPU_GEQUAL, 255);
 
   int i;
-  TransparentRender* render;
+  TransparentRender *render;
   vec_foreach_ptr_rev(&transparentClusters, render, i) {
     C3D_BufInfo bufInfo;
     BufInfo_Init(&bufInfo);
@@ -217,32 +222,36 @@ static void renderWorld() {
   C3D_AlphaTest(false, GPU_GREATER, 0);
 
   clusters_drawn = clustersDrawn;
-  Lgy_DebugUI_Text("Rendered %d vertices", polysTotal);
+  /*Lgy_DebugUI_Text("Rendered %d vertices", polysTotal);
   Lgy_DebugUI_Text(
       "T: %u P: %u %d",
       world->chunkCache[CHUNKCACHE_SIZE / 2][CHUNKCACHE_SIZE / 2]->tasksRunning,
       world->chunkCache[CHUNKCACHE_SIZE / 2][CHUNKCACHE_SIZE / 2]->genProgress,
-      workqueue->queue.length);
+      workqueue->queue.length);*/
   // DebugUI_Text("FC: %d", world->freeChunks.length);
 }
 
 void WorldRenderer_Render(float iod) {
+  Lgy_TraceBeg(__FUNCTION__);
+  C3D_DepthTest(true, GPU_GREATER, GPU_WRITE_ALL);
   Lgy_CameraUpdate(camera, player, iod);
 
   C3D_TexBind(0, Block_GetTextureMap());
 
-  C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER, projectionUniform, Lgy_CameraGetVp(camera));
+  C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER, projectionUniform,
+                   Lgy_CameraGetVp(camera));
 
   renderWorld();
 
   if (cn_options.Clouds)
-    Clouds_Render(projectionUniform, Lgy_CameraGetVp(camera), world, player->position.x,
-                  player->position.z);
-  C3D_TexBind(0, Block_GetTextureMap());  // Rebind Blocks Tex for Hand
+    Clouds_Render(projectionUniform, Lgy_CameraGetVp(camera), world,
+                  player->position.x, player->position.z);
+  C3D_TexBind(0, Block_GetTextureMap()); // Rebind Blocks Tex for Hand
   if (cn_options.Hand) {
     C3D_Mtx p;
     Mtx_PerspStereoTilt(&p, C3D_AngleFromDegrees(60.f), ((400.f) / (240.f)),
-                        Lgy_CameraGetNear(camera), Lgy_CameraGetFar(camera), iod, 1.f, false);
+                        Lgy_CameraGetNear(camera), Lgy_CameraGetFar(camera),
+                        iod, 1.f, false);
     // disable depth test to not clip into the blocks
     // but need still need to find a way to not clip
     // into the cursor (but changing order results in white hand ??? df)
@@ -253,7 +262,8 @@ void WorldRenderer_Render(float iod) {
   }
 
   if (player->blockInActionRange)
-    Cursor_Draw(projectionUniform, Lgy_CameraGetVp(camera), world, player->viewRayCast.x,
-                player->viewRayCast.y, player->viewRayCast.z,
-                player->viewRayCast.direction);
+    Cursor_Draw(projectionUniform, Lgy_CameraGetVp(camera), world,
+                player->viewRayCast.x, player->viewRayCast.y,
+                player->viewRayCast.z, player->viewRayCast.direction);
+  Lgy_TraceEnd(__FUNCTION__);
 }

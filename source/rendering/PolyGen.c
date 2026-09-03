@@ -86,7 +86,7 @@ typedef struct {
   bool transparent;
 } Face;
 
-static inline Block fastBlockFetch(World* world, Chunk* chunk, Cluster* cluster,
+static inline Block fastBlockFetch(World *world, Chunk *chunk, Cluster *cluster,
                                    int x, int y, int z) {
   return (x < 0 || y < 0 || z < 0 || x >= CHUNK_SIZE || y >= CHUNK_SIZE ||
           z >= CHUNK_SIZE)
@@ -95,8 +95,8 @@ static inline Block fastBlockFetch(World* world, Chunk* chunk, Cluster* cluster,
                               (chunk->z * CHUNK_SIZE) + z)
              : cluster->blocks[x][y][z];
 }
-static inline uint8_t fastMetadataFetch(World* world, Chunk* chunk,
-                                        Cluster* cluster, int x, int y, int z) {
+static inline uint8_t fastMetadataFetch(World *world, Chunk *chunk,
+                                        Cluster *cluster, int x, int y, int z) {
   return (x < 0 || y < 0 || z < 0 || x >= CHUNK_SIZE || y >= CHUNK_SIZE ||
           z >= CHUNK_SIZE)
              ? World_GetMetadata(world, (chunk->x * CHUNK_SIZE) + x,
@@ -105,8 +105,8 @@ static inline uint8_t fastMetadataFetch(World* world, Chunk* chunk,
              : (cluster->metadataLight[x][y][z] & 0xf);
 }
 
-static World* world;
-static Player* player;
+static World *world;
+static Player *player;
 
 typedef struct {
   int8_t x, y, z;
@@ -116,7 +116,7 @@ static vec_t(QueueElement) floodfill_queue;
 
 static LightLock updateLock;
 
-void PolyGen_Init(World* world_, Player* player_) {
+void PolyGen_Init(World *world_, Player *player_) {
   LgyLog("PolyGen_Init");
   world = world_;
   player = player_;
@@ -131,6 +131,7 @@ void PolyGen_Deinit() {
 }
 
 void PolyGen_Harvest() {
+  Lgy_TraceBeg(__FUNCTION__);
   if (LightLock_TryLock(&updateLock) == 0) {
     Lgy_DebugUI_Text("VBOUpdates %d", vboUpdates.length);
     Lgy_DebugUI_Text("FloodFillQueue %d",
@@ -141,7 +142,7 @@ void PolyGen_Harvest() {
         while (vboUpdates.length > 0) {
           VBOUpdate update = vec_pop(&vboUpdates);
 
-          Chunk* chunk = World_GetChunk(world, update.x, update.z);
+          Chunk *chunk = World_GetChunk(world, update.x, update.z);
           if (chunk) {
             if (chunk->clusters[update.y].vertices > 0)
               Lgy_Vbo_Free(chunk->clusters[update.y].vbo);
@@ -159,6 +160,7 @@ void PolyGen_Harvest() {
 
     LightLock_Unlock(&updateLock);
   }
+  Lgy_TraceEnd(__FUNCTION__);
 }
 
 static Face faceBuffer[MAX_FACES_PER_CLUSTER];
@@ -176,14 +178,18 @@ static inline void addFace(int x, int y, int z, Direction dir, Block block,
   }
 }
 
-static uint16_t floodFill(World* world, Chunk* chunk, Cluster* cluster, int x,
+static uint16_t floodFill(World *world, Chunk *chunk, Cluster *cluster, int x,
                           int y, int z, Direction entrySide0,
                           Direction entrySide1, Direction entrySide2) {
-  if (floodfill_visited[x][y][z] & 1) return 0;
+  if (floodfill_visited[x][y][z] & 1)
+    return 0;
   uint8_t exitPoints[6] = {false};
-  if (entrySide0 != Direction_Invalid) exitPoints[entrySide0] = true;
-  if (entrySide1 != Direction_Invalid) exitPoints[entrySide1] = true;
-  if (entrySide2 != Direction_Invalid) exitPoints[entrySide2] = true;
+  if (entrySide0 != Direction_Invalid)
+    exitPoints[entrySide0] = true;
+  if (entrySide1 != Direction_Invalid)
+    exitPoints[entrySide1] = true;
+  if (entrySide2 != Direction_Invalid)
+    exitPoints[entrySide2] = true;
   vec_clear(&floodfill_queue);
   vec_push(&floodfill_queue, ((QueueElement){x, y, z}));
 
@@ -191,7 +197,7 @@ static uint16_t floodFill(World* world, Chunk* chunk, Cluster* cluster, int x,
     QueueElement item = vec_pop(&floodfill_queue);
 
     for (int i = 0; i < 6; i++) {
-      const int* offset = DirectionToOffset[i];
+      const int *offset = DirectionToOffset[i];
       int x = item.x + offset[0], y = item.y + offset[1],
           z = item.z + offset[2];
       if (x < 0 || y < 0 || z < 0 || x >= CHUNK_SIZE || y >= CHUNK_SIZE ||
@@ -220,13 +226,14 @@ static uint16_t floodFill(World* world, Chunk* chunk, Cluster* cluster, int x,
   for (int i = 0; i < 6; i++)
     if (exitPoints[i])
       for (int j = 0; j < 6; j++)
-        if (i != j && exitPoints[j]) visiblity |= ChunkSeeThrough(i, j);
+        if (i != j && exitPoints[j])
+          visiblity |= ChunkSeeThrough(i, j);
   return visiblity;
 }
 
-void PolyGen_GeneratePolygons(WorkQueue* queue, WorkerItem item, void* this) {
+void PolyGen_GeneratePolygons(WorkQueue *queue, WorkerItem item, void *this) {
   for (int i = 0; i < CLUSTER_PER_CHUNK; i++) {
-    Cluster* cluster = &item.chunk->clusters[i];
+    Cluster *cluster = &item.chunk->clusters[i];
 
     if (cluster->revision != cluster->vboRevision || cluster->forceVBOUpdate) {
       cluster->vboRevision = cluster->revision;
@@ -357,8 +364,8 @@ void PolyGen_GeneratePolygons(WorkQueue* queue, WorkerItem item, void* this) {
           transparentMem =
               Lgy_Vbo_Alloc(transparentVertices * sizeof(WorldVertex));
 
-        WorldVertex* opaqueData = memBlock.memory;
-        WorldVertex* transparentData = transparentMem.memory;
+        WorldVertex *opaqueData = memBlock.memory;
+        WorldVertex *transparentData = transparentMem.memory;
         for (int j = 0; j < currentFace; j++) {
           Face face = faceBuffer[j];
 
@@ -369,7 +376,7 @@ void PolyGen_GeneratePolygons(WorkQueue* queue, WorkerItem item, void* this) {
           int16_t iconUV[2];
           Block_GetTexture(face.block, face.direction, face.metadata, iconUV);
           // Log("Block UV: %d, %d\n", iconUV[0], iconUV[1]);
-          WorldVertex* data = face.transparent ? transparentData : opaqueData;
+          WorldVertex *data = face.transparent ? transparentData : opaqueData;
           memcpy(data, &cube_sides_lut[face.direction * 6],
                  sizeof(WorldVertex) * 6);
 

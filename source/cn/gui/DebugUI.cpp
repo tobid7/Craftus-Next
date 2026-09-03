@@ -1,3 +1,4 @@
+#include <cn/ConstIDs.hpp>
 #include <cn/gui/DebugUI.hpp>
 
 namespace CN {
@@ -20,13 +21,15 @@ void DebugUI::Log(const std::string& l) {
 
 void DebugUI::DrawInto(PD::Li::Drawlist& list) {
   PD::TT::Scope st("DebugUI::Draw");
-  list.SetFontscale(0.4f);  // scale used in Lgy Engine
+  list.SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFontDebug));
+  list.SetFontscale(0.375f);  // scale used in Lgy Engine
   for (int i = 0; i < pInfoSlot; i++) {
-    list.DrawTextEx(PD::fvec2(0, i * 10), pInfoLines[i].c_str(), 0xffffffff,
+    list.DrawTextEx(PD::fvec2(2, i * 9), pInfoLines[i].c_str(), 0xffffffff,
                     LiTextFlags_Shaddow);
-    pInfoLines[i] = "";
+    pInfoLines[i].clear();
   }
   list.SetFontscale(0.7f);
+  list.SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFont));
   pInfoSlot = 0;
 }
 }  // namespace CN

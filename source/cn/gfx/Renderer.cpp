@@ -145,11 +145,13 @@ void Renderer::UseShader() {
                 GPU_PRIMARY_COLOR);
   C3D_TexEnvFunc(env, C3D_Both, GPU_MODULATE);
 
+  shaderProgramUse(&pWorldShader);
   C3D_BindProgram(&pWorldShader);
   C3D_SetAttrInfo(&pAttrWorld);
 }
 
 void Renderer::Render2D(PD::ivec2 size) {
+  PD::Gfx::Reset();  // Binds shader
   PD::Gfx::SetViewPort(size);
   PD::Gfx::Draw(pDL.Data());
 }
@@ -157,9 +159,7 @@ void Renderer::Render2D(PD::ivec2 size) {
 void Renderer::StartFrame() {
   C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
   PD::TT::Beg("Renderer::Frame");
-  PD::Gfx::Reset();
-  PD::TT::Scope st("PD::Li::ResetPools");
-  PD::Li::ResetPools();
+  PD::Gfx::NewFrame();
 }
 
 void Renderer::OptimizeUiList(PD::Li::Drawlist& list) {
@@ -178,44 +178,38 @@ void Renderer::Render(World* world, GameState* s) {
   PolyGen_Harvest();
   /*pDebug->Line(
       std::format("UI Vtx/Idx: {}/{}", pDL.pNumVertices, pDL.pNumIndices));*/
+  PD::TT::Beg("Create_TopUI");
+  Start2D();
+  // Invisible rect (cause the first quad in a dl doesnt render)
+  pDL.DrawRect(0, 0, PD::Color(0, 0, 0, 0));
+  /** Create the Drawlist once not twice */
+  if (showDebugInfo && pDebug) {
+    pDebug->DrawInto(pDL);
+  }
+  pDL.SetFont(CN::ResourceMgr::GetFontTTF(CN::RC::MiracodeFontDebug));
+  pDL.SetFontscale(0.375f);
+  int __i = 0;
+  for (auto& it : PD::TT::GetTraceMap()) {
+    pDL.DrawText(PD::fvec2(2, 120 + (__i++) * 9),
+                 std::format("{}: {}", it.second.GetID(),
+                             PD::Strings::FormatNanos(it.second.GetLastDiff()))
+                     .c_str(),
+                 "#ffff00");
+  }
+  pDL.SetFontscale(0.7f);
+  PD::TT::End("Create_TopUI");
   for (int i = 0; i < 2; i++) {
+    PD::TT::Scope __st("RenderTop_" + std::string(i == 0 ? "Left" : "Right"));
     Clear(pTop[0], 0x90d9ffff);
     DrawOn(pTop[i]);
     UseShader();
-    Start2D();
     if (*s == GameState_Playing || *s == GameState_Pause) {
       C3D_TexBind(0, (C3D_Tex*)Block_GetTextureMap());
       WorldRenderer_Render(!i ? -iod : iod);
       DrawTexElement(*CN::ResourceMgr::GetTex(CN::RC::GuiIcons),
                      PD::fvec2(200 - 12, 120 - 12), 24, GuiIcon_Crosshair);
-      if (showDebugInfo && pDebug) {
-        pDebug->DrawInto(pDL);
-      }
-    } else {
     }
-    // PD::TT::Beg("2dt");
-    OptimizeUiList(pDL);
-    pDL.SetFontscale(0.4f);
-    pDL.DrawText(
-        PD::fvec2(5, 130),
-        std::format(
-            "PD::Li::ResetPools: {}\nRenderer::Frame: {}\nRenderer::Start2D: "
-            "{}\nBottom UI: {}\nDebugUI::Draw: {}",
-            PD::Strings::FormatNanos(
-                PD::TT::GetTraceRef("PD::Li::ResetPools").GetLastDiff()),
-            PD::Strings::FormatNanos(
-                PD::TT::GetTraceRef("Renderer::Frame").GetLastDiff()),
-            PD::Strings::FormatNanos(
-                PD::TT::GetTraceRef("Renderer::Start2D").GetLastDiff()),
-            PD::Strings::FormatNanos(
-                PD::TT::GetTraceRef("Bottom UI").GetLastDiff()),
-            PD::Strings::FormatNanos(
-                PD::TT::GetTraceRef("DebugUI::Draw").GetLastDiff()))
-            .c_str(),
-        "#ffff00");
-    pDL.SetFontscale(0.7f);
     Render2D(PD::fvec2(400, 240));
-    // PD::TT::End("2dt");
   }
   Clear(pBot, 0x00000000);
   DrawOn(pBot);
@@ -232,8 +226,8 @@ void Renderer::Render(World* world, GameState* s) {
   //                         PD::fvec2(34, 34), color ? 0xff333333 :
   //                         0xff222222);
   //     pDL.Layer = 2;
-  //     DrawIcon((Block)j * 8 + i + 1, 0, PD::fvec2(24 + i * 34, 15 + j * 34));
-  //     color = !color;
+  //     DrawIcon((Block)j * 8 + i + 1, 0, PD::fvec2(24 + i * 34, 15 + j *
+  //     34)); color = !color;
   //   }
   //   // color = !color;
   // }
@@ -271,6 +265,9 @@ void Renderer::Render(World* world, GameState* s) {
   PD::TT::End("Bottom UI");
   // PD::TT::End("2db");
   EndFrame();
+  /*pDebug->Line(std::format("UI: {} / {} / {} / {}",
+     PD::Gfx::GetNumVertices(), PD::Gfx::GetNumIndices(),
+     PD::Gfx::GetNumCommands(), PD::Gfx::GetNumDrawcalls()));*/
   /*if (pDebug) {
     pDebug->Line("Top UI: " +
                  PD::Strings::FormatNanos(

@@ -58,6 +58,7 @@ class ResourceMgr {
    * engine does not know if you want a raw or a lithium tex for example)
    */
   static PD::u32 Load(const std::string& path, RCID::Type type = RCID::Invalid);
+  static void Push(PD::u32 id, void* rc, RCID::Type type = RCID::Invalid);
   static void LoadAsync(const std::string& path,
                         RCID::Type type = RCID::Invalid);
   // static void SetContext(PD::Context& ctx) { pCtx = &ctx; }

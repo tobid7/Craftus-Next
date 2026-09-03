@@ -53,7 +53,7 @@ void LoadWorld(World *world, Player *player, ChunkWorker *chunkWorker,
                SuperFlatGen *flatGen, DefaultGen *dgen, SaveManager *savemgr) {
   strcpy(world->name, "TestWelt4");
   world->genSettings.type = WorldGen_Default;
-  SaveManager_Load(savemgr, "sdmc:/3ds/CraftusNext/saves/TestWelt4");
+  // SaveManager_Load(savemgr, "sdmc:/3ds/CraftusNext/saves/TestWelt4");
   ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, flatGen,
                                world->genSettings.type == WorldGen_SuperFlat);
   ChunkWorker_SetHandlerActive(&chunkWorker, WorkerItemType_BaseGen, smeaGen,
@@ -92,7 +92,6 @@ void LoadWorld(World *world, Player *player, ChunkWorker *chunkWorker,
     player->hunger = 20;
     player->hp = 20;
     player->position.y = (float)highestblock + 0.2f;
-    player->position.y = 80;
     player->flying = true;
   }
   gamestate = GameState_Playing;
@@ -161,17 +160,20 @@ int main() {
   }
   while (aptMainLoop()) {
     Lgy_UpdateInput();
+    hidScanInput();
+    if (hidKeysDown() & KEY_START)
+      break;
     Lgy_DebugUI_Text("Craftus Next %s - %s", CRAFTUS_VERSION_STR, CN_COMMIT);
-// #ifdef CN_BRANCH
-//     Lgy_DebugUI_Text("Branch: %s", CN_BRANCH);
-// #endif
-    Lgy_DebugUI_Text("%d FPS  Usage: CPU: %5.2f%% GPU: %5.2f%%", fps,
+    // #ifdef CN_BRANCH
+    //     Lgy_DebugUI_Text("Branch: %s", CN_BRANCH);
+    // #endif
+    Lgy_DebugUI_Text("%d FPS ", fps);
+    Lgy_DebugUI_Text("CPU: %5.2f%% GPU: %5.2f%% Buf: %5.2f%%",
                      C3D_GetProcessingTime() * 6.f, C3D_GetDrawingTime() * 6.f,
                      C3D_GetCmdBufUsage() * 100.f,
-                     linearSpaceFree() / 1024 / 1024);
-    Lgy_DebugUI_Text("Buf: %5.2f%% Lin: %.2fmb", C3D_GetCmdBufUsage() * 100.f,
-                     (float)linearSpaceFree() / 1024.f / 1024.f);
-    Lgy_DebugRamLine();
+                     C3D_GetCmdBufUsage() * 100.f);
+    Lgy_DebugUI_Text("Lin: %.2fmb", (float)linearSpaceFree() / 1024.f / 1024.f);
+    // Lgy_DebugRamLine();
     if (gamestate == GameState_Playing || gamestate == GameState_Pause) {
       // Cluster Info and View Distance
       Lgy_DebugUI_Text("C %d/%d D %d", clusters_drawn,
