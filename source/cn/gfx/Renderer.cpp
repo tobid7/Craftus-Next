@@ -153,18 +153,17 @@ void Renderer::UseShader() {
 void Renderer::Render2D(PD::ivec2 size) {
   PD::Gfx::Reset();  // Binds shader
   PD::Gfx::SetViewPort(size);
-  PD::Gfx::Draw(pDL.Data());
+  PD::Gfx::Draw(pDL);
 }
 
 void Renderer::StartFrame() {
   C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
   PD::TT::Beg("Renderer::Frame");
   PD::Gfx::NewFrame();
+  PD::Li::ResetPools();
 }
 
-void Renderer::OptimizeUiList(PD::Li::Drawlist& list) {
-  // list->pPool.Sort();
-}
+void Renderer::OptimizeUiList(PD::Li::Drawlist& list) { list.Optimize(); }
 
 void Renderer::EndFrame() {
   PD::TT::End("Renderer::Frame");

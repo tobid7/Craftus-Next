@@ -33,7 +33,7 @@ void Gui::Start() {
 }
 
 void Gui::DrawBg() {
-  // pGui.Layer(0);
+  pGui.SetLayer(0);
   pGui.BindTexture(*CN::ResourceMgr::GetTex(CN::RC::GuiBG));
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 8; j++) {
@@ -44,7 +44,7 @@ void Gui::DrawBg() {
 
 bool Gui::Button(const std::string& str, bool disabled) {
   bool ret = false;
-  // pGui.Layer(3);
+  pGui.SetLayer(3);
   PD::fvec2 pos = pPos;
   PD::fvec2 size(200 * 1.3, 20 * 1.3);
   pNorm(size);
@@ -64,7 +64,7 @@ bool Gui::Button(const std::string& str, bool disabled) {
                              PD::fvec4(p2Screen(pos), p2Screen(size)))) {
     ret = true;
   }*/
-  // pGui.Layer(4);
+  pGui.SetLayer(4);
   pGui.SetFontscale(0.6 * 1.3);
   pGui.DrawTextEx(p2Screen(pos) + PD::fvec2(0, -1), str.c_str(), 0xffffffff,
                   LiTextFlags_AlignMid | LiTextFlags_Shaddow, p2Screen(size));
@@ -81,13 +81,13 @@ bool Gui::Label(const std::string& str, bool selectable) {
   pNorm(size);
   pAlignPos(pAlignment, pos, size);
   pPos.y += size.y + pPad.y;
-  // pGui.Layer(4);
+  pGui.SetLayer(4);
   pGui.DrawTextEx(p2Screen(pos), str.c_str(), 0xffffffff, LiTextFlags_Shaddow);
   return ret;
 }
 
 void Gui::GuiSlider(const std::string& str, float& v) {
-  // pGui.Layer(3);
+  pGui.SetLayer(3);
   PD::fvec2 pos = pPos;
   PD::fvec2 size(200 * 1.3, 20 * 1.3);
   pNorm(size);
@@ -104,7 +104,7 @@ void Gui::GuiSlider(const std::string& str, float& v) {
            PD::fvec2(6, 20) * 1.3, GuiWidget_SDL);
   pTexElem(pTexWidgets, p2Screen(pos + PD::fvec2((v / 110.f) * size.x + 10, 0)),
            PD::fvec2(6, 20) * 1.3, GuiWidget_SDR);
-  // pGui.Layer(4);
+  pGui.SetLayer(4);
   pGui.SetFontscale(0.6 * 1.3);
   pGui.DrawTextEx(p2Screen(pos) + PD::fvec2(0, -1),
                   std::format("{}: {:.2f}", str, v).c_str(), 0xffffffff,

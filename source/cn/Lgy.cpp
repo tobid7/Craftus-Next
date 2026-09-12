@@ -220,7 +220,7 @@ void Lgy_InitPalladium() {
   // CN::ResourceMgr::SetContext(pd_ctx);
   CN::ResourceMgr::Load("romfs:/fonts/Miracode.ttf", CN::RCID::FontTTF);
   auto font = new PD::Li::Font();
-  font->LoadTTF("romfs:/fonts/Miracode.ttf", 12);
+  font->LoadTTF("romfs:/fonts/Miracode.ttf", 32, LiFontFlags_SDF | LiFontFlags_Monospace);
   CN::ResourceMgr::Push(CN::RC::MiracodeFontDebug, font);
   /*ui7 = PD::UI7::Context::New(pd_ctx);
   ui7->AddViewPort("bot", PD::ivec4(0, 0, 320, 240));
@@ -293,7 +293,7 @@ void Lgy_StartFrame(int w, int h) {
 
 void Lgy_Render(int w, int h) {
   PD::Gfx::SetViewPort(w, h);
-  PD::Gfx::Draw(list.Data());
+  PD::Gfx::Draw(list);
 }
 
 void Lgy_Finish2D() { PD::Gfx::Reset(); }
